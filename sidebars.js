@@ -33,6 +33,8 @@ const sidebars = {
         'guides/mesh-bakes',
         'guides/texture-modules',
         'guides/bulk-editing',
+        'guides/face-sdf',
+        'guides/tiled-materials',
       ],
     },
     {
@@ -68,6 +70,17 @@ const sidebars = {
         'reference/character',
         'reference/outline',
         'reference/validator',
+      ],
+    },
+    {
+      type: 'category',
+      label: '내부 동작',
+      items: [
+        'internals/shader-structure',
+        'internals/module-cost',
+        'internals/bake-internals',
+        'internals/conversion-internals',
+        'internals/vrc-rules',
       ],
     },
     'troubleshooting',

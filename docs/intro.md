@@ -36,6 +36,7 @@ MingToon은 **VRChat 아바타용 캐릭터 툰 셰이더 + 제작 툴셋**입�
 | 깊이 림·2D 그림자가 안 보인다 | [깊이 기반 효과](/guides/depth-effects) |
 | 항목 하나의 의미를 찾는다 | [항목 레퍼런스](/reference/basics) |
 | 뭔가 이상하다 | [문제 해결](/troubleshooting) |
+| 왜 그렇게 동작하는지 알고 싶다 | [내부 동작](/internals/shader-structure) |
 
 ## 문서 구조
 
