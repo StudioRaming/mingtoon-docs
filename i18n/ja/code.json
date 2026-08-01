@@ -325,5 +325,40 @@
   "theme.tags.tagsPageTitle": {
     "message": "タグ",
     "description": "The title of the tag list page"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "結果が見つかりません。"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "「{context}」以外のすべての結果を見る"
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "「{context}」のすべての結果を見る"
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "すべての結果を見る"
+  },
+  "theme.SearchBar.label": {
+    "message": "検索",
+    "description": "The ARIA label and placeholder for search button"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "検索：{query}",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "検索したい語句を入力してください。",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "すべての場所"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "検索数：{count}件",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "結果が見つかりません。",
+    "description": "The paragraph for empty search result"
   }
 }

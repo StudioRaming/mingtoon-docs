@@ -39,6 +39,24 @@ MINGTOON_SRC="E:/Unity/warudo_nilo/My project BRP/Assets/StudioRaming/MingToon" 
 `scripts/parse-source.mjs`는 모듈 카탈로그까지 포함한 전체 모델을
 `scripts/.model/model.json`으로 덤프합니다. 구조를 확인할 때만 씁니다.
 
+## 검색
+
+`@easyops-cn/docusaurus-search-local`로 **오프라인 검색**을 씁니다. 인덱스가 사이트에 함께 빌드되므로
+외부 서비스로 나가는 것이 없고, 크롤러가 사이트에 접근할 필요도 없습니다.
+
+로케일마다 `search-index.json`이 하나씩 생기고, 한국어·일본어는 각자의 lunr 토크나이저를 씁니다.
+별도 관리는 필요 없고 `npm run build`가 매번 다시 만듭니다.
+
+개발 서버(`npm start`)에서는 인덱스가 만들어지지 않으므로 검색을 확인하려면
+`npm run build && npm run serve`를 쓰세요.
+
+## 편집 권한
+
+- 문서에 **"이 페이지 편집" 링크를 두지 않습니다**(`editUrl` 미설정). 독자에게 편집 진입점이 노출되지 않습니다.
+- 저장소의 Issues · Wiki · Projects는 꺼져 있습니다.
+- push 권한은 `StudioRaming` 한 계정뿐입니다.
+- 공개 저장소라 fork와 PR 자체는 막을 수 없지만, 반영은 소유자의 merge가 있어야만 됩니다.
+
 ## 문서 작성 규칙
 
 - 각 페이지 첫 줄에 **"이 문서를 읽으면 할 수 있는 것"** 한 줄.

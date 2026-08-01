@@ -44,12 +44,36 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.js',
-          editUrl: 'https://github.com/StudioRaming/mingtoon-docs/tree/main/',
+          // No editUrl on purpose: readers get no "edit this page" affordance.
+          // Content changes go through this repository only.
         },
         blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
+      }),
+    ],
+  ],
+
+  // Offline search. The index is built into the site, so nothing is sent to a
+  // third party and no crawler needs access - which matters while the docs are
+  // a closed beta. Korean and Japanese get their own lunr tokenizers; without
+  // them a search for "그림자" would only match a whole-string hit.
+  themes: [
+    [
+      '@easyops-cn/docusaurus-search-local',
+      /** @type {import('@easyops-cn/docusaurus-search-local').PluginOptions} */
+      ({
+        language: ['ko', 'en', 'ja'],
+        docsRouteBasePath: '/',
+        indexDocs: true,
+        indexBlog: false,
+        indexPages: false,
+        hashed: true,
+        highlightSearchTermsOnTargetPage: true,
+        searchResultLimits: 10,
+        searchResultContextMaxLength: 60,
+        explicitSearchResultPath: true,
       }),
     ],
   ],
