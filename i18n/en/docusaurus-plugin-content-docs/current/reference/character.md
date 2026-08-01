@@ -1,12 +1,12 @@
 ---
-id: face
-title: Face
+id: character
+title: Character
 sidebar_position: 6
 ---
 
-# Face
+# Character
 
-A face almost never survives the body settings: the nose and brow throw shadows that read as dirt. These controls exist to treat the face separately.
+Controls that treat the face and the whole character as their own thing. A face almost never survives the body settings - the nose and brow throw shadows that read as dirt.
 
 :::note
 The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
@@ -34,3 +34,18 @@ Configure face-specific masks and shade direction.
 | **Real ShadowCaster Offset** | Pushes the face's shadow caster forward or back to fine-tune where the bangs shadow lands. Ignored while Face Casts Real-Time Shadows is off. | `_FaceShadowCasterOffset` |
 | **Normal Method** | 0 presses the face normal flat toward the forward direction, erasing the nose shadow; 1 follows the proxy sphere for a gentle curve. It has no effect while Normal Press Amount is 0. | `_FaceNormalMode` |
 | **Normal Press Amount** | How strongly the face normal override is applied. At 0 the Normal Method, proxy sphere center and proxy sphere radius are all ignored and the raw mesh normal is used. | `_FaceNormalFlattenAmount` |
+
+## Character Height Gradient
+
+Grade the lower character color from one root-space height baked into UV4.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **Low Color** |  | |
+| **High Color** |  | |
+| **Gradient Direction** | Switching to top-down swaps where the two colors land. | |
+| **Boundary Height** | The height where the two colors mix evenly. | |
+| **Boundary Softness** | How wide the transition spreads around the boundary. 0 is a hard edge. | |
+| **Curve Exponent** |  | |
+| **Influence** |  | |
+| **Requires whole-character root-space height in UV4.x.** |  | |

@@ -1,12 +1,12 @@
 ---
-id: surface
-title: Surface and textures
+id: basics
+title: Basic
 sidebar_position: 1
 ---
 
-# Surface and textures
+# Basic
 
-Base colour, transparency, and the texture layers stacked on top - everything that makes up the painted surface.
+Base colour, surface mode and the everyday maps - the first things you touch on a new material.
 
 :::note
 The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
@@ -34,6 +34,7 @@ Configure surface type, culling, and alpha handling.
 | **Mask Image** | Grayscale image used as the alpha source. It is ignored while Enable Alpha Mask is off. | `_AlphaMask` |
 | **Mask Channel** | Which channel of the mask image to read. Pick R/G/B/A when several masks are packed into one texture; Luma uses the RGB brightness. | `_AlphaMaskChannel` |
 | **Invert Mask** | Flips the mask black-for-white. Use it when the mask was painted white where the surface should disappear. | `_AlphaMaskInvert` |
+| **Color Mask** | Which color channels the outline pass writes. 15 is full RGBA; 0 means the outline is never written to the screen at all. | `_OutlineColorMask` |
 
 ## Common Maps
 
@@ -45,21 +46,3 @@ Quickly configure frequently used normal, emission, occlusion, PBR, and MatCap m
 | **Normal Strength** | How pronounced the normal map relief is. 0 renders flat even with a map assigned, 1 is the authored strength, above 1 exaggerates it. | `_BumpScale` |
 | **Occlusion Map** | Grayscale map that darkens areas indirect light cannot reach. It does not touch direct light, so the effect is hard to see under strong front lighting. | `_OcclusionMap` |
 | **Occlusion Strength** | How much of the occlusion map is applied. At 0 an assigned map changes nothing. | `_OcclusionStrength` |
-
-## Texture Layers
-
-Composite additional surface texture layers.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Blend Mode** | How this stack layer combines with the result below it. Normal covers it completely; Multiply keeps the shading underneath and only recolors. | `_MingStackBlendMode` |
-| **Opacity** | How much this layer is applied. At 0 the layer is skipped, so an assigned texture never shows; slots beyond the layer count are skipped too. | `_MingStackOpacity` |
-
-## Normal Layers
-
-Configure layered normal maps and blend strengths.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Normal Map** | Normal map for this layer. Slots beyond the layer count are never evaluated, so check the layer count first if an assigned map does nothing. | `_MingNormalMap` |
-| **Normal Strength** | How strongly this layer blends into the final normal. At 0 an assigned texture has no effect. | `_MingNormalStrength` |

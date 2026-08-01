@@ -1,5 +1,8 @@
 // @ts-check
 
+// The "룩 만들기" and "항목 레퍼런스" groups mirror the inspector's own workflow
+// grouping, so a control found on screen maps to one page here.
+//
 // Category labels are translated in
 // i18n/<locale>/docusaurus-plugin-content-docs/current.json.
 
@@ -18,12 +21,15 @@ const sidebars = {
       label: '룩 만들기',
       collapsed: false,
       items: [
-        'guides/surface',
-        'guides/shadow',
+        'guides/inspector',
+        'guides/basics',
+        'guides/light-and-shadow',
         'guides/shadow-pattern',
-        'guides/rim-and-outline',
-        'guides/face',
-        'guides/camera-depth',
+        'guides/rim',
+        'guides/depth-effects',
+        'guides/detail-maps',
+        'guides/character',
+        'guides/outline',
       ],
     },
     {
@@ -39,9 +45,10 @@ const sidebars = {
     {
       type: 'category',
       label: '플랫폼',
+      collapsed: false,
       items: [
-        'platforms/compatibility',
         'platforms/vrchat',
+        'platforms/compatibility',
         'platforms/warudo',
       ],
     },
@@ -49,12 +56,12 @@ const sidebars = {
       type: 'category',
       label: '항목 레퍼런스',
       items: [
-        'reference/surface',
-        'reference/lighting',
-        'reference/shadow',
-        'reference/rim-and-highlights',
+        'reference/basics',
+        'reference/light-and-shadow',
+        'reference/rim',
         'reference/depth-effects',
-        'reference/face',
+        'reference/detail-maps',
+        'reference/character',
         'reference/outline',
       ],
     },

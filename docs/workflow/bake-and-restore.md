@@ -26,12 +26,12 @@ sidebar_position: 3
 
 ## 절차
 
-1. `MingToon Character Root` 인스펙터에서 변환/편집 결과를 확인합니다.
+1. `MingToon Manager` 컴포넌트 인스펙터에서 변환/편집 결과를 확인합니다.
 2. 애니메이션이나 런타임 재질 변경이 필요하면 **`동적 패스 보존`** 을 켭니다. 정적 아바타는 더 공격적으로 줄일 수 있습니다.
 3. Bake를 실행합니다.
 4. `Assets/StudioRaming/MingToonGenerated` 아래에 생성 셰이더 · baked 재질 · manifest가 만들어지고 Renderer 슬롯이 baked 재질로 교체됩니다.
 
-{/* SCREENSHOT: MingToon Character Root 인스펙터의 Bake 영역 */}
+{/* SCREENSHOT: MingToon Manager 인스펙터의 Bake 영역 */}
 
 :::danger Bake 전에 백업하세요
 원본 `.mat`과 애니메이션을 버전 관리에 넣거나 별도로 복사해 두세요. manifest가 없어지거나 Renderer/슬롯 구성이 바뀌면 자동 복원이 불가능해집니다.

@@ -1,12 +1,12 @@
 ---
 id: depth-effects
-title: 2D depth effects
-sidebar_position: 5
+title: Depth Effects
+sidebar_position: 4
 ---
 
-# 2D depth effects
+# Depth Effects
 
-Screen-space effects that read the camera depth texture. Without depth they vanish entirely, so confirm depth before touching any value here.
+Screen-space effects that read the camera depth texture. Without depth they vanish entirely, so confirm depth before touching any value here. Inner 2D Edge lives in this group too.
 
 :::note
 The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
@@ -44,3 +44,15 @@ Configure a lightweight character shadow from the screen-depth silhouette of obj
 | Control | What it does | Shader property |
 |---|---|---|
 | **Shadow Brightness** | Brightness multiplier on the 2D shadow color; lower is darker. When 2D and cast shadows are unified, this becomes the brightness of the merged layer. | `_DepthShadowBrightness` |
+
+## Inner 2D Edge
+
+Configure the screen-depth edge drawn inside the visible surface.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **Enable Inner 2D Edge** | Draws interior edges from screen-depth differences. It needs no extra geometry, so it works on meshes where the hull breaks, but it requires the camera depth texture and does nothing on a Transparent surface. | `_OutlineInnerEdgeEnabled` |
+| **Pressure Source** | Which painted channel modulates line width. VertexRed reads vertex color R, VertexAlpha reads A, WidthMask reads the width mask texture. Choosing VertexRed on a mesh imported with black vertex colors makes the line vanish entirely. | `_OutlineHullPressureSource` |
+| **Apply to Inner Edge Outline** | Also applies the painted pressure to the Inner 2D Edge width. This toggle and Pressure Source live in the Classic Hull group, but this one keeps affecting the inner edge even with the hull turned off - on a mesh with black vertex colors it makes the inner edge disappear completely. | `_OutlineInnerEdgePressureApply` |
+| **Depth Bias** | Only depth differences larger than this count as an edge. Lower catches gentle creases and turns noisy; higher drops the line on thin parts. | `_OutlineInnerEdgeBias` |
+| **Softness** | Spatial feather across the inner edge. 0 keeps a hard line; 1 fades continuously across the full width down to zero. | `_OutlineInnerEdgeSoftness` |

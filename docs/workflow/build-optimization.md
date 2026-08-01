@@ -141,6 +141,14 @@ surface/normal flatten과 일반 RGBA mask repack이 허용되므로, 텍스처 
 
 이 옵션이 꺼져 있어도 **손실 없는** 최적화는 계속 걸립니다. depth mask가 수학적으로 항등임을 증명한 경우나, PBR/AO가 같은 Texture 객체·같은 UV 식을 쓰는 경우가 그렇습니다.
 
+### Clean Build Optimisation Output
+
+생성된 셰이더 캐시를 정리합니다. 캐시가 꼬였다고 의심될 때 실행하세요.
+
+### Debug: Tint Optimized Shaders Red
+
+최적화된 셰이더를 붉게 물들여 **어떤 재질이 실제로 스왑되었는지 눈으로 확인**하게 해 줍니다. 최적화가 걸렸는지 의심될 때 켜고 빌드해 보세요. 확인 후 반드시 끄세요.
+
 ---
 
 ## 에디터가 빌드 도중 죽었다면

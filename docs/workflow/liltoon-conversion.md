@@ -20,12 +20,12 @@ sidebar_position: 1
 ## 절차
 
 1. 아바타 또는 의상의 **최상위 GameObject**를 선택합니다.
-2. `GameObject > Studio Raming > MingToon > Add Character Controller`를 실행합니다.
+2. `GameObject > Studio Raming > MingToon > Add MingToon Manager`를 실행합니다.
 3. **얼굴로 사용할 Renderer / 머티리얼 슬롯을 명시적으로 지정합니다.**
 4. 변환 출력 경로와 옵션을 확인한 뒤 변환합니다.
 5. 완료 로그의 `lossy` / `unsupported` 항목을 **전부 읽고** 원본과 비교합니다.
 
-{/* SCREENSHOT: Add Character Controller 인스펙터 */}
+{/* SCREENSHOT: MingToon Manager 인스펙터 */}
 
 :::danger 3번 단계를 건너뛰지 마세요
 얼굴 자동 판정은 **보조 수단**입니다. 이름만으로 완전한 판정을 보장하지 않습니다. 얼굴 슬롯이 잘못 잡히면 얼굴 그림자 안정화가 엉뚱한 메시에 걸리거나, 정작 얼굴에 안 걸립니다.

@@ -1,27 +1,46 @@
 ---
-id: lighting
-title: Lighting and material response
-sidebar_position: 2
+id: detail-maps
+title: Detail Maps
+sidebar_position: 5
 ---
 
-# Lighting and material response
+# Detail Maps
 
-How the character responds to scene light, plus the metal, gloss and MatCap controls that give it material.
+The layers and material response stacked on the base. Every layered section shares one trap: a slot past the layer count is skipped entirely.
 
 :::note
 The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
 :::
 
-## Lighting
+## Texture Layers
 
-Configure direct and indirect lighting response.
+Composite additional surface texture layers.
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Preserve Base Map Color** | How closely the Base Map keeps its authored color when the scene light is dim. At 1 the artwork color survives any light intensity; at 0 it tracks the light exactly. Keep it high for worlds with unpredictable lighting such as VRChat. | `_BaseColorPreservation` |
-| **Scene Light Color Influence** | How much the scene light's hue tints the character. At 0 every light reads as white; at 1 a red light turns the character red. This controls hue only, not brightness. | `_LightColorInfluence` |
-| **Lit Brightness** | Overall brightness multiplier on the lit side. 1 is neutral; raising it easily blows the lit areas out to white. | `_LitBrightness` |
-| **Indirect Light Lift** | Lifts the form shadow by the amount of ambient and probe light so dark scenes do not crush to black. It is only evaluated while Form Shadow is on; cast shadows have their own Cast Indirect Lift. | `_IndirectStrength` |
+| **Blend Mode** | How this stack layer combines with the result below it. Normal covers it completely; Multiply keeps the shading underneath and only recolors. | `_MingStackBlendMode` |
+| **Opacity** | How much this layer is applied. At 0 the layer is skipped, so an assigned texture never shows; slots beyond the layer count are skipped too. | `_MingStackOpacity` |
+
+## Normal Layers
+
+Configure layered normal maps and blend strengths.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **Normal Map** | Normal map for this layer. Slots beyond the layer count are never evaluated, so check the layer count first if an assigned map does nothing. | `_MingNormalMap` |
+| **Normal Strength** | How strongly this layer blends into the final normal. At 0 an assigned texture has no effect. | `_MingNormalStrength` |
+
+## MatCap Layers
+
+Configure MatCap textures, blending, and projection.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **MatCap Map** | A lighting and material image painted on a sphere. It is projected from the view, so highlights follow the camera as it orbits. | `_MingMatcapMap` |
+| **Blend Mode** | How the MatCap combines with the surface. Add and Screen suit a bright sheen; Multiply suits darkening material detail. | `_MingMatcapBlendMode` |
+| **Contrast** | Contrast of the MatCap image. 1 is the source; raising it splits highlight from shade for a harder cel feel. | `_MingMatcapContrast` |
+| **Strength** | How much this layer is applied. At 0 the layer is skipped entirely, so changing its map or blend mode does nothing. Slots beyond the layer count are skipped as well. | `_MingMatcapStrength` |
+| **MatCap / Mesh UV Projection** | 0 projects the MatCap from the view, 1 pins it to the mesh UV. At 1 the pattern stays glued to the surface as the camera moves, which suits tattoos and painted detail. | `_MingMatcapProjectionBlend` |
 
 ## PBR Surface
 
@@ -48,18 +67,6 @@ Configure metallic, smoothness, specular, and environment reflections.
 | **Environment Reflection Strength** | How much the reflection probe or skybox shows up. With no probe in the scene, raising this changes almost nothing. | `_MingPbrReflectionStrength` |
 | **Visible In Shadow** | How much of the PBR highlight survives inside shadow. 0 hides it completely in shadow, 1 keeps it fully visible regardless. | `_MingPbrShadowVisibility` |
 | **Normal Map Influence** | 0 uses the mesh normal only, 1 uses the stacked normal maps in full. With no normal map assigned the value makes no difference. | `_MingPbrNormalInfluence` |
-
-## MatCap Layers
-
-Configure MatCap textures, blending, and projection.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **MatCap Map** | A lighting and material image painted on a sphere. It is projected from the view, so highlights follow the camera as it orbits. | `_MingMatcapMap` |
-| **Blend Mode** | How the MatCap combines with the surface. Add and Screen suit a bright sheen; Multiply suits darkening material detail. | `_MingMatcapBlendMode` |
-| **Contrast** | Contrast of the MatCap image. 1 is the source; raising it splits highlight from shade for a harder cel feel. | `_MingMatcapContrast` |
-| **Strength** | How much this layer is applied. At 0 the layer is skipped entirely, so changing its map or blend mode does nothing. Slots beyond the layer count are skipped as well. | `_MingMatcapStrength` |
-| **MatCap / Mesh UV Projection** | 0 projects the MatCap from the view, 1 pins it to the mesh UV. At 1 the pattern stays glued to the surface as the camera moves, which suits tattoos and painted detail. | `_MingMatcapProjectionBlend` |
 
 ## Emission
 

@@ -134,136 +134,129 @@ function readInspectorOrder() {
 // `match` decides which shader properties belong to it, first rule wins.
 const PAGES = [
   {
-    slug: 'surface',
+    slug: 'basics',
     position: 1,
-    title: {
-      ko: '표면과 텍스처',
-      en: 'Surface and textures',
-      ja: 'サーフェスとテクスチャ',
-    },
+    title: {ko: '기본 설정', en: 'Basic', ja: '基本設定'},
     lead: {
-      ko: '베이스 색, 투명 처리, 그 위에 쌓는 텍스처 레이어까지 — 캐릭터의 "칠"에 해당하는 항목들입니다.',
-      en: 'Base colour, transparency, and the texture layers stacked on top - everything that makes up the painted surface.',
-      ja: 'ベースカラー、透明処理、その上に重ねるテクスチャレイヤー — キャラクターの「塗り」にあたる項目です。',
+      ko: '베이스 색, 표면 모드, 자주 쓰는 맵. 재질을 만들면 가장 먼저 만지는 항목들입니다.',
+      en: 'Base colour, surface mode and the everyday maps - the first things you touch on a new material.',
+      ja: 'ベースカラー、サーフェスモード、よく使うマップ。マテリアルを作って最初に触る項目です。',
     },
     sections: [
       {key: 'section.surface', match: (n) => /^_(MainTex|Color|ColorBlend|Cutoff|Base(Channel|Invert|Tint))/.test(n)},
-      {key: 'section.surface_rendering', match: (n) => /^_(AlphaMask|MingSurfaceMode|Cull|ZWrite|ZTest|SrcBlend|DstBlend|BlendOp|ColorMask|FlipBackfaceNormal)/.test(n)},
+      {key: 'section.surface_rendering', match: (n) => /^_(AlphaMask|MingSurfaceMode|Cull|ZWrite|ZTest|SrcBlend|DstBlend|BlendOp|ColorMask|FlipBackfaceNormal|OutlineColorMask)/.test(n)},
       {key: 'section.common_maps', match: (n) => /^_(BumpMap|BumpScale|OcclusionMap|OcclusionStrength)/.test(n)},
-      {key: 'section.stack', match: (n) => n.startsWith('_MingStack')},
-      {key: 'section.normal_layers', match: (n) => n.startsWith('_MingNormal')},
     ],
   },
   {
-    slug: 'lighting',
+    slug: 'light-and-shadow',
     position: 2,
-    title: {
-      ko: '라이팅과 재질감',
-      en: 'Lighting and material response',
-      ja: 'ライティングと質感',
-    },
+    title: {ko: '조명과 그림자', en: 'Light & Shadow', ja: 'ライティングと影'},
     lead: {
-      ko: '캐릭터가 씬 조명에 어떻게 반응할지, 그리고 금속·광택·맷캡 같은 재질감을 정하는 항목들입니다.',
-      en: 'How the character responds to scene light, plus the metal, gloss and MatCap controls that give it material.',
-      ja: 'キャラクターがシーンのライトにどう反応するか、そして金属・光沢・MatCapなどの質感を決める項目です。',
+      ko: '툰 룩의 인상을 가장 크게 좌우하는 그룹입니다. 형태 그림자(빛의 방향으로 생기는 명암)와 그림자 투영(실시간으로 드리우는 그림자)은 서로 다른 섹션이니 구분해서 보세요.',
+      en: 'The single biggest lever on a toon look. Form Shadow (light-direction shading) and Shadow Projection (real-time cast shadow) are separate sections - keep them apart.',
+      ja: 'トゥーンの印象を最も大きく左右するグループです。フォームシャドウ（光の向きによる陰影）とシャドウ投影（実時間で落ちる影）は別セクションなので区別して見てください。',
     },
     sections: [
-      {key: 'section.lighting', match: (n) => /^_(LitBrightness|IndirectStrength|BaseColorPreservation|LightColorInfluence|MingAdditional|MingMinimum|MingMaximum|MingFinal)/.test(n)},
-      {key: 'section.pbr', match: (n) => /^_(MingPbr|Metallic|Smoothness|MaskMap|WorkflowMode)/.test(n)},
-      {key: 'section.matcap_layers', match: (n) => n.startsWith('_MingMatcap')},
-      {key: 'section.emission', match: (n) => /^_(EmissionMap|EmissionIntensity|MingEmission)/.test(n)},
-      {key: 'section.occlusion', match: (n) => n.startsWith('_MingOcclusion')},
-    ],
-  },
-  {
-    slug: 'shadow',
-    position: 3,
-    title: {ko: '그림자', en: 'Shadow', ja: '影'},
-    lead: {
-      ko: '툰 룩의 인상을 가장 크게 좌우하는 부분입니다. 형태 그림자(빛의 방향으로 생기는 명암)와 캐스트 그림자(실시간으로 드리우는 그림자)는 서로 다른 항목이니 구분해서 보세요.',
-      en: 'The single biggest lever on a toon look. Form shadow (the light-direction shading) and cast shadow (real-time projected shadow) are separate sets of controls - keep them apart.',
-      ja: 'トゥーンの印象を最も大きく左右する部分です。フォームシャドウ（光の向きによる陰影）とキャストシャドウ（実時間で落ちる影）は別項目なので区別して見てください。',
-    },
-    sections: [
+      {key: 'section.lighting', match: (n) => /^_(LitBrightness|IndirectStrength|BaseColorPreservation|LightColorInfluence|AdditionalLight|MingAdditional|MingMinimum|MingMaximum|MingFinal)/.test(n)},
       {key: 'section.form_shadow', match: (n) => /^_(FormShadow|MingShadowBorder|ShadowBorder)/.test(n)},
-      {key: 'section.shadow_color', match: (n) => /^_(MingUnifiedShadow|ShadowColor|MingShadowColor)/.test(n)},
-      {key: 'section.cast_shadow', match: (n) => /^_(CastShadow|SelfShadow|MingFaceCast|LinkDepthShadowToCastShadow)/.test(n)},
+      {key: 'section.shadow_color', match: (n) => /^_(MingUnifiedShadow|ShadowColor|MingShadowColor|MingShadowAmbient)/.test(n)},
+      {key: 'section.cast_shadow', match: (n) => /^_(CastShadow|CastProjection|SelfShadow|MingFaceCast|LinkDepthShadowToCastShadow)/.test(n)},
       {key: 'shadow.pattern.group', match: (n) => n.startsWith('_ShadowPattern')},
-      {key: 'section.shadow_reflection', match: (n) => n.startsWith('_MingShadowReflection')},
     ],
   },
   {
-    slug: 'rim-and-highlights',
-    position: 4,
-    title: {ko: '림과 강조광', en: 'Rims and accent light', ja: 'リムとアクセント光'},
+    slug: 'rim',
+    position: 3,
+    title: {ko: '림', en: 'Rim', ja: 'リム'},
     lead: {
-      ko: '실루엣을 살리고 캐릭터를 배경에서 떼어 놓는 항목들입니다. 여러 종류가 겹쳐서 켜지면 금세 과해지므로 하나씩 확인하며 올리세요.',
-      en: 'These lift the silhouette and separate the character from the background. They stack fast, so raise one at a time.',
-      ja: 'シルエットを立て、キャラクターを背景から切り離す項目です。重ねるとすぐ過剰になるので、ひとつずつ確認しながら上げてください。',
+      ko: '실루엣을 살리고 캐릭터를 배경에서 떼어 놓는 그룹입니다. 여러 종류를 겹쳐 켜면 금세 과해지므로 하나씩 확인하며 올리세요.',
+      en: 'This group lifts the silhouette and separates the character from the background. They stack fast, so raise one at a time.',
+      ja: 'シルエットを立て、キャラクターを背景から切り離すグループです。重ねるとすぐ過剰になるので、ひとつずつ確認しながら上げてください。',
     },
     sections: [
-      {key: 'section.fresnel_rim', match: (n) => n.startsWith('_MingFresnelRim')},
       {key: 'section.rim_shade', match: (n) => n.startsWith('_MingRimShade')},
+      {key: 'section.fresnel_rim', match: (n) => n.startsWith('_MingFresnelRim')},
       {key: 'section.backlight', match: (n) => n.startsWith('_MingBacklight')},
+      {key: 'section.shadow_reflection', match: (n) => n.startsWith('_MingShadowReflection')},
       {key: 'section.front_light', match: (n) => n.startsWith('_MingFrontLight')},
-      {key: 'section.glitter', match: (n) => n.startsWith('_MingGlitter')},
     ],
   },
   {
     slug: 'depth-effects',
-    position: 5,
-    title: {ko: '2D 깊이 효과', en: '2D depth effects', ja: '2D深度エフェクト'},
+    position: 4,
+    title: {ko: '깊이 기반 효과', en: 'Depth Effects', ja: '深度ベースエフェクト'},
     lead: {
-      ko: '카메라 깊이 텍스처를 읽어 화면 공간에서 그리는 효과입니다. 깊이가 없는 환경에서는 통째로 보이지 않으므로, 값을 만지기 전에 깊이부터 확인하세요.',
-      en: 'Screen-space effects that read the camera depth texture. Without depth they vanish entirely, so confirm depth before touching any value here.',
-      ja: 'カメラ深度テクスチャを読んで画面空間で描くエフェクトです。深度がない環境では丸ごと出ないので、値を触る前にまず深度を確認してください。',
+      ko: '카메라 깊이 텍스처를 읽어 화면 공간에서 그리는 효과입니다. 깊이가 없는 환경에서는 통째로 보이지 않으므로, 값을 만지기 전에 깊이부터 확인하세요. 내부 2D 경계도 이 그룹에 들어 있습니다.',
+      en: 'Screen-space effects that read the camera depth texture. Without depth they vanish entirely, so confirm depth before touching any value here. Inner 2D Edge lives in this group too.',
+      ja: 'カメラ深度テクスチャを読んで画面空間で描くエフェクトです。深度がない環境では丸ごと出ないので、値を触る前にまず深度を確認してください。内部2Dエッジもこのグループに含まれます。',
     },
     sections: [
-      {key: 'section.depth', match: (n) => /^_(DepthWidth|DepthWidthMode|DepthDistanceScale|DepthBias|DepthSoftness|MingDepth)/.test(n)},
+      {key: 'section.depth', match: (n) => /^_(DepthWidth|DepthWidthMode|DepthDistanceScale|DepthBias|DepthSoftness|DepthEffects|MingDepth)/.test(n)},
       {key: 'section.depth_rim', match: (n) => n.startsWith('_DepthRim')},
       {key: 'section.depth_shadow', match: (n) => n.startsWith('_DepthShadow')},
+      {key: 'section.inner_outline', match: (n) => n.startsWith('_OutlineInnerEdge') || n === '_OutlineHullPressureSource'},
     ],
   },
   {
-    slug: 'face',
-    position: 6,
-    title: {ko: '얼굴', en: 'Face', ja: '顔'},
+    slug: 'detail-maps',
+    position: 5,
+    title: {ko: '디테일 맵', en: 'Detail Maps', ja: 'ディテールマップ'},
     lead: {
-      ko: '얼굴은 코와 눈두덩이 만드는 그림자 때문에 몸과 같은 설정으로는 거의 항상 지저분해집니다. 이 항목들은 얼굴 전용 처리를 위한 것입니다.',
-      en: 'A face almost never survives the body settings: the nose and brow throw shadows that read as dirt. These controls exist to treat the face separately.',
-      ja: '顔は鼻や眉の落とす影のせいで、体と同じ設定ではほぼ必ず汚れます。これらは顔専用の処理のための項目です。',
+      ko: '베이스 위에 쌓는 레이어와 재질감입니다. 레이어 계열은 모두 같은 함정을 공유합니다 — 레이어 수보다 뒤에 있는 슬롯은 계산 자체를 건너뜁니다.',
+      en: 'The layers and material response stacked on the base. Every layered section shares one trap: a slot past the layer count is skipped entirely.',
+      ja: 'ベースの上に重ねるレイヤーと質感です。レイヤー系はすべて同じ罠を共有します — レイヤー数より後ろのスロットは計算自体をスキップします。',
     },
-    sections: [{key: 'section.face', match: (n) => n.startsWith('_Face')}],
+    sections: [
+      {key: 'section.stack', match: (n) => n.startsWith('_MingStack')},
+      {key: 'section.normal_layers', match: (n) => n.startsWith('_MingNormal')},
+      {key: 'section.matcap_layers', match: (n) => n.startsWith('_MingMatcap')},
+      {key: 'section.pbr', match: (n) => /^_(MingPbr|Metallic|Smoothness|MaskMap|WorkflowMode)/.test(n)},
+      {key: 'section.emission', match: (n) => /^_(EmissionMap|EmissionIntensity|MingEmission)/.test(n)},
+      {key: 'section.occlusion', match: (n) => n.startsWith('_MingOcclusion')},
+      {key: 'section.glitter', match: (n) => n.startsWith('_MingGlitter')},
+    ],
+  },
+  {
+    slug: 'character',
+    position: 6,
+    title: {ko: '캐릭터 표현', en: 'Character', ja: 'キャラクター表現'},
+    lead: {
+      ko: '얼굴과 캐릭터 전체를 대상으로 하는 항목입니다. 얼굴은 코와 눈두덩이 만드는 그림자 때문에 몸과 같은 설정으로는 거의 항상 지저분해지므로 따로 다룹니다.',
+      en: 'Controls that treat the face and the whole character as their own thing. A face almost never survives the body settings - the nose and brow throw shadows that read as dirt.',
+      ja: '顔とキャラクター全体を対象にする項目です。顔は鼻や眉の落とす影のせいで、体と同じ設定ではほぼ必ず汚れるため別に扱います。',
+    },
+    sections: [
+      {key: 'section.face', match: (n) => n.startsWith('_Face') || (n.startsWith('_MingFace') && !n.startsWith('_MingFaceCast'))},
+      {
+        key: 'section.character_height',
+        match: (n) => /^_(MingHeight|MingCharacterHeight|HeightGradient)/.test(n),
+        extraKeys: [
+          'height.gradient.low_color',
+          'height.gradient.high_color',
+          'height.gradient.direction',
+          'height.gradient.boundary',
+          'height.gradient.softness',
+          'height.gradient.exponent',
+          'height.gradient.influence',
+          'height.gradient.uv4_hint',
+        ],
+      },
+    ],
   },
   {
     slug: 'outline',
     position: 7,
-    title: {ko: '외곽선', en: 'Outline', ja: 'アウトライン'},
+    title: {ko: '아웃라인', en: 'Outline', ja: 'アウトライン'},
     lead: {
-      ko: '두 가지 방식이 있습니다. Hull은 메시를 확장해 그리므로 어디서나 동작하고, Inner Edge는 화면 깊이를 읽어 표면 안쪽 선까지 그리지만 깊이가 필요합니다.',
-      en: 'Two methods. Hull expands the mesh and works anywhere; Inner Edge reads screen depth and can draw lines inside the surface, but it needs that depth.',
-      ja: '方式が2つあります。Hullはメッシュを拡張して描くのでどこでも動作し、Inner Edgeは画面深度を読んで表面の内側の線まで描けますが深度が必要です。',
+      ko: '노멀 아웃라인은 메시를 확장해 그리므로 카메라 깊이 없이 어디서나 동작합니다. 화면 깊이를 읽어 표면 안쪽 선까지 그리는 내부 2D 경계는 [깊이 기반 효과](/reference/depth-effects) 그룹에 있습니다.',
+      en: 'Normal Outline expands the mesh, so it works anywhere without camera depth. Inner 2D Edge, which reads screen depth to draw lines inside the surface, lives in the [Depth Effects](/reference/depth-effects) group.',
+      ja: 'ノーマルアウトラインはメッシュを拡張して描くため、カメラ深度なしでどこでも動作します。画面深度を読んで表面の内側の線まで描く内部2Dエッジは[深度ベースエフェクト](/reference/depth-effects)グループにあります。',
     },
     sections: [
-      {key: 'section.outline', match: (n) => /^_Outline(Hull|Vector|Include|Stencil|Color)/.test(n)},
-      {key: 'section.inner_outline', match: (n) => n.startsWith('_OutlineInnerEdge')},
-    ],
-  },
-  {
-    slug: 'character-height',
-    position: 8,
-    title: {
-      ko: '캐릭터 높이 그라데이션',
-      en: 'Character height gradient',
-      ja: 'キャラクター高さグラデーション',
-    },
-    lead: {
-      ko: '캐릭터 루트를 기준으로 한 높이를 UV4에 구워 두고, 그 높이로 아래쪽 색을 물들입니다. 발밑을 어둡게 깔거나 옷자락에 색을 넣을 때 씁니다.',
-      en: 'Bakes a root-relative height into UV4 and grades the lower body by it - a floor-side darkening, or colour creeping up a hem.',
-      ja: 'キャラクタールート基準の高さをUV4に焼き込み、その高さで下部を染めます。足元を暗く敷いたり裾に色を入れるときに使います。',
-    },
-    sections: [
-      {key: 'section.character_height', match: (n) => /^_(MingHeight|HeightGradient)/.test(n)},
+      {key: 'section.normal_outline', match: (n) => /^_Outline(Hull|Vector|Distance|IncludeFormShadow|Pattern)/.test(n)},
+      {key: 'section.outline', match: (n) => /^_(Outline|MingOutline)/.test(n) && !n.startsWith('_OutlineStencil')},
+      {key: 'section.stencil', match: (n) => n.startsWith('_OutlineStencil')},
     ],
   },
 ];
@@ -349,7 +342,10 @@ for (const locale of LOCALES) {
 
     let wrote = 0;
     for (const {section, props} of pageProps.get(page.slug)) {
-      if (!props.length) continue;
+      // Some sections label their controls under their own text keys rather
+      // than prop.<shaderProperty>, so they carry an explicit key list.
+      const extra = (section.extraKeys || []).filter((k) => text[k]);
+      if (!props.length && !extra.length) continue;
       const entry = text[section.key];
       const heading = entry ? entry.label[locale] : section.key;
       lines.push(`## ${heading}`);
@@ -370,8 +366,16 @@ for (const locale of LOCALES) {
           )} | \`${name}\` |`
         );
       }
+      for (const key of extra) {
+        const e = text[key];
+        lines.push(
+          `| **${escapeCell(e.label[locale])}** | ${escapeCell(
+            e.tip ? e.tip[locale] : ''
+          )} | |`
+        );
+      }
       lines.push('');
-      wrote += props.length;
+      wrote += props.length + extra.length;
     }
 
     if (!wrote) continue;
