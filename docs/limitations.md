@@ -8,12 +8,6 @@ sidebar_position: 91
 
 MingToon `0.1.2-preview` 기준입니다.
 
-## 알려진 문제
-
-| 증상 | 설명 |
-|---|---|
-| **VRChat용 2022.3.22f1에서 `Validate Project`가 Unity 버전 오류를 냄** | 검증기가 `MING-ENV-UNITY-VERSION` 규칙을 2021.3.x 기준으로만 판정합니다. VRChat 대상에서는 2022.3.22f1이 올바른 버전이므로 이 항목은 무시하세요. 수정 예정입니다 |
-
 ## 배포 전에 알아야 할 것
 
 - 이 preview에는 **검증된 GPU ms · SetPass 개선 수치가 포함되어 있지 않습니다.** 성능 주장을 하지 않습니다.

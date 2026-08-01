@@ -6,6 +6,12 @@ sidebar_position: 1
 
 # lilToon 재질 변환
 
+:::tip 실제 작업은 MingToon Manager에서 합니다
+얼굴 슬롯 판정, 변환 시 룩 프리셋, 함께 구울 메시 채널, 원본 복구까지 전부 한 인스펙터에 있습니다. → [MingToon Manager](/workflow/character-manager#2--변환)
+
+이 문서는 변환이 **무엇을 옮기고 무엇을 옮기지 못하는지**를 다룹니다.
+:::
+
 **이 문서를 마치면** 기존 lilToon 아바타가 MingToon 편집용 재질로 바뀌고, 무엇이 손실되었는지 알게 됩니다.
 
 ## 변환이 하는 일과 하지 않는 일
@@ -46,3 +52,7 @@ sidebar_position: 1
 ## 다음
 
 룩을 다 잡았으면 [빌드 시 자동 최적화](/workflow/build-optimization)으로 배포 준비를 합니다.
+
+## 다음
+
+[MingToon Manager](/workflow/character-manager) · [빌드 시 자동 최적화](/workflow/build-optimization)

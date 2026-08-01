@@ -30,6 +30,9 @@ const sidebars = {
         'guides/detail-maps',
         'guides/character',
         'guides/outline',
+        'guides/mesh-bakes',
+        'guides/texture-modules',
+        'guides/bulk-editing',
       ],
     },
     {
@@ -37,6 +40,7 @@ const sidebars = {
       label: '내보내기',
       collapsed: false,
       items: [
+        'workflow/character-manager',
         'workflow/liltoon-conversion',
         'workflow/build-optimization',
         'workflow/bake-and-restore',
@@ -63,6 +67,7 @@ const sidebars = {
         'reference/detail-maps',
         'reference/character',
         'reference/outline',
+        'reference/validator',
       ],
     },
     'troubleshooting',

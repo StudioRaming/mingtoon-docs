@@ -20,7 +20,7 @@ npm run build             # 세 로케일 전부 빌드 + 링크 검사
 | `docs/` | 한국어 본문 (기본 로케일) |
 | `i18n/en/docusaurus-plugin-content-docs/current/` | 영어 본문 |
 | `i18n/ja/docusaurus-plugin-content-docs/current/` | 일본어 본문 |
-| `**/reference/*.md` | **자동 생성.** 직접 수정하지 마세요 |
+| `**/reference/*.md` | **자동 생성.** 직접 수정하지 마세요 — 단 `reference/validator.md`는 손으로 씁니다 |
 
 ## 레퍼런스 페이지 재생성
 
@@ -32,6 +32,8 @@ npm run build             # 세 로케일 전부 빌드 + 링크 검사
 MINGTOON_SRC="E:/Unity/warudo_nilo/My project BRP/Assets/StudioRaming/MingToon" \
   node scripts/gen-reference.mjs
 ```
+
+생성 대상은 `PAGES`에 정의된 슬러그뿐입니다. `reference/validator.md`는 생성기가 건드리지 않으므로 **`docs/reference` 폴더를 통째로 지우지 마세요.**
 
 출력 마지막 줄에 배치되지 않은 프로퍼티가 보고됩니다. 새 항목이 생겼는데 어느 페이지에도
 안 들어갔다면 `scripts/gen-reference.mjs`의 `PAGES` 규칙을 손보세요.

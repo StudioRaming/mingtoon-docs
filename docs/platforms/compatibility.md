@@ -18,8 +18,10 @@ sidebar_position: 2
 | 일반 Unity | 2021.3 LTS | |
 :::
 
-:::caution Validate Project의 Unity 버전 판정
-현재 빌드의 검증기는 `MING-ENV-UNITY-VERSION` 규칙을 **2021.3.x 기준으로만** 판정합니다. VRChat에 필요한 2022.3.22f1에서 오류로 표시되지만 **VRChat 대상에서는 2022.3.22f1이 올바른 버전입니다.** 알려진 불일치이며 수정 예정입니다.
+:::note Validate Project의 Unity 버전 판정
+지원 에디터 스트림은 **2021.3과 2022.3 둘 다**입니다. 어느 쪽이든 `MING-ENV-UNITY-VERSION` 오류는 나오지 않습니다.
+
+VRC SDK가 있는데 에디터가 2022.3 스트림이 아니면 `MING-VRC-UNITY-VERSION` **경고**가 뜹니다. VRChat 연동 코드가 그 스트림에서만 컴파일되기 때문이며, **다른 타깃은 영향을 받지 않습니다.** → [Validator 코드](/reference/validator#ming-vrc-unity-version)
 :::
 
 ## 하드웨어 요구 사항 (필수)

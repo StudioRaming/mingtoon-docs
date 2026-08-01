@@ -109,4 +109,4 @@ MingToon의 VRChat 훅은 `callbackOrder = 2000`으로 늦게 실행됩니다. M
 
 **하드웨어 요구 사항** — MingToon은 셰이더 모델 4.5를 요구합니다. 만족하지 못하는 환경에서는 재질이 마젠타로 렌더링되고 다른 오류 메시지는 나오지 않습니다. → [지원 환경](/platforms/compatibility#하드웨어-요구-사항-필수)
 
-**Validate Project의 Unity 버전 오류** — 현재 빌드의 검증기는 2021.3.x 기준으로만 판정하므로 2022.3.22f1에서 `MING-ENV-UNITY-VERSION` 오류가 표시됩니다. **VRChat 대상에서는 2022.3.22f1이 올바른 버전이므로 이 항목은 무시하세요.** 알려진 문제입니다.
+**Validate Project** — 2022.3.22f1에서는 Unity 버전 관련 오류나 경고가 나오지 않습니다. 반대로 **2021.3 프로젝트에 VRC SDK가 들어 있으면** `MING-VRC-UNITY-VERSION` 경고로 "아바타 업로드 지원이 없다"고 알려 줍니다. → [Validator 코드](/reference/validator)
