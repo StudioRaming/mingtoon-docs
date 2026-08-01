@@ -28,3 +28,34 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/**
+ * Glossary auto-links (src/remark/auto-link-terms.mjs).
+ *
+ * Every MingToon term links to the page that defines it, which is a lot of
+ * links in running prose. Full link colour would turn a paragraph into a wall,
+ * so these keep the text colour and carry a dotted underline instead - present
+ * enough to invite a click, quiet enough to read past.
+ */
+.markdown a.ming-term {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed var(--ifm-color-primary);
+  transition: color 0.12s ease, border-bottom-color 0.12s ease;
+}
+
+.markdown a.ming-term:hover {
+  color: var(--ifm-link-color);
+  border-bottom-style: solid;
+}
+
+/* Inside admonitions the dashed rule fights the coloured panel. */
+.markdown .theme-admonition a.ming-term {
+  border-bottom-color: currentColor;
+  opacity: 0.95;
+}
+
+/* A term inside a table cell is usually already terse; keep it flat. */
+.markdown table a.ming-term {
+  border-bottom-style: dotted;
+}

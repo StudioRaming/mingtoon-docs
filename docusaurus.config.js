@@ -1,5 +1,7 @@
 // @ts-check
+import path from 'node:path';
 import {themes as prismThemes} from 'prism-react-renderer';
+import autoLinkTerms from './src/remark/auto-link-terms.mjs';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -20,6 +22,9 @@ const config = {
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
+  // Auto-linked glossary terms point at section anchors, so a renamed heading
+  // has to fail the build rather than quietly produce dead jumps.
+  onBrokenAnchors: 'throw',
   markdown: {
     hooks: {
       onBrokenMarkdownLinks: 'throw',
@@ -44,6 +49,9 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.js',
+          remarkPlugins: [
+            [autoLinkTerms, {docsDir: path.resolve('docs')}],
+          ],
           // No editUrl on purpose: readers get no "edit this page" affordance.
           // Content changes go through this repository only.
         },
