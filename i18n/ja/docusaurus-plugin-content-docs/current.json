@@ -1,0 +1,26 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.시작하기": {
+    "message": "はじめに",
+    "description": "The label for category '시작하기' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.룩 만들기": {
+    "message": "ルック制作",
+    "description": "The label for category '룩 만들기' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.내보내기": {
+    "message": "書き出し",
+    "description": "The label for category '내보내기' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.플랫폼": {
+    "message": "プラットフォーム",
+    "description": "The label for category '플랫폼' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.항목 레퍼런스": {
+    "message": "項目リファレンス",
+    "description": "The label for category '항목 레퍼런스' in sidebar 'docsSidebar'"
+  }
+}

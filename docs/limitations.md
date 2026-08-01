@@ -1,0 +1,57 @@
+---
+id: limitations
+title: 현재 제한과 릴리스
+sidebar_position: 91
+---
+
+# 현재 제한과 릴리스
+
+MingToon `0.1.2-preview` 기준입니다.
+
+## 배포 전에 알아야 할 것
+
+- 이 preview에는 **검증된 GPU ms · SetPass 개선 수치가 포함되어 있지 않습니다.** 성능 주장을 하지 않습니다.
+- URP 지원 범위는 **Unity 2021.3 + URP 12.x**로 제한됩니다.
+- **VRChat Quest는 MingToon 직접 실행 대상이 아닙니다.**
+- Inner Edge와 2D 깊이 효과는 **호스트의 카메라 깊이 제공에 의존**합니다.
+- lilToon 변환은 **상호 운용 도구**이며 다른 셰이더의 결과를 수학적으로 복제하지 않습니다.
+- 현재 배포는 **소스**이며 DLL 난독화 제품판이 아닙니다.
+
+## 직접 통과시켜야 하는 검증
+
+MingToon으로 만든 결과물을 배포하기 전에, 아래를 각각 확인하세요.
+
+1. BRP / URP 셰이더 컴파일
+2. EditMode 테스트
+3. 실제 아바타의 **전신 + 얼굴** 캡처
+4. 대상 플랫폼 빌드
+5. 대상 플랫폼에서의 실기 확인 (VRChat이면 본인 화면 · 미러 · Photo Camera)
+
+## 릴리스 빌더
+
+패키지 빌더는 **positive allowlist**로만 내보냅니다.
+
+| 포함 | 제외 |
+|---|---|
+| Runtime / Editor / Shaders | Tests |
+| 존재하는 공개 Preset | 내부 리뷰 · 연구 · 증거 · 벤치마크 |
+| README, 매뉴얼, manifest | 생성된 프로젝트 산출물 |
+| 승인된 LICENSE 또는 EULA | 저장소 메타데이터 |
+
+SHA-256 manifest가 함께 기록됩니다.
+
+:::note
+사용자가 승인한 MingToon 전용 LICENSE/EULA가 없으면 패키지 빌드는 차단됩니다.
+:::
+
+## 클로즈 베타 피드백
+
+`studioraming@gmail.com`
+
+제보에 아래를 포함해 주시면 재현이 빨라집니다.
+
+1. Unity 버전과 렌더 파이프라인 (BRP / URP 12.x)
+2. 대상 플랫폼 (일반 Unity / VRChat PC / Warudo)
+3. MingToon 버전 (`0.1.2-preview`)
+4. Console 로그 전문
+5. 재현 순서

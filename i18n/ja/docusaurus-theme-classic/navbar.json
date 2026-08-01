@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "MingToon",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "MingToon",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Docs": {
+    "message": "ドキュメント",
+    "description": "Navbar item with label Docs"
+  }
+}
