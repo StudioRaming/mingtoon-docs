@@ -13,7 +13,7 @@ MingToon은 **VRChat 아바타용 캐릭터 툰 셰이더 + 제작 툴셋**입�
 
 ## Unity 버전 — 대상에 따라 다릅니다
 
-:::danger 먼저 확인하세요
+:::danger[먼저 확인하세요]
 | 대상 | Unity |
 |---|---|
 | **VRChat PC** (주 대상) | **2022.3.22f1** |
@@ -52,7 +52,7 @@ MingToon은 **VRChat 아바타용 캐릭터 툰 셰이더 + 제작 툴셋**입�
 | 캐릭터 표현 | [캐릭터 표현](/guides/character) · [레퍼런스](/reference/character) |
 | 아웃라인 | [아웃라인](/guides/outline) · [레퍼런스](/reference/outline) |
 
-:::note 레퍼런스는 소스에서 생성됩니다
+:::note[레퍼런스는 소스에서 생성됩니다]
 항목 이름과 설명은 **MingToon 인스펙터가 실제로 표시하는 문구를 그대로** 가져옵니다. 문서와 화면의 용어가 어긋나지 않습니다.
 :::
 
@@ -69,7 +69,7 @@ MingToon은 **VRChat 아바타용 캐릭터 툰 셰이더 + 제작 툴셋**입�
 
 ## 클로즈 베타 안내
 
-:::warning 이 배포판은 preview입니다
+:::warning[이 배포판은 preview입니다]
 - 검증된 GPU 성능 수치를 공개하지 않습니다.
 - VRChat / Warudo는 **테스트 대상**이며 출시 인증이 완료된 상태가 아닙니다.
 - 배포 전 [현재 제한과 릴리스](/limitations)를 확인하세요.

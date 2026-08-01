@@ -10,8 +10,8 @@ sidebar_position: 3
 
 ## 먼저: 대부분의 경우 필요 없습니다
 
-:::tip 일반적인 업로드/배포에는 [빌드 시 자동 최적화](/workflow/build-optimization)로 충분합니다
-자동 최적화는 빌드 동안만 셰이더를 바꾸고 끝나면 되돌립니다. 재질 에셋도 Renderer도 그대로입니다.
+:::tip[일반적인 업로드·배포에는 빌드 시 자동 최적화로 충분합니다]
+[빌드 시 자동 최적화](/workflow/build-optimization)는 빌드 동안만 셰이더를 바꾸고 끝나면 되돌립니다. 재질 에셋도 Renderer도 그대로입니다.
 
 수동 Bake는 **새 재질을 만들고 Renderer 슬롯을 갈아 끼웁니다.** 작업을 계속하려면 손으로 되돌려야 합니다.
 :::
@@ -33,7 +33,7 @@ sidebar_position: 3
 
 {/* SCREENSHOT: MingToon Manager 인스펙터의 Bake 영역 */}
 
-:::danger Bake 전에 백업하세요
+:::danger[Bake 전에 백업하세요]
 원본 `.mat`과 애니메이션을 버전 관리에 넣거나 별도로 복사해 두세요. manifest가 없어지거나 Renderer/슬롯 구성이 바뀌면 자동 복원이 불가능해집니다.
 :::
 
@@ -41,7 +41,7 @@ sidebar_position: 3
 
 baked 재질을 선택하면 인스펙터 **위쪽의 복원 버튼**으로 기록된 원본 편집용 재질을 다시 연결할 수 있습니다.
 
-:::caution 복원 버튼이 비활성이라면
+:::caution[복원 버튼이 비활성이라면]
 아래를 확인하세요.
 
 - bake manifest가 남아 있는가
@@ -78,7 +78,7 @@ baked 재질을 선택하면 인스펙터 **위쪽의 복원 버튼**으로 기�
 
 ### ReviewedHighQuality
 
-:::caution 검토된 정적 재질에서만 명시적으로 선택하세요
+:::caution[검토된 정적 재질에서만 명시적으로 선택하세요]
 surface/normal flatten과 일반 RGBA mask repack을 허용합니다. 따라서 imported texture readback, color space, mip 재생성, 플랫폼 압축 때문에 **픽셀이 달라질 수 있습니다.**
 
 Animation dependency와 `Keep Editable` 조건은 계속 검사하지만, **애니메이션 결과와 목표 플랫폼의 mip/압축 룩을 baked 전후 캡처로 직접 비교해야 합니다.**

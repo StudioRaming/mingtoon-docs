@@ -10,7 +10,7 @@ sidebar_position: 2
 
 ## Unity 버전
 
-:::danger 대상마다 다릅니다. 한 프로젝트로 겸할 수 없습니다
+:::danger[대상마다 다릅니다. 한 프로젝트로 겸할 수 없습니다]
 | 대상 | Unity | 왜 |
 |---|---|---|
 | **VRChat PC** (주 대상) | **2022.3.22f1** | 현행 VRChat SDK 기준. MingToon의 VRChat 훅·런타임이 `UNITY_2022_3_OR_NEWER`에서만 컴파일됩니다 |
@@ -18,7 +18,7 @@ sidebar_position: 2
 | 일반 Unity | 2021.3 LTS | |
 :::
 
-:::note Validate Project의 Unity 버전 판정
+:::note[Validate Project의 Unity 버전 판정]
 지원 에디터 스트림은 **2021.3과 2022.3 둘 다**입니다. 어느 쪽이든 `MING-ENV-UNITY-VERSION` 오류는 나오지 않습니다.
 
 VRC SDK가 있는데 에디터가 2022.3 스트림이 아니면 `MING-VRC-UNITY-VERSION` **경고**가 뜹니다. VRChat 연동 코드가 그 스트림에서만 컴파일되기 때문이며, **다른 타깃은 영향을 받지 않습니다.** → [Validator 코드](/reference/validator#ming-vrc-unity-version)
@@ -28,7 +28,7 @@ VRC SDK가 있는데 에디터가 2022.3 스트림이 아니면 `MING-VRC-UNITY-
 
 MingToon의 모든 패스는 `#pragma target 4.5`(셰이더 모델 4.5)를 선언합니다.
 
-:::danger 조건을 못 맞추면 조용히 실패합니다
+:::danger[조건을 못 맞추면 조용히 실패합니다]
 셰이더 모델 4.5를 만족하지 못하는 플랫폼에서는 SubShader가 통째로 탈락합니다. 결과는 **재질이 마젠타(분홍색)로 렌더링되고, 다른 오류 메시지는 나오지 않는 것**입니다. 로그만 보고는 원인을 찾을 수 없으므로 이 조건을 먼저 확인하세요.
 :::
 
@@ -52,7 +52,7 @@ MingToon의 모든 패스는 `#pragma target 4.5`(셰이더 모델 4.5)를 선�
 | Unity 2021.3 **URP 12.x** | 선택 검증 대상 · 미인증 | MingToon URP 셰이더 및 필요한 Renderer Feature 설치 |
 | VRChat + URP | 지원 안 함 | BRP 제작본으로 전환 |
 
-:::danger URP 13 이상은 지원 범위가 아닙니다
+:::danger[URP 13 이상은 지원 범위가 아닙니다]
 URP는 **Unity 2021.3 + URP 12.x**만 현재 대상입니다. 동작하는 것처럼 보여도 지원으로 간주하지 마세요. VRChat은 URP를 쓰지 않습니다.
 :::
 
@@ -69,7 +69,7 @@ BRP와 URP를 함께 쓸 계획일 때만 해당합니다. VRChat만 대상이�
 
 결과적으로 두 백엔드는 `_MainTex`를 **Clamp 또는 Point로 임포트한 경우에만** 다르게 보입니다.
 
-:::tip 두 백엔드를 함께 쓸 계획이면
+:::tip[두 백엔드를 함께 쓸 계획이면]
 `_MainTex`를 기본값(**Bilinear / Repeat**)으로 유지하세요.
 :::
 

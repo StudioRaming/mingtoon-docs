@@ -12,7 +12,7 @@ sidebar_position: 2
 
 **아무것도 하지 않아도 됩니다.** 기본값으로 켜져 있고, VRChat 업로드 · Warudo 모드 빌드 · 일반 플레이어 빌드에서 자동으로 걸립니다. 빌드가 끝나면 재질은 원래대로 돌아와 계속 편집할 수 있습니다.
 
-:::tip 수동 Bake와 헷갈리지 마세요
+:::tip[수동 Bake와 헷갈리지 마세요]
 [수동 Bake](/workflow/bake-and-restore)는 **새 재질을 만들고 Renderer를 갈아 끼우므로** 작업을 계속하려면 손으로 되돌려야 합니다.
 
 빌드 시 자동 최적화는 **재질의 셰이더 포인터 하나만** 잠깐 바꿉니다. 재질 에셋은 교체되지 않고 Renderer도 건드리지 않으며, 빌드가 끝나는 순간 편집 가능한 상태로 돌아옵니다.
@@ -64,7 +64,7 @@ VRChat **아바타** 빌드에서는 한 가지가 더 일어납니다.
 
 이유는 이렇습니다. `Auto`는 "호스트가 깊이 텍스처가 있다고 말하면 믿는다"는 뜻인데, 그렇게 말해 주는 것이 `MingDepthTextureProvider`입니다. 이건 `IEditorOnly` MonoBehaviour라 VRChat이 업로드에서 제거합니다. 그래서 VRChat에서는 그 신호가 영원히 도착하지 않고, `Auto`는 사실상 항상 꺼짐이 됩니다. **깊이 텍스처가 실제로 있는 월드에서도 2D 림과 2D 그림자가 사라지던 원인이 이것입니다.**
 
-:::note 직접 정한 값은 건드리지 않습니다
+:::note[직접 정한 값은 건드리지 않습니다]
 `Force On`(1)과 `Force Off`(2)는 작업자의 의도적인 선택이므로 절대 덮어쓰지 않습니다. 승격은 `Auto`이면서 **깊이 모듈이 실제로 켜져 있는** 재질에만 걸립니다.
 :::
 
@@ -86,7 +86,7 @@ VRChat 훅은 `callbackOrder = 2000`으로 **늦게** 실행됩니다. Modular A
 [MingToon] VRChat build hook compiled and registered.
 ```
 
-:::danger 이 줄이 없다면
+:::danger[이 줄이 없다면]
 VRChat 훅이 **아예 존재하지 않는 상태**입니다. 조건부 컴파일 가드(`VRC_SDK_VRCSDK3` 정의 + Unity 2022.3 이상)가 false로 평가된 것입니다. VRC SDK가 프로젝트에 제대로 들어와 있는지 확인하세요.
 :::
 
@@ -135,7 +135,7 @@ Hair_MingEditable  ->  optimized depth-mask(-1 sample)
 | 되돌리기 | 자명함 | 전부 정확히 되돌려야 함 |
 | 빌드 시간 | 거의 없음 | 재질마다 최대 3장을 렌더·재임포트 |
 
-:::caution 켜기 전에
+:::caution[켜기 전에]
 surface/normal flatten과 일반 RGBA mask repack이 허용되므로, 텍스처 readback · 컬러 스페이스 · mip 재생성 · 플랫폼 압축 때문에 **픽셀이 달라질 수 있습니다.** 켠다면 baked 전후 캡처를 비교하세요.
 :::
 

@@ -8,7 +8,7 @@ sidebar_position: 3
 
 **이 문서를 읽으면** Warudo 모드 빌드에서 MingToon이 어떻게 걸리는지, 깊이 효과를 쓰려면 무엇이 더 필요한지 알게 됩니다.
 
-:::caution 현재 상태
+:::caution[현재 상태]
 Warudo는 **테스트 대상이며 실기 검증이 완료되지 않았습니다.** 주 대상은 [VRChat](/platforms/vrchat)입니다.
 :::
 
@@ -20,7 +20,7 @@ Warudo는 **테스트 대상이며 실기 검증이 완료되지 않았습니다
 | Warudo Mod SDK | **0.14.3.10** |
 | 렌더 파이프라인 | Built-in (BRP) |
 
-:::danger VRChat 프로젝트와 겸할 수 없습니다
+:::danger[VRChat 프로젝트와 겸할 수 없습니다]
 VRChat은 Unity **2022.3.22f1**, Warudo는 **2021.3.45f2** 입니다. 같은 프로젝트로 둘 다 대응할 수 없으니 대상별로 나누세요.
 :::
 
@@ -30,7 +30,7 @@ BRP 커스텀 셰이더는 지원됩니다.
 
 `Warudo > Build Mod`를 실행하면 [빌드 시 자동 최적화](/workflow/build-optimization)가 자동으로 걸립니다. 별도 설정은 필요 없습니다.
 
-:::note 왜 별도 훅이 필요했나
+:::note[왜 별도 훅이 필요했나]
 `Warudo/Build Mod`는 UMod 자체 파이프라인(`ModToolsUtil.StartBuild`)을 쓰기 때문에 Unity의 빌드 콜백(`IPreprocessBuildWithReport`)이 **울리지 않습니다.** 그래서 예전에는 모드가 최적화되지 않은 재질로 조용히 나갔습니다. 지금은 UMod의 확장 지점에 프로세서와 포스트 프로세서를 등록해 처리합니다.
 :::
 
@@ -44,7 +44,7 @@ BRP 커스텀 셰이더는 지원됩니다.
 
 깊이 림 · 2D 그림자 · 내부 2D 경계는 카메라 깊이 텍스처를 읽습니다. **Depth를 켠 Warudo 카메라**가 필요합니다.
 
-:::caution 아바타 번들만으로는 호스트 카메라를 바꾸지 못할 수 있습니다
+:::caution[아바타 번들만으로는 호스트 카메라를 바꾸지 못할 수 있습니다]
 공개 호스트 플러그인 / Playground depth bridge 또는 **동등한 카메라 설정**이 필요합니다.
 
 동봉된 Unity 카메라 훅(`Docs/Warudo/MingToonWarudoDepthBridge.cs.txt`)은 best-effort이며, 사용하는 **모든 main/output 카메라에서 개별적으로** 테스트해야 합니다.

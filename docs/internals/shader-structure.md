@@ -30,7 +30,7 @@ LOD 300
 | **`VRCFallback = toonstandardoutline`** | VRChat이 셰이더를 숨길 때 대체로 쓰는 셰이더입니다 → 아래 참고 |
 | `IgnoreProjector = False` | 프로젝터 영향을 받습니다 |
 
-:::note VRCFallback이 중요한 이유
+:::note[VRCFallback이 중요한 이유]
 VRChat에서 상대가 **Shaders를 Hidden으로 설정**하면 내 아바타는 fallback 셰이더로 보입니다. MingToon은 `toonstandardoutline`을 지정해 두었으므로 **그 상황에서도 툰 셰이딩과 아웃라인이 남습니다.** Standard로 떨어지는 셰이더보다 원본에 가깝게 보입니다.
 :::
 
@@ -58,11 +58,11 @@ VRChat에서 상대가 **Shaders를 Hidden으로 설정**하면 내 아바타는
 
 아웃라인 헐도 같은 기록으로 고쳐집니다. 헐은 표면을 확대한 사본이라서, 버퍼가 비어 있으면 눈과 입 위에 칠할 이유가 없었습니다. 이제 표면이 그 픽셀을 소유합니다.
 
-:::note 불투명·컷아웃은 비용을 내지 않습니다
+:::note[불투명·컷아웃은 비용을 내지 않습니다]
 프래그먼트에서 잘라내는 방식이 아닙니다. 그러면 정점 단계는 메시 전체에 대해 여전히 돌아갑니다. **삼각형을 축퇴(degenerate) 위치로 접어서** 아예 래스터화되지 않게 합니다.
 :::
 
-:::tip LightMode가 `ForwardBase`가 아니라 `Always`인 이유
+:::tip[LightMode가 `ForwardBase`가 아니라 `Always`인 이유]
 `Material.SetShaderPassEnabled`는 **패스 이름이 아니라 LightMode 태그**로 동작합니다. 프리패스가 `ForwardBase`였다면 이 패스만 끄는 순간 표면 패스와 아웃라인 패스까지 함께 꺼집니다. `Always`는 같은 포워드 루프가 선언 순서대로 렌더링하고, 다른 패스가 쓰지 않는 태그이므로 **혼자 켜고 끌 수 있습니다.**
 :::
 
@@ -88,7 +88,7 @@ LightMode가 `ForwardBase`라서 주광 패스와 함께 돌지만, 자체 `_Out
 
 그림자 맵을 씁니다. **그런데 이 패스는 그림자만을 위한 것이 아닙니다.**
 
-:::danger 두 투명 모드 모두 ShadowCaster 패스를 켠 채로 둡니다
+:::danger[두 투명 모드 모두 ShadowCaster 패스를 켠 채로 둡니다]
 Built-in은 **`_CameraDepthTexture`를 이 패스를 통해 채웁니다.** 그 텍스처가 바로 2D 그림자·깊이 림·내부 2D 경계가 읽는 것입니다.
 
 패스를 끄면 캐릭터가 자기 깊이에서 사라지고, 그래서 예전에는 투명 재질에서 이 모듈들을 통째로 꺼야 했습니다.
@@ -109,7 +109,7 @@ Built-in은 **`_CameraDepthTexture`를 이 패스를 통해 채웁니다.** 그 
 | **투명 · 아웃라인용 깊이 기록** | **`Opaque`** | **2499** | SrcAlpha / OneMinusSrcAlpha | On | **안정 모드** |
 | **투명** | `Transparent` | 3000 | SrcAlpha / OneMinusSrcAlpha | Off | 일반 |
 
-:::tip 큐 2499와 RenderType Opaque가 핵심입니다
+:::tip[큐 2499와 RenderType Opaque가 핵심입니다]
 - **2499** — 불투명 구간(2500 미만) 안쪽입니다. 두 파이프라인이 카메라 깊이 텍스처를 만드는 범위가 여기까지입니다.
 - **RenderType이 `Opaque`** — 깊이 텍스처를 채우는 패스가 이 태그로 대상을 고릅니다.
 
@@ -118,7 +118,7 @@ Built-in은 **`_CameraDepthTexture`를 이 패스를 통해 채웁니다.** 그 
 
 `투명 · 아웃라인용 깊이 기록`에서는 아웃라인 헐의 블렌드도 **One / Zero**로 바뀝니다(안정 모드). 헐이 반투명하게 겹쳐 보이는 것을 막습니다. 일반 투명에서는 SrcAlpha / OneMinusSrcAlpha입니다.
 
-:::note 표면 모드를 바꿔도 보존되는 것
+:::note[표면 모드를 바꿔도 보존되는 것]
 `알파 컷오프`, 아웃라인 ON/OFF, 그리고 모든 외형 값은 그대로 남습니다. 렌더 상태·기본 큐·내부 아웃라인 버퍼 상태만 맞춥니다.
 :::
 
@@ -160,7 +160,7 @@ MingToon은 대부분의 모듈을 **`shader_feature_local_fragment`** 로 컴�
 | 노멀 레이어 | (없음) → `_MING_NORMAL_2` → `_MING_NORMAL_5` |
 | 맷캡 레이어 | (없음) → `_MING_MATCAP_2` → `_MING_MATCAP_5` |
 
-:::tip 레이어 수를 5에서 4로 줄여도 비용이 안 줄 수 있습니다
+:::tip[레이어 수를 5에서 4로 줄여도 비용이 안 줄 수 있습니다]
 같은 티어 안이면 컴파일되는 코드가 같습니다. **티어 경계**(예: 텍스처 레이어 4 → 5)를 넘길 때 실제로 달라집니다. 베이크는 실제 사용 개수를 보고 티어를 다시 고릅니다.
 :::
 
@@ -183,7 +183,7 @@ MingToon은 대부분의 모듈을 **`shader_feature_local_fragment`** 로 컴�
 | 작업 중 | 토글해도 컴파일 대기 없음 | — |
 | 프로퍼티 블록 | | **동일** |
 
-:::note 작업 중 무거운 것이 정상입니다
+:::note[작업 중 무거운 것이 정상입니다]
 편집용 셰이더가 전부 컴파일된 상태를 유지하는 덕분에, 기능 토글을 켜고 끌 때 파란 자리표시 색이나 변형 컴파일 멈춤이 생기지 않습니다.
 
 생성 셰이더가 편집용과 **같은 ShaderLab Properties 블록**을 갖기 때문에, [빌드 시 자동 최적화](/workflow/build-optimization)가 셰이더 포인터만 바꿔도 작업해 둔 값이 하나도 손실되지 않습니다.

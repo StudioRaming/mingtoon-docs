@@ -56,9 +56,8 @@ MINGTOON_SRC="E:/Unity/warudo_nilo/My project BRP/Assets/StudioRaming/MingToon" 
 
 용어를 추가하려면 `GLOSSARY`에 `'용어': '/경로#앵커'`를 넣으세요.
 
-:::note
-`onBrokenAnchors: 'throw'`이므로 **앵커가 틀리면 빌드가 실패**합니다. 오타가 조용히 지나가지 않습니다.
-:::
+> [!NOTE]
+> `onBrokenAnchors: 'throw'`이므로 **앵커가 틀리면 빌드가 실패**합니다. 오타가 조용히 지나가지 않습니다.
 
 스타일은 `src/css/custom.css`의 `.ming-term` — 본문 색을 유지하고 점선 밑줄만 답니다.
 
@@ -91,3 +90,20 @@ MINGTOON_SRC="E:/Unity/warudo_nilo/My project BRP/Assets/StudioRaming/MingToon" 
   `static/img/screenshots/`에 이미지를 넣고 주석을 `![설명](/img/screenshots/파일명.png)`으로 바꾸세요.
 - 문서 간 링크는 **절대 경로**(`/guides/shadow`)를 씁니다. 상대 `.md` 링크는 로케일 폴백에서 깨집니다.
 - MDX v3이라 `<!-- -->` HTML 주석은 파싱 오류가 납니다. `{/* */}`를 쓰세요.
+
+## Admonition 문법 — v3 형식만 씁니다
+
+```
+:::tip[제목]
+본문
+:::
+```
+
+Docusaurus v2의 `:::tip 제목`(대괄호 없음)은 **v3에서 지시자로 파싱되지 않고 `:::tip 제목` 그대로 화면에 찍힙니다.**
+빌드는 성공하므로 눈으로 보기 전까지 모릅니다. 제목에 대괄호가 필요하면 링크 대신 본문에 넣으세요.
+
+확인:
+
+```bash
+grep -rn "^:::[a-z]\+ " docs   # 결과가 있으면 v2 문법이 남아 있는 것
+```

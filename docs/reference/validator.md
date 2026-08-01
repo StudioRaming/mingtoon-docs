@@ -8,7 +8,7 @@ sidebar_position: 8
 
 `Tools > Studio Raming > MingToon > Validate Project`가 보고하는 코드 전체입니다. 코드로 찾으세요.
 
-:::note 이 검사는 읽기만 합니다
+:::note[이 검사는 읽기만 합니다]
 아무것도 고치거나 지우지 않습니다. 보고만 하고 조치는 사람이 합니다.
 :::
 
@@ -80,7 +80,7 @@ MingToon의 모든 패스가 `#pragma target 4.5`를 선언합니다. 이런 타
 
 **오류.** 셰이더에 이 백엔드가 요구하는 렌더 패스가 없습니다.
 
-:::danger 조용히 사라집니다
+:::danger[조용히 사라집니다]
 **아웃라인·캐스트 그림자·깊이 선기록이 렌더링을 멈추는데, 그 항목의 컨트롤은 계속 편집 가능한 상태로 남습니다.** 값을 만져도 아무 일이 없는 원인이 됩니다.
 :::
 
@@ -140,7 +140,7 @@ MingToon의 모든 패스가 `#pragma target 4.5`를 선언합니다. 이런 타
 | 활성 URP 에셋에 renderer data가 없음 | URP 에셋의 Renderer List에 Universal Renderer Data를 추가한 뒤 아래 메뉴 실행 |
 | renderer data에 기능이 비활성 | `Tools > Studio Raming > MingToon > URP > Install Depth Effects Renderer Feature` |
 
-:::caution 활성 URP 에셋의 **모든** 렌더러에 기능이 필요합니다
+:::caution[활성 URP 에셋의 **모든** 렌더러에 기능이 필요합니다]
 한 렌더러에만 설치하면 다른 렌더러에서는 효과가 그려지지 않으면서 컨트롤은 계속 편집 가능한 상태로 남습니다.
 :::
 

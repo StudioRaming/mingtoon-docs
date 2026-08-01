@@ -10,7 +10,7 @@ sidebar_position: 1
 
 VRChat PC는 MingToon의 **주 대상**입니다.
 
-:::caution 현재 상태
+:::caution[현재 상태]
 클로즈 베타 기준 VRChat PC는 **수동 검증 대상이며 출시 인증이 완료되지 않았습니다.** 업로드 전에 아래 체크리스트를 직접 통과시키세요.
 
 VRChat **Quest**는 MingToon의 직접 실행 대상이 아닙니다. → [지원 환경](/platforms/compatibility#vrchat-quest)
@@ -18,7 +18,7 @@ VRChat **Quest**는 MingToon의 직접 실행 대상이 아닙니다. → [지�
 
 ## Unity 버전
 
-:::danger 2022.3.22f1
+:::danger[2022.3.22f1]
 현행 VRChat SDK 기준입니다. MingToon의 VRChat 빌드 훅과 VRChat 런타임은 `UNITY_2022_3_OR_NEWER` 조건에서만 컴파일되므로, **2021.3에서는 이 코드가 아예 존재하지 않습니다.** 업로드는 되지만 자동 최적화도 깊이 승격도 걸리지 않습니다.
 
 Warudo용 2021.3.45f2 프로젝트와 **같은 프로젝트를 쓸 수 없습니다.** 대상별로 나누세요.
@@ -36,7 +36,7 @@ Warudo용 2021.3.45f2 프로젝트와 **같은 프로젝트를 쓸 수 없습니
 
 ## MonoBehaviour 제거
 
-:::danger `IEditorOnly`는 자동 삭제 보증이 아닙니다
+:::danger[`IEditorOnly`는 자동 삭제 보증이 아닙니다]
 `IEditorOnly`는 VRC SDK의 incompatible-script **검사 표식**일 뿐입니다.
 
 Unity 2022.3.22f1 + 현행 SDK의 **실제 avatar build clone**을 열어 MingToon 런타임 `MonoBehaviour`가 0개인지 직접 확인하고, 남아 있으면 업로드 전에 명시적으로 제거하세요.
@@ -53,7 +53,7 @@ Unity 2022.3.22f1 + 현행 SDK의 **실제 avatar build clone**을 열어 MingTo
 | **일반 플레이어 화면 (기본)** | ❌ | 아바타가 강제할 수 없습니다 |
 | **미러 · 스트림 · handheld preview 내부 경로** | ⚠️ | 동일한 결과가 보장되지 않습니다 |
 
-:::danger 아바타로는 해결할 수 없습니다
+:::danger[아바타로는 해결할 수 없습니다]
 아바타에 Camera나 Light를 추가하는 것은 **동등한 해결책이 아닙니다.** 성능 비용을 올리거나 아바타 안전 설정에 의해 제거될 수 있습니다.
 
 Screen Camera 설정은 월드/Udon 측 권한입니다.

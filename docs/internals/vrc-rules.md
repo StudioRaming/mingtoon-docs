@@ -26,11 +26,11 @@ MingToon BRP 셰이더는 SubShader 태그에 이렇게 선언합니다.
 VRCFallback = toonstandardoutline
 ```
 
-:::tip 상대가 셰이더를 숨겨도 룩이 남습니다
+:::tip[상대가 셰이더를 숨겨도 룩이 남습니다]
 VRChat에서 상대가 **Shaders를 Hidden**으로 설정하면 내 아바타는 fallback 셰이더로 보입니다. `toonstandardoutline`이 지정되어 있으므로 **툰 셰이딩과 아웃라인이 유지됩니다.** Standard로 떨어지는 셰이더보다 원본에 훨씬 가깝습니다.
 :::
 
-:::danger 투명 재질은 fallback에서 아웃라인을 잃습니다
+:::danger[투명 재질은 fallback에서 아웃라인을 잃습니다]
 분석기가 `TransparentFallbackUsesUnlit`으로 경고합니다.
 
 > Toon의 Transparent/Fade fallback은 **Transparent Unlit으로 대체되어 툰 조명과 아웃라인을 유지하지 않습니다.**
@@ -75,7 +75,7 @@ VRCSpatialAudioSource  VRCStation
 
 `<Missing Script>`도 개수로 집계됩니다.
 
-:::note MingToon 자신의 런타임 컴포넌트도 여기 걸립니다
+:::note[MingToon 자신의 런타임 컴포넌트도 여기 걸립니다]
 `MingToonManager`와 `MingDepthTextureProvider`는 `IEditorOnly`지만, 그건 **SDK의 검사 표식일 뿐 자동 삭제 보증이 아닙니다.**
 
 `MingToon Manager`의 **5 · 내보내기 / 검증**에서 하위 런타임 컴포넌트가 0개인지 확인하세요. → [MingToon Manager](/workflow/character-manager#5--내보내기--검증)
@@ -97,7 +97,7 @@ VRCSpatialAudioSource  VRCStation
 | `UnityVersionNotValidated` | 경고 | 에디터가 검증 버전과 다름 |
 | `UnsupportedRenderBackend` | 오류 | **URP 백엔드/재질은 VRChat 출력에 쓸 수 없습니다.** Built-in 편집본이나 Built-in Baked를 쓰세요 |
 
-:::tip `PcRequiresBakedShader`가 나와도 수동 Bake를 할 필요는 없습니다
+:::tip[`PcRequiresBakedShader`가 나와도 수동 Bake를 할 필요는 없습니다]
 [빌드 시 자동 최적화](/workflow/build-optimization)가 업로드 순간 재질을 생성 셰이더로 스왑하고 끝나면 되돌립니다. 이 분석기는 **정적 상태**를 보는 도구이므로 편집 상태에서 실행하면 당연히 이 항목이 뜹니다.
 :::
 
@@ -111,7 +111,7 @@ VRCSpatialAudioSource  VRCStation
 | `QuestOutlineNotSupported` | **Quest Toon Standard 변환은 아웃라인을 유지하지 않습니다** |
 | `QuestToonStandardRequiresOpaque` | Quest Toon Standard 변환 대상은 **Opaque여야 합니다** |
 
-:::danger Quest 대응은 별도 작업입니다
+:::danger[Quest 대응은 별도 작업입니다]
 MingToon은 모바일 셰이더 타깃이 아니고 자동 변환 경로도 제공하지 않습니다. Quest 버전을 만들 계획이라면 **아웃라인이 사라지고 반투명을 못 쓴다**는 전제로 룩을 따로 설계하세요.
 :::
 

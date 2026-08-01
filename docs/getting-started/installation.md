@@ -10,7 +10,7 @@ sidebar_position: 1
 
 ## 1. Unity 버전을 먼저 맞춥니다
 
-:::danger 대상에 따라 Unity 버전이 다릅니다
+:::danger[대상에 따라 Unity 버전이 다릅니다]
 | 대상 | Unity | 근거 |
 |---|---|---|
 | **VRChat PC** (주 대상) | **2022.3.22f1** | 현행 VRChat SDK 기준 |
@@ -29,7 +29,7 @@ sidebar_position: 1
 - VRChat 대상이면 현행 **VRChat SDK3 (Avatars)**
 - 가능하면 **새 프로젝트** — 아래 주의 참고
 
-:::caution 개발 프로젝트에 덮어쓰지 마세요
+:::caution[개발 프로젝트에 덮어쓰지 마세요]
 이 배포물은 UPM 패키지가 아니라 **소스 `.unitypackage`** 입니다. 기존 MingToon 소스가 있는 프로젝트에 다시 임포트하면 클래스와 셰이더가 중복되어 컴파일이 깨집니다. 최종 패키지는 항상 빈 검증 프로젝트에서 시험하세요.
 :::
 
@@ -54,7 +54,7 @@ sidebar_position: 1
 [MingToon] VRChat build hook compiled and registered.
 ```
 
-:::danger 이 줄이 없다면
+:::danger[이 줄이 없다면]
 VRChat 빌드 훅이 **아예 존재하지 않는 상태**입니다. 업로드해도 자동 최적화와 깊이 승격이 걸리지 않습니다. 확인할 것:
 
 1. Unity 버전이 **2022.3.22f1** 인지
@@ -69,7 +69,7 @@ VRChat 빌드 훅이 **아예 존재하지 않는 상태**입니다. 업로드�
 
 {/* SCREENSHOT: Validate Project 결과 */}
 
-:::note 지원 에디터 스트림은 2021.3과 2022.3 둘 다입니다
+:::note[지원 에디터 스트림은 2021.3과 2022.3 둘 다입니다]
 어느 쪽이든 `MING-ENV-UNITY-VERSION` 오류는 나오지 않습니다.
 
 다만 **VRC SDK가 들어 있는데 에디터가 2021.3이면** `MING-VRC-UNITY-VERSION` **경고**가 뜹니다 — "MingToon의 VRChat 연동이 2022.3 스트림에서만 컴파일되므로 이 프로젝트에는 아바타 업로드 지원이 없습니다." 정확한 경고이며, VRChat 대상이면 2022.3.22f1로 옮기라는 뜻입니다.
@@ -82,7 +82,7 @@ VRChat 빌드 훅이 **아예 존재하지 않는 상태**입니다. 업로드�
 | Built-in Render Pipeline (BRP) — VRChat·Warudo 포함 | `StudioRaming/MingToon/BRP` |
 | URP 12.x (Unity 2021.3) | MingToon URP 셰이더 |
 
-:::danger URP는 VRChat 대상이 아닙니다
+:::danger[URP는 VRChat 대상이 아닙니다]
 VRChat + URP는 지원하지 않습니다. URP는 Unity 2021.3 + URP 12.x만 대상이며, URP 13 이상은 동작하는 것처럼 보여도 지원으로 간주하지 마세요.
 :::
 

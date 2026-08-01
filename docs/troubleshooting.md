@@ -41,7 +41,7 @@ sidebar_position: 90
 | **셰이더 모델 4.5 미달** | `Tools > Studio Raming > MingToon > Validate Project` | 지원 대상은 PC(DX11+/Vulkan/Metal)뿐. Android·Quest·iOS·WebGL은 미지원 |
 | URP 버전 범위 밖 | URP 12.x인지 | Unity 2021.3 + URP 12.x로 맞춤 |
 
-:::danger 이 경우 다른 오류 메시지가 나오지 않습니다
+:::danger[이 경우 다른 오류 메시지가 나오지 않습니다]
 SubShader가 통째로 탈락하기 때문에 로그가 조용합니다. 분홍색이 유일한 신호입니다.
 :::
 
@@ -129,7 +129,7 @@ SubShader가 통째로 탈락하기 때문에 로그가 조용합니다. 분홍�
 
 파이프라인이 바뀌면 `MingToon 렌더 파이프라인 불일치` 다이얼로그가 뜨고, 프로젝트의 MingToon 재질을 맞는 백엔드로 일괄 전환할지 물어봅니다. 열려 있는 씬의 재질도 함께 검사합니다.
 
-:::caution 로드되지 않은 씬과 AssetBundle은 검사할 수 없습니다
+:::caution[로드되지 않은 씬과 AssetBundle은 검사할 수 없습니다]
 그쪽 재질은 따로 열어서 전환해야 합니다.
 :::
 
@@ -163,7 +163,7 @@ SubShader가 통째로 탈락하기 때문에 로그가 조용합니다. 분홍�
 | 경계가 계단처럼 각짐 | `투영 페더 사용` + `투영 페더 반경`·`강도` |
 | 전반적으로 지글거림 | 광원 shadow map 해상도 · bias/normal bias · cascade 순으로 확인 |
 
-:::note 페더는 없는 정보를 복구하지 못합니다
+:::note[페더는 없는 정보를 복구하지 못합니다]
 낮은 해상도의 shadow map에 애초에 없던 디테일은 부드럽게 만든다고 돌아오지 않습니다.
 :::
 
