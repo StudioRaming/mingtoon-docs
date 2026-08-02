@@ -117,6 +117,7 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
+          {to: '/changelog', label: '패치노트', position: 'left'},
           {
             type: 'localeDropdown',
             position: 'right',

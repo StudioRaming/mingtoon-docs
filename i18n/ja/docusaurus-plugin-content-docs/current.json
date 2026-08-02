@@ -26,5 +26,21 @@
   "sidebar.docsSidebar.category.릴리스 노트": {
     "message": "リリースノート",
     "description": "The label for category 릴리스 노트 in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.내부 동작": {
+    "message": "내부 동작",
+    "description": "The label for category '내부 동작' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.패치노트": {
+    "message": "パッチノート",
+    "description": "The label for category '패치노트' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.패치노트.link.generated-index.title": {
+    "message": "パッチノート",
+    "description": "The generated-index page title for category '패치노트' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.패치노트.link.generated-index.description": {
+    "message": "バージョンごとの変更点です。最新版が上にあります。",
+    "description": "The generated-index page description for category '패치노트' in sidebar 'docsSidebar'"
   }
 }

@@ -10,5 +10,9 @@
   "item.label.Docs": {
     "message": "ドキュメント",
     "description": "Navbar item with label Docs"
+  },
+  "item.label.패치노트": {
+    "message": "パッチノート",
+    "description": "Navbar item with label 패치노트"
   }
 }
