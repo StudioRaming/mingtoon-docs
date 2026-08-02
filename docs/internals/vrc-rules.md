@@ -18,7 +18,7 @@ MingToon은 VRChat 규칙을 **버전이 찍힌 규칙 세트**로 들고 있습
 
 ---
 
-## Fallback 셰이더
+## Fallback 셰이더 {#fallback-셰이더}
 
 MingToon BRP 셰이더는 SubShader 태그에 이렇게 선언합니다.
 

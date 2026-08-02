@@ -42,7 +42,7 @@ sidebar_position: 1
 5. Unity가 컴파일을 마칠 때까지 기다립니다.
 6. **Console을 열어 오류가 0건인지 확인합니다.** C# 오류든 셰이더 오류든, 하나라도 남아 있으면 다음 단계로 넘어가지 마세요.
 
-{/* SCREENSHOT: Import Package 대화상자 */}
+<!-- SCREENSHOT: Import Package 대화상자 -->
 
 **이렇게 되면 정상입니다.** Project 창에 `Assets/StudioRaming/MingToon/`이 생기고, Console에 빨간 오류가 없습니다.
 
@@ -67,7 +67,7 @@ VRChat 빌드 훅이 **아예 존재하지 않는 상태**입니다. 업로드�
 
 주로 확인하는 것은 **현재 빌드 타깃이 셰이더 모델 4.5를 만족하는지**입니다. 만족하지 못하면 오류로 보고하고, 그 상태로 진행하면 재질이 마젠타(분홍색)로 렌더링됩니다. → [지원 환경](/platforms/compatibility)
 
-{/* SCREENSHOT: Validate Project 결과 */}
+<!-- SCREENSHOT: Validate Project 결과 -->
 
 :::note[지원 에디터 스트림은 2021.3과 2022.3 둘 다입니다]
 어느 쪽이든 `MING-ENV-UNITY-VERSION` 오류는 나오지 않습니다.
@@ -86,7 +86,7 @@ VRChat 빌드 훅이 **아예 존재하지 않는 상태**입니다. 업로드�
 VRChat + URP는 지원하지 않습니다. URP는 Unity 2021.3 + URP 12.x만 대상이며, URP 13 이상은 동작하는 것처럼 보여도 지원으로 간주하지 마세요.
 :::
 
-## 선택 사항: Post Processing Stack v2
+## 선택 사항: Post Processing Stack v2 {#선택-사항-post-processing-stack-v2}
 
 MingToon은 PPv2 없이도 완전히 동작합니다. PPv2 관련 소스는 전부 `UNITY_POST_PROCESSING_STACK_V2` 심볼로 제외되어 있어, 깨끗한 프로젝트에 `com.unity.postprocessing`을 설치할 필요가 없습니다.
 

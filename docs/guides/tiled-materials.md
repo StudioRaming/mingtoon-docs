@@ -25,7 +25,7 @@ sidebar_position: 14
 
 기본 영역 이름도 `Cloth` · `Leather` · `Metal` · `Label` 입니다.
 
-{/* SCREENSHOT: Tiled Material Composer 창 */}
+<!-- SCREENSHOT: Tiled Material Composer 창 -->
 
 ---
 

@@ -24,14 +24,14 @@ sidebar_position: 3
 
 ---
 
-## 절차
+## 절차 {#절차}
 
 1. `MingToon Manager` 컴포넌트 인스펙터에서 변환/편집 결과를 확인합니다.
 2. 애니메이션이나 런타임 재질 변경이 필요하면 **`동적 패스 보존`** 을 켭니다. 정적 아바타는 더 공격적으로 줄일 수 있습니다.
 3. Bake를 실행합니다.
 4. `Assets/StudioRaming/MingToonGenerated` 아래에 생성 셰이더 · baked 재질 · manifest가 만들어지고 Renderer 슬롯이 baked 재질로 교체됩니다.
 
-{/* SCREENSHOT: MingToon Manager 인스펙터의 Bake 영역 */}
+<!-- SCREENSHOT: MingToon Manager 인스펙터의 Bake 영역 -->
 
 :::danger[Bake 전에 백업하세요]
 원본 `.mat`과 애니메이션을 버전 관리에 넣거나 별도로 복사해 두세요. manifest가 없어지거나 Renderer/슬롯 구성이 바뀌면 자동 복원이 불가능해집니다.
@@ -69,14 +69,14 @@ baked 재질을 선택하면 인스펙터 **위쪽의 복원 버튼**으로 기�
 
 ## 텍스처 Bake 정책
 
-### LosslessOnly (기본값)
+### LosslessOnly (기본값) {#losslessonly-기본값}
 
 원본 텍스처의 texel을 **다시 쓰지 않습니다.** 손실 없는 구조 최적화만 적용합니다.
 
 - depth mask가 수학적으로 항등임을 증명한 경우
 - PBR/AO가 같은 Texture 객체·같은 UV 식을 쓰는 경우
 
-### ReviewedHighQuality
+### ReviewedHighQuality {#reviewedhighquality}
 
 :::caution[검토된 정적 재질에서만 명시적으로 선택하세요]
 surface/normal flatten과 일반 RGBA mask repack을 허용합니다. 따라서 imported texture readback, color space, mip 재생성, 플랫폼 압축 때문에 **픽셀이 달라질 수 있습니다.**
@@ -88,7 +88,7 @@ Animation dependency와 `Keep Editable` 조건은 계속 검사하지만, **애�
 
 ---
 
-## Keep Editable
+## Keep Editable {#keep-editable}
 
 특정 프로퍼티를 최적화 대상에서 제외하고 싶으면 재질 단위로 표시할 수 있습니다. 애니메이션되지는 않지만 나중에 스크립트로 바꿀 값에 씁니다.
 

@@ -32,7 +32,7 @@ sidebar_position: 2
 
 생성된 셰이더는 편집용과 **같은 ShaderLab Properties 블록**을 갖기 때문에, 작업해 둔 값이 왕복 과정에서 하나도 손실되지 않습니다.
 
-### 애니메이션되는 값은 건드리지 않습니다
+### 애니메이션되는 값은 건드리지 않습니다 {#애니메이션되는-값은-건드리지-않습니다}
 
 분석기가 `AnimationClip`뿐 아니라 컴포넌트의 **중첩/배열 직렬화 필드에 들어 있는 Animator Controller 참조**까지 검사합니다. 애니메이션되는 프로퍼티는 동적으로 남으므로, 런타임에 켜질 기능이 컴파일 단계에서 잘려 나가는 일이 없습니다.
 
@@ -56,7 +56,7 @@ sidebar_position: 2
 
 세 훅 모두 같은 Apply/Restore 쌍을 호출하고, 두 번 호출해도 안전합니다.
 
-### VRChat: 깊이 자동 승격
+### VRChat: 깊이 자동 승격 {#vrchat-깊이-자동-승격}
 
 VRChat **아바타** 빌드에서는 한 가지가 더 일어납니다.
 
@@ -76,7 +76,7 @@ VRChat 훅은 `callbackOrder = 2000`으로 **늦게** 실행됩니다. Modular A
 
 ---
 
-## 제대로 걸렸는지 확인하기
+## 제대로 걸렸는지 확인하기 {#제대로-걸렸는지-확인하기}
 
 ### 1. VRChat 훅이 컴파일되었는지
 
@@ -121,7 +121,7 @@ Hair_MingEditable  ->  optimized depth-mask(-1 sample)
 
 `Tools > Studio Raming > MingToon` 아래 두 개의 토글이 있습니다.
 
-### Optimize Shaders On Build
+### Optimize Shaders On Build {#optimize-shaders-on-build}
 
 **기본값: 켜짐.** 위에서 설명한 셰이더 스왑 전체를 켜고 끕니다. 끌 이유는 거의 없습니다.
 

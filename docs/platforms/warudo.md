@@ -26,7 +26,7 @@ VRChat은 Unity **2022.3.22f1**, Warudo는 **2021.3.45f2** 입니다. 같은 프
 
 ---
 
-## 내보내기 전 필수 — WARUDO Runtime Root
+## 내보내기 전 필수 — WARUDO Runtime Root {#내보내기-전-필수--warudo-runtime-root}
 
 **이 단계를 빠뜨리면 얼굴 그림자와 깊이 효과가 나오지 않습니다.**
 
@@ -40,7 +40,7 @@ Warudo는 **에디터 스크립트가 함께 넘어가지 않습니다.** 그래
    `Add Component → Studio Raming / MingToon / WARUDO Runtime Root`
 3. 그대로 모드를 빌드해 내보냅니다.
 
-{/* SCREENSHOT: 모드 폴더의 MingToonWarudoRoot.cs와 붙인 컴포넌트 */}
+<!-- SCREENSHOT: 모드 폴더의 MingToonWarudoRoot.cs와 붙인 컴포넌트 -->
 
 :::note[설정은 거의 건드릴 것이 없습니다]
 머리 본은 자동으로 찾습니다 — 휴머노이드 `Head`를 먼저 보고, 없으면 `Head` / `J_Bip_C_Head` 이름으로 탐색합니다.
@@ -91,7 +91,7 @@ Warudo 측에서 **카메라 깊이를 토글로 켤 수 있게 하는 업데이
 
 ---
 
-## 스크립트 정책이 VRChat과 다릅니다
+## 스크립트 정책이 VRChat과 다릅니다 {#스크립트-정책이-vrchat과-다릅니다}
 
 | | VRChat | Warudo |
 |---|---|---|

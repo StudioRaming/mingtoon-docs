@@ -32,7 +32,7 @@ Warudo용 2021.3.45f2 프로젝트와 **같은 프로젝트를 쓸 수 없습니
 4. **SDK Builder로 최종 검증**
 5. **인게임 확인** — 본인 화면 · 미러 · Photo Camera를 **각각** 봅니다.
 
-{/* SCREENSHOT: VRChat SDK Builder 화면 */}
+<!-- SCREENSHOT: VRChat SDK Builder 화면 -->
 
 ## MingToon 컴포넌트는 지우지 마세요
 
@@ -48,7 +48,7 @@ MingToon이 아닌 다른 스크립트가 남아 있다면 그건 정리 대상�
 Warudo 모드는 **스크립트를 유지하는** 별도 규칙을 따릅니다. → [Warudo](/platforms/warudo#스크립트-정책이-vrchat과-다릅니다)
 :::
 
-## 깊이 효과가 어디까지 보장되나
+## 깊이 효과가 어디까지 보장되나 {#깊이-효과가-어디까지-보장되나}
 
 깊이 림 · 2D 그림자 · 내부 2D 경계는 카메라 깊이 텍스처를 읽습니다. VRChat에서 이건 **월드 권한**입니다.
 
@@ -66,7 +66,7 @@ Screen Camera 설정은 월드/Udon 측 권한입니다.
 참고: [VRC Camera Settings (공식 문서)](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)
 :::
 
-### 빌드 시 자동으로 처리되는 것
+### 빌드 시 자동으로 처리되는 것 {#빌드-시-자동으로-처리되는-것}
 
 아바타 업로드에서 MingToon은 `Depth Availability`가 `Auto`인 재질을 `Force On`으로 승격합니다.
 

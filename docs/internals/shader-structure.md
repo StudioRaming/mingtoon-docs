@@ -48,7 +48,7 @@ VRChat에서 상대가 **Shaders를 Hidden으로 설정**하면 내 아바타는
 | 4 | `OUTLINE_HULL_DIRECT` | `ForwardBase` | 노멀 아웃라인 |
 | 5 | `SHADOW_CASTER` | `ShadowCaster` | 그림자 맵 + 카메라 깊이 텍스처 |
 
-{/* SCREENSHOT: Frame Debugger에서 본 MingToon 패스 순서 */}
+<!-- SCREENSHOT: Frame Debugger에서 본 MingToon 패스 순서 -->
 
 ### 1. TRANSPARENT_DEPTH_PREPASS
 
@@ -68,7 +68,7 @@ VRChat에서 상대가 **Shaders를 Hidden으로 설정**하면 내 아바타는
 
 알파 마스크 키워드(`_MING_ALPHA_MASK`)를 이 패스도 컴파일합니다. 안 그러면 마스크로 뚫은 구멍이 깊이를 기록해 뒤쪽을 가립니다.
 
-### 2. FORWARD_BASE
+### 2. FORWARD_BASE {#2-forward_base}
 
 본체입니다. 거의 모든 모듈이 여기서 계산됩니다. 컴파일되는 키워드가 가장 많은 패스입니다.
 
@@ -84,7 +84,7 @@ VRChat에서 상대가 **Shaders를 Hidden으로 설정**하면 내 아바타는
 
 LightMode가 `ForwardBase`라서 주광 패스와 함께 돌지만, 자체 `_OutlineHullCull`(기본 Front) · `_OutlineHullSrcBlend` · `_OutlineHullDstBlend` · `_OutlineHullZWrite` · 자체 스텐실 세트를 갖습니다. 그래서 표면과 독립적으로 렌더 상태를 잡을 수 있습니다.
 
-### 5. SHADOW_CASTER
+### 5. SHADOW_CASTER {#5-shadow_caster}
 
 그림자 맵을 씁니다. **그런데 이 패스는 그림자만을 위한 것이 아닙니다.**
 
@@ -100,7 +100,7 @@ Built-in은 **`_CameraDepthTexture`를 이 패스를 통해 채웁니다.** 그 
 
 ---
 
-## 표면 모드가 실제로 바꾸는 값
+## 표면 모드가 실제로 바꾸는 값 {#표면-모드가-실제로-바꾸는-값}
 
 | 표면 모드 | RenderType | 렌더 큐 | Src/Dst Blend | ZWrite | 아웃라인 버퍼 |
 |---|---|---|---|---|---|
@@ -124,7 +124,7 @@ Built-in은 **`_CameraDepthTexture`를 이 패스를 통해 채웁니다.** 그 
 
 ---
 
-## 셰이더 키워드
+## 셰이더 키워드 {#셰이더-키워드}
 
 MingToon은 대부분의 모듈을 **`shader_feature_local_fragment`** 로 컴파일합니다. 재질마다 독립적으로 켜고 끌 수 있고, 프래그먼트 단계에만 영향을 줍니다.
 
@@ -150,7 +150,7 @@ MingToon은 대부분의 모듈을 **`shader_feature_local_fragment`** 로 컴�
 | `_MING_ALPHA_MASK` | 알파 마스크 |
 | `_ALPHATEST_ON` | 컷아웃 |
 
-### 레이어 티어 키워드
+### 레이어 티어 키워드 {#레이어-티어-키워드}
 
 레이어 수는 **연속 값이 아니라 티어**로 컴파일됩니다.
 

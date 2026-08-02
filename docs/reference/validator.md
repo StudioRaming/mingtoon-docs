@@ -12,7 +12,7 @@ sidebar_position: 8
 아무것도 고치거나 지우지 않습니다. 보고만 하고 조치는 사람이 합니다.
 :::
 
-{/* SCREENSHOT: Validate Project 결과 창 */}
+<!-- SCREENSHOT: Validate Project 결과 창 -->
 
 ---
 
@@ -26,7 +26,7 @@ sidebar_position: 8
 
 **조치** — Unity Hub에서 2021.3 또는 2022.3 에디터로 프로젝트를 여세요. 대상별 권장은 [지원 환경](/platforms/compatibility#unity-버전)에 있습니다.
 
-### MING-VRC-UNITY-VERSION
+### MING-VRC-UNITY-VERSION {#ming-vrc-unity-version}
 
 **경고.** VRC SDK가 들어 있는데 에디터가 VRChat SDK 검증 버전(2022.3.22f1)의 스트림이 아닙니다.
 

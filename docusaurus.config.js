@@ -26,6 +26,9 @@ const config = {
   // has to fail the build rather than quietly produce dead jumps.
   onBrokenAnchors: 'throw',
   markdown: {
+    // CommonMark for .md so explicit heading ids ({#id}) survive; MDX would
+    // parse those braces as a JS expression.
+    format: 'detect',
     hooks: {
       onBrokenMarkdownLinks: 'throw',
     },

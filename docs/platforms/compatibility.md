@@ -8,7 +8,7 @@ sidebar_position: 2
 
 **이 문서를 읽으면** 내 환경에서 MingToon을 쓸 수 있는지, 쓰려면 무엇을 준비해야 하는지 판단할 수 있습니다.
 
-## Unity 버전
+## Unity 버전 {#unity-버전}
 
 :::danger[대상마다 다릅니다. 한 프로젝트로 겸할 수 없습니다]
 | 대상 | Unity | 왜 |
@@ -24,7 +24,7 @@ sidebar_position: 2
 VRC SDK가 있는데 에디터가 2022.3 스트림이 아니면 `MING-VRC-UNITY-VERSION` **경고**가 뜹니다. VRChat 연동 코드가 그 스트림에서만 컴파일되기 때문이며, **다른 타깃은 영향을 받지 않습니다.** → [Validator 코드](/reference/validator#ming-vrc-unity-version)
 :::
 
-## 하드웨어 요구 사항 (필수)
+## 하드웨어 요구 사항 (필수) {#하드웨어-요구-사항-필수}
 
 MingToon의 모든 패스는 `#pragma target 4.5`(셰이더 모델 4.5)를 선언합니다.
 
@@ -56,7 +56,7 @@ MingToon의 모든 패스는 `#pragma target 4.5`(셰이더 모델 4.5)를 선�
 URP는 **Unity 2021.3 + URP 12.x**만 현재 대상입니다. 동작하는 것처럼 보여도 지원으로 간주하지 마세요. VRChat은 URP를 쓰지 않습니다.
 :::
 
-## VRChat Quest
+## VRChat Quest {#vrchat-quest}
 
 MingToon은 모바일 셰이더 타깃이 아닙니다. Quest 대응이 필요하면 SDK가 허용하는 모바일 셰이더로 **별도 변환**하고, 어떤 기능이 사라지는지 검토하세요. 자동 변환 경로는 제공하지 않습니다.
 
