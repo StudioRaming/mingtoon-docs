@@ -21,8 +21,8 @@ Configure face-specific masks and shade direction.
 | **Remove Default Face Form Shadow** | At 1 the form shadow is erased on the face area entirely. Use it when the face shading should come only from the 2D shadow or a painted shadow map. | `_FaceFormShadowLift` |
 | **Face Border** | Form-shadow threshold used only on the face area. Pushing it lower, toward -1, makes the face darken later and stay illustration-clean. Ignored while Form Shadow is off. | `_FaceFormShadowMidPoint` |
 | **Face Softness** | Blur width of the form-shadow terminator on the face area. Ignored while Form Shadow is off. | `_FaceFormShadowSoftness` |
-| **Use Proxy Sphere As Face Area** | Treats everything inside the proxy sphere as face, with no mask texture. The mask wins when Enable Face Area Mask is on, so this option is ignored then. | `_FaceAreaProxyMaskEnabled` |
 | **Enable Face Area Mask** | Marks which part of a combined head and body material is the face. While off, the channel, strength, invert and remap rows below are all ignored. | `_FaceAreaMaskEnabled` |
+| **Use Proxy Sphere As Face Area** | Treats everything inside the proxy sphere as face, with no mask texture. The mask wins when Enable Face Area Mask is on, so this option is ignored then. | `_FaceAreaProxyMaskEnabled` |
 | **Proxy Sphere Center** | Center of the virtual sphere that stands in for the head. The Face Proxy scene tool is the accurate way to place it. Unused while Normal Press Amount is 0. | `_FaceProxyCenterOS` |
 | **Proxy Sphere Radius** | Radius of the virtual sphere. When the proxy sphere is used instead of a face mask, everything inside it counts as face, so an oversized radius classifies the neck and hands as face too. | `_FaceProxyRadiusOS` |
 | **Mask Channel (RGBA)** | Per-channel weights used to read the mask texture. Enter (0, 1, 0, 0) to read the green channel only. | `_FaceAreaMaskChannel` |

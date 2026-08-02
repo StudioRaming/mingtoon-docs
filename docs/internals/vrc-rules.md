@@ -75,10 +75,12 @@ VRCSpatialAudioSource  VRCStation
 
 `<Missing Script>`도 개수로 집계됩니다.
 
-:::note[MingToon 자신의 런타임 컴포넌트도 여기 걸립니다]
-`MingToonManager`와 `MingDepthTextureProvider`는 `IEditorOnly`지만, 그건 **SDK의 검사 표식일 뿐 자동 삭제 보증이 아닙니다.**
+:::danger[MingToon 자신의 컴포넌트는 직접 지우지 마세요]
+`MingToonManager`와 `MingDepthTextureProvider`는 **VRChat 업로드에서 자동으로 제거됩니다.**
 
-`MingToon Manager`의 **5 · 내보내기 / 검증**에서 하위 런타임 컴포넌트가 0개인지 확인하세요. → [MingToon Manager](/workflow/character-manager#5--내보내기--검증)
+**밍툰 매니저를 손으로 지우면 캐시된 렌더러 목록이 함께 사라져 업로드 최적화가 범위를 잃습니다.** 최적화되지 않은 재질이 그대로 올라갑니다.
+
+이 검사는 **MingToon이 아닌 다른 스크립트**를 찾기 위한 것입니다. → [밍툰 매니저 — 내보내기 / 검증](/workflow/character-manager#내보내기--검증)
 :::
 
 ---

@@ -11,7 +11,7 @@ sidebar_position: 4
 변환 직후 이런 줄이 나옵니다.
 
 ```text
-MingToon lilToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지원 기능 5건. 원본은 그대로 보존했습니다.
+MingToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지원 기능 5건. 원본은 그대로 보존했습니다.
 ```
 
 **`손실·미지원 기능` 건수가 0이 아니면 아래를 보세요.**
@@ -81,35 +81,43 @@ MingToon lilToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지�
 
 ---
 
-## 얼굴 판정 근거 12종
+## 얼굴 판정 — Auto는 추측하지 않습니다
 
-`FaceClassification` 항목과 인스펙터의 슬롯별 표시에 나오는 판정 근거입니다. **신뢰도 순**으로 정리했습니다.
+:::danger[Auto는 원본 재질의 얼굴 플래그만 읽습니다]
+인스펙터가 그대로 말합니다.
 
-| 판정 근거 | 표시 | 신뢰도 |
-|---|---|---|
-| `ExplicitFaceMesh` / `ExplicitRegularMesh` | 오브젝트/렌더러 지정 | ✅ 사람이 지정 |
-| `ExplicitFaceMaterial` / `ExplicitRegularMaterial` | 재질 직접 지정 | ✅ 사람이 지정 |
-| `ExplicitFaceSlot` / `ExplicitRegularSlot` | 재질 슬롯 지정 | ✅ 사람이 지정 |
-| `ExplicitPredicate` | 규칙으로 지정 | ✅ |
-| `ExplicitMode` | 전체 변환 모드 | ⚠️ 일괄 적용 |
-| `SourceFlag` | 원본 얼굴 플래그 | ⚠️ 원본 셰이더가 표시 |
-| **`NameHeuristic`** | 재질 이름 판정 | ❌ **이름 기반 추측** |
-| **`RendererHeuristic`** | 렌더러 문맥 판정 | ❌ **문맥 기반 추측** |
-| **`DefaultRegular`** | 일반 기본값 | ❌ **판정 근거 없음** |
+> Auto는 **원본 재질이 직접 가진 얼굴 플래그만** 읽습니다. **이름으로 추측하지 않으니** 플래그가 없는 셰이더는 계속 Regular로 남고, 얼굴로 쓸 슬롯은 **직접 Face로 지정해야 합니다.**
 
-:::danger[아래 세 개로 판정된 슬롯은 반드시 직접 확인하세요]
-`재질 이름 판정` · `렌더러 문맥 판정` · `일반 기본값`
-
-이름이 `Face`라고 반드시 얼굴은 아니고, `Body`에 얼굴이 섞여 있을 수도 있습니다. 인스펙터에서 `Face` / `Regular`로 고정하면 판정 근거가 `재질 슬롯 지정`으로 올라갑니다. → [MingToon Manager](/workflow/character-manager#얼굴-슬롯-판정--가장-중요한-단계)
+즉 **lilToon처럼 얼굴 플래그를 가진 셰이더에서 변환할 때만 Auto가 얼굴을 찾아냅니다.** Standard나 URP Lit에서 변환하면 전부 `Regular`로 나옵니다.
 :::
 
-`Auto` / `ForceFace` / `ForceRegular` 세 모드가 있고, 미리보기에 `얼굴 셰이딩` 또는 `일반 셰이딩` 중 무엇이 적용될지 표시됩니다.
+이름 기반 추측을 없앤 것은 의도된 변경입니다. 이름이 `Face`라고 반드시 얼굴이 아니고 `Body`에 얼굴이 섞여 있을 수도 있는데, 추측이 맞을 때보다 틀릴 때의 비용이 훨씬 큽니다 — 얼굴 셰이딩이 엉뚱한 메시에 걸리면 원인을 찾기 어렵습니다.
+
+### 판정 근거 표시
+
+| 표시 | 의미 | 신뢰도 |
+|---|---|---|
+| 오브젝트/렌더러 지정 | `얼굴 렌더러 직접 지정`·`피부 렌더러 직접 지정`으로 사람이 지정 | ✅ |
+| 재질 직접 지정 · 재질 슬롯 지정 | 슬롯 단위로 사람이 고정 | ✅ |
+| 원본 얼굴 플래그 | 원본 셰이더가 얼굴이라고 표시 | ✅ |
+| 전체 변환 모드 | 일괄 적용 | ⚠️ |
+| 일반 기본값 | 플래그가 없어 Regular로 남음 | ⚠️ **확인 필요** |
+
+### 역할 세 가지
+
+| 역할 | 미리보기 | 받는 프리셋 값 |
+|---|---|---|
+| `Face` | 얼굴 셰이딩 | 얼굴용 |
+| `Skin` | 피부 룩 | 피부용 — **맨살 전용** |
+| `Regular` | 일반 셰이딩 | 공용 |
+
+→ [밍툰 매니저](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계)
 
 ---
 
 ## 원본 추적 (provenance)
 
-변환 재질은 **원본 lilToon 재질의 GUID를 임포터 userData에 기록**합니다. `원본 lilToon 머티리얼 복구`가 이걸로 동작합니다.
+변환 재질은 **원본 재질의 GUID를 임포터 userData에 기록**합니다. `원본 머티리얼 복구`가 이걸로 동작합니다.
 
 기록이 깨지는 경우:
 
@@ -164,6 +172,6 @@ source  converted  resolution  face  surfaceMode  renderQueue  cull
 
 ## 관련 문서
 
-- [MingToon Manager — 2 · 변환](/workflow/character-manager#2--변환)
+- [밍툰 매니저 — 1 · 변환](/workflow/character-manager#1--변환)
 - [lilToon 재질 변환](/workflow/liltoon-conversion)
 - [텍스처 슬롯 공통 UI](/guides/texture-modules)

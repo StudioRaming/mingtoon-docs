@@ -195,6 +195,7 @@ const PAGES = [
       {key: 'section.depth', match: (n) => /^_(DepthWidth|DepthWidthMode|DepthDistanceScale|DepthBias|DepthSoftness|DepthEffects|MingDepth)/.test(n)},
       {key: 'section.depth_rim', match: (n) => n.startsWith('_DepthRim')},
       {key: 'section.depth_shadow', match: (n) => n.startsWith('_DepthShadow')},
+      {key: 'section.translucency', match: (n) => n.startsWith('_Translucency')},
       {key: 'section.inner_outline', match: (n) => n.startsWith('_OutlineInnerEdge') || n === '_OutlineHullPressureSource'},
     ],
   },

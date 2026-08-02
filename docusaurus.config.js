@@ -96,7 +96,7 @@ const config = {
       announcementBar: {
         id: 'closed-beta',
         content:
-          'MingToon 0.1.2-preview — Closed Beta. studioraming@gmail.com',
+          'MingToon 0.1.3-preview — Closed Beta. studioraming@gmail.com',
         backgroundColor: '#5b3fd6',
         textColor: '#ffffff',
         isCloseable: true,
@@ -141,7 +141,7 @@ const config = {
             ],
           },
         ],
-        copyright: `© ${new Date().getFullYear()} StudioRaming. MingToon 0.1.2-preview.`,
+        copyright: `© ${new Date().getFullYear()} StudioRaming. MingToon 0.1.3-preview.`,
       },
       prism: {
         theme: prismThemes.github,

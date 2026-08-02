@@ -16,6 +16,13 @@ import path from 'node:path';
 // term -> route. Keep terms distinctive; a bare word like "그림자" would match
 // everywhere and link nothing useful.
 const GLOSSARY = {
+  '깊이 투과광': '/guides/depth-effects#깊이-투과광',
+  '껍데기 최소 두께': '/guides/depth-effects#1-얇음을-어떻게-잴지',
+  '준비 상태 검사': '/workflow/character-manager#업로드-준비-점검',
+  '밍툰 매니저': '/workflow/character-manager',
+  'WARUDO Runtime Root': '/platforms/warudo#내보내기-전-필수--warudo-runtime-root',
+  '변환 제외': '/workflow/character-manager#변환되지-않는-슬롯',
+  '얼굴 모듈 동기화': '/workflow/character-manager#상태-패널',
   // 인스펙터
   '전체 효과': '/guides/inspector#전체-효과--가장-위의-마스터-스위치',
   '빠른 설정': '/guides/inspector#빠른-설정',
@@ -130,8 +137,7 @@ const GLOSSARY = {
 
   // 워크플로
   'MingToon Manager': '/workflow/character-manager',
-  '캐릭터 루트': '/workflow/character-manager',
-  '얼굴 슬롯 판정': '/workflow/character-manager#얼굴-슬롯-판정--가장-중요한-단계',
+  '얼굴 슬롯 판정': '/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계',
   'lilToon 변환': '/workflow/liltoon-conversion',
   '빌드 시 자동 최적화': '/workflow/build-optimization',
   'Optimize Shaders On Build': '/workflow/build-optimization#optimize-shaders-on-build',
@@ -162,7 +168,7 @@ const GLOSSARY = {
   '애니메이션 의존성': '/internals/bake-internals#1단계--애니메이션-의존성-분석',
   '구조 프로파일': '/internals/bake-internals#3단계--구조-프로파일과-상수-교집합',
   '변환 보고서': '/internals/conversion-internals',
-  '판정 근거': '/internals/conversion-internals#얼굴-판정-근거-12종',
+  '판정 근거': '/internals/conversion-internals#판정-근거-표시',
 };
 
 const TERMS = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);

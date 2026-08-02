@@ -27,19 +27,25 @@ Warudo용 2021.3.45f2 프로젝트와 **같은 프로젝트를 쓸 수 없습니
 ## 업로드 체크리스트
 
 1. **빌드 훅 확인** — 스크립트 리로드 후 Console에 `[MingToon] VRChat build hook compiled and registered.` 가 있어야 합니다. 없으면 최적화가 아예 걸리지 않습니다.
-2. **MingToon 런타임 `MonoBehaviour`가 0개인지 확인** — 아래 참고.
+2. **업로드 준비 점검 실행** — 밍툰 매니저의 `준비 상태 검사`. → [준비 상태 검사](/workflow/character-manager#내보내기--검증)
 3. **업로드** — [빌드 시 자동 최적화](/workflow/build-optimization)가 자동으로 걸립니다. **수동 Bake는 필요하지 않습니다.**
 4. **SDK Builder로 최종 검증**
 5. **인게임 확인** — 본인 화면 · 미러 · Photo Camera를 **각각** 봅니다.
 
 {/* SCREENSHOT: VRChat SDK Builder 화면 */}
 
-## MonoBehaviour 제거
+## MingToon 컴포넌트는 지우지 마세요
 
-:::danger[`IEditorOnly`는 자동 삭제 보증이 아닙니다]
-`IEditorOnly`는 VRC SDK의 incompatible-script **검사 표식**일 뿐입니다.
+:::danger[직접 제거하면 최적화 범위를 잃습니다]
+MingToon 런타임 컴포넌트는 **VRChat 업로드에서 자동으로 제거됩니다.** 손으로 지울 필요가 없습니다.
 
-Unity 2022.3.22f1 + 현행 SDK의 **실제 avatar build clone**을 열어 MingToon 런타임 `MonoBehaviour`가 0개인지 직접 확인하고, 남아 있으면 업로드 전에 명시적으로 제거하세요.
+**밍툰 매니저를 지우면 캐시된 렌더러 목록이 함께 사라지고, 업로드 최적화가 그 범위를 잃습니다.** 최적화되지 않은 재질이 그대로 올라갑니다.
+:::
+
+MingToon이 아닌 다른 스크립트가 남아 있다면 그건 정리 대상입니다. 밍툰 매니저의 `VRChat 사전 점검`이 **VRChat이 허용하지 않는 컴포넌트**를 세어서 알려 줍니다.
+
+:::note[Warudo는 반대입니다]
+Warudo 모드는 **스크립트를 유지하는** 별도 규칙을 따릅니다. → [Warudo](/platforms/warudo#스크립트-정책이-vrchat과-다릅니다)
 :::
 
 ## 깊이 효과가 어디까지 보장되나

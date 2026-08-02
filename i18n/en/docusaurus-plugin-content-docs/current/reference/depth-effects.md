@@ -45,6 +45,34 @@ Configure a lightweight character shadow from the screen-depth silhouette of obj
 |---|---|---|
 | **Shadow Brightness** | Brightness multiplier on the 2D shadow color; lower is darker. When 2D and cast shadows are unified, this becomes the brightness of the merged layer. | `_DepthShadowBrightness` |
 
+## Depth Translucency
+
+Measures how far light travelled through the character along the light, so thin parts read as if they were holding the light.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **Enable Translucency** | Makes thin parts - hair tails, cloth hems - read as if they were holding the light. It reads depth twice along the light to measure how far the light travelled through the character, so it works on its own with the 2D Depth Rim off. | `_TranslucencyEnabled` |
+| **Measure Width** | How far along the light this pixel looks to measure the distance the light travelled. Larger values let thicker parts count as thin; smaller values light only the very tips. | `_TranslucencyWidth` |
+| **Depth Range** | A gap this deep in metres counts as fully open. Raise it when a surface only a little further back - cloth standing behind hair - is mistaken for background and lights up. | `_TranslucencyDepthRange` |
+| **Shell Floor** | A hollow garment - a skirt, a cape, a veil - is wide on screen so it measures as thick, while the cloth itself is under a millimetre. Give such a material about 0.8 and it always counts as thin regardless of the measurement. Leave solid parts like skin and hands at 0 and let the measurement decide. | `_TranslucencyShellFloor` |
+| **Translucency Strength** | Overall brightness multiplier for the transmitted light. At 0 the whole module is skipped. | `_TranslucencyStrength` |
+| **Edge Intensity** | Strength of the layer that lights only the outer silhouette. Set it to 0 and the result is exactly a single centre layer. | `_TranslucencyEdgeIntensity` |
+| **Edge Falloff** | How tightly the edge layer gathers at the silhouette. Higher values hug the outline more thinly. | `_TranslucencyEdgePower` |
+| **Edge HSVG** | Derives the edge layer's colour from the base colour instead of an absolute one, so blonde hair, dark hair and skin all read correctly from one setting. The neutral (0,1,1,1) skips the adjustment entirely. | `_TranslucencyEdgeHSVG` |
+| **Edge Tint** | Multiplied onto the edge colour after the HSVG adjustment. White changes nothing. | `_TranslucencyEdgeTint` |
+| **Center Intensity** | Strength of the layer that lights the interior. Set it to 0 and the result is exactly a single edge layer. | `_TranslucencyCenterIntensity` |
+| **Center Falloff** | How tightly the centre layer gathers on camera-facing surfaces. | `_TranslucencyCenterPower` |
+| **Center HSVG** | Derives the centre layer's colour from the base colour. The default rotates the hue toward red and raises saturation, giving hair a near-white outer edge over a warm glowing interior. | `_TranslucencyCenterHSVG` |
+| **Center Tint** | Multiplied onto the centre colour after the HSVG adjustment. White changes nothing. | `_TranslucencyCenterTint` |
+| **Backlight Falloff** | How precisely the camera and the light must oppose each other for the effect to peak. Higher values confine the peak to a narrow, exactly backlit band; how much survives in front light is set by Front Light Floor. | `_TranslucencyLightPower` |
+| **Front Light Floor** | How much transmitted light survives in full front light. Scattering only gets stronger when backlit; it does not switch off, and at 0 skin stops reading as skin. | `_TranslucencyAmbient` |
+| **Normal Bend** | Bends the light vector toward the surface normal so a curved strand keeps transmitting slightly off the exact backlight axis. At 0 only the plain backlight response remains. | `_TranslucencyDistortion` |
+| **View Bend** | Bends the light vector toward the camera. On flat hair cards, whose normals say nothing about the volume they stand for, the normal bend alone makes the light flicker on and off as the card turns; this is what stops that. | `_TranslucencyViewBend` |
+| **Scene Light Influence** | 0 ignores the scene light colour and uses only the authored colour; 1 takes the light fully. Worlds differ wildly, so both ends are needed. | `_TranslucencySceneLightInfluence` |
+| **Exposure Softness** | Eases the two knees of the ramp normalised by Depth Range. At 0 it is exactly a straight ramp. It reshapes the response curve only and never moves where the boundary sits. | `_TranslucencySoftness` |
+| **Density** | How steeply thinness turns into brightness. Higher values leave light only where the character is very thin, which reads as a denser material; lower values spread it wide. | `_TranslucencyDensity` |
+| **Channel Spread** | Reproduces red scattering deeper into the surface than blue. Each channel decays at its own rate, so the region each one lights is a different size - a look no tint can stand in for. 0 makes all three channels identical. | `_TranslucencyChannelSpread` |
+
 ## Inner 2D Edge
 
 Configure the screen-depth edge drawn inside the visible surface.

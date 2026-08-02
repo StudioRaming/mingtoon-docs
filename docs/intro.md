@@ -9,7 +9,7 @@ slug: /
 
 MingToon은 **VRChat 아바타용 캐릭터 툰 셰이더 + 제작 툴셋**입니다. Built-in Render Pipeline(BRP) 기반이며, Warudo와 일반 Unity 프로젝트에서도 쓸 수 있습니다.
 
-현재 버전: **0.1.2-preview** (클로즈 베타)
+현재 버전: **0.1.3-preview** (클로즈 베타)
 
 ## Unity 버전 — 대상에 따라 다릅니다
 
@@ -81,6 +81,6 @@ MingToon은 **VRChat 아바타용 캐릭터 툰 셰이더 + 제작 툴셋**입�
 
 1. Unity 버전과 대상 플랫폼 (VRChat PC / Warudo / 일반 Unity)
 2. 렌더 파이프라인 (BRP / URP 12.x)
-3. MingToon 버전 (`0.1.2-preview`)
+3. MingToon 버전 (`0.1.3-preview`)
 4. Console 로그 전문
 5. 재현 순서

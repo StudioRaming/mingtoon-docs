@@ -6,8 +6,8 @@ sidebar_position: 1
 
 # lilToon 재질 변환
 
-:::tip[실제 작업은 MingToon Manager에서 합니다]
-얼굴 슬롯 판정, 변환 시 룩 프리셋, 함께 구울 메시 채널, 원본 복구까지 전부 한 인스펙터에 있습니다. → [MingToon Manager](/workflow/character-manager#2--변환)
+:::tip[실제 작업은 밍툰 매니저에서 합니다]
+얼굴·피부 지정, 변환 시 룩 프리셋, 함께 구울 메시 채널, 원본 복구까지 전부 한 인스펙터에 있습니다. → [밍툰 매니저](/workflow/character-manager#1--변환)
 
 이 문서는 변환이 **무엇을 옮기고 무엇을 옮기지 못하는지**를 다룹니다.
 :::
@@ -55,4 +55,4 @@ sidebar_position: 1
 
 ## 다음
 
-[MingToon Manager](/workflow/character-manager) · [빌드 시 자동 최적화](/workflow/build-optimization)
+[밍툰 매니저](/workflow/character-manager) · [빌드 시 자동 최적화](/workflow/build-optimization)
