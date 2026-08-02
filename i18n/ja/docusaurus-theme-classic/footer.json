@@ -24,7 +24,7 @@
     "description": "The label of footer link with label=studioraming@gmail.com linking to mailto:studioraming@gmail.com"
   },
   "copyright": {
-    "message": "© 2026 StudioRaming. MingToon 0.1.2-preview.",
+    "message": "© 2026 StudioRaming. MingToon 0.1.3-preview.",
     "description": "The footer copyright"
   }
 }
