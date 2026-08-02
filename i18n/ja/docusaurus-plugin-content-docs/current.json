@@ -22,5 +22,9 @@
   "sidebar.docsSidebar.category.항목 레퍼런스": {
     "message": "項目リファレンス",
     "description": "The label for category '항목 레퍼런스' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.릴리스 노트": {
+    "message": "リリースノート",
+    "description": "The label for category 릴리스 노트 in sidebar docsSidebar"
   }
 }

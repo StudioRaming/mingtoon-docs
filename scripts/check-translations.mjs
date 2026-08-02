@@ -30,7 +30,8 @@ function walk(dir, acc = []) {
   for (const e of fs.readdirSync(dir, {withFileTypes: true})) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) walk(p, acc);
-    else if (p.endsWith('.md')) acc.push(p);
+    // Files starting with _ are templates and partials, not pages.
+    else if (p.endsWith('.md') && !e.name.startsWith('_')) acc.push(p);
   }
   return acc;
 }
