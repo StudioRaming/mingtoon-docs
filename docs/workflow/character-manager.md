@@ -200,8 +200,8 @@ MingToon이 그대로 옮길 수 없는 표현이기 때문입니다. 상태 패
 
 `프론트뷰 SDF TEXCOORD6 (Unity UV7) 베이커 열기`
 
-:::note[별도 패키지입니다]
-`Face SDF Baker가 설치되어 있지 않습니다.` 가 뜨면 Studio Raming의 **별도 에디터 패키지**를 설치해야 이 버튼이 열립니다.
+:::note[0.1.4 패키지에 동봉됩니다]
+Face SDF Studio는 MingToon 0.1.4에 Editor 전용 companion으로 포함됩니다. 버튼이 잠겨 있다면 `Assets/StudioRaming/FaceSdfBaker`가 정상 임포트됐는지와 Console 컴파일 오류를 확인하세요.
 :::
 
 → [얼굴 SDF 오소링](/guides/face-sdf)
@@ -221,6 +221,26 @@ VRChat 업로드와 Warudo 모드 빌드에서는 [빌드 시 자동 최적화](
 :::
 
 → [수동 Bake와 복원](/workflow/bake-and-restore)
+
+---
+
+## VRChat 표현식 메뉴 {#vrchat-표현식-메뉴}
+
+Unity 2022.3 VCC 프로젝트에서 `밍툰 매니저`가 가상 라이트와 Master Adjust 메뉴를 준비합니다.
+
+1. Avatar Root 아래의 `MingToon Manager`를 선택합니다.
+2. `Modular Avatar로 비파괴 설치`를 켭니다. 기본값은 켜짐입니다.
+3. Scene 또는 Prefab을 저장하고 Manager Inspector를 다시 엽니다.
+4. Gesture Manager에서 `MingToon Controls`가 보이는지 확인합니다.
+5. 평소처럼 VRChat SDK Builder에서 업로드합니다. 메뉴·파라미터·FX는 원본이 아니라 build clone에 합쳐집니다.
+
+Modular Avatar가 없어도 MingToon은 컴파일됩니다. 설치 뒤 Inspector를 다시 열면 자동으로 사용할 수 있고, 직접 병합하려면 토글을 끈 뒤 `원클릭으로 VRC 메뉴 등록`을 사용합니다.
+
+:::caution[Expression Parameters 예산]
+이 기능은 **21개 동기화 파라미터 · 154비트**를 사용합니다. 설치 전에 기존 아바타와 합친 타입 충돌, 256비트 예산, 메뉴당 8칸 제한을 검사하고 실패하면 변경을 되돌립니다.
+:::
+
+메뉴는 `MingToon Controls > Virtual Light`와 `Master Adjust > Highlight / Shadow / Final Output`으로 나뉩니다. `Reset All`은 가상광과 세 Master Adjust 그룹의 방향·모드·색상·밝기·강도를 설치 기본값으로 되돌리며 추가 파라미터나 네트워크 비트를 쓰지 않습니다.
 
 ---
 

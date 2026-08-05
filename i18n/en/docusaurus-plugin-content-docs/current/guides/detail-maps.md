@@ -88,6 +88,43 @@ The channel and invert settings below **are completely ignored**, and only the m
 
 ---
 
+## Toon Specular {#툰-스페큘러}
+
+Adds light-direction highlights without enabling full PBR, suitable for cel highlights on hair, eyes, or cloth.
+
+1. Enable `Toon Specular`.
+2. Choose Isotropic or Anisotropic under `Shape Method`.
+3. Set size and brightness with `Intensity` and `Smoothness`.
+4. Refine the cel boundary with `Threshold` and `Softness`.
+5. For hair, adjust Anisotropic direction and Shift.
+6. Optionally limit the range with masks and gradients.
+
+| Method | Suitable for |
+|---|---|
+| **Isotropic** | Rounded highlights on eyes, metal buttons, or wet skin |
+| **Anisotropic** | Long flowing highlights on hair, silk, or brushed surfaces |
+
+:::tip[Can be used with PBR]
+Use PBR for environment reflections and material response, and Toon Specular for direct-light cel highlights. Raising both too high can blow out overlapping highlights.
+:::
+
+## Region Mask {#영역-마스크}
+
+Divides parts of one material into four RGBA regions and adjusts surface response independently.
+
+1. Enable `Use Region Mask`.
+2. Assign an RGBA texture to `Region Mask`.
+3. Adjust metallic, smoothness, environment reflection, and Toon Specular intensity/smoothness offsets for each R/G/B/A region.
+
+:::caution[Use with PBR or Toon Specular]
+Region Mask adjusts surface response. With both PBR and Toon Specular disabled there is nothing to adjust.
+:::
+
+### Starter presets
+
+0.1.4 includes `MetalHybrid` · `SkinSubtle` · `EyeGlossy` · `ClothSheen` · `HairAnisotropic` · `MetalCel` · `CharacterParts` starter presets.
+
+---
 ## Emission {#이미션}
 
 Map × Color × Intensity.

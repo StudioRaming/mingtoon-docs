@@ -224,6 +224,23 @@ VRChat アップロード と Warudoモードビルドでは、[ビルド時の�
 
 ---
 
+## VRChat Expression Menu {#vrchat-표현식-메뉴}
+
+Unity 2022.3 VCCプロジェクトでは、`MingToon Manager`がVirtual LightとMaster Adjustメニューを準備します。
+
+1. Avatar Rootの下にある`MingToon Manager`を選択します。
+2. `Non-Destructive Modular Avatar Install`を有効にします。デフォルトで有効です。
+3. SceneまたはPrefabを保存し、Manager Inspectorを開き直します。
+4. Gesture Managerに`MingToon Controls`が表示されることを確認します。
+5. VRChat SDK Builderで通常どおりアップロードします。メニュー、パラメーター、FXは元データではなくbuild cloneに統合されます。
+
+Modular AvatarがなくてもMingToonは動作します。インストール後にInspectorを開き直すと自動的に使用できます。手動で統合する場合はトグルを無効にし、`Register VRC Menu with One Click`を使用します。
+
+:::caution[Expression Parametersの予算]
+この機能は**同期パラメーター21個・154ビット**を使用します。インストール前に既存アバターとの型競合、256ビット予算、メニューごとの8スロット制限を確認し、失敗時は変更を元に戻します。
+:::
+
+メニューは`MingToon Controls > Virtual Light`と`Master Adjust > Highlight / Shadow / Final Output`に分かれます。`Reset All`は追加のパラメーターやネットワークビットを使わず、Virtual Lightと3つのMaster Adjustグループの方向・モード・色・明るさ・強度をインストール時の初期値に戻します。
 ## 書き出し / 検証 {#내보내기--검증}
 
 ### アップロード準備の点検 {#업로드-준비-점검}

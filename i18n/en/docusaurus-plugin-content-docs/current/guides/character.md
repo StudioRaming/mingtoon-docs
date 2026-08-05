@@ -41,6 +41,22 @@ Items for refining the boundary:
 - `Mask Strength` — **If 0, the mask is ignored and the entire material is treated as the face.** 1 follows the mask exactly.
 - `Remap Start` / `Remap End` — Expand the gray range of the mask. Raising the start narrows the face area, lowering the end makes the boundary sharp. **If both are the same, the boundary becomes completely hard.**
 
+### Paint the face area in SceneView {#얼굴-영역을-sceneview에서-칠하기}
+
+You can define the face area with mesh vertex values instead of creating a mask texture.
+
+1. Enable `Define Face Area with Vertex Paint`.
+2. Click `Start Face Area Paint`.
+3. Paint the face in SceneView with Paint; hold Shift while painting to erase.
+4. Refine boundaries with Harden or Smooth. Use Hard Face to fill a triangle instantly.
+5. Isolate the target Renderer with `Show Editing Mesh Only`; use X symmetry or `L`/`Shift+L` connected-island fill as needed.
+6. Choose `Save`, `Discard`, or `Cancel` when finished.
+
+:::caution[Texture face masks take priority]
+When `Enable Face Area Mask` is on, vertex paint is ignored. Turn off the texture-mask toggle before painting. If the toggle is on while its texture is empty, the entire material is treated as the face.
+:::
+
+The painted channel can be kept separate from the outline-pressure channel, allowing both features on one mesh.
 #### Method B — Proxy sphere {#방법-b--프록시-구}
 
 Without a mask texture, treat the inside of a virtual sphere as the face.
@@ -74,7 +90,7 @@ You can adjust the direction the face uses as a reference with `Face Fixed Direc
 
 ### Step 3: Face-only shading boundary {#3단계-얼굴-전용-음영-경계}
 
-- `Face Border` — **Set it lower (minus) than the body to make the face darken later**, keeping it clean like illustration. This is the most commonly adjusted setting.
+- `Face Border` — Range 0 to 1; default 0.25. Values **closer to 0 delay face darkening**, while values closer to 1 darken it earlier. This is the most commonly adjusted setting.
 - `Face Softness` — The blur width of the face region boundary.
 - `Remove Default Face Form Shadow` — If 1, **completely removes the form shadow in the face region.** Use this to remove nose and cheek shadows, creating face shading only through 2D shadows or shadow textures.
 
@@ -103,9 +119,13 @@ Covered in the `Shadow Projection` section under `Face Cast Stabilization`. → 
 
 ### Face SDF — Use without scripts
 
-If you bake the current scene front-view into mesh UV7 in the **Look / Face** step of the **MingToon Manager**, a 4-directional face SDF works with the shader only, no runtime components. This is important for VRChat uploads where scripts must be removed. → [Mesh UV Bakes](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
+The included Face SDF Studio can create a four-direction Packed RGBA or Single Channel face SDF. With `Baked Front UV7`, directional face shadows work without a runtime component, which suits VRChat uploads and Warudo mods. → [Face SDF and Face SDF Studio](/guides/face-sdf)
 
-<!-- SCREENSHOT: Face SDF orthographic baker -->
+:::tip[Set up Face Shading first]
+SDF changes the order in which shadow covers the face. It does not replace correct face-area selection, normal flattening, or `Face Border` setup.
+:::
+
+<!-- SCREENSHOT: Face SDF Studio -->
 
 ---
 
