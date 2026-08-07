@@ -59,3 +59,31 @@
 .markdown table a.ming-term {
   border-bottom-style: dotted;
 }
+
+/* The version badge in the navbar. It is a link to the current patch note, so
+   it has to read as pressable rather than as a label sitting next to one. */
+.navbar__item.navbar__version {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+  margin-left: 0.35rem;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  color: var(--ifm-navbar-link-color);
+}
+
+.navbar__item.navbar__version:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+/* In the collapsed mobile menu the pill sits in a full-width list, where a
+   rounded chip stretched across the row looks like a broken button. */
+@media (max-width: 996px) {
+  .navbar-sidebar .navbar__version {
+    display: inline-block;
+    margin: 0.25rem 0 0.25rem 0.5rem;
+  }
+}

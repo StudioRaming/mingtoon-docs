@@ -3,6 +3,23 @@ import path from 'node:path';
 import {themes as prismThemes} from 'prism-react-renderer';
 import autoLinkTerms from './src/remark/auto-link-terms.mjs';
 
+// The one place the shipped version is written. The announcement bar, the
+// navbar badge, and the footer all read it, so a release bumps this line and
+// nothing else. It drifted to 0.1.3-preview across two releases because each
+// of those three carried its own literal.
+//
+// A changelog page must exist at docs/changelog/<VERSION>.md before this is
+// bumped: the navbar badge links straight to it and onBrokenLinks is throw,
+// so a version with no patch note fails the build instead of shipping a dead
+// link.
+//
+// After a bump run `npm run write-translations` once. The badge's label is a
+// navbar item, so its i18n key carries the version (item.label.v0.1.5) and a
+// new one has to be written; the previous key is then reported as unknown and
+// can be deleted from the three navbar.json files.
+const MINGTOON_VERSION = '0.1.5';
+const LATEST_CHANGELOG = `/changelog/${MINGTOON_VERSION}`;
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'MingToon Docs',
@@ -97,9 +114,14 @@ const config = {
         respectPrefersColorScheme: true,
       },
       announcementBar: {
+        // Deliberately carries no link. Docusaurus 3 does not extract the
+        // announcement bar into the i18n theme files, so this one string is
+        // served to ko, en, and ja alike - an href here would send two of the
+        // three locales to the Korean page. The clickable version is the
+        // navbar badge below, which resolves the locale prefix itself.
         id: 'closed-beta',
         content:
-          'MingToon 0.1.3-preview — Closed Beta. studioraming@gmail.com',
+          `MingToon ${MINGTOON_VERSION} — Closed Beta. studioraming@gmail.com`,
         backgroundColor: '#5b3fd6',
         textColor: '#ffffff',
         isCloseable: true,
@@ -121,6 +143,16 @@ const config = {
           {
             type: 'localeDropdown',
             position: 'right',
+          },
+          // The current version, and the shortest way to what changed in it.
+          // `to` rather than `href` so the baseUrl and the locale prefix are
+          // applied - /mingtoon-docs/en/changelog/0.1.5 for an English reader.
+          {
+            to: LATEST_CHANGELOG,
+            label: `v${MINGTOON_VERSION}`,
+            position: 'right',
+            className: 'navbar__version',
+            'aria-label': `MingToon ${MINGTOON_VERSION} patch notes`,
           },
         ],
       },
@@ -145,7 +177,7 @@ const config = {
             ],
           },
         ],
-        copyright: `© ${new Date().getFullYear()} StudioRaming. MingToon 0.1.3-preview.`,
+        copyright: `© ${new Date().getFullYear()} StudioRaming. MingToon ${MINGTOON_VERSION}.`,
       },
       prism: {
         theme: prismThemes.github,
