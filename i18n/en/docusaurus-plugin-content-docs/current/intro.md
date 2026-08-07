@@ -13,22 +13,66 @@ The things you actually reach for when drawing a character — where the shadows
 
 Built on the Built-in Render Pipeline (BRP); it also runs in Warudo and in general Unity projects.
 
-## What you can make with it
+## What sets it apart from other toon shaders
 
-- **Three kinds of shadow, handled separately** — the **form shadow** curvature makes, real-time **shadow projection**, and the **2D shadow** that reads screen depth so bangs and hands fall across the body. A unified shadow gathers all three into one colour so overlaps do not go black. → [Light and Shadow](/guides/light-and-shadow)
-- **Shadows printed as halftone dots** — the screentone. Stick it to the surface so it travels with the character, or lock it to the screen for an overprinted, printed-page reading. → [Shadow Pattern](/guides/shadow-pattern)
-- **The face is treated separately** — normal compression, a face region mask, and a directional SDF, so nose and bang shadows do not wreck an expression. The tool that bakes the SDF is bundled. → [Face SDF](/guides/face-sdf)
-- **Outlines drawn without depth** — paint the weight directly with a brush in the scene view. → [Outline](/guides/outline)
-- **A silhouette that stands up** — rim light, rim shade, backlight, front light, and shadow interior reflection: the side that keeps a character from sinking into a dark scene. → [Rim](/guides/rim)
-- **Detail on top** — texture, normal, and matcap layers, hybrid PBR, toon specular, glitter, and emission. → [Detail Maps](/guides/detail-maps)
-- **Colour retuned in one place at the end** — everything that adds light, every shadow, and the final output each take a brightness and a tint, so a change of scene is one adjustment rather than twenty. → [Basics](/guides/basics)
+**What you author with and what gets uploaded are different shaders.**
+A toon shader gets heavier as it gains features, so the usual answer is to leave
+things off in case you never use them. MingToon has you author with everything
+on, then **swaps in a shader carrying only the features that material actually
+used** at upload time and restores the authoring one afterwards. What you did not
+use is compiled out, so it costs nothing. No pruning features avatar by avatar.
+→ [Automatic Optimization On Build](/workflow/build-optimization)
 
-## Getting it onto an avatar
+**Three kinds of shadow — and the third is the one others do not have.**
+The **form shadow** curvature makes and real-time **shadow projection** exist
+elsewhere. MingToon adds the **2D shadow**: it reads camera depth so bangs,
+hands, and sleeves fall across the body as a toon shape that a real-time shadow
+will not give you. A unified shadow gathers all three into one colour so overlaps
+do not go black.
+→ [Light and Shadow](/guides/light-and-shadow) · [Depth Effects](/guides/depth-effects)
 
-- **lilToon conversion** — moves the materials of an avatar you already built onto MingToon, carrying textures, masks, and the outline width mask with them. → [lilToon Conversion](/workflow/liltoon-conversion)
+**Four more effects out of that same single depth read.**
+Depth rim (the 2D silhouette line), inner 2D edge, depth translucency for thin
+parts holding light, and SSAO darkening creases and contact areas. No extra
+light, no post-process pass, no second camera - they share the one camera depth
+texture the avatar shader is already reading.
+→ [Depth Effects](/guides/depth-effects)
+
+**The face is a subsystem, not a slot.**
+It does not stop at one face mask. Alongside normal compression, the face region
+mask, and a directional SDF, the product ships **the tool that bakes the SDF
+(Face SDF Studio) and scene-view vertex paint for the face area**. The problem
+where nose and bang shadows wreck an expression is solved without leaving Unity.
+→ [Face SDF](/guides/face-sdf)
+
+**It can look printed.**
+The screentone redraws shadow as halftone dots or line work, and you choose
+whether the lattice sticks to the surface or locks to the screen. Locked to the
+screen, the character slides underneath it - the overprinted, pop-art reading.
+→ [Shadow Pattern](/guides/shadow-pattern)
+
+**Adjustable in game.**
+The virtual light and the brightness and colour adjustments go out to a VRChat
+expression menu, installed non-destructively through Modular Avatar so your
+existing menu, parameters, and FX are untouched. → [VRChat](/platforms/vrchat)
+
+<details>
+<summary>What else is in the box</summary>
+
+- **Outline** — works anywhere without depth, and the weight is painted with a brush in the scene view. → [Outline](/guides/outline)
+- **The rim family** — rim light, rim shade, backlight, front light, shadow interior reflection. → [Rim](/guides/rim)
+- **Detail** — texture, normal, and matcap layers, hybrid PBR, toon specular, glitter, emission. → [Detail Maps](/guides/detail-maps)
+- **Master adjust** — a brightness and a tint on everything that adds light, on every shadow, and on the final output. A change of scene is one adjustment here. → [Basics](/guides/basics)
+- **lilToon conversion** — moves an existing avatar over, textures, masks, and outline width mask included. → [lilToon Conversion](/workflow/liltoon-conversion)
 - **MingToon Manager** — declare which slots are the face and which are bare skin, and work the whole avatar's look from one screen. → [MingToon Manager](/workflow/character-manager)
-- **Automatic optimization on build** — the upload swaps in a shader carrying only the features actually used, then restores the authoring one when it is done. You author with everything on; only what ships gets light. → [Automatic Optimization On Build](/workflow/build-optimization)
-- **VRChat expression menu** — drive the virtual light and the brightness and colour adjustments from an in-game menu, installed non-destructively through Modular Avatar. → [VRChat](/platforms/vrchat)
+
+</details>
+
+## The order of work
+
+**Convert** → **assign roles** (face · bare skin) → **look** → **upload**.
+An existing lilToon avatar starts at step 1; a material you make from scratch
+starts at step 2.
 
 ## If this is your first time
 

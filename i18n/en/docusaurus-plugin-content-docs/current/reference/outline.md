@@ -42,3 +42,12 @@ Configure stencil state separately for the general and Normal Outline passes.
 | **Stencil Pass** | What to do to the stencil buffer when both the stencil and depth tests pass. The default Keep leaves the buffer untouched. | `_OutlineStencilPass` |
 | **Stencil Fail** | What to do to the stencil buffer when the stencil test fails. The default Keep leaves the buffer untouched. | `_OutlineStencilFail` |
 | **Stencil ZFail** | What to do when the stencil test passes but the depth test fails. The default Keep leaves the buffer untouched. | `_OutlineStencilZFail` |
+
+## Fallback Display
+
+Configure fallback behavior for limited rendering environments.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **Fallback Fresnel Rim Color** | Color of the Fresnel rim drawn in place of the 2D rim when the camera depth texture is unavailable. It never shows while the fallback mode is off or while camera depth is available. | `_FallbackRimColor` |
+| **Fallback Fresnel Rim Power** | Falloff of the fallback Fresnel rim; higher values pull it into a thinner band at the silhouette. It never shows while camera depth is available. | `_FallbackRimPower` |

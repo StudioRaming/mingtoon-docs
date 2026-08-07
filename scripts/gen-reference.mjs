@@ -263,6 +263,10 @@ const PAGES = [
       {key: 'section.normal_outline', match: (n) => /^_Outline(Hull|Vector|Distance|IncludeFormShadow|Pattern)/.test(n)},
       {key: 'section.outline', match: (n) => /^_(Outline|MingOutline)/.test(n) && !n.startsWith('_OutlineStencil')},
       {key: 'section.stencil', match: (n) => n.startsWith('_OutlineStencil')},
+      // Drawn by MingToonShaderGUI.Outline.cs, so it belongs on this page even
+      // though the name does not say outline: it is the rim a fallback shader
+      // shows where MingToon itself cannot run.
+      {key: 'section.fallback', match: (n) => n.startsWith('_FallbackRim')},
     ],
   },
 ];

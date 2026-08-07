@@ -95,6 +95,26 @@ Split highlight and surface response by region within one material.
 | **Region Toon Specular Strength Delta** | Range -8-8; default 0. Per-region toon-specular strength delta. Large values can over-brighten highlights and clip. | `_MingRegionSpecularStrength` |
 | **Region Toon Specular Smoothness Delta** | Range -1-1; default 0. Per-region toon-specular smoothness delta. Positive is sharper; negative spreads the highlight. | `_MingRegionSpecularSmoothness` |
 
+## Toon Specular
+
+Configure a lightweight toon-style highlight without enabling PBR.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **Enable Toon Specular** | Off by default. Adds a highlight shaped by the light direction. It is the lighter choice when a surface needs gloss but not the whole PBR path. | `_MingToonSpecularEnabled` |
+| **Toon Specular Color** | White by default. It is HDR, so values above 1 are allowed. The blend mode defaults to Add. | `_MingToonSpecularColor` |
+| **Toon Specular Blend Mode** | Add by default. Screen, Overlay, Hue, and Color are formulas defined over 0-1, so an HDR colour or an intensity above 1 may not give the shape you intended. | `_MingToonSpecularBlendMode` |
+| **Toon Specular Strength** | Range 0-8; default 1. How bright the highlight is. It clips toward white as it rises, so shape the highlight with threshold and softness and use this only for brightness. | `_MingToonSpecularStrength` |
+| **Toon Specular Mode** | Isotropic by default. Isotropic is a round highlight; Anisotropic is a band across the strand direction, which is the hair highlight that slides as the head turns. | `_MingToonSpecularMode` |
+| **Toon Specular Smoothness** | Range 0-1; default 0.5. How tight the lobe is. Roughly: 0.2 cloth, 0.45 skin, 0.7 polished metal or gems, 0.9 wet lips and enamel. | `_MingToonSpecularSmoothness` |
+| **Toon Specular Threshold** | Range 0-1; default 0.5. How much of the lobe survives as the highlight shape. It is independent of Smoothness, so either is usable alone. | `_MingToonSpecularThreshold` |
+| **Toon Specular Softness** | Range 0.001-1; default 0.05. 0.001 is a hard cel highlight, 1 is the raw lobe. This is the dial from cel to physical. | `_MingToonSpecularSoftness` |
+| **Toon Specular Anisotropic Shift** | Range -1 to 1; default 0. Meaningful only in Anisotropic mode. It slides the band along the normal, away from the strand root, which is what places the ring on the head. | `_MingToonSpecularAnisoShift` |
+| **Toon Specular Normal Map Influence** | Range 0-1; default 1. 0 uses the mesh normal only; 1 uses the stacked normal maps fully. | `_MingToonSpecularNormalInfluence` |
+| **Toon Specular Visibility In Shadow** | Range 0-1; default 0. 0 hides it in shadow, 1 keeps it fully visible there. A specular is a reflection of the light source, so 0 is the physical answer and anything above it is a stylistic one. | `_MingToonSpecularShadowVisibility` |
+| **Toon Specular Base Color Influence** | Range 0-1; default 0. At 0 the highlight keeps the colour you set; raising it tints the highlight with the base colour underneath. Raise it when the gloss should follow the material colour, as on metal. | `_MingToonSpecularBaseColorInfluence` |
+| **Toon Specular Scene Light Influence** | Range 0-1; default 1. At 1 the highlight follows the colour and brightness of the scene light; at 0 it stays exactly the colour you set regardless of the scene. Lower it when the gloss should read the same in every world. | `_MingToonSpecularSceneLightInfluence` |
+
 ## Emission
 
 Configure self-illumination color, texture, and intensity.
