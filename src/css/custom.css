@@ -87,3 +87,39 @@
     margin: 0.25rem 0 0.25rem 0.5rem;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   The patch-note index.
+
+   Docusaurus renders a category's generated index as a two-column grid of
+   equal tiles. A version history is not a set of peers to browse - it is read
+   top to bottom, newest first, and the subtitle carries as much as the number
+   does. So it becomes one full-width row per version.
+
+   This site has exactly one generated index, so the rule is unscoped on
+   purpose; adding a second one would inherit this layout, which is a decision
+   to make then rather than a bug.
+   ------------------------------------------------------------------------ */
+article > section.row > [class*='docCardListItem'] {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+article > section.row > [class*='docCardListItem'] + [class*='docCardListItem'] {
+  margin-top: 0.75rem;
+}
+
+/* The theme truncates both lines to fit a narrow tile. Across the full width
+   the subtitle has room to say what the release was, so let it wrap. */
+article > section.row .theme-doc-card-description {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  margin-bottom: 0;
+  color: var(--ifm-color-emphasis-700);
+}
+
+article > section.row .theme-doc-card-heading {
+  margin-bottom: 0.3rem;
+  font-size: 1.15rem;
+}

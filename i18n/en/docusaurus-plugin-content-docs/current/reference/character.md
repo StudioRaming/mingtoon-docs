@@ -18,13 +18,21 @@ Configure face-specific masks and shade direction.
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Remove Default Face Form Shadow** | At 1 the form shadow is erased on the face area entirely. Use it when the face shading should come only from the 2D shadow or a painted shadow map. | `_FaceFormShadowLift` |
-| **Face Border** | Form-shadow threshold used only on the face area. Pushing it lower, toward -1, makes the face darken later and stay illustration-clean. Ignored while Form Shadow is off. | `_FaceFormShadowMidPoint` |
-| **Face Softness** | Blur width of the form-shadow terminator on the face area. Ignored while Form Shadow is off. | `_FaceFormShadowSoftness` |
+| **Enable Face SDF Shadow** | Off by default. Produces directional SDF face form shadow. It adds texture sampling and shader work, so enable it only on face materials that need it. | `_FaceSdfEnabled` |
+| **SDF Coordinates** | Base Texture UV (0) follows existing UV islands. Baked Front UV7 (1, default) uses a continuous front projection. When SDF owns UV7, baked face normals safely fall back to geometry normals. | `_FaceMapUvMode` |
+| **Baked Face Normal State** | Hidden output managed by Manager. At 1 it uses UV7 baked normals; missing data or SDF ownership of UV7 falls back to geometry normals. Do not edit directly. | `_FaceNormalBaked` |
 | **Enable Face Area Mask** | Marks which part of a combined head and body material is the face. While off, the channel, strength, invert and remap rows below are all ignored. | `_FaceAreaMaskEnabled` |
+| **Vertex-Painted Face Area** | Off by default. Uses values stored by the face vertex-paint tool as the face area. An enabled texture face mask takes priority. | `_FaceAreaVertexMaskEnabled` |
 | **Use Proxy Sphere As Face Area** | Treats everything inside the proxy sphere as face, with no mask texture. The mask wins when Enable Face Area Mask is on, so this option is ignored then. | `_FaceAreaProxyMaskEnabled` |
+| **Remove Default Face Form Shadow** | At 1 the form shadow is erased on the face area entirely. Use it when the face shading should come only from the 2D shadow or a painted shadow map. | `_FaceFormShadowLift` |
+| **Face Border** | Form-shadow threshold used only on the face area. Range 0 to 1; default 0.25. Lower values delay face darkening, while higher values darken it earlier. Ignored while Form Shadow is off. | `_FaceFormShadowMidPoint` |
+| **Face Softness** | Blur width of the form-shadow terminator on the face area. Ignored while Form Shadow is off. | `_FaceFormShadowSoftness` |
+| **Face Area Mask** | Defines the face area in base UV. White is face and black is not; it is not sampled while its toggle is off. The default white texture classifies the whole material as face. | `_FaceAreaMask` |
 | **Proxy Sphere Center** | Center of the virtual sphere that stands in for the head. The Face Proxy scene tool is the accurate way to place it. Unused while Normal Press Amount is 0. | `_FaceProxyCenterOS` |
 | **Proxy Sphere Radius** | Radius of the virtual sphere. When the proxy sphere is used instead of a face mask, everything inside it counts as face, so an oversized radius classifies the neck and hands as face too. | `_FaceProxyRadiusOS` |
+| **Proxy Shape** | Sphere (0, default) suits a round head; Cylinder (1) suits a tall face area. Axis and height apply only to Cylinder. | `_FaceProxyShape` |
+| **Cylinder Axis** | Length direction in object space. Default (0,1,0) points head-up. Used only by Cylinder; avoid a zero vector. | `_FaceProxyAxisOS` |
+| **Cylinder Height** | Cylinder height in object space. Range 0.001 to 4; default 0.3. Oversizing can classify neck or hair as face. | `_FaceProxyHeightOS` |
 | **Mask Channel (RGBA)** | Per-channel weights used to read the mask texture. Enter (0, 1, 0, 0) to read the green channel only. | `_FaceAreaMaskChannel` |
 | **Mask Strength** | At 0 the mask texture is ignored and the whole material is treated as face; at 1 the mask is used exactly as painted. | `_FaceAreaMaskStrength` |
 | **Invert Mask** | Flips the face area mask black-for-white. Use it when the mask was painted with the face in black. | `_FaceAreaMaskInvert` |
@@ -32,6 +40,22 @@ Configure face-specific masks and shade direction.
 | **Remap End** | End of the range the mask gray values are re-spread over. Lowering it sharpens the face boundary. Equal start and end give a fully hard edge. | `_FaceAreaMaskRemapEnd` |
 | **Face Casts Real-Time Shadows** | Whether the face mesh casts real-time shadows. Turning it off stops bangs from casting a real shadow on the face, which is what you want when the forehead shadow should come only from the 2D shadow. | `_FaceShadowCasterEnabled` |
 | **Real ShadowCaster Offset** | Pushes the face's shadow caster forward or back to fine-tune where the bangs shadow lands. Ignored while Face Casts Real-Time Shadows is off. | `_FaceShadowCasterOffset` |
+| **Global Horizontal Scale** | Horizontal scale around the texture centre. Range 0.1 to 4; default 0.5. It multiplies slot Tiling, so adjust one transform layer at a time. | `_FaceMapScaleX` |
+| **Global Vertical Scale** | Vertical scale around the texture centre. Range 0.1 to 4; default 0.5. It combines with slot Tiling and outside pixels do not repeat. | `_FaceMapScaleY` |
+| **Global Horizontal Position** | Moves the scaled SDF horizontally. Range -1 to 1; default 0. Align the eye and nose centreline in small steps. | `_FaceMapOffsetX` |
+| **Global Vertical Position** | Moves the scaled SDF vertically. Range -1 to 1; default 0. If it looks tiled, verify that texture Wrap Mode is Clamp. | `_FaceMapOffsetY` |
+| **SDF Test Preview** | Off by default. Shows raw SDF as unlit grayscale to diagnose alignment and channels. Final baked shaders strip this diagnostic path. | `_FaceSdfTestMode` |
+| **Test Preview Channel** | R=left, G=right, B=up and A=down. Maximum (4, default) shows the largest channel for a quick overall alignment check. | `_FaceSdfTestChannel` |
+| **SDF Map Format** | Packed RGBA (0, default) stores left/right in R/G and up/down in B/A. Single Channel Mirrored U (1) reuses one R grayscale SDF with mirrored U and ignores vertical influence. | `_FaceSdfMode` |
+| **Face SDF Map** | Boundary-order texture; default is gray. Packed reads RG left/right and BA up/down; single-channel reads R. Clamp and Bilinear are recommended. This adds a texture sample. | `_FaceSdfMap` |
+| **Horizontal Influence** | Horizontal light response. Range 0 to 1; default 1. Zero removes horizontal response; one uses the map fully. | `_FaceSdfHorizontalStrength` |
+| **Vertical Influence** | Vertical light response. Range 0 to 1; default 1. Applies only to Packed RGBA B/A and is ignored in single-channel grayscale mode. | `_FaceSdfVerticalStrength` |
+| **SDF Shadow Amount** | Final SDF dark-region strength. Range 0 to 1; default 1. Zero hides it; one uses the computed result fully. | `_FaceSdfShadowAmount` |
+| **Boundary Offset** | Moves when the shadow starts. Range -1 to 1; default 0. This is a lighting threshold, not map position, so tune in small steps. | `_FaceSdfThresholdOffset` |
+| **Boundary Softness** | Lit-to-shadow transition width. Range 0.001 to 0.5; default 0.04. Extremely low values reveal texture-resolution and compression noise. | `_FaceSdfSoftness` |
+| **Enable SDF Applicability Mask** | Off by default. Excludes ears, back of head, or other non-SDF areas with a base-UV mask. This is separate from the face-area mask. | `_FaceSdfMaskEnabled` |
+| **SDF Applicability Mask** | Sampled in base UV. White receives SDF; black keeps original shading. It is not sampled while its toggle is off. | `_FaceSdfMask` |
+| **SDF Mask Strength** | Mask limiting strength. Range 0 to 1; default 1. Zero ignores the mask; one uses its painted values fully. | `_FaceSdfMaskStrength` |
 | **Normal Method** | 0 presses the face normal flat toward the forward direction, erasing the nose shadow; 1 follows the proxy sphere for a gentle curve. It has no effect while Normal Press Amount is 0. | `_FaceNormalMode` |
 | **Normal Press Amount** | How strongly the face normal override is applied. At 0 the Normal Method, proxy sphere center and proxy sphere radius are all ignored and the raw mesh normal is used. | `_FaceNormalFlattenAmount` |
 

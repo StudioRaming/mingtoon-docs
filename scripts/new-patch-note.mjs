@@ -40,11 +40,17 @@ const body = template
   .replace(/^---\n[\s\S]*?\n---\n/, '')
   .replace(/^<!--[\s\S]*?-->\n/, '');
 
+// `slug` pins the URL to /changelog/<version> rather than letting it fall out
+// of the file path, and `description` is what the patch-note list prints under
+// the version number - without one Docusaurus shows the first line of content,
+// which is the guard comment below, so every entry reads "<!--".
 const frontmatter = [
   '---',
   `id: v${version}`,
   `title: ${version}`,
   `sidebar_position: ${position}`,
+  `slug: /changelog/${version}`,
+  'description: YYYY-MM-DD · 한 줄 요약 (목록에 부제로 나옵니다)',
   '---',
   '',
 ].join('\n');
@@ -73,6 +79,8 @@ for (const {code, dir} of LOCALES) {
 if (created) {
   console.log(
     `\n${version}  sidebar_position ${position}\n` +
+      'Replace the placeholder `description` in all three - it is the ' +
+      'subtitle shown in the patch-note list.\n' +
       'Fill all three, then:\n' +
       '  npm run build\n' +
       '  node scripts/check-translations.mjs en\n' +

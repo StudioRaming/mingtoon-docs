@@ -23,6 +23,7 @@ Configure ranges and masks for depth-driven effects.
 | **Distance Scaling** | Sets the reference distance for the thickness while Width Mode is Distance Stable. Ignored when Width Mode is Screen Pixels. | `_DepthDistanceScale` |
 | **Master Bias** | How much screen-depth difference counts as a real front-to-back edge. Lower catches shallow creases and gets noisy; higher drops the line on thin parts. | `_DepthBias` |
 | **Master Softness** | Transition width of the depth-edge test. Low gives a hard ink edge, high a soft feathered one. | `_DepthSoftness` |
+| **Cast MingToon 2D Projected Shadow** | Controls whether this material writes to MingToon's camera-depth field. Turn it off on glasses or accessories to exclude Opaque, Cutout, and Transparent surfaces from the 2D projected-shadow caster. Normal color rendering, transparent depth priming, and Unity real-time ShadowCaster shadows all stay enabled, so self-sorting and outlines look exactly as they did with the switch on. A disabled material is absent from the depth it reads, so its own Depth Rim, Inner 2D Edge, 2D Shadow, and translucency cannot see behind it. If the glasses themselves need a rim, use Fresnel Rim, which reads no depth. | `_Ming2DShadowCasterEnabled` |
 
 ## Depth Rim
 
@@ -44,6 +45,28 @@ Configure a lightweight character shadow from the screen-depth silhouette of obj
 | Control | What it does | Shader property |
 |---|---|---|
 | **Shadow Brightness** | Brightness multiplier on the 2D shadow color; lower is darker. When 2D and cast shadows are unified, this becomes the brightness of the merged layer. | `_DepthShadowBrightness` |
+| **Face 2D Shadow Assist** | Off by default. After defining the face area, enable this to suppress self-overlap from MingToon's camera-depth projected shadow there. Other effects sharing that depth, such as depth rim and inner edge, can change too. | `_DepthShadowFaceAssistEnabled` |
+
+## SSAO (Screen Space Occlusion)
+
+Re-reads the camera depth texture per pixel to darken creases and contact areas. It is not multiplied with the occlusion map: it joins after the toon band and the screentone, taking whichever is darker. Where no depth texture is available it disappears silently.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **SSAO Enabled** | Re-reads the camera depth texture per pixel to darken creases and contact areas. The result folds in where the occlusion map lands, so it reads as part of the shadow; while off the calculation is compiled out and costs nothing. | `_MingSsaoEnabled` |
+| **SSAO Intensity** | How strong the effect is. At 0 the image matches the effect being off while the calculation still runs, so turn SSAO Enabled off when you are not using it. | `_MingSsaoIntensity` |
+| **SSAO Power** | Contrast of the occlusion. Raising it keeps only the deeply recessed areas and erases the faint occlusion. | `_MingSsaoPower` |
+| **SSAO Radius** | How far the occlusion search reaches, in metres (0.001-0.1 is 1mm-10cm). It is world size rather than screen pixels, so the thickness holds as the camera pulls back or the field of view changes - but only while `SSAO Distance Compensation` is 1, its default. Lower it and the radius shrinks inside one metre. | `_MingSsaoRadius` |
+| **SSAO Quality** | Depth samples per pixel: Low 4, Medium 8, High 12, Ultra 16. The cost is paid per visible fragment, not once per material. At character scale, lowering quality and raising the radius usually looks better than the reverse. | `_MingSsaoQuality` |
+| **SSAO Bias** | Metres of slack that stops a surface from counting itself as its own occluder. Raise it slightly when a flat surface goes blotchy; lower it when creases read flat. | `_MingSsaoBias` |
+| **SSAO Fade Range** | How close an occluder has to be, in metres, to count. Past this range the weight falls smoothly to zero, so a distant wall does not darken the whole silhouette. | `_MingSsaoFadeRange` |
+| **SSAO Far Distance** | The distance, in metres, at which the effect is fully gone. The fade begins at 75% of it, so 12 starts thinning at 9m and reaches zero at 12m. 0 disables the distance fade. | `_MingSsaoFarDistance` |
+| **SSAO Distance Compensation** | At 1 the radius is held at a true world size, so the same crease reads the same shape wherever the camera stands and whatever the field of view. At 0 the old near-camera taper returns and the radius shrinks inside one metre. | `_MingSsaoDistanceCompensation` |
+| **SSAO Light Direction Influence** | 0 is a uniform occlusion that ignores the light. Raising it leans the search range toward the light, so the occlusion gathers on the side the light cannot reach. The lean shrinks by itself as the light comes to face the camera, so a front light does not push the shading to one side. | `_MingSsaoLightDirectionInfluence` |
+| **SSAO Mask Strength** | Restricts where the occlusion lands by borrowing the 2D Shadow Mask as it is. 0 uses no mask; raising it removes the occlusion wherever the mask covers. The channel, invert and HSVG are the ones set on the 2D Shadow Mask. | `_MingSsaoMaskStrength` |
+| **SSAO Tint** | A colour multiplied into the occluded areas only. White tints nothing and leaves the shadow colour the material already resolved exactly as it was. | `_MingSsaoColor` |
+| **SSAO Brightness** | How much further the occluded areas are darkened. 1 adds no darkening; lowering it deepens those areas alone. | `_MingSsaoBrightness` |
+| **SSAO Saturation** | Saturation of the occluded areas. 1 leaves them alone, 0 drains them to grey, and above 1 the colour deepens there and nowhere else. | `_MingSsaoSaturation` |
 
 ## Depth Translucency
 

@@ -7,29 +7,40 @@ slug: /
 
 # MingToon
 
-MingToon is a **character toon shader + authoring toolkit for VRChat avatars**. Built on Built-in Render Pipeline (BRP), it also works in Warudo and general Unity projects.
+**A character toon shader for VRChat avatars.**
 
-Current version: **0.1.3-preview** (closed beta)
+The things you actually reach for when drawing a character — where the shadows fall and what colour they are, how the nose shadow sits on a face, outline weight, whether the silhouette holds up in backlight — are separated so each can be set on its own. Everything from the inspector you build the look in to the step that puts it on an avatar and uploads it ships in one package.
 
-## Unity Version — depends on target
+Built on the Built-in Render Pipeline (BRP); it also runs in Warudo and in general Unity projects.
 
-:::danger[Check first]
-| Target | Unity |
-|---|---|
-| **VRChat PC** (primary target) | **2022.3.22f1** |
-| **Warudo** | **2021.3.45f2** |
-| General Unity | 2021.3 LTS |
+## What you can make with it
 
-**Use 2022.3.22f1 if targeting VRChat.** On 2021.3, the VRChat build hook and VRChat runtime do not compile at all, so automatic optimization at upload time does not trigger. You cannot target both VRChat and Warudo with one project.
-:::
+- **Three kinds of shadow, handled separately** — the **form shadow** curvature makes, real-time **shadow projection**, and the **2D shadow** that reads screen depth so bangs and hands fall across the body. A unified shadow gathers all three into one colour so overlaps do not go black. → [Light and Shadow](/guides/light-and-shadow)
+- **Shadows printed as halftone dots** — the screentone. Stick it to the surface so it travels with the character, or lock it to the screen for an overprinted, printed-page reading. → [Shadow Pattern](/guides/shadow-pattern)
+- **The face is treated separately** — normal compression, a face region mask, and a directional SDF, so nose and bang shadows do not wreck an expression. The tool that bakes the SDF is bundled. → [Face SDF](/guides/face-sdf)
+- **Outlines drawn without depth** — paint the weight directly with a brush in the scene view. → [Outline](/guides/outline)
+- **A silhouette that stands up** — rim light, rim shade, backlight, front light, and shadow interior reflection: the side that keeps a character from sinking into a dark scene. → [Rim](/guides/rim)
+- **Detail on top** — texture, normal, and matcap layers, hybrid PBR, toon specular, glitter, and emission. → [Detail Maps](/guides/detail-maps)
+- **Colour retuned in one place at the end** — everything that adds light, every shadow, and the final output each take a brightness and a tint, so a change of scene is one adjustment rather than twenty. → [Basics](/guides/basics)
+
+## Getting it onto an avatar
+
+- **lilToon conversion** — moves the materials of an avatar you already built onto MingToon, carrying textures, masks, and the outline width mask with them. → [lilToon Conversion](/workflow/liltoon-conversion)
+- **MingToon Manager** — declare which slots are the face and which are bare skin, and work the whole avatar's look from one screen. → [MingToon Manager](/workflow/character-manager)
+- **Automatic optimization on build** — the upload swaps in a shader carrying only the features actually used, then restores the authoring one when it is done. You author with everything on; only what ships gets light. → [Automatic Optimization On Build](/workflow/build-optimization)
+- **VRChat expression menu** — drive the virtual light and the brightness and colour adjustments from an in-game menu, installed non-destructively through Modular Avatar. → [VRChat](/platforms/vrchat)
+
+## If this is your first time
+
+[Installation](/getting-started/installation) → [First Material](/getting-started/first-material) → [Using the Inspector](/guides/inspector)
+
+Section 1 of the installation page settles the Unity version. It differs by target, and one project cannot serve both VRChat and Warudo.
 
 ## Where to start
 
 | Situation | Document |
 |---|---|
 | **I want to use it on a VRChat avatar** | [VRChat](/platforms/vrchat) |
-| First time installing | [Installation](/getting-started/installation) → [First Material](/getting-started/first-material) |
-| Learn inspector structure | [Using the Inspector](/guides/inspector) |
 | Start creating a look | [Basics](/guides/basics) → [Light and Shadow](/guides/light-and-shadow) |
 | Migrate an existing lilToon avatar | [lilToon Conversion](/workflow/liltoon-conversion) |
 | Upload an avatar | [Automatic Optimization On Build](/workflow/build-optimization) |
@@ -56,17 +67,6 @@ Current version: **0.1.3-preview** (closed beta)
 Property names and descriptions are taken exactly as **MingToon inspector displays them**. Terminology never drifts between documentation and screen.
 :::
 
-## What MingToon does
-
-- **Toon shading** — multi-layer coloring based on layers, masks, and composition; HSVG color adjustment; final min/max brightness control
-- **3 shadow types** — form shadow (curvature) · shadow projection (realtime) · 2D shadow (screen depth); and unified shadow combining all three
-- **Outline** — normal outline working without depth; vertex painting to draw thickness directly in scene view
-- **Rim** — rim light · rim shade · backlight · front light · shadow interior reflection
-- **Screentone** — shadow as halftone pattern via [shadow pattern](/guides/shadow-pattern)
-- **Face shading** — normal compression; face region mask/proxy sphere; face cast stabilization; SDF baking
-- **lilToon conversion** — migrate existing avatar materials to MingToon editable materials
-- **Automatic optimization on build** — automatically replaces shader with one using only deployed features at VRChat upload, then restores
-
 ## Closed beta notes
 
 :::warning[This distribution is preview]
@@ -81,6 +81,6 @@ When reporting, including these speeds up reproduction:
 
 1. Unity version and target platform (VRChat PC / Warudo / general Unity)
 2. Render pipeline (BRP / URP 12.x)
-3. MingToon version (`0.1.3-preview`)
+3. MingToon version (shown on the badge at the top right)
 4. Full Console log
 5. Steps to reproduce
