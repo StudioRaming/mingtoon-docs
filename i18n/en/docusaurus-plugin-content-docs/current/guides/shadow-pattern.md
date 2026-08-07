@@ -46,6 +46,30 @@ The shadow pattern remains intact even when [unified shadows](/guides/light-and-
 **Around 45 degrees** looks natural like printed halftones. **0 degrees** often creates moire because it aligns with the screen pixel grid.
 :::
 
+## Pattern Space - stuck to the surface, or locked to the screen {#패턴-기준}
+
+`Pattern Space` - **default `Mesh`**
+
+| Value | Where the lattice lives |
+|---|---|
+| `Mesh` | On the surface, **travelling with the character.** Raise an arm and its dots come along |
+| `Screen` | Locked to the viewport, with **the character sliding underneath.** The overprinted screentone / pop-art reading |
+
+The shape tile, the density, and the rotation are the same in both. All that changes is what the lattice is attached to.
+
+On `Screen` the pattern cannot bend or shimmer when the field of view or the camera angle changes. The coordinate is divided by the short axis so cells stay square, which keeps the density the same at any aspect ratio.
+
+### The compensation sliders reverse meaning between the two
+
+`Distance Compensation` and `Projection / FOV Compensation` **work in both.** Their direction is what flips.
+
+- On `Mesh` they **remove** camera stability. At 0 the pattern is welded to the surface; at 1 it compensates size against camera movement.
+- On `Screen` they **add** camera stability. At 1, the default, the mark size and density you set up close are what you get from across the room and at any field of view. At 0 the lattice is welded to the pixel grid and nothing the camera does moves it at all.
+
+:::tip[Author up close, check from far away]
+`Screen` with `Distance Compensation` at 1 is exactly that combination. Before 0.1.5 these two sliders were locked out on `Screen` and could not be used.
+:::
+
 ## Shape Tile {#패턴-모양-타일}
 
 `Use Shape Tile` — **off by default**

@@ -150,6 +150,23 @@ Voronoi particle sparkle. Configure distance stabilization, viewpoint sensitivit
 
 Start with the toggle, color, and intensity, then fine-tune the details.
 
+### Changing the particle shape {#입자-모양-바꾸기}
+
+Turn on `Enable Shape Map` and put a texture in `Shape Map`, and each particle's silhouette becomes that picture. Six ship in `Textures/Glitter/`: **Star, Bloom, Sparkle, Heart, Hex, and Flower**.
+
+- `Shape Channel` picks which channel carries the silhouette. The default is A; use A for a PNG with alpha, or R / Luma for a black-and-white image.
+- `Rotation Randomize` turns each particle to a different angle. The default is 1; lower it to 0 **only when a directional shape such as a heart should stand upright**.
+
+:::caution[Leave a margin when drawing your own]
+The square of the shape map is laid **inside** the round particle. Fill it to the edge and the corners get clipped. The background must be black (or alpha 0).
+:::
+
+### One mask carrying both the region and the colour {#마스크-한-장으로-영역과-색}
+
+Turn on `Use Color Too` in the `Mask` group and the same mask texture is read as full RGBA: **alpha is where the sparkle appears and RGB tints the particles**. It costs no extra texture sample.
+
+While it is on, the `Channel` selector is fixed to alpha - once RGB leaves as colour, alpha is the only channel left to pick the region with.
+
 ## Next
 
 [Character Expression](/guides/character)

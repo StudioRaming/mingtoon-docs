@@ -49,6 +49,25 @@ Items to match your environment:
 Keep `Light Direction Influence` and `Scene Light Influence` low. This keeps the rim consistent no matter which world you enter. If there's no directional light in the scene, `Light Direction Influence` won't make a difference anyway.
 :::
 
+### When you do not want the rim following the camera {#림이-카메라를-따라다니는-게-싫다면}
+
+`Fresnel Rim View Strength` chooses **whether the view or the light decides where the rim sits**.
+
+| Value | Result |
+|---|---|
+| 1 (default) | It follows the silhouette the camera sees. Move the camera and the rim slides across the surface |
+| 0 | It follows the light direction only. **Turn the camera and the rim stays put** |
+
+Fresnel is a camera fact by nature, so the rim slides over the form when you turn the viewpoint even with the light standing still. Correct as a lens effect, wrong as light.
+
+It is easy to confuse with `Light Direction Influence` just above, but they settle different things: `Light Direction Influence` decides **which side keeps the rim**, and View Strength decides **whether the rim follows the camera**. They combine.
+
+Where `Distance Compensation` and `Projection / FOV Compensation` in the `Fresnel Rim Camera Stability` group hold the rim's **thickness**, this holds its **position**.
+
+:::note[With no directional light it behaves like 1]
+With no light direction to work from, it falls back to the view.
+:::
+
 <!-- SCREENSHOT: Rim Light intensity comparison -->
 
 ---

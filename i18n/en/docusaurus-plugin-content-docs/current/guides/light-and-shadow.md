@@ -59,7 +59,24 @@ When Form, Cast, and 2D shadows overlap in the same spot, they darken three time
 The **alpha of `Unified Shadow Color`** determines the application amount. If alpha is 0, shadows remain as the base color regardless of color choice.
 :::
 
-To match individual shadow values to unified values, use `Copy Unified Values To Individual Shadows`.
+:::caution[Turning it off can change the look in one step]
+Switch unified shadow off and **each layer's stored colour comes back exactly as it was.** If you never touched the individual colours while working in unified mode, the old values all reappear the moment you turn it off.
+:::
+
+### A different shadow colour per part - the Shadow Color Map {#그림자-컬러맵}
+
+Unified shadow is one colour. When you need **a different shadow colour per part** - reddish in the hair, yellowish on skin - turn on `Shadow Color Map`. It distributes that single unified colour through a UV map.
+
+- **White is the neutral value.** White areas come out as the unified shadow colour, and only what you painted is multiplied by it. Turning it on alone changes nothing.
+- `Color Map Amount` at 0 leaves the single unified colour; at 1 the texture colour is multiplied in fully. The texture HSVG adjusts hue, saturation, value, and gamma separately.
+
+:::note[Unified shadow only]
+With unified shadow off, the shader **does not read this texture at all.** Per-layer shadow mode already holds a colour on each layer, so there is nothing to distribute - and no sample cost either.
+:::
+
+:::tip[If you still have a highlight mask]
+Consider using it as a matcap or specular mask alongside this map, so colour distribution and gloss are set separately.
+:::
 
 ## 3. 2nd Shadow — 3-Stage Cell Shading {#3-2차-그림자--3단-셀-음영}
 

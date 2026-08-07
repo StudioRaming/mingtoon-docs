@@ -171,6 +171,45 @@ Raise `Body Surface Guard` first. If still present, raise `Master Bias` or `Addi
 
 ---
 
+## SSAO (Screen Space Occlusion) {#ssao-화면-공간-차폐}
+
+Darkens creases and the places where things meet: under the neck and jaw, armpits, cloth folds, and where feet touch the floor.
+
+:::tip[This is occlusion, not shadow]
+It applies to a material with `Form Shadow` off as well. It joins **after** the toon band and the screentone, so it cannot step the shadow boundary or get printed as halftone dots a second time.
+:::
+
+### How it combines with the occlusion map
+
+It is not multiplied. The two are computed separately and **whichever is darker wins**. Where the map already painted the area dark, SSAO does not add more; SSAO only contributes the occlusion a map cannot know about - the one that comes from the actual pose and from nearby objects.
+
+### The order to set it in
+
+| Control | What it does |
+|---|---|
+| `SSAO Radius` | How far the occlusion search reaches. **World metres, not screen pixels**: 0.001-0.1 is 1mm-10cm. Default 0.05 (5cm) |
+| `SSAO Intensity` | Strength. At 0 the image matches the effect being off while the calculation still runs, so turn `SSAO Enabled` off when you are not using it |
+| `SSAO Power` | Tightens the darkening curve |
+| `SSAO Quality` | Depth samples per pixel (4/8/12/16). A uniform loop rather than four keyword variants, so it adds no variants |
+
+On something character-sized, **lower quality with a larger radius** usually reads better than the reverse.
+
+### Holding still across distance and FOV
+
+With `SSAO Distance Compensation` at 1, its default, the same crease gets the same thickness of shading whether the camera comes close or pulls back, and through a change of field of view. FOV cancels out on its own with no separate control. Lower it to 0 and the radius shortens inside one metre, the older behaviour.
+
+`SSAO Far Distance` is where the effect is gone completely. The fade starts at **75% of that value**, so 12 means it begins thinning at 9m and is gone at 12m. 0 disables it.
+
+### Light direction, mask, colour
+
+- `SSAO Light Direction Influence` — leans the search disc toward the key light. At 0 the occlusion is uniform and light-independent; raising it gathers the occlusion on the side the light does not reach. The lean falls off on its own as the light approaches the camera axis.
+- `SSAO Mask Strength` — borrows the `2D Shadow Mask (Shared)` rather than declaring a texture of its own. Channel, invert, and HSVG come from the 2D shadow mask, and **editing it from either screen edits the same one texture.**
+- `SSAO Tint` · `SSAO Brightness` · `SSAO Saturation` — apply **only to the darkness SSAO itself introduced**. Anywhere form, cast, or 2D shadow already darkened is untouched. At the defaults the result is identical.
+
+:::caution[No depth, no effect - silently]
+It is not a light, not a provider, and not a post-process pass. [Getting depth per platform](#플랫폼별-깊이-확보) above applies unchanged: it appears where the 2D depth shadow appears. With no depth, occlusion is pinned to 1 (no occlusion), so the look does not break.
+:::
+
 ## Depth Translucency {#깊이-투과광}
 
 Makes **thin areas like hair tips or clothing edges** look as if they're glowing with light.
