@@ -14,10 +14,10 @@ import autoLinkTerms from './src/remark/auto-link-terms.mjs';
 // link.
 //
 // After a bump run `npm run write-translations` once. The badge's label is a
-// navbar item, so its i18n key carries the version (item.label.v0.1.5) and a
+// navbar item, so its i18n key carries the version (item.label.v0.1.6) and a
 // new one has to be written; the previous key is then reported as unknown and
 // can be deleted from the three navbar.json files.
-const MINGTOON_VERSION = '0.1.5';
+const MINGTOON_VERSION = '0.1.6';
 const LATEST_CHANGELOG = `/changelog/${MINGTOON_VERSION}`;
 
 /** @type {import('@docusaurus/types').Config} */
@@ -146,7 +146,7 @@ const config = {
           },
           // The current version, and the shortest way to what changed in it.
           // `to` rather than `href` so the baseUrl and the locale prefix are
-          // applied - /mingtoon-docs/en/changelog/0.1.5 for an English reader.
+          // applied - /mingtoon-docs/en/changelog/0.1.6 for an English reader.
           {
             to: LATEST_CHANGELOG,
             label: `v${MINGTOON_VERSION}`,
