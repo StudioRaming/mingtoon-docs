@@ -17,7 +17,7 @@ import autoLinkTerms from './src/remark/auto-link-terms.mjs';
 // navbar item, so its i18n key carries the version (item.label.v0.1.6) and a
 // new one has to be written; the previous key is then reported as unknown and
 // can be deleted from the three navbar.json files.
-const MINGTOON_VERSION = '0.1.6';
+const MINGTOON_VERSION = '0.1.7';
 const LATEST_CHANGELOG = `/changelog/${MINGTOON_VERSION}`;
 
 /** @type {import('@docusaurus/types').Config} */
