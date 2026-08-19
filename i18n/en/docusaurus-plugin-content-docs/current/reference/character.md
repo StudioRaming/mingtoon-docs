@@ -18,6 +18,7 @@ Configure face-specific masks and shade direction.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Face Shading Module** | Enables the face-only shading module. Turn it on for face materials only - a body material shaded by face rules looks wrong. | `_MingFaceShadingEnabled` |
 | **Enable Face SDF Shadow** | Off by default. Produces directional SDF face form shadow. It adds texture sampling and shader work, so enable it only on face materials that need it. | `_FaceSdfEnabled` |
 | **SDF Coordinates** | Base Texture UV (0) follows existing UV islands. Baked Front UV7 (1, default) uses a continuous front projection. When SDF owns UV7, baked face normals safely fall back to geometry normals. | `_FaceMapUvMode` |
 | **Baked Face Normal State** | Hidden output managed by Manager. At 1 it uses UV7 baked normals; missing data or SDF ownership of UV7 falls back to geometry normals. Do not edit directly. | `_FaceNormalBaked` |
@@ -28,6 +29,8 @@ Configure face-specific masks and shade direction.
 | **Face Border** | Form-shadow threshold used only on the face area. Range 0 to 1; default 0.25. Lower values delay face darkening, while higher values darken it earlier. Ignored while Form Shadow is off. | `_FaceFormShadowMidPoint` |
 | **Face Softness** | Blur width of the form-shadow terminator on the face area. Ignored while Form Shadow is off. | `_FaceFormShadowSoftness` |
 | **Face Area Mask** | Defines the face area in base UV. White is face and black is not; it is not sampled while its toggle is off. The default white texture classifies the whole material as face. | `_FaceAreaMask` |
+| **Face Casts Real-Time Shadows** | Whether this material's face area casts real-time shadows. Turning it off removes only the shadows the face itself casts onto other surfaces such as the neck or clothing. Bangs shadows are cast by the hair material, so this toggle does not remove them. Camera-depth writes are kept, so the 2D shadow and depth rim keep working. | `_FaceShadowCasterEnabled` |
+| **Real ShadowCaster Offset** | Pushes the face area's shadow caster along its normal to adjust how much the real-time shadow overlaps the face itself. Applied only while Face 2D Shadow Assist is on. It does not move the bangs shadow - the hair material casts that. | `_FaceShadowCasterOffset` |
 | **Proxy Sphere Center** | Center of the virtual sphere that stands in for the head. The Face Proxy scene tool is the accurate way to place it. Unused while Normal Press Amount is 0. | `_FaceProxyCenterOS` |
 | **Proxy Sphere Radius** | Radius of the virtual sphere. When the proxy sphere is used instead of a face mask, everything inside it counts as face, so an oversized radius classifies the neck and hands as face too. | `_FaceProxyRadiusOS` |
 | **Proxy Shape** | Sphere (0, default) suits a round head; Cylinder (1) suits a tall face area. Axis and height apply only to Cylinder. | `_FaceProxyShape` |
@@ -38,8 +41,6 @@ Configure face-specific masks and shade direction.
 | **Invert Mask** | Flips the face area mask black-for-white. Use it when the mask was painted with the face in black. | `_FaceAreaMaskInvert` |
 | **Remap Start** | Start of the range the mask gray values are re-spread over. Raising it shrinks the area counted as face. Equal start and end give a fully hard edge. | `_FaceAreaMaskRemapStart` |
 | **Remap End** | End of the range the mask gray values are re-spread over. Lowering it sharpens the face boundary. Equal start and end give a fully hard edge. | `_FaceAreaMaskRemapEnd` |
-| **Face Casts Real-Time Shadows** | Whether the face mesh casts real-time shadows. Turning it off stops bangs from casting a real shadow on the face, which is what you want when the forehead shadow should come only from the 2D shadow. | `_FaceShadowCasterEnabled` |
-| **Real ShadowCaster Offset** | Pushes the face's shadow caster forward or back to fine-tune where the bangs shadow lands. Ignored while Face Casts Real-Time Shadows is off. | `_FaceShadowCasterOffset` |
 | **Global Horizontal Scale** | Horizontal scale around the texture centre. Range 0.1 to 4; default 0.5. It multiplies slot Tiling, so adjust one transform layer at a time. | `_FaceMapScaleX` |
 | **Global Vertical Scale** | Vertical scale around the texture centre. Range 0.1 to 4; default 0.5. It combines with slot Tiling and outside pixels do not repeat. | `_FaceMapScaleY` |
 | **Global Horizontal Position** | Moves the scaled SDF horizontally. Range -1 to 1; default 0. Align the eye and nose centreline in small steps. | `_FaceMapOffsetX` |
@@ -65,6 +66,9 @@ Grade the lower character color from one root-space height baked into UV4.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Character Height Gradient** | Enables the gradient that tints the character differently by height - typically sinking the feet into a slightly darker tone. Accurate placement needs the UV4 height bake. | `_MingCharacterHeightGradientEnabled` |
+| **Low Color** | Color tinting the lower part of the character. White leaves it unchanged; use a slightly darker color to sink the feet. | `_MingCharacterHeightLowColor` |
+| **High Color** | Color tinting the upper part of the character. White leaves it unchanged. | `_MingCharacterHeightHighColor` |
 | **Low Color** |  | |
 | **High Color** |  | |
 | **Gradient Direction** | Switching to top-down swaps where the two colors land. | |

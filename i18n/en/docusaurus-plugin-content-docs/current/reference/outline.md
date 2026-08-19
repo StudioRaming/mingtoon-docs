@@ -19,6 +19,10 @@ Configure the width, color, and distance correction of the mesh-normal hull outl
 | Control | What it does | Shader property |
 |---|---|---|
 | **Enable Classic Hull** | An inverted-hull outline drawn as one additional pass. It works without a camera depth texture. | `_OutlineHullEnabled` |
+| **Width** | Outline width. Tune it while watching the whole character so the silhouette stays clean; per-area differences belong to the Width Mask. | `_OutlineHullWidth` |
+| **Hull Color** | Color of the hull outline. A darkened relative of the base color reads natural; nearer black reads more comic. | `_OutlineHullColor` |
+| **Protect Hull From DOF** | Makes the hull write depth so depth-of-field blur cannot erase the line. Turn it off if the outline reacts badly to other depth-based post effects. | `_OutlineHullDofProtection` |
+| **Far-Distance Minimum Pixels** | Keeps the outline from thinning below this many screen pixels at distance. Raise it when far-away lines break up; lower it when they stand out too much. | `_OutlineDistanceMinPixels` |
 | **Width Mode** | PixelStable keeps the line a constant thickness on screen regardless of distance; WorldSpace scales it with world size so it thins as the camera pulls back. PixelStable is the safe choice for avatars. | `_OutlineHullWidthMode` |
 | **Hull Pressure Contrast** | Raises the pressure value to a power, widening the difference in line weight. 0 ignores pressure entirely, 1 is the raw value, and higher values thin the thin parts further. With Pressure Source set to OutlineNormalUV8 this reads as thick along long faces and tapered at points. | `_OutlineHullPressureContrast` |
 | **Normal Source** | Which direction the hull is pushed along. MeshNormal uses the raw mesh normal; VertexColorTS and UV8TS read a smoothed outline normal baked into vertex color or UV8. Choosing either on a mesh without that bake breaks the line at hard edges. | `_OutlineHullNormalSource` |
@@ -27,7 +31,17 @@ Configure the width, color, and distance correction of the mesh-normal hull outl
 | **Vector Scale** | Strength of the authored direction vector; negative values flip it. Ignored while Authored Vector Direction is off. | `_OutlineVectorScale` |
 | **Depth Bias** | Pulls the whole hull toward or away from the camera to rescue an outline buried inside another part. Pulling too far makes the line float in front of the face. | `_OutlineHullZBias` |
 | **Include Shading** | Includes form, cast, and 2D shadows plus the 2D rim in the final outline color. Turn it off to keep one lighting-independent line color. | `_OutlineIncludeFormShadow` |
+| **Outline Shadow Pattern** | Prints the shadow pattern screentone onto the outline as well, following the Shadow Pattern tab's settings. | `_OutlinePatternEnabled` |
 | **Apply to Hull Outline** | Applies the painted pressure to the Hull outline width. With Pressure Source set to Constant, turning it on changes nothing. | `_OutlineHullPressureApply` |
+| **Blend Opacity** | How strongly the outline color blends in. At 0 the line is invisible. | `_OutlineHullColorBlendOpacity` |
+
+## Outline
+
+Configure outline width, color, masks, and distance correction.
+
+| Control | What it does | Shader property |
+|---|---|---|
+| **Outline Master** | Shared gate both Normal Outline and Inner 2D Edge sit behind. While off, neither tab renders. Kept as a compatibility switch for older materials. | `_OutlineEnabled` |
 
 ## Stencil Settings
 
@@ -42,12 +56,3 @@ Configure stencil state separately for the general and Normal Outline passes.
 | **Stencil Pass** | What to do to the stencil buffer when both the stencil and depth tests pass. The default Keep leaves the buffer untouched. | `_OutlineStencilPass` |
 | **Stencil Fail** | What to do to the stencil buffer when the stencil test fails. The default Keep leaves the buffer untouched. | `_OutlineStencilFail` |
 | **Stencil ZFail** | What to do when the stencil test passes but the depth test fails. The default Keep leaves the buffer untouched. | `_OutlineStencilZFail` |
-
-## Fallback Display
-
-Configure fallback behavior for limited rendering environments.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Fallback Fresnel Rim Color** | Color of the Fresnel rim drawn in place of the 2D rim when the camera depth texture is unavailable. It never shows while the fallback mode is off or while camera depth is available. | `_FallbackRimColor` |
-| **Fallback Fresnel Rim Power** | Falloff of the fallback Fresnel rim; higher values pull it into a thinner band at the silhouette. It never shows while camera depth is available. | `_FallbackRimPower` |

@@ -34,6 +34,7 @@ Configure view-angle-responsive rim lighting.
 | **Enable Fresnel Rim** | On by default. Composites rim light toward silhouette edges viewed at a grazing angle. Off preserves values but skips this pass. | `_MingFresnelRimEnabled` |
 | **Fresnel Rim Color** | HDR rim-light color; default is (26.17, 26.17, 26.17). It is multiplied by Blend Opacity, and very high values can clip to white without bloom. | `_MingFresnelRimColor` |
 | **Fresnel Rim Blend Mode** | Chooses Normal, Multiply, Add, Hue, Screen, Color, or Overlay for the rim. Default Add (2) increases brightness, so high HDR color or opacity can clip or bloom. | `_MingFresnelRimBlendMode` |
+| **Blend Opacity** | How strongly the fresnel rim blends in. Use it to dial the rim's presence down without touching its color or intensity; 0 turns the rim off entirely. | `_MingFresnelRimBlendOpacity` |
 | **Intensity** | Range 0-20; default 0.52. Brightness multiplier for the Fresnel rim. At 0 the rim never appears no matter how its color or width is set. | `_MingFresnelRimIntensity` |
 | **Fresnel Power** | Range 0.01-32; default 0.54. Higher values push the rim into a thinner band right at the silhouette. It works together with Width; lower values spread it out softly. 2-8 is the usual band. | `_MingFresnelRimPower` |
 | **Width** | Range 0-1; default 0. Where the rim starts. At 0 no rim appears; near 1 the whole surface lights up. | `_MingFresnelRimWidth` |
@@ -74,6 +75,7 @@ Configure a Fresnel reflection band visible only inside shadow.
 | **Enable Shadow Interior Reflection** | On by default. Adds a reflection band only inside regions darkened by lighting, cast shadows, or 2D shadows. Off skips the entire effect, including its shadow gate. | `_MingShadowReflectionEnabled` |
 | **Shadow Interior Reflection Color** | HDR color for the shadow-interior reflection; default is (3.81, 3.81, 3.81). Blend Opacity and Intensity also apply, and high values can clip without bloom. | `_MingShadowReflectionColor` |
 | **Shadow Reflection Blend Mode** | Chooses Normal, Multiply, Add, Hue, Screen, Color, or Overlay for the shadow reflection. Default Add (2) adds brightness; the shadow gate and opacity still limit where it appears. | `_MingShadowReflectionBlendMode` |
+| **Blend Opacity** | How strongly the shadow interior reflection layer blends in. Lower it when the bounce light inside shadows reads too strong; 0 turns it off. | `_MingShadowReflectionBlendOpacity` |
 | **Shadow Interior Reflection Intensity** | Range 0-20; default 0.5. Brightness multiplier for the reflection inside shadow regions; at 0 it adds no color even when the shadow shape is configured. | `_MingShadowReflectionIntensity` |
 | **Shadow Reflection Falloff** | Range 0.01-32; default 3.9. Higher values pull the reflection into a thinner band at the silhouette edge. | `_MingShadowReflectionPower` |
 | **Shadow Reflection Width** | Range 0-1; default 0.9. Width of the reflection band inside shadow; 0 removes the band, near 1 covers more of the shadow interior. | `_MingShadowReflectionWidth` |

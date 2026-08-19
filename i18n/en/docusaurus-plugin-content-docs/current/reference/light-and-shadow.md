@@ -20,6 +20,8 @@ Configure direct and indirect lighting response.
 |---|---|---|
 | **Preserve Base Map Color** | How closely the Base Map keeps its authored color when the scene light is dim. At 1 the artwork color survives any light intensity; at 0 it tracks the light exactly. Keep it high for worlds with unpredictable lighting such as VRChat. | `_BaseColorPreservation` |
 | **Scene Light Color Influence** | How much the scene light's hue tints the character. At 0 every light reads as white; at 1 a red light turns the character red. This controls hue only, not brightness. | `_LightColorInfluence` |
+| **Additional Light Receive** | How much point, spot and other additional lights reach the character. Lower it when stray world lights make the character flare; 0 ignores additional lights entirely. | `_MingAdditionalLightReceive` |
+| **Additional Light Intensity** | Brightness multiplier on the additional light that was received. Additional Light Receive decides whether it comes in; adjust this when what comes in is too strong or too weak. The light's color is untouched. | `_MingAdditionalLightIntensity` |
 | **Lit Brightness** | Overall brightness multiplier on the lit side. 1 is neutral; raising it easily blows the lit areas out to white. | `_LitBrightness` |
 | **Indirect Light Lift** | Lifts the form shadow by the amount of ambient and probe light so dark scenes do not crush to black. It is only evaluated while Form Shadow is on; cast shadows have their own Cast Indirect Lift. | `_IndirectStrength` |
 
@@ -29,17 +31,26 @@ Configure shape-based shade thresholds and softness.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Form Shadow** | Toggles the form shadow - the toon shading that follows light direction. Off, the character loses its shading bands and only cast and 2D shadows remain. | `_FormShadowEnabled` |
+| **1st Shadow Border** | Where the 1st shadow boundary sits. Raising it spreads the shadow toward the lit side; lowering it pulls it back. The first value to touch when the shadow covers too much or too little. | `_FormShadowMidPoint` |
 | **1st Shadow Blur** | Width of the terminator blur. Near 0.001 gives the hard cel edge; above 0.3 becomes a soft gradient. This is the most frequently adjusted control in the product. | `_FormShadowSoftness` |
+| **Blend Opacity** | How strongly the 1st shadow color blends into the result. Lower it when the shadow color covers too heavily; at 0 the color is not applied at all. | `_FormShadowColorBlendOpacity` |
+| **1st Shadow Color** | Color of the 1st form shadow. A calm color slightly darker than the base reads softer than plain black. While Unified Shadow mode is on, the unified color is used instead. | `_FormShadowColor` |
 | **1st Shadow Brightness** | Brightness multiplier on the first form-shadow color. Lower is darker; it has no effect while the Shadow Color module is off. | `_FormShadowBrightness` |
+| **2nd Shadow Color** | Color of the 2nd, deeper form shadow. Usually darker than the 1st. Visible only while the 2nd shadow is enabled. | `_FormShadow2ndColor` |
 | **2nd Shadow Brightness** | Brightness multiplier on the second form-shadow color. Keep it below the 1st shadow so the two bands read apart. Ignored while Enable 2nd Shadow is off. | `_FormShadow2ndBrightness` |
 | **Enable 2nd Shadow** | Adds a second, deeper shadow band for a three-tone cel look. While off, the 2nd brightness and blur rows do nothing. | `_FormShadow2ndEnabled` |
+| **2nd Shadow Border** | Boundary of the 2nd shadow. Keep it on the darker side of the 1st boundary so the two bands separate cleanly. | `_FormShadow2ndMidPoint` |
 | **2nd Shadow Blur** | Width of the second shadow's edge blur. Keeping it tighter than the 1st shadow makes the inner band read crisply. Ignored while Enable 2nd Shadow is off. | `_FormShadow2ndSoftness` |
 | **Use Shadow Boundary** | Enables the colored boundary effect between lit and shadowed regions. Off also skips its boundary work. | `_MingShadowBorderEnabled` |
+| **Boundary Color** | Color laid along the 1st shadow boundary - typically a faint warm red on skin terminators. Set its Blend Opacity to 0 to turn it off. | `_ShadowBorderColor` |
 | **Boundary Overlay Mode** | Whether the boundary color band straddles the terminator or stays inside the shadow side only. On, it crosses into the lit side for a thick colored terminator; off, it stays inside the shadow and reads cleaner. | `_MingShadowBorderOverlay` |
 | **Boundary Width** | Width of the colored band laid on the terminator. At 0 nothing is drawn, so the boundary color, blur and strength rows are all ignored. It also needs the Shadow Color module on and either Form Shadow or Cast Shadow active. | `_ShadowBorderWidth` |
 | **Boundary Blur** | Blur width at the edge of the boundary band. Ignored while Boundary Width is 0. | `_ShadowBorderBlur` |
 | **Boundary Strength** | Opacity of the boundary band. At 0 the band stays invisible no matter how wide it is. | `_ShadowBorderStrength` |
 | **Boundary Base Map Mix** | 0 draws the boundary in the flat color you picked; 1 blends it with the Base Map so each material area gets its own boundary tint. Raise it when skin and hair share one material. | `_ShadowBorderBaseColorMix` |
+| **Blend Opacity** | How strongly the 2nd shadow color blends into the result. At 0 the color is not applied at all. | `_FormShadow2ndColorBlendOpacity` |
+| **Blend Opacity** | How strongly the boundary color blends in. At 0 the boundary color is fully off. | `_ShadowBorderColorBlendOpacity` |
 
 ## Shadow Color
 
@@ -47,6 +58,8 @@ Configure toon-shadow colors and blending by band.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Shadow Color** | Master switch for shadow coloring. Off, the colors authored for form, cast and 2D shadows - and the boundary color - are not applied. | `_ShadowColorEnabled` |
+| **Shadow Ambient Influence** | How much the shadow takes on the ambient light's hue. Raise it when a sunset world leaves the shadows looking pasted on. It borrows color only, not brightness, and applies only where the surface is shadowed. | `_MingShadowAmbientInfluence` |
 | **Enable Unified Shadow** | Collapses form, cast and 2D shadows onto one final color so overlaps do not double-darken. While it is on, the individual shadow color, blend and brightness controls no longer affect the render; their values are preserved. | `_MingUnifiedShadowEnabled` |
 | **Unified Shadow Color** | The single color every shadow converges on. RGB multiplies the base color and the alpha is the amount, so at alpha 0 the shadow stays the plain base color no matter what hue you pick. Unused while Unified Shadow is off. | `_MingUnifiedShadowColor` |
 
@@ -56,6 +69,7 @@ Configure cast shadows projected onto this material and their edge feather.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Shadow Projection** | Whether the character receives projected (cast) shadows from other objects and itself. Off, scene shadows never land on the character. | `_CastShadowEnabled` |
 | **Receive Strength** | How much real-time cast shadow this surface receives. At 0 cast shadows vanish and the brightness, blend and indirect-lift rows below stop showing any result. | `_CastShadowReceiveStrength` |
 | **PBR / Toon Blend** | 0 keeps Unity's soft shadow falloff; 1 snaps it into a hard toon band. The band's width comes from Cast Toon Band Softness. | `_CastShadowToonBlend` |
 | **Unify With 2D Shadow** | Ties the 2D shadow to the cast-shadow color so overlapping areas do not darken twice. While on, the cast-shadow color is used in place of the 2D shadow color. | `_LinkDepthShadowToCastShadow` |
@@ -63,10 +77,12 @@ Configure cast shadows projected onto this material and their edge feather.
 | **Self Shadow Caster Bias** | How far the shadow caster is pushed off the surface. Large values remove acne but detach contact shadows and drop the shadow on thin parts. 0.01-0.03 is a safe band. Ignored while Suppress Self Cast Shadow is off. | `_SelfShadowCasterBias` |
 | **Cast Indirect Lift** | Fades cast shadows where ambient light is strong, so indoor and outdoor lighting differences absorb naturally. Near 1 cast shadows almost disappear in bright scenes. | `_CastShadowIndirectLift` |
 | **Suppress Backlit Silhouette** | Skips cast shadow on faces turned away from the light. It removes the second character-shaped silhouette that otherwise appears on the body under backlight. | `_CastShadowBackfaceSuppression` |
+| **Cast Shadow Tint** | Tint applied to received cast shadows. Matching it to the 1st shadow color keeps the two from clashing where they overlap. Ignored while Unified Shadow mode is on. | `_CastShadowColor` |
 | **Cast Shadow Brightness** | Brightness multiplier on the cast-shadow color. While the Shadow Color module is off, cast shadows are a plain darkening and this value is ignored. | `_CastShadowBrightness` |
 | **Face Cast Stabilization** | Cleans up the blotches that appear when real-time shadow grazes a soft surface such as a face. While off, the strength and grazing-threshold rows below are ignored; with Cast Shadow itself off, turning this on changes nothing. | `_MingFaceCastStabilizationEnabled` |
 | **Stabilization Strength** | How strongly face cast stabilization is applied. Too high also fades intended shadows such as the bangs shadow. Ignored while Face Cast Stabilization is off. | `_MingFaceCastStabilizationStrength` |
 | **Grazing Angle Threshold** | How far the light must fall away from the face-forward axis to count as grazing. Raising it applies the correction across a wider range of light angles; near 0 it only kicks in at near-perfect side light. Ignored while Face Cast Stabilization is off. | `_MingFaceCastGrazingThreshold` |
+| **Blend Opacity** | How strongly the cast shadow tint blends into the result. At 0 the tint is not applied at all. | `_CastShadowColorBlendOpacity` |
 
 ## Shadow Pattern (Screentone)
 
@@ -74,6 +90,9 @@ Configure cast shadows projected onto this material and their edge feather.
 |---|---|---|
 | **Enable Shadow Pattern** | Applies a screentone to the form shadow, the 2D shadow, or both. The lattice follows the mesh/rest-pose frame, keeping the same mark count on a surface region across camera distance and FOV changes. | `_ShadowPatternEnabled` |
 | **Pattern Target** | Selects form shadow, 2D shadow, or both. Real-time cast-shadow sampling itself is not patterned by this selector. | `_ShadowPatternTarget` |
+| **Pattern Style** | Recolor redraws the shadow coverage as the screentone shape, so the strokes take the shadow color. Overlay keeps the shadow as authored and prints the pattern on top in the Ink Color. | `_ShadowPatternStyle` |
+| **Ink Color** | Ink color the screentone strokes print with in Overlay style. Recolor style reuses the shadow color instead, so this color is not used there. | `_ShadowPatternColor` |
+| **Blend Opacity** | How strongly the ink color blends in. Lower it for a subtler tone; at 0 the ink is invisible. | `_ShadowPatternColorBlendOpacity` |
 | **Pattern Density** | How many cells fill one mesh-projection unit. One cell is one tile repeat, so enabling a shape tile never changes surface density. | `_ShadowPatternScale` |
 | **Distance Compensation** | At 1 the cell count is fully locked to the mesh. Lower values approach the former fixed-screen-density response while the pattern phase still follows the mesh. | `_ShadowPatternDistanceCompensation` |
 | **FOV / Projection Compensation** | At 1 the same mesh region keeps its pattern density across perspective FOV and orthographic-size changes. At 0 camera projection changes affect density. | `_ShadowPatternProjectionCompensation` |

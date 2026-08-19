@@ -109,7 +109,7 @@ Setting it as a skin renderer means clothes also receive Skin values. After conv
 Per-slot judgment is disabled. **Select one at a time.**
 :::
 
-### Look preset on convert
+### Look preset on convert {#변환-시-룩-프리셋}
 
 Fill in look values at the same time as conversion.
 

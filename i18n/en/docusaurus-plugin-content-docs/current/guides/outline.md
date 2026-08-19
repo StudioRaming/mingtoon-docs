@@ -131,9 +131,19 @@ The `Normal Source` is the cause.
 | `MeshNormal` | Mesh normal as-is. Lines separate at hard edges |
 | `VertexColorTS` / `UV8TS` | Valid **only when smooth outline normals are baked to vertex color or UV8** |
 
-:::danger[If you choose `VertexColorTS`/`UV8TS` on an unbaked mesh]
+:::danger[If you choose `UV8TS` on an unbaked mesh]
 Lines actually break **more** at sharp corners. Without baking, use `MeshNormal`.
 :::
+
+:::note[Using `VertexColorTS` with no vertex colors on the mesh]
+It falls back to mesh normal. The line doesn't slide diagonally off the mesh entirely.
+:::
+
+### Hair and skirt lines break away from form {#헤어스커트에서-선이-형태를-벗어날-때}
+
+Models like hair or skirts that **move normals from a sphere or cylinder** have shading normals that differ from their actual shape already. Baking as-is makes the outline follow the borrowed sphere instead of the mesh.
+
+When baking UV8, enable `Compute For Edited-Normal Models` to recalculate direction from mesh faces. Shading stays as authored and only the outline follows the mesh. Default is off. → [Mesh UV Bakes](/guides/mesh-bakes#노멀을-편집한-모델용으로-계산)
 
 You can also specify direction as a texture. Enable `Authored Vector Direction` and set `Vector UV` and `Vector Scale`. Negative scale flips direction. When off, these are ignored and `Normal Source` controls direction.
 
@@ -145,7 +155,13 @@ If unnecessary lines appear inside the body, use `Inner Line Suppression Offset`
 
 ## Make outline color follow lighting {#아웃라인-색이-조명을-따라가게}
 
-Enable `Include Shading` to reflect form, cast, and 2D shadows plus 2D rim into the outline color. Disable to keep a uniform color regardless of lighting.
+Enable `Include Shading` and the outline receives **a soft brightness band** following the body's form-shadow color. Heavy outlines darken with lighting. Disable to keep a uniform color regardless of lighting.
+
+:::note[Outline does not duplicate body shading]
+The outline draws from base map color and light response alone. It does not redraw the body's shadow pattern, cast shadows, or depth effects over the line, keeping pixel cost low.
+
+To print screentone on the line too, enable `Outline Shadow Pattern` separately. → [Shadow Pattern](/guides/shadow-pattern)
+:::
 
 ## When overlapping other shaders
 

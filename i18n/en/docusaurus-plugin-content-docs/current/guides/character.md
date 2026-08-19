@@ -100,18 +100,23 @@ You can adjust the direction the face uses as a reference with `Face Fixed Direc
 
 ### Step 4: Forehead shadow {#4단계-앞머리-그림자}
 
-Choose one of two directions.
+Step that chooses **which method to draw shadows created by hair and accessories on the face**. Appears at the top of Face Shading in the `Face Shadow Mode` group as a single row: `Shadow Mode`.
 
-#### Use real shadows
+| Value | Result | Use |
+|---|---|---|
+| **Real Shadows (Same as Body)** | Receives the scene's real-time shadows directly | When you don't need separate face handling |
+| **Soft 2D Shadow (Face Corrected)** | Adds auxiliary push to keep [2D Shadow](/guides/depth-effects#2d-그림자) soft on the face | Anime look. Forehead shadow shape stays steady even when lighting changes |
+| **Custom** | Related values manually adjusted | Automatically displays here if you diverge from the two preset combinations |
 
-This is the default. If positioning is off, fine-tune by pushing the face's shadow caster front-to-back with `Real ShadowCaster Offset`.
+:::note[One row uses multiple values together]
+Settings for this choice were originally scattered across two tabs. Selecting a mode sets `Enable Face Self Cast` and the face auxiliary push in the depth tab **together at once**. It's a single undo unit and applies to all selected materials.
 
-#### Draw with 2D shadows only
+Directly editing a value changes the selector display to `Custom`. This doesn't mean the state is wrong—just that it's not a preset combination.
+:::
 
-1. Turn off `Face Casts Real-Time Shadows`. The face mesh no longer casts real-time shadows.
-2. Draw forehead shadows with [2D Shadow](/guides/depth-effects) or shadow textures.
+`Soft 2D Shadow (Face Corrected)` requires [camera depth](/guides/depth-effects#플랫폼별-깊이-확보). Without depth on a screen, no shadow reaches the face at all—so if you're targeting VRChat's standard view, prepare shadow textures alongside it.
 
-This is closer to anime-style looks and the forehead shadow shape doesn't shift when lighting changes.
+If real-time shadow positioning shifts away from the face, fine-tune by pushing the face region's shadow caster along the normal direction with `Real Shadow Caster Offset`.
 
 ### When real-time shadow speckling appears on the face
 

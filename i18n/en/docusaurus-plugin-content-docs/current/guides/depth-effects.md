@@ -66,6 +66,42 @@ You need a Warudo camera with Depth enabled. In some cases, a host camera cannot
 
 ---
 
+## Depth Availability {#깊이-가용성}
+
+Decides **how the shader determines whether depth texture exists**. Choose from four options.
+
+| Value | Meaning |
+|---|---|
+| `Auto` (default) | Shader finds it automatically. **Leave as is** |
+| `Force On` | Author guarantees depth buffer on hosts where auto-detection fails. **Excludes mirrors** |
+| `Force Off` | Completely blocks depth effects |
+| `Diagnostic` | Paints detection status on screen in solid color. **For bug reporting** |
+
+:::caution[`Force On` does not enable mirrors]
+A mirror camera does not draw its own depth texture, but the player camera's depth buffer stays bound. Read as-is, the character wears **a stranger's silhouette** as its own shadow — that is exactly what was happening when 2D Shadow and Depth Rim slid across the body every time the player looked around.
+
+So `Force On` means "enable even where the host cannot report it, **except in mirrors**". Inside a mirror the depth modules stand down whatever you picked.
+:::
+
+### Diagnostic — reporting only {#diagnostic}
+
+When depth effects appear to spread across the entire avatar, the shader paints a solid color showing **which depth texture it's actually reading**. The look changes entirely, so don't use it for normal work.
+
+| Color | Meaning |
+|---|---|
+| Black | No depth texture at all |
+| Red | Texture exists but this screen's buffer differs (size mismatch or mirror) |
+| Yellow | Exists and size matches |
+| Blue channel mixed in | Host reporting depth availability directly |
+
+Rendering itself does not change. Depth detection running under the diagnostic color behaves identically to `Auto`.
+
+:::note[Re-upload needed to verify on VRChat]
+Shaders are bundled in the avatar asset bundle, so already-uploaded avatars continue using the old shader. → [VRChat](/platforms/vrchat)
+:::
+
+---
+
 ## Diagnosis Checklist
 
 Check items from top to bottom.

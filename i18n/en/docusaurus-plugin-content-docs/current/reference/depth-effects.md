@@ -18,6 +18,8 @@ Configure ranges and masks for depth-driven effects.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Depth Effects** | Master switch for every depth effect - 2D depth rim, depth translucency and 2D shadow. Off, all three modules stop. These effects need a camera depth texture to run. | `_DepthEffectsEnabled` |
+| **Depth Availability** | How the shader decides whether a depth texture exists. Keep Auto. Force On is for hosts the automatic probes cannot see, when you can vouch for the buffer yourself; Force Off blocks depth effects entirely; Diagnostic paints the detection state on screen. | `_MingDepthAvailabilityMode` |
 | **Master Width** | A shared multiplier on the screen offset used by both 2D Depth Rim and 2D Shadow. Setting it to 0 here kills both effects no matter how high their own width sliders go. | `_DepthWidth` |
 | **Width Mode** | Screen Pixels keeps the offset in screen pixels, so the line looks relatively thicker as the camera pulls back; Distance Stable holds a constant apparent thickness across distance and FOV. With Screen Pixels selected, Distance Scaling does nothing. | `_DepthWidthMode` |
 | **Distance Scaling** | Sets the reference distance for the thickness while Width Mode is Distance Stable. Ignored when Width Mode is Screen Pixels. | `_DepthDistanceScale` |
@@ -31,12 +33,19 @@ Configure rim effects generated from screen-depth differences.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **2D Depth Rim** | Toggles the 2D depth rim, drawn from silhouette depth differences. Unlike the normal-based fresnel rim it gives an even-width line along the outline. Needs the camera depth texture. | `_DepthRimEnabled` |
 | **Rim Width Multiplier** | A 2D-rim-only multiplier on Master Width. The final thickness is Master Width times this value, so raising it does nothing while Master Width is 0. | `_DepthRimWidth` |
 | **Rim Intensity** | Brightness multiplier for the 2D rim. At 0 the rim is skipped entirely, so its color and width change nothing. | `_DepthRimIntensity` |
+| **Depth Rim Mask** | Enables a mask that limits the 2D rim to chosen areas - keeping the rim on metal trim only, for example. | `_DepthRimMaskEnabled` |
+| **Channel** | Which channel of the rim mask to read. Split channels when several masks share one packed texture. | `_DepthRimMaskChannel` |
+| **Invert** | Flips the rim mask black-for-white so the rim applies to the opposite area. | `_DepthRimMaskInvert` |
+| **Strength** | How far the mask cuts the rim. At 1 the rim disappears completely where the mask is black; lower values leave part of it. | `_DepthRimMaskStrength` |
+| **Rim Color** | Color of the 2D rim. It is HDR, so raising its intensity can push it into bloom. | `_DepthRimColor` |
 | **Mix Base Color** | 0 draws the rim in the flat color you picked; 1 multiplies it by the Base Map so each material area gets its own rim tint. | `_DepthRimBaseColorMix` |
 | **360 Rim** | 0 puts the rim only on the light side; 1 wraps it around the whole silhouette. Raise it for scenes with no directional light or with constantly changing light direction. | `_DepthRim360` |
 | **Silhouette Start** | How far the surface must turn away from the camera to count as silhouette. This row and the transition softness below have no effect at all while Outer Silhouette Limit in the same group is 0. | `_DepthRimSilhouetteThreshold` |
 | **Silhouette Transition** | Transition width of the silhouette test. Ignored while Outer Silhouette Limit in the same group is 0. | `_DepthRimSilhouetteSoftness` |
+| **Blend Opacity** | How strongly the rim color blends in. Try lowering this before Intensity when the rim overpowers; at 0 the rim is invisible. | `_DepthRimColorBlendOpacity` |
 
 ## 2D Shadow
 
@@ -44,8 +53,15 @@ Configure a lightweight character shadow from the screen-depth silhouette of obj
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **2D Shadow** | Toggles the depth-based 2D shadow. Its signature use is the bangs shadow hair drops on the face. Needs the camera depth texture. | `_DepthShadowEnabled` |
+| **2D Shadow Mask** | Enables a mask that limits the 2D shadow to chosen areas - use it to erase the shadow where it is not wanted. | `_DepthShadowMaskEnabled` |
+| **Channel** | Which channel of the 2D shadow mask to read. Split channels when several masks share one packed texture. | `_DepthShadowMaskChannel` |
+| **Invert** | Flips the 2D shadow mask black-for-white so the shadow applies to the opposite area. | `_DepthShadowMaskInvert` |
+| **2D Shadow Color** | Color of the 2D shadow - the depth-based shadow hair drops on the face. Keep its tone in line with the other shadow colors. | `_DepthShadowColor` |
+| **Blend Opacity** | How strongly the 2D shadow color blends in. In Unified Shadow mode it doubles as the overlap depth - at 0 the 2D shadow merges fully into one color with the form shadow; raising it lets the 2D shape stay darker inside it. | `_DepthShadowColorBlendOpacity` |
 | **Shadow Brightness** | Brightness multiplier on the 2D shadow color; lower is darker. When 2D and cast shadows are unified, this becomes the brightness of the merged layer. | `_DepthShadowBrightness` |
 | **Face 2D Shadow Assist** | Off by default. After defining the face area, enable this to suppress self-overlap from MingToon's camera-depth projected shadow there. Other effects sharing that depth, such as depth rim and inner edge, can change too. | `_DepthShadowFaceAssistEnabled` |
+| **Strength** | How far the mask cuts the 2D shadow. At 1 the shadow disappears completely where the mask is black; lower values leave part of it. | `_DepthShadowMaskStrength` |
 
 ## SSAO (Screen Space Occlusion)
 
@@ -81,16 +97,21 @@ Measures how far light travelled through the character along the light, so thin 
 | **Translucency Strength** | Overall brightness multiplier for the transmitted light. At 0 the whole module is skipped. | `_TranslucencyStrength` |
 | **Edge Intensity** | Strength of the layer that lights only the outer silhouette. Set it to 0 and the result is exactly a single centre layer. | `_TranslucencyEdgeIntensity` |
 | **Edge Falloff** | How tightly the edge layer gathers at the silhouette. Higher values hug the outline more thinly. | `_TranslucencyEdgePower` |
+| **Edge Width** | Width of the transmission band along the silhouette edge. Lower it when the edge glow reaches too far inward. | `_TranslucencyEdgeWidth` |
+| **Edge Softness** | How gently the edge band fades out. Higher values feather it; lower values keep it a crisp band. | `_TranslucencyEdgeSoftness` |
 | **Edge HSVG** | Derives the edge layer's colour from the base colour instead of an absolute one, so blonde hair, dark hair and skin all read correctly from one setting. The neutral (0,1,1,1) skips the adjustment entirely. | `_TranslucencyEdgeHSVG` |
 | **Edge Tint** | Multiplied onto the edge colour after the HSVG adjustment. White changes nothing. | `_TranslucencyEdgeTint` |
 | **Center Intensity** | Strength of the layer that lights the interior. Set it to 0 and the result is exactly a single edge layer. | `_TranslucencyCenterIntensity` |
 | **Center Falloff** | How tightly the centre layer gathers on camera-facing surfaces. | `_TranslucencyCenterPower` |
+| **Center Width** | Width of the facing (center) transmission band - how far the middle of thin parts like ears and fingertips glows. | `_TranslucencyCenterWidth` |
+| **Center Softness** | How gently the center band fades out. Higher values feather it; lower values sharpen it. | `_TranslucencyCenterSoftness` |
 | **Center HSVG** | Derives the centre layer's colour from the base colour. The default rotates the hue toward red and raises saturation, giving hair a near-white outer edge over a warm glowing interior. | `_TranslucencyCenterHSVG` |
 | **Center Tint** | Multiplied onto the centre colour after the HSVG adjustment. White changes nothing. | `_TranslucencyCenterTint` |
 | **Backlight Falloff** | How precisely the camera and the light must oppose each other for the effect to peak. Higher values confine the peak to a narrow, exactly backlit band; how much survives in front light is set by Front Light Floor. | `_TranslucencyLightPower` |
 | **Front Light Floor** | How much transmitted light survives in full front light. Scattering only gets stronger when backlit; it does not switch off, and at 0 skin stops reading as skin. | `_TranslucencyAmbient` |
 | **Normal Bend** | Bends the light vector toward the surface normal so a curved strand keeps transmitting slightly off the exact backlight axis. At 0 only the plain backlight response remains. | `_TranslucencyDistortion` |
 | **View Bend** | Bends the light vector toward the camera. On flat hair cards, whose normals say nothing about the volume they stand for, the normal bend alone makes the light flicker on and off as the card turns; this is what stops that. | `_TranslucencyViewBend` |
+| **Normal Influence** | How much the normal map shapes the transmission. 0 uses the mesh normal only. Lower it when a strong normal map breaks the glow into surface noise. | `_TranslucencyNormalInfluence` |
 | **Scene Light Influence** | 0 ignores the scene light colour and uses only the authored colour; 1 takes the light fully. Worlds differ wildly, so both ends are needed. | `_TranslucencySceneLightInfluence` |
 | **Exposure Softness** | Eases the two knees of the ramp normalised by Depth Range. At 0 it is exactly a straight ramp. It reshapes the response curve only and never moves where the boundary sits. | `_TranslucencySoftness` |
 | **Density** | How steeply thinness turns into brightness. Higher values leave light only where the character is very thin, which reads as a denser material; lower values spread it wide. | `_TranslucencyDensity` |
@@ -104,6 +125,13 @@ Configure the screen-depth edge drawn inside the visible surface.
 |---|---|---|
 | **Enable Inner 2D Edge** | Draws interior edges from screen-depth differences. It needs no extra geometry, so it works on meshes where the hull breaks, but it requires the camera depth texture and does nothing on a Transparent surface. | `_OutlineInnerEdgeEnabled` |
 | **Pressure Source** | Which painted channel modulates line width. VertexRed reads vertex color R, VertexAlpha reads A, WidthMask reads the width mask texture. Choosing VertexRed on a mesh imported with black vertex colors makes the line vanish entirely. | `_OutlineHullPressureSource` |
+| **Inner Edge Mask** | Enables a mask limiting the inner edge to chosen areas - use it to erase unwanted lines on the face. | `_OutlineInnerEdgeMaskEnabled` |
+| **Channel** | Which channel of the inner edge mask to read. Split channels when several masks share one packed texture. | `_OutlineInnerEdgeMaskChannel` |
+| **Invert** | Flips the inner edge mask black-for-white so the edge applies to the opposite area. | `_OutlineInnerEdgeMaskInvert` |
+| **Strength** | How far the mask cuts the inner edge. At 1 the line disappears completely where the mask is black; lower values leave part of it. | `_OutlineInnerEdgeMaskStrength` |
+| **Inner Edge Color** | Color of the inner 2D edge, drawn on depth steps inside the silhouette - collar lines, the chin, cloth folds. | `_OutlineInnerEdgeColor` |
+| **Width** | Width of the inner 2D edge. Usually kept thinner than the Normal Outline. | `_OutlineInnerEdgeWidth` |
 | **Apply to Inner Edge Outline** | Also applies the painted pressure to the Inner 2D Edge width. This toggle and Pressure Source live in the Classic Hull group, but this one keeps affecting the inner edge even with the hull turned off - on a mesh with black vertex colors it makes the inner edge disappear completely. | `_OutlineInnerEdgePressureApply` |
 | **Depth Bias** | Only depth differences larger than this count as an edge. Lower catches gentle creases and turns noisy; higher drops the line on thin parts. | `_OutlineInnerEdgeBias` |
 | **Softness** | Spatial feather across the inner edge. 0 keeps a hard line; 1 fades continuously across the full width down to zero. | `_OutlineInnerEdgeSoftness` |
+| **Blend Opacity** | How strongly the inner edge color blends in. At 0 the inner edge is invisible. | `_OutlineInnerEdgeColorBlendOpacity` |

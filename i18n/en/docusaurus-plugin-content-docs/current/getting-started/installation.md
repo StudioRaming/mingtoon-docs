@@ -46,6 +46,26 @@ This distribution is **source `.unitypackage`**, not a UPM package. Reimporting 
 
 **This is correct.** Project window shows `Assets/StudioRaming/MingToon/`, and Console has no red errors.
 
+## Upgrading from an earlier version {#이전-버전에서-올라왔다면}
+
+If you upgraded a project from MingToon 0.1.5 or earlier to 0.1.6, you must perform the following two steps **once each**.
+
+:::danger[1. Run schema migration once]
+`Tools > Studio Raming > MingToon > Advanced > Migrate Project To Current Schema`
+
+Material schema has moved from **version 10 to 11**. Two new toggles were added: `Enable Fresnel Rim Mask` and `Enable Rim Shade Mask`. Old materials do not have these toggles, so they read as **disabled**. Migration finds masks that are not the default white and enables the toggles.
+
+**Rim masks do not apply to materials until you run this.** Materials with default white masks remain disabled, which is fine.
+
+Migration confirms before running and backs up changed files. When complete, the console reports the count of processed materials, presets, and animation clips in one line, along with the backup path. → [Rim](/guides/rim#림-마스크)
+:::
+
+:::caution[2. Bake cache regenerates]
+Generator shader cache moves from **version 28 to 29**, invalidating existing bake output. The next build/upload regenerates it automatically, so nothing needs manual deletion—but that one run takes longer.
+
+**VRChat avatars must be re-uploaded for this version's fixes to take effect.** Shaders are bundled in the avatar asset bundle, so already-uploaded avatars continue using the old shader. → [VRChat](/platforms/vrchat)
+:::
+
 ## 4. VRChat integration check (VRChat target only)
 
 After script reload, Console must show this line:

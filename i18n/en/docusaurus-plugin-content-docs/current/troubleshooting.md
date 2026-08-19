@@ -233,7 +233,7 @@ Read `lossy` / `unsupported` items in conversion log first, then compare these w
 
 → [Automatic Optimization On Build](/workflow/build-optimization#제대로-걸렸는지-확인하기)
 
-## Inspector feels heavy while authoring
+## Inspector feels heavy while authoring {#작업-중-인스펙터가-무겁다}
 
 This is normal. The editable shader compiles all features and maximum layer count upfront and maintains them, so toggling features doesn't cause recompilation waits or blue placeholder colors. Lightweighting applies only [at build time](/workflow/build-optimization).
 

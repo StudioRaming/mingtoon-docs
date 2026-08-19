@@ -60,6 +60,21 @@ If backfaces appear unnaturally dark on double-sided materials, try enabling `Fl
 Check if Tint Opacity is 0 first. MingToon has this "parent zero ignores children" pattern in several places. Reference tables indicate which values are parents.
 :::
 
+### Apply color adjustments to specific areas only {#색조보정-범위-마스크}
+
+`Base Map HSVG` applies across the entire material by default. To restrict it to specific areas — **changing only the eyes while leaving the face untouched** — use the `Color Adjust Mask` group right below.
+
+1. Enable `Use Color Adjust Mask`. **Default is off**, and when off, adjustments apply across the whole material as before.
+2. Add a grayscale image to `Mask`. **White applies the adjustment, black keeps the original**, and gray blends proportionally.
+3. If multiple masks are packed in one texture, use `Mask Channel` to select which channel to read.
+4. If the areas to adjust are drawn black in the mask, enable `Invert Mask`.
+
+Masks read with the same UV and tiling as the base map. If the base map is tiled, the mask tiles with it.
+
+:::note[Materials converted from lilToon]
+lilToon's color adjustment mask arrives here. It reads as a grayscale mask with channel fixed to R. If the original had no mask, this row appears disabled. → [lilToon Material Conversion](/workflow/liltoon-conversion)
+:::
+
 ## 3. Specify Transparency with a Separate Texture {#3-투명도를-텍스처로-따로-지정하기}
 
 To control transparency with a separate image instead of the base map's alpha, use **Alpha Mask**.

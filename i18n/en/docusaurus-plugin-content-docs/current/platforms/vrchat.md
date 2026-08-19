@@ -56,15 +56,34 @@ Depth rim · 2D shadow · Inner 2D Edge all read the camera depth texture. In VR
 |---|---|---|
 | **Photo Camera active** | ✅ | Official contract. Host passes `_VRChatCameraMode` as non-zero |
 | **World has Screen Camera depth enabled** | ✅ | World/Udon requests via `VRCCameraSettings` |
-| **Regular player view (default)** | ❌ | Avatars cannot force this |
+| **Regular player view (default)** | ❌ | Avatar cannot force it |
 | **Mirror · stream · handheld preview internal path** | ⚠️ | Same result is not guaranteed |
 
-:::danger[Avatars cannot solve this]
-Adding Camera or Light to your avatar **is not an equivalent solution.** It raises performance cost or gets removed by avatar safety settings.
+:::danger[Depth authority lies with the world]
+Screen Camera settings are a world/Udon responsibility. Avatars cannot change this setting.
 
-Screen Camera settings are a world/Udon responsibility.
+There is an opt-in workaround: add a light to the avatar to trigger the depth pass. However, the cost is paid by all viewers. See [VRChat Depth Light](#vrchat-깊이-라이트) below for details before enabling.
+
 Reference: [VRC Camera Settings (official docs)](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)
 :::
+
+### VRChat Depth Light (default off) {#vrchat-깊이-라이트}
+
+In VRChat an avatar cannot change camera settings, so the screen effects that read depth (`2D Depth Rim`, `2D Depth Shadow`) stay off outside the photo camera. **Carrying one light on the avatar** makes the camera draw depth and turns them on.
+
+Turn on `Carry Depth Light on Upload` in the MingToon Manager's `VRChat Depth Light` group. **It is off by default.**
+
+- When on, one light is added to the **VRChat upload only**. Your scene and Warudo builds are untouched.
+- No material's `Depth Availability` value is changed; `Auto` finds the depth on its own. → [Depth Availability](/guides/depth-effects#깊이-가용성)
+
+:::danger[Read the cost first]
+1. This light adds a depth pass that redraws the whole world one extra time **on the frame of everyone who can see you**. They pay for it, not you.
+2. **It does not work in mirrors.** Depth seen inside a mirror belongs to another camera, and MingToon turns depth off there on purpose.
+3. **VRChat's avatar safety settings can switch this light off**, and the effects go with it.
+4. One more light **lowers the avatar performance rank**, and it occupies a pixel light slot, so a world's own lighting can be pushed out.
+:::
+
+That is why off is the default. Look at making the silhouette hold without depth first.
 
 ### Automatically Handled at Build {#빌드-시-자동으로-처리되는-것}
 
@@ -73,6 +92,10 @@ On avatar upload, MingToon promotes materials with `Depth Availability` set to `
 `Auto` means "trust the host if it says depth is available," but because the `MingDepthTextureProvider` providing that signal is `IEditorOnly` and gets stripped on upload, that signal never arrives in VRChat. Without the promotion, **2D effects disappear even in worlds that actually have depth.**
 
 Values explicitly set to `Force On` / `Force Off` are not overwritten.
+
+:::note[Promotion excludes mirrors]
+`Force On` means "enable even where host cannot report, **except mirrors**". Mirror cameras do not draw their own depth, so depth effects shut down inside mirrors regardless of this setting. → [Depth Availability](/guides/depth-effects#깊이-가용성)
+:::
 
 Details: [Automatic Optimization on Build](/workflow/build-optimization#vrchat-깊이-자동-승격)
 

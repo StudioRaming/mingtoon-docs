@@ -33,7 +33,7 @@ The shadow pattern remains intact even when [unified shadows](/guides/light-and-
 | Item | Function |
 |---|---|
 | **Pattern Target** | Form shadow, 2D shadow, or both |
-| **Pattern Method** | `Recolor` — redraw the shadow coverage itself. Dots use the shadow color as-is<br />`Overlay` — keep the shadow as-is and layer it with ink color |
+| **Pattern Style** | `Recolor` — redraw the shadow coverage itself. Dots use the shadow color as-is<br />`Overlay` — keep the shadow as-is and layer it with ink color |
 | **Pattern Density** | Number of cells filling the screen width. Based on screen **height**, so the same size appears regardless of resolution |
 | **Pattern Rotation** | Grid angle |
 | **Pattern Edge Softness** | Softness of dot edges |
@@ -41,6 +41,12 @@ The shadow pattern remains intact even when [unified shadows](/guides/light-and-
 | **Distance Compensation** | Adjust dot size as distance changes |
 | **FOV / Projection Compensation** | Compensation when FOV changes |
 | **Keep Pattern in Full Shadow** | Whether to retain dots in the darkest areas. Adjust the amount with `Full Shadow Fill` |
+
+:::caution[On the 2D shadow, `Overlay` falls back to `Recolor`]
+With `Pattern Style` set to `Overlay` and `Pattern Target` set to `Depth2D`, the pattern still prints, but it takes the shadow colour instead of the `Ink Color`. `Overlay` lays line work over finished shading, and only the form shadow path has that compositing point. It has always worked this way; the inspector now says so when you pick that combination.
+
+To keep `Overlay`, set `Pattern Target` to `Form` or `Both`.
+:::
 
 :::tip[Rotation angle]
 **Around 45 degrees** looks natural like printed halftones. **0 degrees** often creates moire because it aligns with the screen pixel grid.

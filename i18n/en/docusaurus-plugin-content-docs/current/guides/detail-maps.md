@@ -108,6 +108,25 @@ Adds light-direction highlights without enabling full PBR, suitable for cel high
 Use PBR for environment reflections and material response, and Toon Specular for direct-light cel highlights. Raising both too high can blow out overlapping highlights.
 :::
 
+### Vary highlight color by area {#하이라이트-색을-부위마다-다르게}
+
+Hair highlights all in one color look identical from front to back. Use `Toon Specular Color Source` to split them per-area.
+
+| Value | Result |
+|---|---|
+| `Single Color` (default) | The specified highlight color is used across the entire mesh |
+| `Mask Texture Color` | **RGB color painted in the Toon Specular Mask becomes the highlight color** |
+
+Switch to `Mask Texture Color` and the mask becomes a **color distribution map**, not a binary range. Brightness still sets which areas show highlights; RGB sets the highlight color for that location.
+
+Blend between the two with `Toon Specular Mask Color Amount`. 0 uses the specified color as-is; 1 (default) uses mask color directly. `Single Color` ignores this value.
+
+:::note[No cost added]
+The mask already exists for range control. Using its color costs no extra texture fetch. Switching to `Mask Texture Color` on a default white mask produces no change in appearance.
+:::
+
+---
+
 ## Region Mask {#영역-마스크}
 
 Divides parts of one material into four RGBA regions and adjusts surface response independently.
@@ -133,6 +152,44 @@ Map × Color × Intensity.
 - `Emission Intensity` — Without bloom post-processing in the scene, increasing the value won't blur; it just saturates to white.
 
 `Emission Intensity` is also available in Quick Settings.
+
+### Map Alpha Masks Intensity {#맵-알파를-세기-마스크로}
+
+`Map Alpha Masks Intensity` — **off by default**
+
+Uses the emission map's alpha channel as a per-pixel intensity mask. Where alpha is 1 the pixel glows at the full `Intensity` value, where it is 0 it does not glow at all, and values in between glow proportionally. It lets you vary brightness across one map without adding a separate mask texture.
+
+:::note[No extra texture read]
+The alpha arrives with the colour read, so turning this on costs no additional texture read.
+
+The mask is taken from the **original alpha**. Changing `Channel Source` or `Invert Source Colors` does not change it.
+:::
+
+Because it is off by default, existing materials look exactly as before. Emission Layer 2 below has the same control.
+
+### Emission Layer 2 {#발광-레이어-2}
+
+`Enable Emission Layer 2` — **off by default**
+
+A second emission map, for when **different areas need different glow colours**. Blue eyes and a pink marking on one material: split the glow across two maps and give each its own colour.
+
+**The two layers are added.** The later slot does not overwrite the earlier one, so each area keeps the colour you authored.
+
+Layer 2 carries the same controls as layer 1 — map and colour adjustments, `Intensity`, `Visibility in Shadow`, `Map Alpha Masks Intensity`. An `Intensity` of 0 skips the layer entirely.
+
+:::caution[It reads one more texture]
+Unlike the alpha mask, layer 2 **reads a new texture.** Enable it only on materials that need it; materials that leave it off compile to the same cost as before.
+:::
+
+:::danger[It cannot be toggled at runtime]
+`Enable Emission Layer 2` is an **authoring-time decision.** You cannot animate it on for a material that was uploaded with it off — the variant compiled with it off contains no code to read the second map. The emission master switch, `Enable Emission`, *is* animatable.
+
+If the material has already been baked, **the bake cache has to be rebuilt** before layer 2 shows up in the result.
+:::
+
+:::note[Materials converted from lilToon]
+lilToon's second emission (`_UseEmission2nd`) is **not migrated automatically.** Its UV mode, blend mode and blend mask have no one-to-one equivalent, so rather than half-translating it the conversion log reports it as a loss. Turn on `Enable Emission Layer 2` and copy the second emission map, colour and strength across by hand.
+:::
 
 ---
 

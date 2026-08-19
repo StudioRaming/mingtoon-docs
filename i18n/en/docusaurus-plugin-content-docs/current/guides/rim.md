@@ -70,6 +70,14 @@ With no light direction to work from, it falls back to the view.
 
 <!-- SCREENSHOT: Rim Light intensity comparison -->
 
+### Apply rim to specific areas only {#림-마스크}
+
+Enable `Enable Fresnel Rim Mask` to assign a dedicated mask for this effect. Mask configuration matches [Texture Slot Common UI](/guides/texture-modules#마스크-세부-설정).
+
+:::caution[Enable the toggle before adding the mask]
+`Enable Fresnel Rim Mask` **defaults to off**. When off, even if you add a mask texture, it won't read it, and mask settings appear grayed out. This separation exists so materials without masks don't sample unnecessary texture—the same structure as `Use Mask` in [Shadow Interior Reflection](#그림자-내부-반사).
+:::
+
 ---
 
 ## Rim Shade {#림-셰이드}
@@ -84,6 +92,8 @@ Creates volume by adding a **dark band inside the silhouette**.
 :::tip[Try this before Rim Light]
 Darkening is more stable than brightening in unpredictable lighting environments. There's no risk of blowing out to white.
 :::
+
+`Enable Rim Shade Mask` lets you assign a dedicated mask for this effect alone. Like Rim Light, it **defaults to off**, so enable the toggle first before the mask takes effect. → [Apply rim to specific areas only](#림-마스크)
 
 ---
 

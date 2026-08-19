@@ -51,6 +51,23 @@ If baking fails, configure the model importer to generate tangents, reimport, an
 Set `Pressure Source` to `OutlineNormalUV8` and the baked width-contrast value flows directly into line width. → [Outline](/guides/outline#선-굵기를-부위마다-다르게)
 :::
 
+### For models with edited normals {#노멀을-편집한-모델용으로-계산}
+
+Models like hair or skirts that **move normals from a sphere or cylinder** have shading normals that differ from their actual shape already. Averaging those normals as-is makes the outline follow the borrowed sphere instead of the mesh.
+
+When this happens, enable `Compute For Edited-Normal Models`. Instead of averaging shading normals, it **recalculates outline direction from mesh faces**, so shading stays as authored and only the outline follows the mesh.
+
+| State | Result |
+|---|---|
+| Off (default) | Averages the mesh's shading normals and bakes |
+| On | Recalculates direction from mesh faces and bakes |
+
+:::note[Already-baked character lines do not change]
+Since default is off, leaving it alone keeps the current behavior. Enable it and **re-bake** for UV8 to recalculate.
+:::
+
+This option appears both in `MingToon Manager` under individual mesh bake, and below when you check `Outline Smooth Normal (UV8)` in `Mesh Channels To Bake` of the **1 · Convert** step.
+
 ---
 
 ## Face Front-View Normal (UV7) {#얼굴-프론트뷰-노멀-uv7}
