@@ -76,11 +76,11 @@ VRCSpatialAudioSource  VRCStation
 `<Missing Script>`도 개수로 집계됩니다.
 
 :::danger[MingToon 자신의 컴포넌트는 직접 지우지 마세요]
-`MingToonManager`와 `MingDepthTextureProvider`는 **VRChat 업로드에서 자동으로 제거됩니다.**
+`MingToonManager`와 `MingDepthTextureProvider`는 VRC SDK 처리를 위한 `IEditorOnly` 표식을 구현하지만, 이 표식만으로 자동 삭제가 보장되지는 않습니다.
 
 **밍툰 매니저를 손으로 지우면 캐시된 렌더러 목록이 함께 사라져 업로드 최적화가 범위를 잃습니다.** 최적화되지 않은 재질이 그대로 올라갑니다.
 
-이 검사는 **MingToon이 아닌 다른 스크립트**를 찾기 위한 것입니다. → [밍툰 매니저 — 내보내기 / 검증](/workflow/character-manager#내보내기--검증)
+`VRChat 사전 점검`은 저작 씬의 비허용 스크립트를 찾습니다. SDK 처리 뒤에는 실제 build clone을 별도로 검사해 `RuntimeComponentCount = 0`을 요구하세요. → [밍툰 매니저 — 내보내기 / 검증](/workflow/character-manager#내보내기--검증)
 :::
 
 ---
@@ -129,7 +129,8 @@ CanAvatarForceMainCameraDepth = false
 
 > 깊이 효과는 **VRChat Photo Camera**와 **Screen Camera depth texture를 켠 월드**에서 보장됩니다.
 > 아바타는 월드 제어 없이 플레이어 메인 카메라의 깊이를 강제할 수 없습니다.
-> **아바타에 Camera나 Light를 추가하는 것은 동등한 해결책이 아니며**, 성능 비용을 올리거나 아바타 안전 설정에 의해 제거될 수 있습니다.
+> 임의 Camera나 Light를 추가하는 것은 지원되는 해결책이 아닙니다.
+> 예외는 밍툰 매니저의 `업로드 시 깊이 라이트 싣기`입니다. 이 기본 꺼짐 옵트인은 build clone에 그림자를 켠 Directional Light를 추가하지만, 성능·아바타 랭크·월드 조명 비용이 있고 Avatar Safety가 끌 수 있습니다. → [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)
 
 참고: [VRC Camera Settings](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)
 

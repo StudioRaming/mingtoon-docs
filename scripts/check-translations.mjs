@@ -68,8 +68,8 @@ for (const src of sources) {
     continue;
   }
 
-  const a = fs.readFileSync(src, 'utf8');
-  const b = fs.readFileSync(dst, 'utf8');
+  const a = fs.readFileSync(src, 'utf8').replace(/\r\n?/g, '\n');
+  const b = fs.readFileSync(dst, 'utf8').replace(/\r\n?/g, '\n');
   const say = (msg) => {
     console.log(`  ${rel}: ${msg}`);
     problems++;

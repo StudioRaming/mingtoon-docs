@@ -36,17 +36,17 @@ sidebar_position: 3
 | **프레넬 림 합성 모드** | Normal·Multiply·Add·Hue·Screen·Color·Overlay 중 림광을 표면에 섞는 방식을 고릅니다. 기본값 Add(2)는 밝기를 더하므로 HDR 색·불투명도가 높으면 클리핑이나 블룸이 생길 수 있습니다. | `_MingFresnelRimBlendMode` |
 | **블렌드 불투명도** | 프레넬 림이 결과에 섞이는 비율입니다. 림의 색과 세기는 그대로 두고 존재감만 줄일 때 사용하세요. 0이면 림이 완전히 꺼집니다. | `_MingFresnelRimBlendOpacity` |
 | **강도** | 범위 0-20, 기본값 0.52입니다. 프레넬 림의 밝기 배수이며 0이면 림 색과 폭을 바꿔도 화면에 나타나지 않습니다. | `_MingFresnelRimIntensity` |
-| **프레넬 감쇠** | 범위 0.01-32, 기본값 0.54입니다. 값이 클수록 림이 실루엣 가장자리로 얇게 몰립니다. 폭과 함께 작동하며, 낮출수록 부드럽게 퍼집니다. 보통 2~8 사이에서 씁니다. | `_MingFresnelRimPower` |
 | **폭** | 범위 0-1, 기본값 0입니다. 림이 시작되는 지점이며 0이면 림이 전혀 나타나지 않고, 1에 가까우면 표면 전체가 밝아집니다. | `_MingFresnelRimWidth` |
 | **부드러움** | 범위 0.001-2, 기본값 0.64입니다. 림 경계의 번짐 폭이며 낮추면 셀 룩의 단단한 띠, 올리면 부드러운 그라데이션이 됩니다. | `_MingFresnelRimSoftness` |
-| **프레넬 림 거리 보정** | 범위 0-1, 기본값 1. 0은 기존의 원시 폭을 사용하고 1은 카메라 거리 변화에도 프레넬 림 폭을 안정화합니다. | `_MingFresnelRimDistanceCompensation` |
-| **프레넬 림 투영 보정** | 범위 0-1, 기본값 1. 0은 FOV와 직교 투영 변화에 따라 원시 폭이 변하고 1은 FOV와 직교 투영에서도 폭을 안정화합니다. | `_MingFresnelRimProjectionCompensation` |
-| **프레넬 림 노멀맵 영향** | 범위 0-1, 기본값 1. 0은 메시 노멀만 사용하고 1은 누적 노멀 맵을 완전히 사용합니다. | `_MingFresnelRimNormalInfluence` |
+| **프레넬 감쇠** | 범위 0.01-32, 기본값 0.54입니다. 값이 클수록 림이 실루엣 가장자리로 얇게 몰립니다. 폭과 함께 작동하며, 낮출수록 부드럽게 퍼집니다. 보통 2~8 사이에서 씁니다. | `_MingFresnelRimPower` |
 | **광원 방향 영향** | 0이면 카메라 기준으로 실루엣 전체에 림이 돌고, 1이면 광원이 있는 쪽에만 남습니다. 씬에 방향광이 없으면 차이가 없습니다. | `_MingFresnelRimLightDirectionInfluence` |
 | **프레넬 림 시점 영향** | 림이 어디에 앉을지를 시점과 광원 중 무엇이 정할지입니다. 1이면 지금까지처럼 카메라가 보는 실루엣을 따라 돌아 카메라를 움직이면 림도 같이 움직입니다. 0이면 광원 방향만 따라가 카메라를 돌려도 림이 그 자리에 그대로 있습니다. | `_MingFresnelRimViewStrength` |
 | **프레넬 림 그림자 표시** | 범위 0-1, 기본값 0. 0은 그림자에서 숨기고 1은 그림자에서도 완전히 표시합니다. | `_MingFresnelRimShadowVisibility` |
 | **베이스 색 영향** | 0이면 림 색만 그대로 쓰고, 1이면 베이스 맵 색을 곱해 재질별로 다른 림 색이 나옵니다. | `_MingFresnelRimBaseColorInfluence` |
 | **씬 조명 영향** | 0이면 씬 밝기와 무관하게 항상 같은 세기로 나오고, 1이면 조명이 어두워질수록 림도 함께 어두워집니다. | `_MingFresnelRimSceneLightInfluence` |
+| **프레넬 림 노멀맵 영향** | 범위 0-1, 기본값 1. 0은 메시 노멀만 사용하고 1은 누적 노멀 맵을 완전히 사용합니다. | `_MingFresnelRimNormalInfluence` |
+| **프레넬 림 거리 보정** | 범위 0-1, 기본값 1. 0은 기존의 원시 폭을 사용하고 1은 카메라 거리 변화에도 프레넬 림 폭을 안정화합니다. | `_MingFresnelRimDistanceCompensation` |
+| **프레넬 림 투영 보정** | 범위 0-1, 기본값 1. 0은 FOV와 직교 투영 변화에 따라 원시 폭이 변하고 1은 FOV와 직교 투영에서도 폭을 안정화합니다. | `_MingFresnelRimProjectionCompensation` |
 
 ## 백라이트
 
@@ -88,6 +88,7 @@ sidebar_position: 3
 | **그림자 내부 반사 조명 방향 영향** | 범위 0-1, 기본값 1. 0은 광원 방향을 무시해 반사 림을 전체 실루엣에 두고, 1은 메인·추가 광원 방향을 따라 밝은 면에 배치합니다. | `_MingShadowReflectionLightDirectionInfluence` |
 | **그림자 내부 반사 환경광 영향** | 범위 0-1, 기본값 1. 0은 라이트 프로브와 환경 SH 색을 무시하고, 1은 환경 색을 그림자 내부 반사에 완전히 더합니다. | `_MingShadowReflectionAmbientInfluence` |
 | **그림자 내부 반사 추가 광원 영향** | 범위 0-1, 기본값 1. 0은 점광원·스포트라이트의 영향을 무시하고, 1은 각 광원의 방향·색·그림자·감쇠를 반사에 완전히 적용합니다. | `_MingShadowReflectionAdditionalLightInfluence` |
+| **캐스트 섀도우 안 표시량** | 0 = 투영 그림자 안에서 내부 반사를 숨김, 1 = 그대로 표시(기본값). 투영 그림자 속에서 반사 하이라이트가 빛나는 게 싫을 때 내립니다. WARUDO(빌트인)에서는 포인트·스폿 추가광이 만드는 반사에는 적용되지 않습니다. | `_MingShadowReflectionCastShadowVisibility` |
 
 ## 프런트 라이트
 

@@ -12,15 +12,11 @@ This covers `Shadow Pattern (Screentone)` in the `Lighting and Shadows` group. T
 
 ## How It Works
 
-Form shadows and 2D shadows are rendered as halftone dots. As the shadow gets deeper, the dots **grow larger** — just like real printed halftones.
+Form shadows and 2D shadows are rendered as halftone dots. The dots grow as the shadow deepens.
 
-The grid is drawn **by calculation alone** and fixed to the screen. So:
+Computed circular dots are the default, with an optional single shape-tile read. When `Pattern Space` is `Mesh`, the grid sticks to rest-pose coordinates; when it is `Screen`, the grid is fixed to the screen.
 
-- You don't need to add textures.
-- There's no preparation step.
-- The pattern won't flicker when the camera moves.
-
-This is the state you get by enabling `Enable Shadow Pattern`.
+A Skinned Mesh needs a rest-pose anchor for Mesh space, or the pattern may slide over the skin during animation.
 
 <!-- SCREENSHOT: Shadow pattern on / off comparison -->
 
@@ -63,7 +59,13 @@ To keep `Overlay`, set `Pattern Target` to `Form` or `Both`.
 
 The shape tile, the density, and the rotation are the same in both. All that changes is what the lattice is attached to.
 
-On `Screen` the pattern cannot bend or shimmer when the field of view or the camera angle changes. The coordinate is divided by the short axis so cells stay square, which keeps the density the same at any aspect ratio.
+:::caution[Mesh space on a Skinned Mesh requires a Rest Pose Anchor]
+When an anchor is missing, the Inspector warns how many Skinned Renderers are affected and shows a `Bake Rest Pose Anchor` button. Select MingToon Manager first and use the button, or run `Tools > Studio Raming > MingToon > Advanced > Bake Rest Pose Anchor`.
+
+The baker creates a duplicate Mesh with the rest pose stored in an available UV2 or UV4 payload and enables anchor use on related materials. Renderers rejected because their existing channels conflict are listed separately in the Console.
+:::
+
+`Screen` needs no separate anchor. The pattern does not bend or shimmer as the field of view or camera angle changes, and cells stay square across aspect ratios.
 
 ### The compensation sliders reverse meaning between the two
 

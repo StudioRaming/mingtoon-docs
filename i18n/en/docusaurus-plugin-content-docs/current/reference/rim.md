@@ -36,17 +36,17 @@ Configure view-angle-responsive rim lighting.
 | **Fresnel Rim Blend Mode** | Chooses Normal, Multiply, Add, Hue, Screen, Color, or Overlay for the rim. Default Add (2) increases brightness, so high HDR color or opacity can clip or bloom. | `_MingFresnelRimBlendMode` |
 | **Blend Opacity** | How strongly the fresnel rim blends in. Use it to dial the rim's presence down without touching its color or intensity; 0 turns the rim off entirely. | `_MingFresnelRimBlendOpacity` |
 | **Intensity** | Range 0-20; default 0.52. Brightness multiplier for the Fresnel rim. At 0 the rim never appears no matter how its color or width is set. | `_MingFresnelRimIntensity` |
-| **Fresnel Power** | Range 0.01-32; default 0.54. Higher values push the rim into a thinner band right at the silhouette. It works together with Width; lower values spread it out softly. 2-8 is the usual band. | `_MingFresnelRimPower` |
 | **Width** | Range 0-1; default 0. Where the rim starts. At 0 no rim appears; near 1 the whole surface lights up. | `_MingFresnelRimWidth` |
 | **Softness** | Range 0.001-2; default 0.64. Width of the rim's edge blur. Low gives a hard cel band, high a soft gradient. | `_MingFresnelRimSoftness` |
-| **Fresnel Rim Distance Compensation** | Range 0-1; default 1. 0 uses the legacy raw width; 1 keeps the Fresnel rim width stable as camera distance changes. | `_MingFresnelRimDistanceCompensation` |
-| **Fresnel Rim Projection Compensation** | Range 0-1; default 1. 0 uses the legacy raw width; 1 keeps the Fresnel rim width stable across FOV and orthographic projection. | `_MingFresnelRimProjectionCompensation` |
-| **Fresnel Rim Normal Map Influence** | Range 0-1; default 1. 0 uses the mesh normal only; 1 uses the stacked normal maps fully. | `_MingFresnelRimNormalInfluence` |
+| **Fresnel Power** | Range 0.01-32; default 0.54. Higher values push the rim into a thinner band right at the silhouette. It works together with Width; lower values spread it out softly. 2-8 is the usual band. | `_MingFresnelRimPower` |
 | **Light Direction Influence** | 0 wraps the rim around the whole silhouette from the camera's view; 1 keeps it only on the lit side. With no directional light in the scene there is no difference. | `_MingFresnelRimLightDirectionInfluence` |
 | **Fresnel Rim View Strength** | Whether the view or the light decides where the rim sits. 1 rings the silhouette as the camera sees it, exactly as before, so the rim moves with the camera. 0 follows the light direction alone, so the rim stays put while the camera orbits. | `_MingFresnelRimViewStrength` |
 | **Fresnel Rim Visibility In Shadow** | Range 0-1; default 0. 0 keeps the Fresnel rim hidden in shadow; 1 keeps it fully visible in shadow. | `_MingFresnelRimShadowVisibility` |
 | **Base Color Influence** | 0 uses the rim color as authored; 1 multiplies it by the Base Map so each material area gets its own rim tint. | `_MingFresnelRimBaseColorInfluence` |
 | **Scene Light Influence** | 0 keeps the rim at a constant strength regardless of the scene; 1 lets it dim as the scene light dims. | `_MingFresnelRimSceneLightInfluence` |
+| **Fresnel Rim Normal Map Influence** | Range 0-1; default 1. 0 uses the mesh normal only; 1 uses the stacked normal maps fully. | `_MingFresnelRimNormalInfluence` |
+| **Fresnel Rim Distance Compensation** | Range 0-1; default 1. 0 uses the legacy raw width; 1 keeps the Fresnel rim width stable as camera distance changes. | `_MingFresnelRimDistanceCompensation` |
+| **Fresnel Rim Projection Compensation** | Range 0-1; default 1. 0 uses the legacy raw width; 1 keeps the Fresnel rim width stable across FOV and orthographic projection. | `_MingFresnelRimProjectionCompensation` |
 
 ## Backlight
 
@@ -88,6 +88,7 @@ Configure a Fresnel reflection band visible only inside shadow.
 | **Shadow Reflection Light Direction Influence** | Range 0-1; default 1. 0 ignores light direction and leaves the reflected rim unshaped; 1 follows main and additional light directions to place it on the lit side. | `_MingShadowReflectionLightDirectionInfluence` |
 | **Shadow Reflection Ambient Influence** | Range 0-1; default 1. 0 ignores ambient probe/SH color; 1 applies the Light Probe and ambient SH color fully inside the shadow reflection. | `_MingShadowReflectionAmbientInfluence` |
 | **Shadow Reflection Additional Light Influence** | Range 0-1; default 1. 0 ignores additional point or spot lights; 1 applies each point or spot light's direction, color, shadowing, and attenuation fully. | `_MingShadowReflectionAdditionalLightInfluence` |
+| **Visibility in Cast Shadow** | 0 hides the interior reflection inside the cast shadow; 1 keeps it fully visible (default). Lower it when the highlight should not shine inside a projected shadow. In WARUDO (Built-in) this does not apply to reflection contributed by point/spot lights. | `_MingShadowReflectionCastShadowVisibility` |
 
 ## Front Light
 

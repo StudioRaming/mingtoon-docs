@@ -75,12 +75,12 @@ Components outside this list trigger `CustomMonoBehaviourNotUploadable`:
 
 `<Missing Script>` is counted too.
 
-:::danger[Do not manually remove MingToon's own components]
-`MingToonManager` and `MingDepthTextureProvider` are **automatically removed on VRChat upload**.
+:::danger[Do Not Manually Remove MingToon's Own Components]
+`MingToonManager` and `MingDepthTextureProvider` implement the `IEditorOnly` marker for VRC SDK processing, but that marker alone does not guarantee automatic deletion.
 
-**Manually deleting the MingToon Manager loses the cached renderer list, causing upload optimization to lose scope**. Materials upload unoptimized.
+**Manually deleting MingToon Manager also removes the cached Renderer list, causing upload optimization to lose scope.** Materials can upload unoptimized.
 
-This check is **for other scripts, not MingToon**. → [MingToon Manager — Export / Validate](/workflow/character-manager#내보내기--검증)
+`VRChat Preflight Check` finds disallowed scripts in the authoring Scene. After SDK processing, inspect the actual build clone separately and require `RuntimeComponentCount = 0`. → [MingToon Manager — Export / Validate](/workflow/character-manager#내보내기--검증)
 :::
 
 ---
@@ -128,8 +128,9 @@ CanAvatarForceMainCameraDepth = false
 ```
 
 > Depth effects are **guaranteed on VRChat Photo Camera** and **worlds with screen camera depth texture enabled**.
-> An avatar cannot force the main camera depth without world control.
-> **Adding Camera or Light to the avatar is not an equivalent solution**, raises performance cost, and may be removed by avatar safety settings.
+> An avatar cannot force the player main-camera depth without world control.
+> Adding an arbitrary Camera or Light is not a supported solution.
+> The exception is MingToon Manager's `Include Depth Light on Upload`. This opt-in is off by default and adds a shadow-casting Directional Light to the build clone, but it carries performance, avatar-rank, and world-lighting cost and may be disabled by Avatar Safety. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
 
 Reference: [VRC Camera Settings](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)
 

@@ -42,9 +42,9 @@ Although it looks like an outline, it reads screen depth, so it belongs **in thi
 | **Normal player screen (default)** | ❌ Avatar cannot force it |
 | **Inside mirror · stream paths** | ⚠️ Not guaranteed |
 
-Screen Camera settings are **world/Udon authority**. Adding a Camera or Light to the avatar is not an equivalent solution and may increase performance cost or be removed by avatar safety settings.
+Screen Camera settings are **controlled by the world/Udon side**. Adding an arbitrary Camera or Light to an avatar is not a supported solution. The exception is `Include Depth Light on Upload` in MingToon Manager. This opt-in is off by default and adds a shadow-casting Directional Light to the upload copy, but it increases other users' depth-pass cost, avatar rank cost, and world-lighting impact. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
 
-On upload, MingToon automatically promotes `Depth Availability` from `Auto` to `Force On`. See [VRChat](/platforms/vrchat) for details.
+Upload does not change `Depth Availability`. `Auto` detects depth actually bound to each camera, and `Force On` remains only when the author selected it explicitly. See [VRChat](/platforms/vrchat) for details.
 
 :::tip[Backup for screens without depth]
 The rim light and rim shade from [Rim](/guides/rim) and the normal outline from [Outline](/guides/outline) **do not require depth**. Don't rely solely on depth-based effects — lay a floor for silhouettes with these two.
@@ -116,9 +116,9 @@ Check items from top to bottom.
 
 ---
 
-## Depth — Shared Values {#깊이--공통-값}
+## Depth Effects Master {#깊이--공통-값}
 
-Values **shared** by `Depth Rim` and `2D Shadow`. Set these first, then move to individual modules.
+These values are shared by `2D Rim Light` and `2D Shadow`. Turning off the master disables the entire depth group, including SSAO, 2D Translucency, and Inner Outline. Set this section first, then move to the individual modules.
 
 | Parameter | Function |
 |---|---|
@@ -132,9 +132,16 @@ Values **shared** by `Depth Rim` and `2D Shadow`. Set these first, then move to 
 In environments where camera distance constantly changes, `Distance Stable` keeps thickness consistent.
 :::
 
+### Runtime Switching {#런타임-전환}
+
+- `Animate Depth Effects with FX Animator` — prevents bake-time constant folding so an animator such as VRChat FX can switch the Depth Effects Master.
+- `Switch Shadow Projection from FX Menu` — adds `Shadow Projection` to MingToon Manager's VRC Quality menu. Turning it off skips feather samples, cast compositing, and related translucency work.
+
+Both options are off by default. Enable them only on materials that will actually switch at runtime. Opting in keeps that code from being removed during baking, so there is a small retained cost even in the High/On state.
+
 ---
 
-## Depth Rim (2D Rim) {#깊이-림-2d-림}
+## 2D Rim Light {#깊이-림-2d-림}
 
 Final thickness = `Master Width` × `Rim Width Multiplier`.
 
@@ -142,6 +149,7 @@ Final thickness = `Master Width` × `Rim Width Multiplier`.
 - `Mix Base Color` — 0 = solid color rim, 1 = multiply base map color for per-area variation.
 - `360 Rim` — 0 = light direction only, 1 = wraps entire silhouette.
 - `2D Rim Direction` — Direction the rim shifts.
+- `Rim Sample Quality` — Low 1 tap / Standard 2 taps / High 4 taps. Width stays the same; only internal-line suppression and cost change. At 1 tap, eyes, nose, or clothing boundaries may leak into the rim or shake by one texel as the camera moves. Four taps filters narrow internal lines more reliably.
 
 :::tip[For environments without lighting or with frequently changing direction]
 Raising `360 Rim` provides stability.
@@ -198,12 +206,14 @@ Face has separate parameters.
 | Parameter | Function |
 |---|---|
 | `Body Surface Guard` | Prevents shadow from clinging to the body surface itself |
-| `2D Shadow Cast Reach` | How far shadow stretches from silhouette |
+| `2D Shadow Fade Distance` | Distance where the effect disappears completely. The default is 12 m and it starts fading at 9 m. Set 0 to disable both the range limit and distance-based cost reduction |
 | `Distance Fade Range` (in `Distance Fade & Border` group) | Reduces effect with distance |
 
 :::caution[If shadow clings to the body like splotches]
 Raise `Body Surface Guard` first. If still present, raise `Master Bias` or `Additional Depth Bias`.
 :::
+
+0.1.7 stabilizes depth tolerance using receiver distance and surface slope, and fades taps that would fall beyond the screen edge. At long range, the sample count also falls through the fade interval, reducing cost in crowd scenes.
 
 ---
 
@@ -223,12 +233,14 @@ It is not multiplied. The two are computed separately and **whichever is darker 
 
 | Control | What it does |
 |---|---|
-| `SSAO Radius` | How far the occlusion search reaches. **World metres, not screen pixels**: 0.001-0.1 is 1mm-10cm. Default 0.05 (5cm) |
+| `SSAO Radius` | World-space search distance. Range 0.001–0.01 m; default 0.005 m |
 | `SSAO Intensity` | Strength. At 0 the image matches the effect being off while the calculation still runs, so turn `SSAO Enabled` off when you are not using it |
 | `SSAO Power` | Tightens the darkening curve |
 | `SSAO Quality` | Depth samples per pixel (4/8/12/16). A uniform loop rather than four keyword variants, so it adds no variants |
 
-On something character-sized, **lower quality with a larger radius** usually reads better than the reverse.
+0.1.7 uses a view-space tangent plane to reduce self-occlusion on sloped surfaces and replaces the binary tap gate with a smooth ramp. A small internal floor also prevents depth-quantization marks even when bias is 0.
+
+For character-scale subjects, start with Standard quality and the default 0.005 m radius, keeping only the contact areas you need instead of creating broad stains.
 
 ### Holding still across distance and FOV
 
@@ -240,18 +252,18 @@ With `SSAO Distance Compensation` at 1, its default, the same crease gets the sa
 
 - `SSAO Light Direction Influence` — leans the search disc toward the key light. At 0 the occlusion is uniform and light-independent; raising it gathers the occlusion on the side the light does not reach. The lean falls off on its own as the light approaches the camera axis.
 - `SSAO Mask Strength` — borrows the `2D Shadow Mask (Shared)` rather than declaring a texture of its own. Channel, invert, and HSVG come from the 2D shadow mask, and **editing it from either screen edits the same one texture.**
-- `SSAO Tint` · `SSAO Brightness` · `SSAO Saturation` — apply **only to the darkness SSAO itself introduced**. Anywhere form, cast, or 2D shadow already darkened is untouched. At the defaults the result is identical.
+- `SSAO Tint` · `SSAO Brightness` · `SSAO Saturation` — apply to the full SSAO coverage. They remain visible inside form shadows and backlighting; the default white color and brightness 1 preserve the result.
 
 :::caution[No depth, no effect - silently]
 It is not a light, not a provider, and not a post-process pass. [Getting depth per platform](#플랫폼별-깊이-확보) above applies unchanged: it appears where the 2D depth shadow appears. With no depth, occlusion is pinned to 1 (no occlusion), so the look does not break.
 :::
 
-## Depth Translucency {#깊이-투과광}
+## 2D Translucency {#깊이-투과광}
 
 Makes **thin areas like hair tips or clothing edges** look as if they're glowing with light.
 
 :::tip[This module is not tied to Master Width]
-It reads depth **twice** toward the light source to directly measure how much light passes through the character. So it works **independently** of Depth Rim and 2D Shadow. It appears even if `Master Width` is 0.
+It reads depth **twice** toward the light source to directly measure how much light passes through the character. So it works **independently** of 2D Rim Light and 2D Shadow. It appears even if `Master Width` is 0.
 :::
 
 ### 1. How to Measure Thinness {#1-얇음을-어떻게-잴지}
@@ -321,7 +333,7 @@ Neutral value `(0,1,1,1)` skips correction.
 
 ---
 
-## Inner 2D Edge {#내부-2d-경계}
+## Inner Outline {#내부-2d-경계}
 
 Draws **inside-surface** edge lines by screen depth difference. Can be used even on meshes where normal outlines break due to missing geometry.
 

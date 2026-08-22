@@ -6,32 +6,38 @@ sidebar_position: 2
 
 # Basic Settings
 
-**After reading this guide,** you can correctly select Surface Mode and control base color and transparency.
+**After reading this guide,** you can choose the correct Surface Mode and establish the base color and transparency behavior.
 
-Covers the **Basic Settings** group in the Inspector — `Basic Surface` · `Surface Rendering` · `Common Maps`. Complete item list is in [Basic Settings Reference](/reference/basics).
+This guide focuses on the Inspector's **Basic Settings** group: `Master Adjustment`, `Surface Rendering`, and `Lighting`. Map layers are covered in [Detail Maps](/guides/detail-maps), and the complete property list is in the [Basic Settings Reference](/reference/basics).
 
-## 1. Start with Surface Mode {#1-표면-모드부터-정합니다}
+## 1. Choose Surface Mode First {#1-표면-모드부터-정합니다}
 
-Choose **Surface Mode** before adding the base map. Changing it later shifts the render queue and can disable depth-based effects entirely.
+Choose **Surface Mode** before assigning the base map. Changing it later moves the render queue and can disable all depth-based effects at once.
 
 | Surface Mode | Use Case | Notes |
 |---|---|---|
-| **Opaque** | Body, clothes, most parts | Depth is fully recorded and all effects work |
-| **Cutout** | Hair, eyelashes, cut-out parts | Alpha Cutoff 0.3~0.6 is typical. Near 0, translucent edges look dirty |
-| **Transparent · Outline Depth Ready** | Parts needing both transparency and depth effects | Records depth, so 2D shadow, depth rim, and inner 2D boundary all work. **Use this first if transparency is needed.** |
-| **Transparent** | Full transparency | Does not record depth; **all depth-based modules are disabled** |
+| **Opaque** | Body, clothing, and most parts | Fully writes depth, so all effects work |
+| **Cutout** | Hair, eyelashes, and clipped parts | `Alpha Cutoff` around 0.3–0.6 is usually safe. Near 0, untidy translucent edges remain |
+| **Transparent · Outline Depth Ready** | Translucent parts that also need depth effects | Writes depth, so 2D Shadow, Depth Rim, and Inner 2D Boundary all work. **Try this first when you need translucency** |
+| **Transparent** | Fully translucent surfaces | Does not write depth, so **all depth-based modules are disabled** |
 
-:::note[What Surface Mode Changes]
-Adjusts render state, default render queue, and internal outline buffer state together. **Alpha Cutoff, outline ON/OFF, and appearance values are preserved**, so your work doesn't disappear when changing modes.
+:::note[What Surface Mode changes]
+It updates the render state, default render queue, and internal outline-buffer state together. **Alpha Cutoff, outline on/off, and appearance values are preserved**, so changing the mode does not erase your work.
 :::
 
-:::danger[Depth Module Enabled but in Transparent Mode]
-The Inspector alerts you next to Surface Mode: "Depth Recording Mode is required". Switch to `Transparent · Outline Depth Ready`.
+### Render Disabled
+
+`Render Disabled (Do Not Draw This Material)` removes every pass and eliminates the draw call itself. It differs from turning off `Overall Effect`, which leaves the base rendering intact.
+
+This value is a Material pass state, so it cannot be switched at runtime through an AnimationClip or VRC FX. For an in-game toggle, enable or disable the Renderer or GameObject instead. An enabled Render Disabled state is preserved in bakes and upload copies.
+
+:::danger[If a depth module is enabled in Transparent mode]
+The Inspector shows `Depth Recording Mode is required` beside Surface Mode. Switch to `Transparent · Outline Depth Ready`.
 :::
 
 ### Hair Showing Through Cheeks {#머리카락이-볼을-뚫고-보일-때}
 
-Enable **`Transparent Depth Prepass`** in `Surface Rendering`. This records surface depth before drawing color, preventing hair strands behind the cheeks from appearing above them. Use `Prepass Alpha Cutoff` to set at which alpha to record.
+Enable **`Transparent Depth Prepass`** under `Surface Rendering`. It writes surface depth before drawing color, preventing hair strands behind the cheek from appearing on top of it. Use `Prepass Alpha Cutoff` to choose the alpha threshold that writes depth.
 
 ### Visible Faces {#표시할-면}
 
@@ -39,66 +45,76 @@ Enable **`Transparent Depth Prepass`** in `Surface Rendering`. This records surf
 |---|---|
 | **Front Faces Only (Standard)** | Default |
 | **Back Faces Only** | |
-| **Off (Double-Sided)** | Skirts, cloth |
-| **Flip (Double-Sided + Reversed Outline)** | When double-sided and outline direction needs reversal |
+| **Off (Double-Sided)** | Skirts and cloth |
+| **Flip (Double-Sided + Reversed Outline)** | Double-sided materials whose outline direction also needs to be reversed |
 
-If backfaces appear unnaturally dark on double-sided materials, try enabling `Flip Backface Lighting Normal`.
+If backfaces on a double-sided material look unnaturally dark, try enabling `Flip Backface Lighting Normal`.
+
+### Near-Clip Protection {#근접-클리핑-방지}
+
+If the camera near clip cuts through the facial surface in a selfie or close mirror and exposes the inside of the head, enable `Near-Clip Protection`.
+
+- `Safety Margin` — clearance to keep from the near plane
+- `Push Limit` — maximum distance the surface may be pushed back
+- `Front-Facing Test` — strength of limiting the effect to surfaces facing the camera
+
+It is off by default, and a disabled material has no cost for this feature after optimization. Large values can misalign the facial silhouette and depth position, so use only as much as needed.
 
 ## 2. Base Color {#2-베이스-색}
 
-1. Add character texture to **Base Map**.
-2. Adjust color using **Base Map HSVG**. Faster than rebaking texture and easy to compare results against original.
-3. When applying tint with **Base Tint**, these three items work as a set.
+1. Assign the character texture to **Base Map**.
+2. Adjust color with **Base Map HSVG**. This is faster than rebaking the texture and makes it easy to compare the converted result with the original.
+3. When adding a tint through **Base Color**, these three properties work as a set.
 
-| Item | Role |
+| Property | Role |
 |---|---|
-| Base Tint | Color to overlay |
-| Tint Blend Mode | `Multiply` preserves map contrast while tinting · `Normal` covers map for solid color |
-| Tint Opacity | **If 0, the two items above are ignored entirely** |
+| Base Color | Color to apply |
+| Tint Blend Mode | `Multiply` keeps the map's light and dark values while tinting; `Normal` covers the map with a flat color |
+| Tint Opacity | **At 0, both properties above are ignored entirely** |
 
-:::note[Color Changed but No Effect]
-Check if Tint Opacity is 0 first. MingToon has this "parent zero ignores children" pattern in several places. Reference tables indicate which values are parents.
+:::note[If changing the color has no effect]
+Check whether Tint Opacity is 0 first. MingToon uses this “a zero parent value disables all children” structure in several places. The reference tables identify which values are parents.
 :::
 
-### Apply color adjustments to specific areas only {#색조보정-범위-마스크}
+### Apply Color Adjustment Only to Selected Areas {#색조보정-범위-마스크}
 
-`Base Map HSVG` applies across the entire material by default. To restrict it to specific areas — **changing only the eyes while leaving the face untouched** — use the `Color Adjust Mask` group right below.
+`Base Map HSVG` applies to the entire material by default. To limit it to a region—such as **changing only the eyes while leaving the face untouched**—use the `Color Adjustment Area Mask` group directly below it.
 
-1. Enable `Use Color Adjust Mask`. **Default is off**, and when off, adjustments apply across the whole material as before.
-2. Add a grayscale image to `Mask`. **White applies the adjustment, black keeps the original**, and gray blends proportionally.
-3. If multiple masks are packed in one texture, use `Mask Channel` to select which channel to read.
-4. If the areas to adjust are drawn black in the mask, enable `Invert Mask`.
+1. Enable `Use Area Mask`. **It is off by default**; while off, adjustment applies to the whole material as before.
+2. Assign a grayscale image to `Area Mask`. **White applies adjustment, black preserves the original**, and gray blends by that proportion.
+3. If several masks are packed into one texture, choose the channel with `Mask Channel`.
+4. If the area to adjust is painted black, enable `Invert Mask`.
 
-Masks read with the same UV and tiling as the base map. If the base map is tiled, the mask tiles with it.
+The mask uses the same UV and tiling as the base map. If the base map is tiled, the mask follows it.
 
-:::note[Materials converted from lilToon]
-lilToon's color adjustment mask arrives here. It reads as a grayscale mask with channel fixed to R. If the original had no mask, this row appears disabled. → [lilToon Material Conversion](/workflow/liltoon-conversion)
+:::note[For a material converted from lilToon]
+lilToon's color-adjustment mask is placed here. Because it is grayscale, the channel is fixed to R. If the original had no mask, this row remains disabled. → [lilToon Material Conversion](/workflow/liltoon-conversion)
 :::
 
-## 3. Specify Transparency with a Separate Texture {#3-투명도를-텍스처로-따로-지정하기}
+## 3. Control Transparency with a Separate Texture {#3-투명도를-텍스처로-따로-지정하기}
 
-To control transparency with a separate image instead of the base map's alpha, use **Alpha Mask**.
+Use **Alpha Mask** when transparency should come from a separate image instead of the base map alpha.
 
-1. Enable `Enable Alpha Mask`.
-2. Add a grayscale image to `Mask Image`.
-3. Select which channel to read in `Mask Channel`. If multiple masks are packed in one texture, choose R/G/B/A; for RGB brightness, use `Luma`.
-4. If areas to erase are white in the mask, enable `Invert Mask`.
+1. Enable `Use Alpha Mask`.
+2. Assign a grayscale image to `Mask Image`.
+3. Choose the read channel under `Mask Channel`. For several masks packed into one texture, select R/G/B/A; choose `Luma` to use RGB brightness.
+4. If areas to remove are painted white, enable `Invert Mask`.
 
-Use `Remap Start`·`Remap End`·`Feather` to redistribute the mask's gray range, and `Gradient` to create directional fades.
+`Remap Start`, `Remap End`, and `Feather` redistribute the mask's gray range. Use `Gradient` properties to create a directional fade.
 
-:::caution[Invisible if Surface Mode is Opaque]
-Alpha Mask only works in Cutout or Transparent modes.
+:::caution[It is invisible in Opaque Surface Mode]
+Alpha Mask produces a result only in Cutout or Transparent modes.
 :::
 
 ## 4. Common Maps {#4-공통-맵}
 
-Frequently used maps also exposed in Simple mode.
+These frequently used maps also appear in Simple mode.
 
-- **Normal Map** — Surface detail. If `Normal Strength` is 0, the map has no effect; 1 is full strength. Corresponds to Normal Layer 01, so it's ignored if the [Normal Layer](/guides/detail-maps#노멀-레이어) module is disabled.
-- **Occlusion Map** — Darkens areas where indirect light is hard to reach. **Does not affect direct light**, so strong frontal lighting hides the effect. If `Occlusion Strength` is 0, the map has no effect.
+- **Normal Map** — surface relief. At `Normal Strength` 0, the map stays flat; 1 is its original strength. It corresponds to Normal Layer 01, so it is ignored when the [Normal Layer](/guides/detail-maps#노멀-레이어) module is off.
+- **Occlusion Map** — darkens areas that indirect light has difficulty reaching. It **does not affect direct light**, so its effect is barely visible under strong frontal light. At `Occlusion Strength` 0, assigning the map changes nothing.
 
-Emission, PBR, and Matcap are covered in [Detail Maps](/guides/detail-maps).
+Emission, PBR, and MatCap are covered in [Detail Maps](/guides/detail-maps).
 
 ## Next
 
-[Light and Shadow](/guides/light-and-shadow) — Most of the toon look is determined there.
+[Light and Shadow](/guides/light-and-shadow) — most of the toon look's character is decided there.

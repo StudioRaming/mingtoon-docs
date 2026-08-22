@@ -6,158 +6,114 @@ sidebar_position: 2
 
 # 빌드 시 자동 최적화
 
-**이 문서를 읽으면** 업로드나 빌드를 할 때 MingToon이 자동으로 무엇을 하는지, 그리고 그게 제대로 걸렸는지 확인하는 방법을 알게 됩니다.
+**이 문서를 읽으면** 업로드·빌드 때 MingToon이 원본을 보존하면서 무엇을 최적화하고, 실패와 복원을 어떻게 확인하는지 알 수 있습니다.
 
 ## 한 줄 요약
 
-**아무것도 하지 않아도 됩니다.** 기본값으로 켜져 있고, VRChat 업로드 · Warudo 모드 빌드 · 일반 플레이어 빌드에서 자동으로 걸립니다. 빌드가 끝나면 재질은 원래대로 돌아와 계속 편집할 수 있습니다.
+자동 최적화는 기본으로 켜져 있습니다. VRChat 업로드, Warudo 모드 빌드와 일반 Player 빌드에서 출하 복사본을 가볍게 만들고, 작업용 재질·Renderer는 편집 가능한 상태로 복원합니다.
 
-:::tip[수동 Bake와 헷갈리지 마세요]
-[수동 Bake](/workflow/bake-and-restore)는 **새 재질을 만들고 Renderer를 갈아 끼우므로** 작업을 계속하려면 손으로 되돌려야 합니다.
-
-빌드 시 자동 최적화는 **재질의 셰이더 포인터 하나만** 잠깐 바꿉니다. 재질 에셋은 교체되지 않고 Renderer도 건드리지 않으며, 빌드가 끝나는 순간 편집 가능한 상태로 돌아옵니다.
-
-**일반적인 배포에는 자동 최적화만으로 충분합니다.**
-:::
+수동 Bake는 고정 에셋을 직접 만들 때만 사용하세요. 일반 배포는 자동 최적화로 충분합니다.
 
 ## 무슨 일이 일어나나
 
-빌드가 시작되면:
+공통 흐름:
 
-1. 씬(또는 빌드 대상 프리팹)에서 MingToon 재질을 모읍니다.
-2. 각 재질이 **실제로 쓰는 기능만** 남긴 전용 셰이더를 만들거나 캐시에서 가져옵니다.
-3. `material.shader`를 그 셰이더로 바꿉니다.
-4. 빌드가 진행됩니다.
-5. 빌드가 끝나면 편집용 셰이더로 되돌립니다.
+1. 출하 대상 Renderer와 AnimationClip이 참조하는 MingToon 재질을 모읍니다.
+2. 실제 사용하는 기능과 애니메이션되는 값을 분석합니다.
+3. 고정 기능을 상수로 접은 경량 셰이더를 생성하거나 캐시에서 가져옵니다.
+4. 출하 동안 재질의 셰이더를 경량본으로 바꿉니다.
+5. 플랫폼별 추가 처리를 실행합니다.
+6. 종료·실패·도메인 리로드에서 원래 상태를 복원합니다.
 
-생성된 셰이더는 편집용과 **같은 ShaderLab Properties 블록**을 갖기 때문에, 작업해 둔 값이 왕복 과정에서 하나도 손실되지 않습니다.
+생성 셰이더는 편집용과 같은 ShaderLab Properties 계약을 유지합니다. 애니메이션되는 프로퍼티는 동적으로 남고, Renderer에 현재 할당되지 않았지만 AnimationClip만 참조하는 재질도 수집합니다.
+
+### VRChat 아바타에서 추가되는 처리 {#vrchat-추가-처리}
+
+- `Depth Availability = Auto`를 그대로 보존합니다. Force On / Force Off도 작성자 지정값을 유지하며, `업로드 시 깊이 라이트 싣기`는 재질 값을 바꾸지 않는 별도 옵트인입니다.
+- 얼굴 노멀을 **업로드 복사본 Mesh**의 UV7에 굽습니다. Face SDF가 UV7을 소유하거나 텍스처 Face Area Mask가 필요한 Renderer는 동일한 결과를 위해 Live 경로를 유지합니다.
+- 프로젝트에서 설정한 베이스·노멀·마스크 등 슬롯 종류별 텍스처 해상도 상한을 업로드 복사본에 적용합니다.
+- VRC Light Volumes 변형을 아바타 업로드에 자동 포함합니다.
+- MingToon 런타임 컴포넌트는 `IEditorOnly`로 표시합니다. exporter 처리 뒤 실제 build clone에서 `RuntimeComponentCount = 0`인지 별도로 검증해야 합니다.
+
+얼굴 노멀 업로드 산출물은 편집용 메시 베이크와 다른 전용 경로를 사용합니다. 같은 캐릭터·같은 UV 채널이어도 편집용 Mesh 에셋을 재사용하거나 덮어쓰지 않습니다.
 
 ### 애니메이션되는 값은 건드리지 않습니다 {#애니메이션되는-값은-건드리지-않습니다}
 
-분석기가 `AnimationClip`뿐 아니라 컴포넌트의 **중첩/배열 직렬화 필드에 들어 있는 Animator Controller 참조**까지 검사합니다. 애니메이션되는 프로퍼티는 동적으로 남으므로, 런타임에 켜질 기능이 컴파일 단계에서 잘려 나가는 일이 없습니다.
+분석기는 AnimationClip, Animator Controller와 컴포넌트의 중첩·배열 필드를 따라갑니다. 런타임 토글이 필요한 기능은 인스펙터의 옵트인을 켜야 베이크에서 상수로 접히지 않습니다.
 
-의상 토글처럼 **애니메이션 클립에서만 참조되어 Renderer에 한 번도 올라가지 않는 재질**도 함께 수집합니다.
+예:
 
-### 하나가 실패해도 빌드는 계속됩니다
+- `FX 애니메이터로 깊이 효과 전환`
+- `FX 메뉴로 그림자 투영 전환`
+- VRC Quality Low / Mid / High
 
-어떤 재질에서 최적화가 실패하면 그 재질만 최적화되지 않은 채로 나가고, 빌드는 그대로 진행됩니다. Console에 `[MingToon] Skipped build optimisation for ...` 경고가 남습니다.
+옵트인은 전환 가능성을 보존하는 대신 관련 uniform 분기와 코드가 남습니다. 실제로 애니메이션할 재질에만 켜세요.
 
----
+### 복구 가능한 실패는 격리하고 치명적 실패는 빌드를 멈춥니다
 
-## 플랫폼별로 어떻게 걸리나
+재질·Renderer 복원은 항목별로 예외를 격리합니다. 하나가 실패해도 뒤 항목을 계속 복원하고, 실패한 항목만 다음 복원 시도를 위해 남깁니다. 저장도 MingToon이 변경한 에셋에만 `SaveAssetIfDirty`를 사용하므로 관련 없는 dirty 에셋을 함께 저장하지 않습니다.
 
-플랫폼마다 빌드 진입점이 달라서, MingToon은 세 개의 훅을 각각 등록합니다.
+일반 재질 하나의 분석·변환 예외처럼 복구 가능한 실패는 해당 재질을 편집용 셰이더로 되돌리고 경고를 남긴 뒤 나머지를 계속합니다.
 
-| 플랫폼 | 진입점 | 비고 |
-|---|---|---|
-| **VRChat 아바타/월드 업로드** | `IVRCSDKBuildRequestedCallback` | VRChat 업로드는 `BuildPipeline.BuildPlayer`를 거치지 않아 Unity의 빌드 콜백이 울리지 않습니다 |
-| **Warudo 모드 빌드** | UMod 빌드 프로세서 | `Warudo/Build Mod`는 UMod 자체 파이프라인을 쓰므로 Unity 콜백이 울리지 않습니다 |
-| **일반 플레이어 빌드** | `IPreprocessBuildWithReport` | |
+반면 `BuildFailedException`, 공통 상수 교집합 실패, 복구 실패처럼 결과 정합성을 보장할 수 없는 오류는 전체 빌드를 중단합니다. Console의 원인을 해결하고 원본 복원이 끝났는지 확인한 뒤 다시 빌드하세요.
 
-세 훅 모두 같은 Apply/Restore 쌍을 호출하고, 두 번 호출해도 안전합니다.
+## 플랫폼별 진입점
 
-### VRChat: 깊이 자동 승격 {#vrchat-깊이-자동-승격}
+| 플랫폼 | 진입점 |
+|---|---|
+| **VRChat 아바타/월드** | VRC SDK 빌드 콜백 |
+| **Warudo 모드** | UMod 빌드 프로세서 |
+| **일반 Player** | Unity 빌드 전처리 콜백 |
 
-VRChat **아바타** 빌드에서는 한 가지가 더 일어납니다.
+VRChat 훅은 Modular Avatar·VRCFury 같은 도구가 재질을 처리한 뒤 실제 최종 상태를 분석하도록 늦게 실행됩니다.
 
-`Depth Availability`가 `Auto`인 재질을 `Force On`으로 올립니다.
+### VRChat 깊이 Auto 계약 {#vrchat-깊이-자동-승격}
 
-이유는 이렇습니다. `Auto`는 "호스트가 깊이 텍스처가 있다고 말하면 믿는다"는 뜻인데, 그렇게 말해 주는 것이 `MingDepthTextureProvider`입니다. 이건 `IEditorOnly` MonoBehaviour라 VRChat이 업로드에서 제거합니다. 그래서 VRChat에서는 그 신호가 영원히 도착하지 않고, `Auto`는 사실상 항상 꺼짐이 됩니다. **깊이 텍스처가 실제로 있는 월드에서도 2D 림과 2D 그림자가 사라지던 원인이 이것입니다.**
+`Auto`는 바인딩된 카메라 깊이 텍스처와 VRChat Photo Camera 상태를 카메라마다 직접 읽습니다. 업로드 훅은 이 값을 다시 쓰지 않으므로 Auto는 Auto로, Force On / Force Off는 작성자가 고른 값 그대로 출하됩니다. Force On은 자동 판정이 못 보는 호스트 깊이를 작성자가 보증할 때만 사용하세요.
 
-:::note[직접 정한 값은 건드리지 않습니다]
-`Force On`(1)과 `Force Off`(2)는 작업자의 의도적인 선택이므로 절대 덮어쓰지 않습니다. 승격은 `Auto`이면서 **깊이 모듈이 실제로 켜져 있는** 재질에만 걸립니다.
-:::
+`업로드 시 깊이 라이트 싣기`는 별도 옵트인입니다. 업로드 복사본에 그림자를 켠 Directional Light를 추가해 카메라가 실제 depth buffer를 만들게 하며, 재질은 Auto로 남습니다. 기본 꺼짐이고 성능·월드 조명 비용이 있습니다. → [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)
 
-월드 빌드에는 걸리지 않습니다. 월드는 자기 카메라와 스크립트를 그대로 갖기 때문입니다.
+미러 안전 차단은 별도입니다. Force On이어도 미러가 다른 카메라의 깊이를 읽지 않도록 깊이 모듈을 끕니다. → [VRChat 깊이](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 
-### VRChat: 다른 툴과의 순서
+## 텍스처 최적화 {#텍스처-최적화}
 
-VRChat 훅은 `callbackOrder = 2000`으로 **늦게** 실행됩니다. Modular Avatar나 VRCFury처럼 자기 빌드 콜백에서 재질을 다시 쓰는 툴이 먼저 끝난 뒤, **실제로 출하될 재질**을 분석하기 위해서입니다.
+밍툰 매니저의 `텍스처 최적화`는 프로젝트 전체 설정입니다. 씬·프리팹이 아니라 Editor 환경설정에 저장되고, 이 프로젝트에서 출하하는 모든 캐릭터에 적용됩니다.
 
----
+### 슬롯별 해상도 상한
 
-## 제대로 걸렸는지 확인하기 {#제대로-걸렸는지-확인하기}
-
-### 1. VRChat 훅이 컴파일되었는지
-
-스크립트 리로드 후 Console에 이 줄이 있어야 합니다.
-
-```text
-[MingToon] VRChat build hook compiled and registered.
-```
-
-:::danger[이 줄이 없다면]
-VRChat 훅이 **아예 존재하지 않는 상태**입니다. 조건부 컴파일 가드(`VRC_SDK_VRCSDK3` 정의 + Unity 2022.3 이상)가 false로 평가된 것입니다. VRC SDK가 프로젝트에 제대로 들어와 있는지 확인하세요.
-:::
-
-### 2. 빌드 로그
-
-빌드 중 Console에 요약이 남습니다.
-
-```text
-[MingToon] Build optimisation: 12 candidate material(s), 12 switched,
-0 with texture optimizations, 3 depth availability promotion(s).
-```
-
-### 3. 리포트 파일
-
-프로젝트 폴더 옆의 `StudioRaming/MingToonOptimizeReport.txt`에 재질별 결과가 남습니다. 빌드가 끝나도 지워지지 않으므로 나중에 확인할 수 있습니다.
-
-```text
-MingToon build optimisation report
-time      : ...
-candidates: 12
-swapped   : 12
-depthPromo: True
-texRewrite: False
-
-Body_MingEditable  ->  Hidden/StudioRaming/MingToon/Generated/...
-Hair_MingEditable  ->  optimized depth-mask(-1 sample)
-```
-
----
-
-## 메뉴 옵션
-
-`Tools > Studio Raming > MingToon` 아래 두 개의 토글이 있습니다.
-
-### Optimize Shaders On Build {#optimize-shaders-on-build}
-
-**기본값: 켜짐.** 위에서 설명한 셰이더 스왑 전체를 켜고 끕니다. 끌 이유는 거의 없습니다.
+베이스·노멀·맷캡·마스크 같은 슬롯 종류별 최대 해상도를 정합니다. 업로드 복사본만 리사이즈하고 원본 TextureImporter와 원본 파일은 바꾸지 않습니다.
 
 ### Reviewed Texture Rewrites On Build (Opt-In)
 
-**기본값: 꺼짐.** 이건 더 위험한 쪽입니다.
+기본 꺼짐입니다. Surface/normal flatten과 검토된 RGBA mask repack을 허용합니다. readback, 색 공간, mip과 플랫폼 압축 때문에 픽셀이 달라질 수 있으므로 켠 경우 baked 전후 캡처를 비교하세요.
 
-| | 셰이더 스왑 | 텍스처 재작성 |
-|---|---|---|
-| 바꾸는 것 | 포인터 하나 | 재질의 텍스처 슬롯들 |
-| 되돌리기 | 자명함 | 전부 정확히 되돌려야 함 |
-| 빌드 시간 | 거의 없음 | 재질마다 최대 3장을 렌더·재임포트 |
+이 옵션이 꺼져 있어도 수학적으로 손실 없는 중복 샘플·항등 마스크 제거는 계속 적용됩니다.
 
-:::caution[켜기 전에]
-surface/normal flatten과 일반 RGBA mask repack이 허용되므로, 텍스처 readback · 컬러 스페이스 · mip 재생성 · 플랫폼 압축 때문에 **픽셀이 달라질 수 있습니다.** 켠다면 baked 전후 캡처를 비교하세요.
-:::
+## 제대로 걸렸는지 확인하기 {#제대로-걸렸는지-확인하기}
 
-이 옵션이 꺼져 있어도 **손실 없는** 최적화는 계속 걸립니다. depth mask가 수학적으로 항등임을 증명한 경우나, PBR/AO가 같은 Texture 객체·같은 UV 식을 쓰는 경우가 그렇습니다.
+1. Console의 C#·셰이더 오류를 먼저 0개로 만듭니다.
+2. 밍툰 매니저의 `준비 상태 검사`에서 캐시 버전, 생성 셰이더와 원본 변경 여부를 확인합니다.
+3. 빌드 로그의 후보·스왑·깊이 승격·텍스처 재작성·얼굴 노멀 베이크 개수를 확인합니다.
+4. `StudioRaming/MingToonOptimizeReport.txt`의 재질별 결과를 확인합니다.
+5. VRChat은 본인 화면·미러·Photo Camera를 각각 확인합니다.
 
-### Clean Build Optimisation Output
+## 메뉴 옵션
 
-생성된 셰이더 캐시를 정리합니다. 캐시가 꼬였다고 의심될 때 실행하세요.
+`Tools > Studio Raming > MingToon`의 정식 빌드에는 사용자용 메뉴만 표시됩니다.
 
-### Debug: Tint Optimized Shaders Red
+- **Optimize Shaders On Build** — 기본 켜짐. 자동 셰이더 최적화를 제어합니다.
+- **Reviewed Texture Rewrites On Build (Opt-In)** — 기본 꺼짐. 검토된 텍스처 재작성을 허용합니다.
+- **Clean Build Optimization Output** — 생성 셰이더 캐시를 정리합니다.
 
-최적화된 셰이더를 붉게 물들여 **어떤 재질이 실제로 스왑되었는지 눈으로 확인**하게 해 줍니다. 최적화가 걸렸는지 의심될 때 켜고 빌드해 보세요. 확인 후 반드시 끄세요.
+`Debug: Tint Optimized Shaders Red`, 변형 덤프·레코드와 내부 성능 측정 메뉴는 정식 패키지에 보이지 않습니다. `MINGTOON_DEV` 개발 빌드에서만 사용할 수 있습니다.
 
----
+## 에디터가 빌드 도중 종료됐다면
 
-## 에디터가 빌드 도중 죽었다면
+셰이더 스왑과 텍스처 재작성은 디스크 저널을 사용해 다음 도메인 리로드에서 복구합니다. 얼굴 노멀 업로드 bake는 build clone 파괴가 정상 종료 경로이고, 살아 있는 공유 재질이 있으면 원래 float·keyword를 대상별로 복원하고 저장합니다.
 
-되돌리기는 세 곳에서 호출됩니다. 빌드 후 콜백, 그 콜백이 오지 않을 경우를 대비한 지연 호출, 그리고 **도메인 리로드**입니다. 에디터가 빌드 중에 죽어도 다음에 스크립트가 리로드될 때 원래 셰이더로 돌아옵니다.
-
-텍스처 재작성까지 켠 상태였다면 스냅샷이 디스크에 남아 있어 같은 방식으로 복구됩니다.
+매니저의 상태가 계속 `복원 필요`라면 `Restore After Interrupted Build`를 실행하고 Console의 항목별 실패를 확인하세요.
 
 ## 다음
 
-- 더 강한 최적화가 필요하거나 배포용 고정 에셋이 필요하면: [수동 Bake와 복원](/workflow/bake-and-restore)
-- 플랫폼별 업로드 체크리스트: [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)
+- 고정 배포 에셋: [수동 Bake와 복원](/workflow/bake-and-restore)
+- 플랫폼 체크리스트: [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)

@@ -54,9 +54,20 @@ Projects a lighting and material image painted on a sphere based on the camera's
 | `Contrast` | 1 is original. Increasing sharpens the division between highlights and dark areas, strengthening the cel feel |
 | `Intensity` | At 0, the layer calculation is skipped |
 | `MatCap / Mesh UV Projection` | **At 0, camera-based; at 1, fixed to mesh UV** |
+| `MatCap Rotation` | Turns the sphere about its own centre. Use it to change the direction a highlight comes from instead of redrawing the map |
+| `MatCap Circle Radius` | **0 means no crop.** Raising it cuts away everything beyond that radius from the centre, trimming a spherical highlight into a round one. 1 is the sphere's rim |
+| `MatCap Circle Feather` | Softens the circle's edge inward. Does nothing while Radius is 0 |
+| `MatCap Normal Map Strength` | How far this layer follows the module's shared `MatCap Normal Map`. It disturbs only the normal used to project the MatCap, so **the surface shading stays put while the highlight distorts** |
+| `MatCap Emission Strength` | Adds this share of what the layer actually contributed a second time, as light-independent emission. The highlight survives darkness and can reach a bloom threshold |
+
+`MatCap Normal Map` sits once above the layer list, in the module area. All five slots share that one map, and each slot decides how far it follows it with `MatCap Normal Map Strength`.
 
 :::tip[Tattoos and Face Painting]
 Set `MatCap / Mesh UV Projection` to 1 so the pattern sticks to the surface and doesn't move when the camera rotates.
+:::
+
+:::tip[Eye Highlights]
+Trim the highlight round with `MatCap Circle Radius`, aim the direction it comes from with `MatCap Rotation`, then raise `MatCap Emission Strength` so the eyes keep their glint in a dark world.
 :::
 
 ---
@@ -141,7 +152,7 @@ Region Mask adjusts surface response. With both PBR and Toon Specular disabled t
 
 ### Starter presets
 
-0.1.4 includes `MetalHybrid` · `SkinSubtle` · `EyeGlossy` · `ClothSheen` · `HairAnisotropic` · `MetalCel` · `CharacterParts` starter presets.
+The current version includes `MetalHybrid` · `SkinSubtle` · `EyeGlossy` · `ClothSheen` · `HairAnisotropic` · `MetalCel` · `CharacterParts` starting points. Presets demonstrate feature combinations rather than finished looks, so retune them on the actual avatar under world lighting.
 
 ---
 ## Emission {#이미션}
@@ -166,6 +177,23 @@ The mask is taken from the **original alpha**. Changing `Channel Source` or `Inv
 :::
 
 Because it is off by default, existing materials look exactly as before. Emission Layer 2 below has the same control.
+
+### Time Animation {#시간-애니메이션}
+
+Expand `Time Animation` on either emission layer to animate its map flow and brightness independently.
+
+- `Scroll Speed` — moves only the emission map by this many tiles per second. X is horizontal, Y is vertical, and negative values move in the opposite direction. Set the texture Wrap Mode to `Repeat` for seamless flow.
+- `Blink` — `Smooth` pulses with a sine wave; `Flashing` switches immediately between on and off. `Speed` is repetitions per second.
+- `On Ratio` — used only by `Flashing`. Lower values produce a brief flash followed by a longer off interval.
+- `Minimum Brightness` — 0 turns the layer completely off at its darkest point. Raise it to keep the layer on while only its brightness changes.
+- `Phase Offset` — staggers the timing of multiple materials or the two emission layers.
+- `Emission in Darkness` — reduces emission in bright areas based on the already calculated main-light amount. Use `Brightness Threshold` and `Transition Width` to set where it disappears.
+
+Scrolling, blinking, and darkness-driven emission do not add another emission-texture read. Layers 1 and 2 can use independent speeds and phases.
+
+:::note[Editor preview]
+Time animation advances when the view repaints. If it appears frozen in Scene view, check the actual motion in Play mode, VRChat, or WARUDO.
+:::
 
 ### Emission Layer 2 {#발광-레이어-2}
 
@@ -206,6 +234,16 @@ If `Occlusion Strength` is 0, adding the map produces no change.
 Voronoi particle sparkle. Configure distance stabilization, viewpoint sensitivity, light angle, and size/color randomization.
 
 Start with the toggle, color, and intensity, then fine-tune the details.
+
+### Limit the Glitter Region with MatCap {#matcap으로-반짝임-영역-제한}
+
+Enable `Use Glitter MatCap` under `MatCap Limit` to restrict view-dependent glitter using the brightness of a dedicated MatCap. Glitter appears only in bright regions, making camera-following areas such as eye highlights or a metal reflection band. This is independent of the regular MatCap layers.
+
+- `Use Color Too` — multiplies the MatCap RGB into the glitter-particle color. When off, only brightness limits the region.
+- `Invert` — makes glitter appear in the dark areas of the MatCap instead.
+- `Strength` — amount of region limiting. At 0, only the region limit disappears; coloring from `Use Color Too` remains.
+
+When disabled, the dedicated MatCap texture is not read. Enabling it adds one texture read.
 
 ### Changing the particle shape {#입자-모양-바꾸기}
 

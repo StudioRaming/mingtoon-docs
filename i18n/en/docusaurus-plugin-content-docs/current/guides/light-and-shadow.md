@@ -108,17 +108,16 @@ Splotches disappear, but contact shadows lift and shadows on thin areas break. A
 
 ### Grazing shadows on the face {#얼굴의-스치는-그림자}
 
-When light grazes a gentle surface like the face, stair-step splotches appear. In the `Cast Tone / Face Stabilization` group:
+The nonfunctional `Uniform Face Cast` and `Face Cast Stabilization` controls were removed in 0.1.7. Adjust face shadows in this order:
 
-1. Enable `Face Cast Stabilization`.
-2. Raise `Stabilization Strength`. **Raising too much fades intended shadows like bangs.**
-3. Use `Grazing Light Range` to set the angle range where stabilization applies. Higher = wider range.
-4. For vertical splotches, use `Vertical Correction Strength` and `Vertical Threshold (Lower = Wider)`. Lower threshold = wider application.
-5. If the boundary is still rough, use `Hard Edge Cleanup`.
+1. Under Face Shading, choose real-time shadow or `Soft 2D Shadow (Face Corrected)` for `Shadow Mode`.
+2. Adjust `Real Shadow Caster Offset` only when the 2D assist is not in use. Otherwise, the row appears disabled.
+3. Align the face proxy center, normal alignment, and Face SDF transition first.
+4. If world SSAO or facial self-shadow relief is the problem, consider [Face Proxy Depth](/guides/character#얼굴-프록시-뎁스), which is off by default.
 
 ### When shadow boundaries are jagged like steps {#그림자-경계가-계단처럼-각질-때}
 
-Enable `Enable Projection Feather` in the `Projection Feather` group and adjust `Projection Feather Radius` and `Projection Feather Strength`. Use `Cast Edge Feather Quality` to set the sample count.
+Enable `Enable Projection Feather` in the `Projection Feather` group and adjust `Projection Feather Radius` and `Projection Feather Strength`. Its range is 0–48 px, matching the real quality caps. Fast and Smooth are effective up to 8 px, Premium up to 20 px, and Soft Bilinear up to 48 px, so check `Cast Edge Feather Quality` as well.
 
 :::note[Feathering can't recover missing information]
 Details that don't exist in the low-resolution shadow map won't come back by softening. First check the light's shadow map resolution, bias/normal bias, and cascade.
@@ -145,16 +144,18 @@ Enable `Unify With 2D Shadow` so the 2D shadow uses the same color as the cast s
 A visual effect that overlays a color band on shading boundaries. Do this after the look is finalized.
 
 1. Enable `Use Shadow Boundary`.
-2. Raise `Boundary Width`. **If 0, all items below are ignored.**
-3. `Boundary Strength` is opacity. At 0, even if you raise width, it won't show.
-4. `Boundary Overlay Mode` — when enabled, thick color boundary extends to lit area; when disabled, it stays inside shadow for a neater look.
+2. Raise `Boundary Width`. At 0, all properties below are ignored.
+3. Use `Boundary Blur` to set the distance over which the band builds from the lit side to its strongest point.
+4. Set opacity with `Boundary Strength`.
+
+The cast boundary fills softly from the lit side, reaches its strongest point immediately before the shadow core, then disappears inside the core. It is drawn as the final shadow layer after form shadow, cast shadow, 2D Shadow, and SSAO compositing, so overlapping shadows do not bury its color. Occluder contours crossing the combined shadow are erased instead of floating as empty outlines.
 
 :::tip[If skin and hair are mixed in one material]
 Raise `Boundary Base Map Mix`. At 0, boundary is solid color; at 1, it mixes with base map color for different boundary colors per area.
 :::
 
 :::caution[Conditions when boundary is invisible]
-The `Shadow Color` section must be enabled, and **at least one of Form or Cast shadows must be actually working**.
+The `Shadow Color` section must be enabled, and at least one of Form Shadow or Projected Shadow must actually be working. The boundary is drawn after all shadow compositing.
 :::
 
 ---
@@ -168,6 +169,7 @@ VRChat worlds don't let avatar creators control lighting. Items in the `Lighting
 | `Preserve Base Map Color` <br />(Quick Mode: Preserve Base Color) | How much the base map color is kept close to original despite dark lighting. **Keep high in environments where lighting is unpredictable** |
 | `Scene Light Color Influence` <br />(Quick Mode: Light Color Influence) | At 0, any colored light looks white. Handles **color only, not brightness** |
 | `Indirect Light Lift` | Lifts form shadows by the amount of ambient light. Only calculated when form shadow is enabled |
+| `VRC Light Volumes` | On Built-in VRChat avatars, uses volume indirect light and specular, point-light shadows, bias, and strength. It is enabled automatically during upload and falls back to Unity probes in environments without volumes |
 | `Minimum Final Brightness` | Never goes below this, no matter how dark |
 | `Maximum Final Brightness` | Never exceeds this, no matter how bright. Guards against overexposed worlds |
 
@@ -179,8 +181,13 @@ Response to point/spot lights is separate:
 
 - `Additional Light Receive` · `Additional Light Intensity` (Quick Mode)
 - `Additional Light PBR / Toon Blend` · `Additional Light Toon Threshold` · `Additional Light Toon Softness` (Full Settings)
+- `Additional Light Maximum Brightness` — an absolute HDR peak cap for the additional-light result, not a base-color multiplier
 
-To maintain the same tone as the key light, adjust the toon threshold for additional lights as well.
+To maintain the same tone as the key light, adjust the toon threshold for additional lights as well. The absolute cap limits multi-light overexposure without crushing specular on dark materials into the base color.
+
+### Master Adjustment and Edge Rim
+
+`Master Adjustment` corrects the color, brightness, and saturation of the lit side, shadow, and final output in one place. The `Edge Rim` master controls the combined strength, dedicated color, and HDR cap for silhouette effects such as 2D Rim, Fresnel Rim, and Backlight. See [Rim](/guides/rim) for individual rim controls.
 
 ## Next
 

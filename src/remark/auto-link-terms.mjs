@@ -20,7 +20,7 @@ const GLOSSARY = {
   '껍데기 최소 두께': '/guides/depth-effects#1-얇음을-어떻게-잴지',
   '준비 상태 검사': '/workflow/character-manager#업로드-준비-점검',
   '밍툰 매니저': '/workflow/character-manager',
-  'WARUDO Runtime Root': '/platforms/warudo#내보내기-전-필수--warudo-runtime-root',
+  'WARUDO Runtime Root': '/platforms/warudo#warudo-depth-bridge',
   '변환 제외': '/workflow/character-manager#변환되지-않는-슬롯',
   '얼굴 모듈 동기화': '/workflow/character-manager#상태-패널',
   // 인스펙터
@@ -140,7 +140,7 @@ const GLOSSARY = {
   '얼굴 슬롯 판정': '/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계',
   'lilToon 변환': '/workflow/liltoon-conversion',
   '빌드 시 자동 최적화': '/workflow/build-optimization',
-  'Optimize Shaders On Build': '/workflow/build-optimization#optimize-shaders-on-build',
+  'Optimize Shaders On Build': '/workflow/build-optimization',
   '수동 Bake': '/workflow/bake-and-restore',
   '동적 패스 보존': '/workflow/bake-and-restore#절차',
   LosslessOnly: '/workflow/bake-and-restore#losslessonly-기본값',

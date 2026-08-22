@@ -64,7 +64,7 @@ sidebar_position: 12
 |---|---|
 | **Base & Lighting** | すべてのエフェクト・Base Tint・ベース色保存・ライティング色影響・最小明度・最大明度 |
 | **Shadows** | Shadow Border・Shadow Softness・Shadow Strength・統合シャドウ使用・統合シャドウ色・統合シャドウHSVG・シャドウ境界使用・境界線幅/ブラー/強度・キャストシャドウ受け取り量 |
-| **Stylization** | 2Dリム幅・2Dリム強度・2Dシャドウ幅/強度・2Dシャドウキャスト到達距離・顔2Dシャドウアシスト・2Dシャドウライティング方向追従・顔固定方向・顔セルフサーフェス抑制・2Dシャドウ上下/前後オフセット・距離減衰範囲・フェイスシェーディング |
+| **Stylization** | 2Dリム幅・2Dリム強度・2Dシャドウ幅/強度・2Dシャドウ最大距離・顔2Dシャドウアシスト・2Dシャドウライティング方向追従・顔固定方向・顔セルフサーフェス抑制・2Dシャドウ上下/前後オフセット・距離減衰範囲・フェイスシェーディング |
 | **Outline & Emission** | アウトラインカラー・アウトライン幅・エミッション強度 |
 
 `Search Properties` でフィルターでき、結果がなければ `No safe bulk properties match the search and selected materials。` が表示されます。

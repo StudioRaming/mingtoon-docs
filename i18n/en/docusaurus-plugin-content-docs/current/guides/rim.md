@@ -24,7 +24,17 @@ This guide covers the **Rim** group in the Inspector: `Rim Shade` · `Rim Light`
 Enable one at a time and check as you adjust. Especially if you raise Rim Light and Backlight together, the silhouette will blow out to white.
 :::
 
-All five of these **require no camera depth.** Since they work in any environment, you can use them to maintain silhouette in VRChat's standard view where depth isn't available. The depth-reading `Depth Rim` is covered in [Depth-Based Effects](/guides/depth-effects).
+All five of these **require no camera depth.** Since they work in any environment, you can use them to maintain silhouette in VRChat's standard view where depth isn't available. The depth-reading `2D Rim Light` is covered in [Depth-Based Effects](/guides/depth-effects).
+
+### Edge Rim Master {#가장자리-림-마스터}
+
+`Master Adjustment` under Basic Settings contains a dedicated group for four overlapping silhouette layers.
+
+- `Edge Rim Multiplier` — multiplies only the edge layers of 2D Rim Light, Fresnel Rim, Backlight, and 2D Translucency.
+- `Edge Rim Color` and its fine adjustments — apply one shared color to the sum of those four layers.
+- `Edge Rim Maximum Multiplier` — HDR cap after adding all four layers. 0 means no cap.
+
+It does not affect Front Light, Shadow Interior Reflection, or the inner layer of Translucency.
 
 ---
 
@@ -136,9 +146,15 @@ First, create the band itself. Same structure as Rim Light.
 |---|---|
 | `Shadow Threshold` | Reflection appears below this brightness level |
 | `Shadow Region` | Transition width of that detection |
+| `Visible in Cast Shadow` | Amount of reflection retained inside projected shadows |
+| `Visible in 2D Shadow` | Amount of reflection retained inside 2D Shadow |
 
 :::tip[If reflection bleeds into bright areas]
 Lower `Shadow Threshold`. Conversely, if you want it only in deep shadows, lower it more.
+:::
+
+:::caution[WARUDO Built-in additional-light exception]
+The ForwardAdd pass for point and spot additional lights does not have the key light's cast-shadow or 2D Shadow classification. Therefore, the two `Visible in Shadow` values above do not apply to the **inner-reflection contribution made by additional lights** in WARUDO Built-in. They do apply to the key light and URP's single pass.
 :::
 
 ### Environment Response

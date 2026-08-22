@@ -64,7 +64,7 @@ If `No MingToon materials match the current scope and filters.` appears, widen t
 |---|---|
 | **Base & Lighting** | All Effects · Base Tint · Base Color Preservation · Light Color Influence · Minimum Brightness · Maximum Brightness |
 | **Shadows** | Shadow Border · Shadow Softness · Shadow Strength · Use Unified Shadow · Unified Shadow Color · Unified Shadow HSVG · Use Shadow Boundary · Boundary Width / Blur / Strength · Cast Shadow Receive |
-| **Stylization** | 2D Rim Width · 2D Rim Intensity · 2D Shadow Width / Strength · 2D Shadow Cast Reach · Face 2D Shadow Assist · 2D Shadow Light Follow · Face Self-Surface Suppression · 2D Shadow Vertical / Depth Offset · Distance Fade Range · Face Shading |
+| **Stylization** | 2D Rim Width · 2D Rim Intensity · 2D Shadow Width / Strength · 2D Shadow Maximum Distance · Face 2D Shadow Assist · 2D Shadow Light Follow · Face Self-Surface Suppression · 2D Shadow Vertical / Depth Offset · Distance Fade Range · Face Shading |
 | **Outline & Emission** | Outline Color · Outline Width · Emission Intensity |
 
 Filter with `Search Properties`; if nothing matches, `No safe bulk properties match the search and selected materials.` appears.

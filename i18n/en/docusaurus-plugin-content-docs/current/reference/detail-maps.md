@@ -44,11 +44,17 @@ Configure MatCap textures, blending, and projection.
 | **MatCap Layer Count** | Range 0-5; default 0. Slots beyond the count are not evaluated; every active layer adds map, mask, and blend cost. | `_MingMatcapLayerCount` |
 | **MatCap Metallic Areas Only** | Off by default. Restricts every MatCap layer to areas with high PBR metallic value. With PBR or a metallic mask off there is little to gate against. | `_MingMatcapMetallicOnly` |
 | **MatCap Reflection Desaturation** | Range 0-1; default 0.25. Drains color from MatCap so the Base Map stays readable; 1 removes almost all hue. | `_MingMatcapDesaturation` |
+| **MatCap Normal Map** | One normal map shared by all five MatCap slots. It disturbs only the normal used to project the MatCap, so the surface shading stays where it is while the highlight distorts. Each slot sets how far it follows with MatCap Normal Map Strength; with every slot at 0 the map is never read. It is shared rather than per slot because of the texture binding budget - five maps would spend five slots on what one can do. | `_MingMatcapNormalMap` |
 | **MatCap Map** | A lighting and material image painted on a sphere. It is projected from the view, so highlights follow the camera as it orbits. | `_MingMatcapMap` |
 | **Blend Mode** | How the MatCap combines with the surface. Add and Screen suit a bright sheen; Multiply suits darkening material detail. | `_MingMatcapBlendMode` |
 | **Contrast** | Contrast of the MatCap image. 1 is the source; raising it splits highlight from shade for a harder cel feel. | `_MingMatcapContrast` |
 | **Strength** | How much this layer is applied. At 0 the layer is skipped entirely, so changing its map or blend mode does nothing. Slots beyond the layer count are skipped as well. | `_MingMatcapStrength` |
+| **MatCap Emission Strength** | Range 0-1; default 0. Adds this share of what the layer actually put on the pixel a second time, as light-independent emission - so the highlight survives darkness and can reach a bloom threshold. It is not subject to the edge-rim ceiling, and it works whether or not the Emission module is on. | `_MingMatcapEmissionStrength` |
+| **MatCap Normal Map Strength** | Range 0-1; default 0. How far this layer follows the MatCap Normal Map. It disturbs only the normal used to project the MatCap, so the surface shading stays where it is while the highlight distorts - which is what eye highlights and brushed metal need. At 0 this layer does not read the map at all. | `_MingMatcapNormalMapStrength` |
 | **MatCap / Mesh UV Projection** | 0 projects the MatCap from the view, 1 pins it to the mesh UV. At 1 the pattern stays glued to the surface as the camera moves, which suits tattoos and painted detail. | `_MingMatcapProjectionBlend` |
+| **MatCap Rotation** | Range -180-180 degrees; default 0. Turns the MatCap sphere about its own centre, so the direction a highlight comes from can be changed without redrawing the map. At 0 the rotation math is skipped entirely. | `_MingMatcapRotation` |
+| **MatCap Circle Radius** | Range 0-1; default 0. Crops the MatCap outside this radius from its centre, trimming a spherical highlight into a round one. 1 is the sphere's rim. 0 means NO crop - it is the default, and it is what leaves older materials looking exactly as they did. | `_MingMatcapCircleRadius` |
+| **MatCap Circle Feather** | Range 0-1; default 0.25. Softens the circle's edge inward. It is a fraction of Radius, so raising it never moves where the edge sits. It does nothing while Radius is 0. | `_MingMatcapCircleFeather` |
 
 ## PBR Surface
 
@@ -103,7 +109,7 @@ Configure a lightweight toon-style highlight without enabling PBR.
 |---|---|---|
 | **Enable Toon Specular** | Off by default. Adds a highlight shaped by the light direction. It is the lighter choice when a surface needs gloss but not the whole PBR path. | `_MingToonSpecularEnabled` |
 | **Toon Specular Color** | White by default. It is HDR, so values above 1 are allowed. The blend mode defaults to Add. | `_MingToonSpecularColor` |
-| **Toon Specular Blend Mode** | Add by default. Screen, Overlay, Hue, and Color are formulas defined over 0-1, so an HDR colour or an intensity above 1 may not give the shape you intended. | `_MingToonSpecularBlendMode` |
+| **Toon Specular Blend Mode** | Add by default. Screen, Overlay, Hue, and Color are formulas defined over 0-1, so an HDR color or an intensity above 1 may not give the shape you intended. | `_MingToonSpecularBlendMode` |
 | **Blend Opacity** | How strongly the toon specular highlight blends in. Try lowering this before Strength when the highlight overpowers; at 0 the module is effectively off. | `_MingToonSpecularBlendOpacity` |
 | **Toon Specular Strength** | Range 0-8; default 1. How bright the highlight is. It clips toward white as it rises, so shape the highlight with threshold and softness and use this only for brightness. | `_MingToonSpecularStrength` |
 | **Toon Specular Color Source** | Single Color by default, which uses only the color you set. Switch to Mask Texture Color and the colors painted into the Toon Specular Mask multiply into the highlight color, so a single highlight can change color from one area to the next the way hair does. With no mask assigned the map is white, so nothing changes, and the mask's channel, invert, and remap controls keep masking intensity exactly as before. | `_MingToonSpecularTintMode` |
@@ -115,8 +121,8 @@ Configure a lightweight toon-style highlight without enabling PBR.
 | **Toon Specular Anisotropic Shift** | Range -1 to 1; default 0. Meaningful only in Anisotropic mode. It slides the band along the normal, away from the strand root, which is what places the ring on the head. | `_MingToonSpecularAnisoShift` |
 | **Toon Specular Normal Map Influence** | Range 0-1; default 1. 0 uses the mesh normal only; 1 uses the stacked normal maps fully. | `_MingToonSpecularNormalInfluence` |
 | **Toon Specular Visibility In Shadow** | Range 0-1; default 0. 0 hides it in shadow, 1 keeps it fully visible there. A specular is a reflection of the light source, so 0 is the physical answer and anything above it is a stylistic one. | `_MingToonSpecularShadowVisibility` |
-| **Toon Specular Base Color Influence** | Range 0-1; default 0. At 0 the highlight keeps the colour you set; raising it tints the highlight with the base colour underneath. Raise it when the gloss should follow the material colour, as on metal. | `_MingToonSpecularBaseColorInfluence` |
-| **Toon Specular Scene Light Influence** | Range 0-1; default 1. At 1 the highlight follows the colour and brightness of the scene light; at 0 it stays exactly the colour you set regardless of the scene. Lower it when the gloss should read the same in every world. | `_MingToonSpecularSceneLightInfluence` |
+| **Toon Specular Base Color Influence** | Range 0-1; default 0. At 0 the highlight keeps the color you set; raising it tints the highlight with the base color underneath. Raise it when the gloss should follow the material color, as on metal. | `_MingToonSpecularBaseColorInfluence` |
+| **Toon Specular Scene Light Influence** | Range 0-1; default 1. At 1 the highlight follows the color and brightness of the scene light; at 0 it stays exactly the color you set regardless of the scene. Lower it when the gloss should read the same in every world. | `_MingToonSpecularSceneLightInfluence` |
 
 ## Emission
 
@@ -149,6 +155,11 @@ Configure Voronoi particle sparkle with stable distance response, view sensitivi
 | **Glitter Strength** | Range 0-8; default 8. Brightness multiplier; at 0 the pattern contributes no visible sparkle. | `_MingGlitterStrength` |
 | **Enable Glitter Mask** | Off by default. Limits glitter to a separate mask. Off ignores the mask texture, channel, and invert controls and saves the mask sample. | `_MingGlitterMaskEnabled` |
 | **Use Color Too** | Off by default. On, the same mask texture is read as full RGBA: alpha is the region and RGB tints the particles. It costs no extra texture sample. While on, the channel selector is fixed to alpha. | `_MingGlitterMaskUseColor` |
+| **Use Glitter MatCap** | Off by default. Limits where glitter shows using a dedicated matcap texture's brightness, judged from the view direction: bright areas show glitter, dark areas hide it. Off never reads the matcap, so it costs nothing. | `_MingGlitterMatcapMaskEnabled` |
+| **MatCap Texture** | The glitter-only matcap. Put a spherical highlight image here and glitter sparkles only where it is bright. Independent from the matcap layers. | `_MingGlitterMatcapTex` |
+| **Use Color Too** | Off by default. On, the matcap's RGB also tints the glitter particles. Off uses only its brightness for the region and leaves the color alone. Either way the texture is read once. | `_MingGlitterMatcapUseColor` |
+| **Invert** | Off by default. On, flips the brightness so glitter shows in the matcap's dark areas instead. | `_MingGlitterMatcapMaskInvert` |
+| **Strength** | Range 0-1; default 1. How strongly the matcap's region limit applies. At 0 only the region limit disappears - the tint from Use Color Too still applies. | `_MingGlitterMatcapMaskStrength` |
 | **Enable Shape Map** | Off by default. On, each particle's silhouette is replaced by a texture (star, heart, and so on). Off keeps the round particle and does not read the shape map. | `_MingGlitterShapeEnabled` |
 | **Shape Map** | The silhouette of a single particle. The square is laid inside the particle, so leave a margin rather than filling to the edge. The background must be black (or alpha 0). | `_MingGlitterMap` |
 | **Shape Channel** | Default is A. Picks which channel of the shape map carries the silhouette. Use A for a PNG with alpha, or R / Luma for a black-and-white image. | `_MingGlitterShapeChannel` |

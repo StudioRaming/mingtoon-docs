@@ -158,7 +158,7 @@ Conversion is **blocked** in these cases:
 | Location | Action |
 |---|---|
 | Cloth wrinkles·overall body | `Suppress Self Cast Shadow` on, `Self Shadow Caster Bias` 0.01~0.03 |
-| Face | `Face Cast Stabilization` on, adjust `Stabilization Strength`·`Grazing Light Range` |
+| Face | Adjust the bangs/hair caster `Shadow Mode`, `Real Shadow Caster Offset`, Face SDF, and `Face 2D Shadow Assist`. The nonfunctional face-cast stabilization controls were removed in 0.1.7 |
 | Vertical direction | `Vertical Correction Strength`·`Vertical Threshold (Lower = Wider)` |
 | Boundary looks stepped | `Enable Projection Feather` + `Projection Feather Radius`·`Strength` |
 | Overall jitter | Light's shadow map resolution · bias/normal bias · cascade in that order |

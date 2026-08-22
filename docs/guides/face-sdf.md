@@ -6,7 +6,7 @@ sidebar_position: 13
 
 # 얼굴 SDF와 Face SDF Studio
 
-**이 문서를 읽으면** 페이스 셰이딩과 얼굴 SDF의 차이를 이해하고, 동봉된 Face SDF Studio에서 방향성 얼굴 그림자를 만들어 재질에 적용할 수 있습니다.
+**이 문서를 읽으면** 페이스 셰이딩과 얼굴 SDF의 차이를 이해하고, 별도 제품인 Face SDF Studio가 설치된 경우 방향성 얼굴 그림자를 만들어 재질에 적용할 수 있습니다.
 
 ## 먼저 구분하세요
 
@@ -18,8 +18,10 @@ sidebar_position: 13
 
 SDF 없이도 페이스 셰이딩은 동작합니다. 먼저 [페이스 셰이딩](/guides/character#페이스-셰이딩)으로 얼굴을 정리하고, 광원이 움직일 때 애니메이션 같은 그림자 전환이 필요할 때 SDF를 더하세요.
 
-:::note[0.1.4에서는 Studio가 동봉됩니다]
-별도 패키지를 찾을 필요가 없습니다. `Tools > Studio Raming > Face SDF Studio > Open`에서 바로 엽니다. Studio는 Editor 전용이며 최종 결과는 텍스처와 선택적인 복제 Mesh뿐이라 런타임 스크립트를 추가하지 않습니다.
+:::note[Face SDF Studio는 별도 제품입니다]
+MingToon 0.1.7 패키지에는 Studio가 동봉되지 않습니다. 별도로 설치하면 `Tools > Studio Raming > Face SDF Studio > Open`과 MingToon 연동 버튼이 나타납니다. Studio는 Editor 전용이며 최종 결과는 텍스처와 선택적인 복제 Mesh뿐이라 런타임 스크립트를 추가하지 않습니다.
+
+설치하지 않아도 기존 SDF 텍스처를 MingToon 인스펙터에 직접 넣어 사용할 수 있습니다.
 :::
 
 ## SDF 맵 형식 {#sdf-맵-형식}
@@ -38,8 +40,10 @@ Single Channel은 세로광 영향을 사용하지 않습니다. 상하 방향 �
 - `Base Texture UV (Legacy)` — 기존 UV0를 그대로 읽습니다.
 - `Baked Front UV7` — Scene 정면 구도를 UV7에 투영합니다. 얼굴 메시 UV가 여러 조각으로 갈라졌거나 VRChat·Warudo에서 정면 기준을 안정적으로 유지해야 할 때 권장합니다.
 
-:::caution[UV7은 두 기능이 동시에 소유할 수 없습니다]
-얼굴 프론트뷰 노멀 베이크와 Face SDF 정면 투영이 같은 UV7을 사용합니다. Face SDF Studio에서 UV7을 굽는다면 매니저의 `얼굴 프론트뷰 노멀 (UV7)` 자동 베이크는 끄세요. → [메시 UV 베이크](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
+:::caution[UV7 소유권은 하나뿐입니다]
+0.1.7에서 얼굴 노멀은 편집 중 Live이며 VRChat 업로드 복사본에만 자동 베이크됩니다. Face SDF가 `Baked Front UV7`을 사용하면 SDF가 UV7을 소유하고 업로드 얼굴 노멀 베이크는 해당 Renderer를 건너뜁니다.
+
+예전 tangent-normal UV7이 남은 재질에서 `Baked Front UV7`을 선택하면 좌표를 잘못 읽습니다. 밍툰 매니저의 `얼굴 노멀 실시간으로 되돌리기`를 실행하거나 Studio에서 UV7을 다시 구우세요. → [메시 UV 베이크](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
 :::
 
 ## Face SDF Studio 작업 순서 {#face-sdf-studio-작업-순서}
@@ -108,13 +112,14 @@ Nose·Cheek·Lip·Eye Socket은 각 카드의 `포함`으로 최종 합성 여�
 
 ### 페이스 셰이딩을 켰더니 Base Pass가 사라진다
 
-0.1.4는 이전 재질의 BRP `ForwardBase`와 URP `UniversalForwardOnly` 상태를 자동 복구합니다. 그래도 사라지면 다음을 확인하세요.
+0.1.7 정식 빌드에는 내부 컴파일 진단 토글이 노출되지 않습니다. 다음 순서로 확인하세요.
 
-1. MingToon Inspector의 개발용 `고급 진단: 편집 기능을 모두 고정 컴파일 (선택 사용)`을 끕니다. 기본값은 꺼짐입니다.
-2. 재질을 다시 선택해 키워드와 기본 패스 마이그레이션을 실행합니다.
-3. Console의 셰이더 컴파일 오류를 확인합니다.
+1. Console의 셰이더·C# 컴파일 오류를 먼저 해결합니다.
+2. 재질을 다시 선택해 스키마와 키워드 동기화를 실행합니다.
+3. 베이크된 재질이면 밍툰 매니저에서 편집용 재질로 복원한 뒤 다시 베이크합니다.
+4. 여전히 사라지면 Unity 버전과 그래픽 API를 포함해 오류 로그를 제출하세요.
 
-이 진단 옵션은 최대 기능을 한 변형에 고정해 D3D11의 단계당 64개 텍스처 리소스 한도를 넘길 수 있습니다. 일반 제작에서는 켜지 마세요.
+유지보수용 변형 덤프와 기술 진단은 `MINGTOON_DEV` 개발 빌드에만 있습니다.
 
 ### 좌우가 반대로 움직인다
 
@@ -122,7 +127,7 @@ Packed RGBA의 R/G 채널 배치와 얼굴 정면 방향을 확인하세요. Sin
 
 ### 얼굴 경계에 흰 지그재그가 보인다
 
-0.1.4에서 형태 그림자 경계의 화면 미분 폭을 제한했습니다. 이전 MingToon 셰이더나 베이크본이 남아 있지 않은지 확인하고 재질을 0.1.4 편집 셰이더로 되돌린 뒤 다시 베이크하세요.
+형태 그림자 경계가 튄다면 이전 MingToon 셰이더나 오래된 베이크본이 남아 있지 않은지 확인하세요. 재질을 현재 0.1.7 편집 셰이더로 되돌린 뒤 Face SDF를 다시 베이크하면 최신 경계 보정이 적용됩니다.
 
 ## SDF를 쓸지 판단
 
@@ -136,5 +141,5 @@ Packed RGBA의 R/G 채널 배치와 얼굴 정면 방향을 확인하세요. Sin
 ## 관련 문서
 
 - [캐릭터 표현 — 페이스 셰이딩](/guides/character#페이스-셰이딩)
-- [메시 UV 베이크 — 얼굴 프론트뷰 노멀](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
-- [조명과 그림자 — 얼굴의 스치는 그림자](/guides/light-and-shadow#얼굴의-스치는-그림자)
+- [메시 UV 베이크 — Live 얼굴 노멀과 UV7 소유권](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
+- [조명과 그림자 — 얼굴 그림자 조정](/guides/light-and-shadow#얼굴의-스치는-그림자)

@@ -17,7 +17,7 @@ sidebar_position: 1
 | **Warudo** | **2021.3.45f2** | Warudo Mod SDK 0.14.3.10 baseline |
 | General Unity | 2021.3 LTS | |
 
-**Use 2022.3.22f1 if targeting VRChat.** MingToon's VRChat build hook and VRChat runtime compile only under `UNITY_2022_3_OR_NEWER`. On 2021.3, this code **does not exist at all**, so automatic optimization at upload time and depth promotion do not trigger.
+**Use 2022.3.22f1 if targeting VRChat.** MingToon's VRChat build hook and VRChat runtime compile only under `UNITY_2022_3_OR_NEWER`. On 2021.3, this code **does not exist at all**, so automatic optimization and VRChat-specific upload processing—including the separate Upload Depth Light opt-in—do not run.
 :::
 
 You cannot target both VRChat and Warudo with one project. Split projects by target.
@@ -48,7 +48,7 @@ This distribution is **source `.unitypackage`**, not a UPM package. Reimporting 
 
 ## Upgrading from an earlier version {#이전-버전에서-올라왔다면}
 
-If you upgraded a project from MingToon 0.1.5 or earlier to 0.1.6, you must perform the following two steps **once each**.
+If you upgrade a project from MingToon 0.1.6 to 0.1.7, perform the following two steps **once each**.
 
 :::danger[1. Run schema migration once]
 `Tools > Studio Raming > MingToon > Advanced > Migrate Project To Current Schema`
@@ -61,7 +61,7 @@ Migration confirms before running and backs up changed files. When complete, the
 :::
 
 :::caution[2. Bake cache regenerates]
-Generator shader cache moves from **version 28 to 29**, invalidating existing bake output. The next build/upload regenerates it automatically, so nothing needs manual deletion—but that one run takes longer.
+Generated-shader cache version moves from **28 to 38**, invalidating existing bake output. The next build or upload regenerates it automatically, so nothing needs manual deletion, but that one run takes longer.
 
 **VRChat avatars must be re-uploaded for this version's fixes to take effect.** Shaders are bundled in the avatar asset bundle, so already-uploaded avatars continue using the old shader. → [VRChat](/platforms/vrchat)
 :::
@@ -75,7 +75,7 @@ After script reload, Console must show this line:
 ```
 
 :::danger[If this line is missing]
-VRChat build hook **does not exist**. Upload will not trigger automatic optimization and depth promotion. Check:
+VRChat build hook **does not exist**. Upload will not trigger automatic optimization or VRChat-specific upload processing. Check:
 
 1. Is Unity version **2022.3.22f1**?
 2. Is VRChat SDK3 properly imported into the project? (`VRC_SDK_VRCSDK3` define)

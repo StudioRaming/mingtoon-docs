@@ -143,8 +143,11 @@ const PAGES = [
       ja: 'ベースカラー、サーフェスモード、よく使うマップ。マテリアルを作って最初に触る項目です。',
     },
     sections: [
-      {key: 'section.surface', match: (n) => /^_(MainTex|Color|ColorBlend|Cutoff|Base(Channel|Invert|Tint))/.test(n)},
-      {key: 'section.surface_rendering', match: (n) => /^_(AlphaMask|MingSurfaceMode|Cull|ZWrite|ZTest|SrcBlend|DstBlend|BlendOp|ColorMask|FlipBackfaceNormal|OutlineColorMask)/.test(n)},
+      {key: 'section.surface', match: (n) => /^_(MainTex|Color|ColorBlend|Cutoff|Base(Channel|Invert|Tint)|MingBaseAdjustMask)/.test(n)},
+      {key: 'section.surface_rendering', match: (n) => /^_(AlphaMask|MingSurfaceMode|MingAlphaToCoverage|Cull|ZWrite|ZTest|SrcBlend|DstBlend|BlendOp|ColorMask|FlipBackfaceNormal|OutlineColorMask)/.test(n)},
+      {key: 'surface.alpha_fades', match: (n) => /^_Ming(AlphaDistanceFade|AlphaFresnel|AlphaFade)/.test(n)},
+      {key: 'section.view_clip_guard', match: (n) => n.startsWith('_MingViewClipGuard')},
+      {key: 'section.stencil', match: (n) => n.startsWith('_Stencil')},
       {key: 'section.common_maps', match: (n) => /^_(BumpMap|BumpScale|OcclusionMap|OcclusionStrength)/.test(n)},
     ],
   },
@@ -158,7 +161,8 @@ const PAGES = [
       ja: 'トゥーンの印象を最も大きく左右するグループです。フォームシャドウ（光の向きによる陰影）とシャドウ投影（実時間で落ちる影）は別セクションなので区別して見てください。',
     },
     sections: [
-      {key: 'section.lighting', match: (n) => /^_(LitBrightness|IndirectStrength|BaseColorPreservation|LightColorInfluence|AdditionalLight|MingAdditional|MingMinimum|MingMaximum|MingFinal)/.test(n)},
+      {key: 'section.master_adjust', match: (n) => /^_Ming(RimMaster|ShadowMaster|OutputMaster|EdgeRimMaster|EdgeRimBrightness|LightBrightness)/.test(n)},
+      {key: 'section.lighting', match: (n) => /^_(LitBrightness|IndirectStrength|BaseColorPreservation|LightColorInfluence|AdditionalLight|MingAdditional|MingMinimum|MingMaximum|MingFinal|MingVirtualLight|MingLightVolumes)/.test(n)},
       {key: 'section.form_shadow', match: (n) => /^_(FormShadow|MingShadowBorder|ShadowBorder)/.test(n)},
       {key: 'section.shadow_color', match: (n) => /^_(MingUnifiedShadow|ShadowColor|MingShadowColor|MingShadowAmbient)/.test(n)},
       {key: 'section.cast_shadow', match: (n) => /^_(CastShadow|CastProjection|SelfShadow|MingFaceCast|LinkDepthShadowToCastShadow)/.test(n)},
@@ -193,6 +197,10 @@ const PAGES = [
     },
     sections: [
       {key: 'section.depth', match: (n) => /^_(DepthWidth|DepthWidthMode|DepthDistanceScale|DepthBias|DepthSoftness|DepthEffects|MingDepth|Ming2DShadowCaster)/.test(n)},
+      {
+        title: {ko: '런타임 전환', en: 'Runtime Switching', ja: '実行時の切り替え'},
+        match: (n) => /^_Ming(VrcQualityMenuEnabled|VrcQualityTier|CastShadowRuntimeToggle)$/.test(n),
+      },
       {key: 'section.depth_rim', match: (n) => n.startsWith('_DepthRim')},
       {key: 'section.depth_shadow', match: (n) => n.startsWith('_DepthShadow')},
       {key: 'section.ssao', match: (n) => n.startsWith('_MingSsao')},
@@ -356,8 +364,12 @@ for (const locale of LOCALES) {
       // than prop.<shaderProperty>, so they carry an explicit key list.
       const extra = (section.extraKeys || []).filter((k) => text[k]);
       if (!props.length && !extra.length) continue;
-      const entry = text[section.key];
-      const heading = entry ? entry.label[locale] : section.key;
+      const entry = section.key ? text[section.key] : null;
+      const heading = section.title
+        ? section.title[locale]
+        : entry
+          ? entry.label[locale]
+          : section.key;
       lines.push(`## ${heading}`);
       lines.push('');
       if (entry && entry.tip) {

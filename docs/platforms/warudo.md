@@ -6,10 +6,10 @@ sidebar_position: 3
 
 # Warudo
 
-**이 문서를 마치면** Warudo 모드에서 얼굴 그림자와 깊이 효과가 정상적으로 나오는 상태로 내보낼 수 있습니다.
+**이 문서를 마치면** Warudo 모드 빌드 최적화와 카메라 깊이 공급을 각각 올바른 위치에 설치할 수 있습니다.
 
-:::caution[현재 상태]
-Warudo는 **테스트 대상이며 실기 검증이 완료되지 않았습니다.**
+:::caution[지원 상태]
+Warudo는 지원 대상이지만 실기 회귀 검증 범위가 VRChat보다 좁습니다. 최종 모드를 Warudo에서 직접 열어 메인 출력과 사용하는 Spout·NDI 카메라를 모두 확인하세요.
 :::
 
 ## 기준 버전
@@ -21,90 +21,81 @@ Warudo는 **테스트 대상이며 실기 검증이 완료되지 않았습니다
 | 렌더 파이프라인 | Built-in (BRP) |
 
 :::danger[VRChat 프로젝트와 겸할 수 없습니다]
-VRChat은 Unity **2022.3.22f1**, Warudo는 **2021.3.45f2** 입니다. 같은 프로젝트로 둘 다 대응할 수 없으니 대상별로 나누세요.
+VRChat은 Unity **2022.3.22f1**, Warudo는 **2021.3.45f2**를 사용합니다. 대상별 프로젝트를 나누세요.
 :::
 
 ---
 
-## 내보내기 전 필수 — WARUDO Runtime Root {#내보내기-전-필수--warudo-runtime-root}
+## 카메라 깊이 설치 — WARUDO Depth Bridge {#warudo-depth-bridge}
 
-**이 단계를 빠뜨리면 얼굴 그림자와 깊이 효과가 나오지 않습니다.**
+2D 뎁스 림·2D 그림자·내부 2D 경계·SSAO 같은 화면 깊이 효과에는 Warudo 카메라의 깊이 텍스처가 필요합니다. 0.1.7 패키지는 이를 공급하는 독립 Warudo 플러그인 소스를 포함합니다.
 
-Warudo는 **에디터 스크립트가 함께 넘어가지 않습니다.** 그래서 런타임에 카메라 깊이와 머리 방향을 셰이더에 전달해 줄 것이 따로 필요합니다. 그 역할을 하는 것이 `MingToonWarudoRoot.cs` 입니다.
+### 설치
 
-### 절차
+1. Unity 프로젝트에서 `Assets/StudioRaming/MingToon/Docs/Warudo/MingToonWarudoDepthBridge.cs.txt`를 찾습니다.
+2. 이 파일을 Warudo 설치 폴더의 `Warudo_Data/StreamingAssets/Playground`로 복사합니다.
+3. 파일 이름 끝의 `.txt`를 제거해 `MingToonWarudoDepthBridge.cs`로 만듭니다.
+4. Warudo의 Playground 플러그인이 다시 로드된 뒤 Console에서 `[MingToon Warudo Depth Bridge] installed` 로그를 확인합니다.
 
-1. 동봉된 **`MingToonWarudoRoot.cs` 파일을 캐릭터 모드 폴더에 넣습니다.**
-   아바타 에셋들과 **같은 폴더**여야 합니다. 함께 빌드되어야 하기 때문입니다.
-2. 캐릭터 **루트 오브젝트**에 컴포넌트를 붙입니다.
-   `Add Component → Studio Raming / MingToon / WARUDO Runtime Root`
-3. 그대로 모드를 빌드해 내보냅니다.
-
-<!-- SCREENSHOT: 모드 폴더의 MingToonWarudoRoot.cs와 붙인 컴포넌트 -->
-
-:::note[설정은 거의 건드릴 것이 없습니다]
-머리 본은 자동으로 찾습니다 — 휴머노이드 `Head`를 먼저 보고, 없으면 `Head` / `J_Bip_C_Head` 이름으로 탐색합니다.
-
-자동 탐색이 실패하면 `Head Bone` 칸에 직접 넣어 주세요.
+:::important[캐릭터 프리팹에 붙이는 컴포넌트가 아닙니다]
+이 파일은 Warudo 애플리케이션의 Playground에서 실행되는 전역 플러그인입니다. 캐릭터 모드 폴더에 넣거나 프리팹에 컴포넌트를 추가하지 마세요. 예전 `MingToonWarudoRoot` 방식의 안내는 0.1.7 문서에서 폐기됐습니다.
 :::
 
-### 무엇을 전달하나
+### 무엇을 공급하나
 
-이 컴포넌트는 매 프레임 셰이더에 아래를 넘깁니다.
+플러그인은 렌더 직전마다 활성 `Game` 카메라를 확인합니다.
 
-| 전달값 | 무엇을 위해 |
+- 각 카메라에 `DepthTextureMode.Depth`를 요청합니다.
+- 중앙·왼쪽·오른쪽 눈의 world-to-view 행렬을 셰이더 전역값으로 전달합니다.
+- 메인 화면뿐 아니라 활성 Spout·NDI·전환 카메라도 카메라별로 처리합니다.
+- 카메라가 바뀌어도 `Camera.main` 하나를 캐시하지 않고 실제 렌더 카메라를 사용합니다.
+
+플러그인은 MingToon 런타임 어셈블리에 의존하지 않습니다. Warudo 프로젝트가 asmdef 아래 스크립트를 모드에 포함하지 않는 조건에서도 동작하도록 독립 파일로 제공됩니다.
+
+### 증상으로 확인
+
+| 증상 | 확인 |
 |---|---|
-| 카메라 `DepthTextureMode.Depth` | 깊이 림 · 2D 그림자 · 내부 2D 경계 |
-| 뷰 카메라 위치 / 행렬 (VR은 좌·우 눈 각각) | 화면 공간 계산 |
-| 머리 정면 · 위쪽 · 머리 중심 (월드 공간) | 페이스 셰이딩 방향 |
+| 깊이 효과가 전부 비어 있음 | Playground 경로와 `.cs` 확장자, `installed` 로그 확인 |
+| 메인 화면은 정상인데 Spout·NDI 출력만 다름 | 해당 출력 카메라의 `depth enabled for camera=...` 로그 확인 |
+| 노멀 아웃라인만 보이고 내부 선은 없음 | 노멀 아웃라인은 깊이가 필요 없으므로 Bridge 로드 여부를 먼저 확인 |
 
-MingToon 에디터 런타임(`MingToonManager` 등)에 **의존하지 않는 독립 파일**입니다. 그래서 소스 하나만 모드 폴더에 넣으면 됩니다.
+---
 
-### 증상으로 원인 찾기
+## Warudo 모드 빌드
 
-| 증상 | 원인 |
-|---|---|
-| **얼굴 그림자가 안 움직이고 고정되어 있다** | 컴포넌트를 안 붙였거나 머리 본을 못 찾음 |
-| **깊이 림이나 2D 그림자가 아예 안 나온다** | `.cs` 파일이 모드 폴더에 없음 |
+`Warudo > Build Mod`를 실행하면 MingToon의 UMod 빌드 훅이 자동 최적화를 적용합니다. Unity의 일반 `IPreprocessBuildWithReport`가 아니라 UMod의 processor/post-processor 경로를 사용합니다.
 
-:::info[앞으로 바뀔 예정입니다]
-Warudo 측에서 **카메라 깊이를 토글로 켤 수 있게 하는 업데이트가 예정**되어 있습니다. 그 업데이트가 적용되면 이 컴포넌트 없이도 깊이 효과를 쓸 수 있게 됩니다.
+### 처리 범위
 
-**그때까지는 위 절차가 필요합니다.**
+- 가능한 경우 UMod가 내보내는 GameObject 에셋에서 빌드 루트를 찾아 **그 캐릭터만** 최적화합니다.
+- 생성된 셰이더와 텍스처를 UMod 빌드 에셋 목록에 추가합니다.
+- 빌드 종료나 실패 뒤에는 저작용 재질을 복원합니다.
+- 내보낼 루트를 판별할 수 없을 때는 로드된 씬의 MingToon 재질로 폴백하고 Console에 경고합니다.
+
+Console에서 `[MingToon] Auto optimize` 요약과 빌드 뒤 `[MingToon] Restored authored materials.`를 확인하세요. 오류나 복원 실패가 있으면 그 빌드는 사용하지 말고 원인을 먼저 해결하세요.
+
+:::note[수동 Bake는 기본 절차가 아닙니다]
+Warudo 내보내기도 빌드 시 자동 최적화를 사용합니다. baked 재질 에셋 자체가 필요한 특수한 경우가 아니면 [수동 Bake](/workflow/bake-and-restore)를 먼저 실행할 필요가 없습니다.
 :::
 
 ---
 
-## 빌드
+## 조명 차이
 
-`Warudo > Build Mod`를 실행하면 [빌드 시 자동 최적화](/workflow/build-optimization)가 자동으로 걸립니다. 별도 설정은 필요 없습니다.
+- `VRC Light Volumes`는 VRChat 월드용입니다. Warudo에서는 끄고 Unity Light Probe와 씬 조명을 사용하세요.
+- Built-in의 포인트·스폿 추가광은 ForwardAdd 패스로 들어옵니다. 재질의 `추가광 수신`, `추가광 강도`, 툰 경계 설정으로 조정합니다.
+- WARUDO(Built-in)에서는 포인트·스폿 추가광이 만드는 그림자 내부반사에 `캐스트 섀도우 안 표시량`과 `2D 섀도우 안 표시량` 필터가 적용되지 않습니다.
+- 카메라를 여러 개 쓰면 각 출력에서 깊이 효과와 투명 정렬을 따로 확인하세요.
 
-:::note[왜 별도 훅이 필요했나]
-`Warudo/Build Mod`는 UMod 자체 파이프라인(`ModToolsUtil.StartBuild`)을 쓰기 때문에 Unity의 빌드 콜백(`IPreprocessBuildWithReport`)이 **울리지 않습니다.** 그래서 예전에는 모드가 최적화되지 않은 재질로 조용히 나갔습니다. 지금은 UMod의 확장 지점에 프로세서와 포스트 프로세서를 등록해 처리합니다.
-:::
+## 내보내기 체크리스트
 
-### 빌드 범위
+- Unity 2021.3.45f2와 Built-in 셰이더를 사용했습니다.
+- `MingToonWarudoDepthBridge.cs`가 Warudo Playground에 설치됐습니다.
+- `Warudo > Build Mod` Console에 최적화·복원 오류가 없습니다.
+- 메인 화면과 실제 송출 카메라에서 2D 뎁스 림·2D 그림자·내부 경계를 확인했습니다.
+- 씬 조명을 통제하기 어렵다면 `베이스 색 유지`와 `최종 최소 밝기`를 조정했습니다.
 
-모드 빌드는 씬 전체가 아니라 **빌드 대상 프리팹**만 최적화합니다. 씬을 훑으면 작업자가 열어 둔 관계없는 재질까지 스왑되고, 정작 빌드되는 프리팹이 씬에 없으면 통째로 놓칠 수 있기 때문입니다.
+## 다음
 
-빌드 후 Console에서 `MING_WARUDO_BUILD` 로그와 최적화 요약을 확인하세요.
-
----
-
-## 스크립트 정책이 VRChat과 다릅니다 {#스크립트-정책이-vrchat과-다릅니다}
-
-| | VRChat | Warudo |
-|---|---|---|
-| MingToon 런타임 컴포넌트 | 업로드 시 **자동 제거** | **유지됩니다** |
-| 런타임 데이터 공급 | 호스트(Photo Camera·월드)에 의존 | **`WARUDO Runtime Root`가 직접 공급** |
-
-Warudo는 스크립트를 유지하는 환경이므로, [밍툰 매니저](/workflow/character-manager)의 **에디터 런타임 미리보기**(룩 프로필 등)도 여기서는 실제로 동작합니다.
-
----
-
-## 알아 둘 것
-
-- Unity 버전을 **2021.3.45f2**로 맞추세요. Mod SDK 기준선입니다.
-- 셰이더 모델 4.5 요구 사항은 여기서도 동일합니다. → [지원 환경](/platforms/compatibility#하드웨어-요구-사항-필수)
-- 씬 조명을 통제할 수 없는 연출이라면 `베이스 색 유지`와 `최종 최소 밝기`를 올려 두세요. → [조명과 그림자](/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때)
-- 카메라를 여러 개 쓰는 구성(메인 + 출력)이라면 각 카메라마다 깊이 효과를 따로 확인하세요.
+[빌드 시 자동 최적화](/workflow/build-optimization) · [깊이 기반 효과](/guides/depth-effects) · [조명과 그림자](/guides/light-and-shadow)

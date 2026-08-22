@@ -6,153 +6,165 @@ sidebar_position: 8
 
 # Character Expression
 
-**After reading this document** you can control nose shadows and forehead shadows, and apply different shading rules to the face than to the body.
+**After reading this guide,** you can control nose and bangs shadows and give only the face different shading rules from the body.
 
-Covers the **Character** group in the inspector — `Face Shading` · `Character Height Gradient`. A complete property list is in [Character Expression Reference](/reference/character).
+This guide covers the Inspector's **Character Expression** group: `Face Shading` and `Character Height Gradient`. The complete property list is in the [Character Expression Reference](/reference/character).
 
 ---
 
 ## Face Shading {#페이스-셰이딩}
 
-### Why handle the face separately
+### Why Treat the Face Separately
 
-The face has real geometric curvature in the nose and eyebrows, so using the same form shadow settings as the body **almost always looks messy.** The reason anime-style faces look clean is that the face has different shading rules than the body.
+The nose and brow have real geometric curvature, so using the same form-shadow settings as the body **almost always makes the face look untidy.** Anime-style faces look clean because they use different shading rules from the body.
 
-MingToon handles this in two steps.
+MingToon handles this in two parts:
 
-1. **Which area is the face?** — Define the face region
-2. **What do we do differently on the face?** — Normal pressing, boundary adjustment, shadow removal
+1. **Where the face ends** — define the face region
+2. **What changes inside the face** — press normals, adjust the boundary, and remove shadows
 
 <!-- SCREENSHOT: Face shading before / after comparison -->
 
-### Step 1: Define the face region
+### Step 1: Define the Face Region
 
-If the head and body are mixed into one material, you need to tell it which part is the face.
+When the head and body share one material, MingToon needs to know which part is the face.
 
-#### Method A — Face area mask (recommended) {#방법-a--얼굴-영역-마스크-권장}
+#### Method A — Face Region Mask (Recommended) {#방법-a--얼굴-영역-마스크-권장}
 
-1. Turn on `Enable Face Area Mask`.
-2. Add a mask texture.
-3. Enter channel weights in `Mask Channel (RGBA)`. To use only the G channel, enter `(0, 1, 0, 0)`.
-4. If the face is drawn dark in the mask, turn on `Invert Mask`.
+1. Enable `Use Face Region Mask`.
+2. Assign a mask texture.
+3. Enter weights in `Mask Channel (RGBA)`. To use only G, enter `(0, 1, 0, 0)`.
+4. If the face is painted black in the mask, enable `Invert Mask`.
 
-Items for refining the boundary:
+Controls for refining the boundary:
 
-- `Mask Strength` — **If 0, the mask is ignored and the entire material is treated as the face.** 1 follows the mask exactly.
-- `Remap Start` / `Remap End` — Expand the gray range of the mask. Raising the start narrows the face area, lowering the end makes the boundary sharp. **If both are the same, the boundary becomes completely hard.**
+- `Mask Strength` — **at 0, the mask is ignored and the entire material is treated as the face.** 1 uses the mask as-is.
+- `Remap Start` / `Remap End` — redistributes the mask's gray range. Raising Start narrows the face region; lowering End sharpens the boundary. **If they are equal, the boundary becomes completely hard.**
 
-### Paint the face area in SceneView {#얼굴-영역을-sceneview에서-칠하기}
+### Paint the Face Region in SceneView {#얼굴-영역을-sceneview에서-칠하기}
 
-You can define the face area with mesh vertex values instead of creating a mask texture.
+You can define the face region with Mesh vertex values instead of creating a mask texture.
 
-1. Enable `Define Face Area with Vertex Paint`.
-2. Click `Start Face Area Paint`.
+1. Enable `Define Face Region with Vertex Paint`.
+2. Select `Start Face Region Paint`.
 3. Paint the face in SceneView with Paint; hold Shift while painting to erase.
-4. Refine boundaries with Harden or Smooth. Use Hard Face to fill a triangle instantly.
-5. Isolate the target Renderer with `Show Editing Mesh Only`; use X symmetry or `L`/`Shift+L` connected-island fill as needed.
-6. Choose `Save`, `Discard`, or `Cancel` when finished.
+4. Refine the boundary with Harden or Smooth. Use Hard Face to fill one triangle immediately.
+5. Isolate the target Renderer with `Show Editing Mesh Only`, and use X symmetry or `L` / `Shift+L` connected-island fill as needed.
+6. Choose `Save`, `Discard`, or `Cancel` when finishing.
 
-:::caution[Texture face masks take priority]
-When `Enable Face Area Mask` is on, vertex paint is ignored. Turn off the texture-mask toggle before painting. If the toggle is on while its texture is empty, the entire material is treated as the face.
+:::caution[The texture face mask has priority]
+When `Use Face Region Mask` is enabled, vertex paint is ignored. Disable the texture-mask toggle when using paint. If the mask remains enabled while its texture is empty, the entire material is treated as the face.
 :::
 
-The painted channel can be kept separate from the outline-pressure channel, allowing both features on one mesh.
-#### Method B — Proxy sphere {#방법-b--프록시-구}
+The painted channel can be separated from the outline-pressure channel, allowing both features on the same Mesh.
 
-Without a mask texture, treat the inside of a virtual sphere as the face.
+#### Method B — Proxy Volume {#방법-b--프록시-구}
 
-1. Turn on `Use Proxy Sphere As Face Area`.
-2. In the scene view, use the **Face Proxy tool** to adjust `Proxy Sphere Center` and `Proxy Sphere Radius`. This is more precise than typing numbers directly.
+Without a mask texture, treat the inside of a sphere, cylinder, or capsule as the face.
 
-:::caution[If the sphere is too large]
-The neck and hands are also treated as the face. Shrink it while checking on screen.
+1. Enable `Use Proxy as Face Region`.
+2. Choose Sphere / Cylinder / Capsule under `Proxy Shape`.
+3. Use the face-proxy SceneView tool to align center, radius, and axis. For Capsule, also adjust height.
+4. Use `Proxy Boundary Softness` to tune the transition width at the neck and hairline.
+
+:::caution[If the volume is too large]
+The neck or hands may also be treated as the face. If multiple Face slots share one Renderer, keep their proxy, normal method, and runtime face frame identical. If they differ, upload baking safely keeps them on the Live path.
 :::
 
-:::note[If both are turned on]
-`Enable Face Area Mask` takes priority and the proxy sphere options are ignored.
+:::note[Mask priority]
+Texture face mask → vertex paint → proxy volume → entire material. If texture-mask strength is 0, MingToon does not fall through to a lower-priority mask; it treats the entire material as the face.
 :::
 
-### Step 2: Remove nose shadows {#2단계-코-그림자-없애기}
+### Step 2: Remove Nose Shadows {#2단계-코-그림자-없애기}
 
-Press the face normal to erase shading from geometric curvature.
+Press the face normals to clean up untidy nose and brow shading caused by geometric relief.
 
-1. Increase `Normal Press Amount`. **If 0, all items below are ignored** and the original mesh normal is used as-is.
-2. Choose `Normal Method`.
+1. Raise `Normal Press Amount`. At 0, the original mesh normals are used.
+2. Use `Normal Method` to choose between frontal flattening and the proxy surface.
+3. Align the front and up axes with `Face Normal Alignment` and the fixed direction.
+4. When using the proxy surface, first align the sphere, cylinder, or capsule center, radius, axis, and height.
 
-| Value | Result |
-|---|---|
-| 0 | **Completely press face normals to face-forward direction**, nose shadow disappears |
-| 1 | Smooth curve following the proxy sphere |
+In 0.1.7, this calculation is **live while editing**. Changes to the proxy or press values appear immediately without a separate mesh bake. On VRChat upload, MingToon creates the UV7 payload only in the upload copy, then restores the scene's original Mesh and material to Live state.
 
-To use `Normal Method` at value 1, the proxy sphere center and radius must be set correctly.
-
-You can adjust the direction the face uses as a reference with `Face Fixed Direction`.
-
-### Step 3: Face-only shading boundary {#3단계-얼굴-전용-음영-경계}
-
-- `Face Border` — Range 0 to 1; default 0.25. Values **closer to 0 delay face darkening**, while values closer to 1 darken it earlier. This is the most commonly adjusted setting.
-- `Face Softness` — The blur width of the face region boundary.
-- `Remove Default Face Form Shadow` — If 1, **completely removes the form shadow in the face region.** Use this to remove nose and cheek shadows, creating face shading only through 2D shadows or shadow textures.
-
-:::caution[If the form shadow section is off]
-`Face Border` and `Face Softness` are not applied.
+:::caution[If moving the proxy has no effect]
+The material may have face normals baked into UV7 by an older version. Run `Return Face Normals to Live` in MingToon Manager. A texture face-region mask needs per-pixel sampling, so it remains on the Live path even during upload.
 :::
 
-### Step 4: Forehead shadow {#4단계-앞머리-그림자}
+### Step 3: Face-Only Shading Boundary {#3단계-얼굴-전용-음영-경계}
 
-Step that chooses **which method to draw shadows created by hair and accessories on the face**. Appears at the top of Face Shading in the `Face Shadow Mode` group as a single row: `Shadow Mode`.
+- `Face Boundary` — range 0–1, default 0.25. Values **closer to 0 make the face darken later**; values closer to 1 make it darken earlier. This is the most frequently adjusted control.
+- `Face Softness` — blend width at the face-region boundary.
+- `Remove Default Form Shadow` — at 1, **completely removes form shadow in the face region.** Use it to remove nose and cheek shadows and build face shading only with 2D Shadow or a shadow texture.
 
-| Value | Result | Use |
+:::caution[If the Form Shadow section is off]
+`Face Boundary` and `Face Softness` do not apply.
+:::
+
+### Step 4: Bangs Shadow {#4단계-앞머리-그림자}
+
+Choose **how to draw shadows made by bangs and accessories on the face**. At the top of Face Shading, the `Face Shadow Mode` group presents one `Shadow Mode` row.
+
+| Value | Result | Use Case |
 |---|---|---|
-| **Real Shadows (Same as Body)** | Receives the scene's real-time shadows directly | When you don't need separate face handling |
-| **Soft 2D Shadow (Face Corrected)** | Adds auxiliary push to keep [2D Shadow](/guides/depth-effects#2d-그림자) soft on the face | Anime look. Forehead shadow shape stays steady even when lighting changes |
-| **Custom** | Related values manually adjusted | Automatically displays here if you diverge from the two preset combinations |
+| **Real Shadow, Same as Body** | Receives the scene's real-time shadows directly | When the face does not need separate handling |
+| **Soft 2D Shadow (Face Corrected)** | Also enables an auxiliary face push so [2D Shadow](/guides/depth-effects#2d-그림자) fades softly on the face | Anime looks. The bangs-shadow shape stays stable as lighting changes |
+| **Custom** | Related values have been adjusted manually | Appears automatically when values leave the two combinations above |
 
-:::note[One row uses multiple values together]
-Settings for this choice were originally scattered across two tabs. Selecting a mode sets `Enable Face Self Cast` and the face auxiliary push in the depth tab **together at once**. It's a single undo unit and applies to all selected materials.
+:::note[One row controls several values]
+The values needed for this choice were previously split across two tabs. Selecting a mode sets `Use Face Self Cast` and the face auxiliary push in the Depth tab **together in one operation**. It is one Undo step and applies to all selected materials.
 
-Directly editing a value changes the selector display to `Custom`. This doesn't mean the state is wrong—just that it's not a preset combination.
+Editing those values directly changes the selector to `Custom`. This does not mean the state is invalid; it only means the values are not one of the preset combinations.
 :::
 
-`Soft 2D Shadow (Face Corrected)` requires [camera depth](/guides/depth-effects#플랫폼별-깊이-확보). Without depth on a screen, no shadow reaches the face at all—so if you're targeting VRChat's standard view, prepare shadow textures alongside it.
+`Soft 2D Shadow (Face Corrected)` requires [camera depth](/guides/depth-effects#플랫폼별-깊이-확보). On screens without depth, no shadow remains on the face. If VRChat's standard screen is your target, prepare a face shadow texture as well.
 
-If real-time shadow positioning shifts away from the face, fine-tune by pushing the face region's shadow caster along the normal direction with `Real Shadow Caster Offset`.
+If the real-time shadow is misaligned with the face, use `Real Shadow Caster Offset` to make a fine adjustment by pushing the face-region shadow caster along the normal.
 
-### When real-time shadow speckling appears on the face
+### Face Cast Adjustment
 
-Covered in the `Shadow Projection` section under `Face Cast Stabilization`. → [Light & Shadow](/guides/light-and-shadow#얼굴의-스치는-그림자)
+The nonfunctional `Uniform Face Cast` and `Face Cast Stabilization` controls were removed in 0.1.7. Adjust bangs shadows with `Shadow Mode`, `Real Shadow Caster Offset`, the 2D Shadow face assist, and Face SDF. → [Light and Shadow](/guides/light-and-shadow#얼굴의-스치는-그림자)
 
-### Face SDF — Use without scripts
+### Face SDF — Use It Without Scripts
 
-The included Face SDF Studio can create a four-direction Packed RGBA or Single Channel face SDF. With `Baked Front UV7`, directional face shadows work without a runtime component, which suits VRChat uploads and Warudo mods. → [Face SDF and Face SDF Studio](/guides/face-sdf)
+When the separate Face SDF Studio product is installed, it can create four-direction Packed RGBA or Single Channel face SDF maps. Base UV works on its own; selecting `Baked Front UV7` fixes the projected front coordinates. → [Face SDF and Face SDF Studio](/guides/face-sdf)
 
 :::tip[Set up Face Shading first]
-SDF changes the order in which shadow covers the face. It does not replace correct face-area selection, normal flattening, or `Face Border` setup.
+SDF changes the order in which shadow covers the face. It cannot replace correct face-region selection, normal pressing, or `Face Boundary` setup.
 :::
 
 <!-- SCREENSHOT: Face SDF Studio -->
+
+### Face Proxy Depth (Experimental) {#얼굴-프록시-뎁스}
+
+`Face Proxy Depth (Experimental)` keeps the actual face Mesh in the color pass but replaces Camera Depth, and optionally ShadowCaster, with the proxy volume. Use it when world SSAO overstates the nose or brow cavities or the face casts mottled shadows onto itself.
+
+- `Proxy Depth Amount` — blend between actual and proxy depth
+- `Proxy Depth Scope` — Camera Depth only, or Camera Depth + ShadowCaster
+- `Shadow Caster Shrink` — clearance that reduces projected-shadow acne within the face
+
+It is off by default. A misplaced proxy can misalign the silhouettes of depth-based effects and world post effects, so check SceneView and GameView together.
 
 ---
 
 ## Character Height Gradient {#캐릭터-높이-그라데이션}
 
-**Bake the height relative to the character root into UV4**, then color it based on that height. Use this to darken the feet or apply color to clothing hems.
+**Bake height relative to the character root into UV4**, then tint the character by that height. Use it to darken the feet or add color to a clothing hem.
 
-:::danger[UV4 must be baked first to work]
-The character **entire** root-relative height must be in UV4.x. It's character-level, not mesh-level. → [Mesh UV Bakes — Character Height (UV4)](/guides/mesh-bakes#캐릭터-높이-uv4)
+:::danger[UV4 must be baked first]
+UV4.x must contain height relative to the **entire character** root. It is character-level, not mesh-level. → [Mesh UV Bakes — Character Height (UV4)](/guides/mesh-bakes#캐릭터-높이-uv4)
 :::
 
-| Item | Function |
+| Property | Purpose |
 |---|---|
-| `Low Color` / `High Color` | The two colors |
-| `Gradient Direction` | Switch to Top To Bottom and the colors swap positions |
-| `Boundary Height` | The height where the two colors mix at 50% |
-| `Boundary Softness` | The blur width based on the boundary. **If 0, it cuts sharply** |
+| `Lower Color` / `Upper Color` | The two colors |
+| `Gradient Direction` | Switching to top → bottom swaps the positions of the colors |
+| `Boundary Height` | Height where the two colors are mixed equally |
+| `Boundary Softness` | Spread around the boundary. **At 0, the transition is hard** |
 | `Curve Exponent` | Transition curve |
-| `Influence` | Total application amount |
+| `Influence` | Overall amount |
 
-:::tip[Common usage]
-Set `High Color` to white (no change) and `Low Color` to dark only, creating a natural grounded feeling as you go toward the feet.
+:::tip[Common use]
+Leave `Upper Color` white (no change) and darken only `Lower Color` to create a natural grounded feel toward the feet.
 :::
 
 ## Next

@@ -76,11 +76,11 @@ VRCSpatialAudioSource  VRCStation
 `<Missing Script>` も個数で集計されます。
 
 :::danger[MingToon 自身のコンポーネントは手動で削除しないでください]
-`MingToonManager` と `MingDepthTextureProvider` は**VRChat アップロードで自動的に削除されます。**
+`MingToonManager`と`MingDepthTextureProvider`はVRC SDK処理用の`IEditorOnly`マーカーを実装していますが、このマーカーだけでは自動削除は保証されません。
 
 **MingToon マネージャを手動で削除するとキャッシュされたレンダラリストが一緒に消えて、アップロード最適化が範囲を失います。** 最適化されていないマテリアルがそのままアップロードされます。
 
-この検査は **MingToon ではない他のスクリプト**を検出するためのものです。 → [MingToon マネージャ — エクスポート / 検証](/workflow/character-manager#내보내기--검증)
+`VRChat事前チェック`はオーサリングSceneの許可されていないスクリプトを検出します。SDK処理後は実際のbuild cloneを別途検査し、`RuntimeComponentCount = 0`を必須としてください。→ [MingToon Manager — 書き出し / 検証](/workflow/character-manager#내보내기--검증)
 :::
 
 ---
@@ -129,7 +129,8 @@ CanAvatarForceMainCameraDepth = false
 
 > 深度エフェクトは **VRChat Photo Camera** と **Screen Camera depth texture がオンの世界**で保証されます。
 > アバタは世界制御なしにプレイヤーメインカメラの深度を強制できません。
-> **アバタに Camera または Light を追加することは同等の解決策ではなく**、性能コストが上がったり、アバタ安全設定によって削除される可能性があります。
+> 任意のCameraやLightを追加することは、サポートされる解決策ではありません。
+> 例外はMingToon Managerの`アップロード時に深度ライトを含める`です。このデフォルトOFFのオプトインはbuild cloneへシャドウを有効にしたDirectional Lightを追加しますが、パフォーマンス・アバターランク・ワールド照明のコストがあり、Avatar Safetyによって無効化される場合があります。→ [VRChat深度ライト](/platforms/vrchat#vrchat-깊이-라이트)
 
 参照: [VRC Camera Settings](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)
 

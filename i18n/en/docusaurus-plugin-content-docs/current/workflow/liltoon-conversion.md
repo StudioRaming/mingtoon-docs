@@ -6,53 +6,60 @@ sidebar_position: 1
 
 # lilToon Material Conversion
 
-:::tip[Actual work happens in MingToon Manager]
-Face/skin assignment, look preset on convert, mesh channels to bake, source restore — all in one inspector. → [MingToon Manager](/workflow/character-manager#1--변환)
-
-This doc covers **what conversion moves and what it can't**.
+:::tip[Do the Actual Work in MingToon Manager]
+Manage Face / Skin / Common roles, conversion looks, output paths, source restoration, and the loss report in one place. → [MingToon Manager](/workflow/character-manager#1--변환)
 :::
 
-**After reading this document** your existing lilToon avatar becomes editable MingToon material, and you know what was lost.
+## What Conversion Does and Does Not Do
 
-## What conversion does and doesn't
+- Preserves source materials and creates new authoring MingToon materials.
+- Moves base color and texture, HSVG, normals, emission, occlusion, PBR, MatCap, 2nd/3rd layers, and masks where equivalents exist.
+- Preserves stencil, render queue, Cull, and surface states such as Opaque / Cutout / Fade / Premultiply.
+- Enables PBR, Emission, Surface Stack, Outline, and Alpha Mask modules when the source contains actual data for them.
+- Records unmatched features as `lossy` or `unsupported` in the loss report.
 
-- **Preserves the original.** The new MingToon editable material is created; source stays.
-- Moves many base, surface mode, AO, normal, MatCap, layer and mask **values**.
-
-:::caution[Complete look match is not guaranteed]
-Different shaders have different math and meaning. Conversion is an **interop tool**, not mathematical reproduction of another shader.
+:::caution[An Identical Look Is Not Guaranteed]
+The two shaders use different formulas and feature semantics. Conversion is an interoperability tool that creates a starting point, not a mathematical replica.
 :::
+
+## Recover and Convert Missing Shader Materials {#missing-shader}
+
+0.1.7 can convert pink materials whose shader file is missing by reading serialized property names and values. It recognizes stored patterns from NiloToon, lilToon, and Unity Standard families and shows the evidence for that classification in the preview.
+
+When a shader is missing, its hidden defaults and full keyword semantics cannot all be recovered. After conversion, inspect these items in particular:
+
+- Surface Mode, Blend, Alpha Clip, and Cutoff
+- Cull, Render Queue, and Stencil
+- Whether Emission, PBR, and Outline are enabled
+- Mask channels and inversion
 
 ## Procedure
 
-1. Select the **root GameObject** of the avatar or outfit.
-2. Run `GameObject > Studio Raming > MingToon > Add MingToon Manager`.
-3. **Explicitly assign the Renderer / material slot to use as Face.**
-4. Verify conversion output path and options, then convert.
-5. **Read all `lossy` / `unsupported` items** in the completion log and compare to source.
+1. Add MingToon Manager to the avatar or clothing root.
+2. Check source schemas and excluded slots in the conversion preview.
+3. Explicitly assign Face / Skin / Common roles per slot. Auto trusts only direct flags stored in the source.
+4. Choose the conversion look preset and output path.
+5. Check existing UV4 and UV8 ownership and overwrite options.
+6. Run conversion and read every item in the loss report.
+7. Compare the actual character with the source in both SceneView and GameView.
 
-<!-- SCREENSHOT: MingToon Manager inspector -->
+Slots with no one-to-one equivalent—such as particles, refraction, fur/shell, audio response, flipbook, overlay, and auxiliary passes—intentionally keep their source materials.
 
-:::danger[Don't skip step 3]
-Auto-detect face is a **fallback only**. Name alone doesn't guarantee complete detection. Wrong face slots cause stabilization to miss meshes or apply to the wrong one.
-:::
+## Check After Conversion
 
-## After conversion
+- Renderers use the new authoring MingToon materials and source assets remain.
+- Opaque / Cutout / Transparent and Blend results match.
+- Render Queue, Cull, and Stencil are intentional.
+- Texture Tiling / Offset, channels, and inversion match.
+- Modules are enabled on materials that need PBR, Emission, Outline, or Alpha Mask.
+- Face / Skin roles and face proxies are correct.
 
-**This is correct.** Editable MingToon materials appear in the specified output path, Renderers switch to them, and source materials stay.
+Even after reapplying a look preset, 0.1.7 preserves character-specific values such as Surface identity and the face proxy.
 
-Read the completion log, then check these on the actual model. Inspector preview sphere can't tell:
+## Restore Sources
 
-- Mask channels and invert
-- Texture ST (Tiling / Offset)
-- AO
-- Surface mode (Opaque / Cutout / Transparent)
-- Face slot detection
-
-## Next
-
-Once the look is finalized, go to [Auto-Optimize on Build](/workflow/build-optimization).
+`Restore Original Materials` in MingToon Manager returns current slots to their recorded source GUIDs in one Undo step. It does not automatically delete generated conversion materials or mesh-bake assets.
 
 ## Next
 
-[MingToon Manager](/workflow/character-manager) · [Auto-Optimize on Build](/workflow/build-optimization)
+[MingToon Manager](/workflow/character-manager) · [Automatic Build Optimization](/workflow/build-optimization)

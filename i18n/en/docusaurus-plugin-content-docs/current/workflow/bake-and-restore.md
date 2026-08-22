@@ -6,92 +6,100 @@ sidebar_position: 3
 
 # Manual Bake and Restore
 
-**After reading this document** you can determine when manual Bake is needed, safely perform it, and restore it to an editable state.
+**After reading this guide,** you can decide when a manual lightweight-shader bake is necessary and safely restore its result.
 
-## First: Most cases don't need it
+## First: Most Releases Do Not Need It
 
-:::tip[For typical uploads and deployments, automatic optimization on build is sufficient]
-[Automatic optimization on build](/workflow/build-optimization) changes shaders only during the build and restores them when done. Materials and Renderers remain unchanged.
-
-Manual Bake **creates new materials and replaces Renderer slots.** You'll need to manually restore them if you want to continue working.
+:::tip[Use automatic build-time optimization for normal uploads and exports]
+[Automatic Build Optimization](/workflow/build-optimization) temporarily optimizes only the required materials immediately before a build, then restores the authoring state after success or failure. Manual Bake creates new Shader, Material, Texture, and Manifest assets and actually replaces Renderer slots.
 :::
 
-Cases where manual Bake is used:
+Manual Bake is needed only in limited situations:
 
-- When you need to hand over the baked results themselves as an asset
-- When you need to reduce more aggressively than automatic optimization and verify the results visually while working
-- When there's a deployment requirement for materials with no scripts at all
+- when the baked Shader and Material must be delivered as standalone assets
+- when the optimized result must be compared and approved directly in the Scene
+- when baked output must be handed to an external pipeline that cannot use the automatic build hook
+
+Face-normal UV7, outline UV8, and character-height UV4 are **mesh-channel bakes**, separate from the lightweight shader Bake in this guide. → [Mesh UV Bakes](/guides/mesh-bakes)
 
 ---
 
-## Procedure {#절차}
+## Before Running
 
-1. Check the conversion/editing results in the MingToon Manager component inspector.
-2. If animation or runtime material changes are needed, enable **Preserve Animatable Passes (Safe)**. Static avatars can be reduced more aggressively.
-3. Run Bake.
-4. Generated shaders, baked materials, and a manifest are created under `Assets/StudioRaming/MingToonGenerated`, and Renderer slots are replaced with baked materials.
+1. Record the original `.mat` files, Animator Controller, and AnimationClips in version control.
+2. Confirm conversion, roles, look, and mesh-channel results in stages 1–3 of MingToon Manager.
+3. Enable `Preserve Animatable Passes (Safe)` when an Animator or AnimationClip may enable a pass later.
+4. For properties changed at runtime by a script but absent from AnimationClips, mark that row `Keep Editable (Runtime Change)`.
 
-<!-- SCREENSHOT: Bake area in MingToon Manager inspector -->
-
-:::danger[Backup before Bake]
-Put the original `.mat` files and animations into version control or copy them separately. If the manifest is lost or the Renderer/slot configuration changes, automatic restoration becomes impossible.
+:::caution[Code may be removed based on current values]
+If layer counts or features such as Alpha Mask, Emission, and Occlusion are currently off and are not found among preserved dependencies, their code is removed from the baked shader. Enabling them later from animation or a script may no longer work.
 :::
+
+## Bake
+
+Run `Bake Child MingToon Materials to Lightweight Shaders` in stage 4 of MingToon Manager.
+
+- Generated shaders, baked materials, required textures, and a Manifest are created under `Assets/StudioRaming/MingToonGenerated`.
+- Current Renderer slots are replaced with baked materials.
+- If the operation is cancelled or an intermediate stage fails, assets and slot changes made by that run are rolled back.
+- After completion, check processed materials and optimization counts in the `MingToon bake:` Console summary.
+
+When run on a Prefab instance, Mesh and material-slot changes remain as instance overrides. To write the result to the Prefab asset, use Unity's `Overrides > Apply All` separately.
+
+---
 
 ## Restore
 
-When you select a baked material, you can use the **restore button at the top** of the inspector to reconnect the recorded original editable material.
+### One Baked Material
 
-:::caution[If the restore button is inactive]
-Check the following:
+Select the baked material and choose `Restore to Edit Mode` at the top of the Inspector. It uses the original GUID and Renderer slot recorded in the Manifest.
 
-- Is the bake manifest still present?
-- Is the GUID of the original editable material still valid?
-- Has the Renderer hierarchy or material slot configuration changed since Bake?
+### Clean Up All Manual Bakes in the Project
+
+Run `Tools > Studio Raming > MingToon > Advanced > Restore And Clean Bake Output`.
+
+The command guarantees this order:
+
+1. Follow the Manifest to restore Renderer slots to original authoring materials.
+2. Save restored Scene and Prefab references.
+3. Verify again that every recorded slot actually points to its original.
+4. Delete generated assets only after restoration has been proven.
+
+If restoration or saving fails, the generated folder is not deleted first. Failed entries remain in the Console for manual inspection.
+
+:::warning[Conversion Restore and Bake Restore Are Different]
+`Undo Conversion (Return to Pre-MingToon Materials)` in stage 1 of MingToon Manager returns to materials from the shader before conversion. `Restore And Clean Bake Output` returns from baked materials to the current authoring MingToon materials.
 :::
 
----
+### When the Restore Button Is Disabled
 
-## What gets optimized away
-
-The bake generator can compile-time exclude the following features that aren't actually used from the baked shader.
-
-- Fresnel Rim
-- 2nd Form Shadow
-- Depth Effects
-- 2D Rim
-- 2D Shadow
-
-In addition to `AnimationClip`, it checks Animator Controller references in nested/array serialization fields of components, and **preserves only the modules needed for properties that are actually animated**.
-
-For outlines, only directly rendered Hull and Inner Edge reading camera depth are supported; no separate runtime for screen composition is used.
+- Confirm that the Bake Manifest remains.
+- Confirm that the original authoring material GUID still exists.
+- Confirm that the Renderer hierarchy and material-slot layout have not changed since the bake.
+- Check the Console for stale manual-bake warnings.
 
 ---
 
 ## Texture Bake Policy
 
-### LosslessOnly (default) {#losslessonly-기본값}
+### LosslessOnly — Default {#losslessonly-기본값}
 
-**Does not rewrite** the texel of the original texture. Only applies lossless structural optimization.
-
-- When depth mask is mathematically proven to be identity
-- When PBR/AO use the same Texture object and same UV formula
+Does not rewrite texels in source textures. It allows only lossless structural optimizations, such as mathematically identity mask removal and sharing the same texture with the same UV expression.
 
 ### ReviewedHighQuality {#reviewedhighquality}
 
-:::caution[Only explicitly select for reviewed static materials]
-Allows surface/normal flatten and general RGBA mask repack. Therefore, **pixels may differ** due to imported texture readback, color space, mip regeneration, and platform compression.
+:::caution[Choose Only for Reviewed Static Materials]
+Allows surface/normal flattening and general RGBA mask repacking. Pixels may change because of imported-texture readback, color space, mip regeneration, or platform compression.
 
-Animation dependency and `Keep Editable` conditions are still checked, but **you must directly compare animated results and target platform mip/compression look via pre- and post-bake captures.**
+Animation dependencies and `Keep Editable` conditions are still checked, but you must compare before and after baking on the target platform.
 :::
 
-General mask repack merges mask slots into shared texture assets, but **does not reduce the number of shader samples.**
-
----
+General mask repacking can merge several masks into one shared texture asset, but it does not always reduce shader texture-sample count.
 
 ## Keep Editable {#keep-editable}
 
-You can mark specific properties per material to exclude them from optimization targets. Use this for values not animated but potentially changed by script later.
+`Keep Editable (Runtime Change)` is stored per material. AnimationClips are analyzed automatically, so use it mainly for values changed by runtime scripts or accessed by name from an external system.
 
 ## Next
 
-[VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo) upload checklist
+[Automatic Build Optimization](/workflow/build-optimization) · [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)

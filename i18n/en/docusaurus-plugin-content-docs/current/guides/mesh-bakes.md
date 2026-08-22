@@ -1,144 +1,104 @@
 ---
 id: mesh-bakes
-title: Mesh UV Bake
+title: Mesh UV Bakes
 sidebar_position: 10
 ---
 
-# Mesh UV Bake
+# Mesh UV Bakes
 
-**After reading this document** you can solve three problems that can't be fixed with shader values alone by baking data into the mesh.
+**After reading this guide,** you can distinguish UV4, UV7, and UV8 ownership and understand the difference between 0.1.7 Live face normals and upload-only baking.
 
-MingToon uses three UV channels. All are **optional**, but each solves one specific problem.
-
-| Channel | Solves | Without it |
-|---|---|---|
-| **UV8** | Outline breaks at sharp edges | Can only use `Normal Source` as `MeshNormal` |
-| **UV7** | Face SDF needs runtime script | Face shading becomes unstable in script-free deployments like VRChat upload and Warudo mod |
-| **UV4** | Height-based color gradient | Height-based character gradient doesn't work at all |
-
-:::tip[Bake all at once during conversion for simplicity]
-Check `Mesh Channels To Bake` in the **1 · Convert** step of `MingToon Manager` to automatically bake right after conversion. Since it runs after material conversion, the **face normal baker knows which submeshes are faces.** → [MingToon Manager](/workflow/character-manager#함께-구울-메쉬-채널)
-:::
-
-:::caution[Baked UVs for each renderer share one unified mesh asset]
-Baking channels multiple times separately still stacks them in the same copy.
-:::
-
----
-
-## Outline Smooth Normal (UV8) {#아웃라인-스무스-노멀-uv8}
-
-**What it does** — Averages normals of vertices at the same position and bakes to UV8. Hard edges that split normals merge into one, so lines don't separate when the hull expands.
-
-UV8.w also stores a **line-width contrast value** — long faces get thick, vertices get thin.
-
-### Procedure
-
-1. Open the `Outline Smooth Normal UV8` group in **3 · Advanced** of `MingToon Manager`.
-2. If any mesh already uses UV8, enable `Overwrite Existing UV8`.
-3. Click `Bake Whole Character UV8`.
-Complete message: `Outline smooth normal bake completed. Hull Normal Source already defaults to UV8TS, so no further changes needed.`
-
-:::tip[Nothing to change on the material side]
-`Normal Source` already defaults to **`UV8TS`**. Just bake and sharp corners won't break lines.
-:::
-
-:::danger[Rejects meshes without tangents]
-If baking fails, configure the model importer to generate tangents, reimport, and try again.
-:::
-
-:::note[To use UV8.w]
-Set `Pressure Source` to `OutlineNormalUV8` and the baked width-contrast value flows directly into line width. → [Outline](/guides/outline#선-굵기를-부위마다-다르게)
-:::
-
-### For models with edited normals {#노멀을-편집한-모델용으로-계산}
-
-Models like hair or skirts that **move normals from a sphere or cylinder** have shading normals that differ from their actual shape already. Averaging those normals as-is makes the outline follow the borrowed sphere instead of the mesh.
-
-When this happens, enable `Compute For Edited-Normal Models`. Instead of averaging shading normals, it **recalculates outline direction from mesh faces**, so shading stays as authored and only the outline follows the mesh.
-
-| State | Result |
+| Channel | User Data |
 |---|---|
-| Off (default) | Averages the mesh's shading normals and bakes |
-| On | Recalculates direction from mesh faces and bakes |
+| **UV8** | Outline smooth normals and an optional pressure value |
+| **UV7** | Face SDF Baked Front coordinates. An upload face-normal payload can temporarily use the same channel |
+| **UV4** | Height relative to the character root |
 
-:::note[Already-baked character lines do not change]
-Since default is off, leaving it alone keeps the current behavior. Enable it and **re-bake** for UV8 to recalculate.
+:::danger[Check existing channels]
+UV channels may contain data written by another shader, tool, or model author. Enable `Overwrite` only after confirming ownership. `UV Channel Usage` in MingToon Manager displays UV4, UV7, and UV8.
 :::
 
-This option appears both in `MingToon Manager` under individual mesh bake, and below when you check `Outline Smooth Normal (UV8)` in `Mesh Channels To Bake` of the **1 · Convert** step.
+## Outline Smooth Normals (UV8) {#아웃라인-스무스-노멀-uv8}
 
----
-
-## Face Front-View Normal (UV7) {#얼굴-프론트뷰-노멀-uv7}
-
-**What it does** — **Projects the current scene's front view into TEXCOORD6 (Unity UV7)** of the duplicate mesh.
-
-Baking this lets the shader handle 4-directional face SDF alone. **Runtime normal provider component is no longer needed**, so face shading stays stable in script-free VRChat uploads and Warudo mods.
+Averages the normals of vertices at the same position and stores them in UV8. This reduces hull-outline gaps along hard edges. UV8.w can also contain an optional line-width contrast value.
 
 ### Procedure
 
-1. `MingToon Manager` → **Look / Face** → `Prepare Face SDF UV (WARUDO / VRC)`.
-2. `Open Front-View SDF TEXCOORD6 (Unity UV7) Baker`.
-3. Position the scene-view camera to see the **face straight-on**. This moment is what gets baked.
-4. Bake.
+1. Open `Outline Smooth Normals UV8` under `3 · Details` in MingToon Manager.
+2. Check the targets, shared Meshes, and existing UV8 in the status panel.
+3. For hair or skirts with edited normals, consider `Calculate for Models with Edited Normals`.
+4. Enable overwrite only after confirming ownership of the existing UV8.
+5. Run the full-character UV8 bake.
 
-Completion log: `MingToon baked face lighting normal: N renderer(s), M face vertex(vertices). Original shape normal is preserved.`
+`Normal Source = UV8TS` is the default, so no material change is needed after baking. When `Pressure Source = OutlineNormalUV8`, UV8.w also affects width.
 
-**The original shape normal is untouched.** Only the lighting-normal goes into the separate channel.
+Parts without tangents skip their UV8 step without failing the UV4 and face steps as well. Generate tangents for those parts in the Model Importer, then run the bake again.
 
-### Undo
+### For Models with Edited Normals {#노멀을-편집한-모델용으로-계산}
 
-Click `Restore Source Mesh`. Message: `MingToon source meshes restored: N renderer(s).`
+Enable `Calculate for Models with Edited Normals` to rebuild the outline direction from Mesh faces instead of shading normals transferred from a sphere or cylinder. It does not change the shading normals.
 
-:::danger[Restore before moving or reimporting the original model]
-If the recorded original mesh can't be found, you'll see a warning like this:
+## Live Face Normals and UV7 {#얼굴-프론트뷰-노멀-uv7}
 
-> `Could not find the original mesh recorded in '{mesh}', so renderer '{name}' bakes from the currently assigned mesh. In this state, 'Restore Source Mesh' cannot revert all the way to the original model.`
+Starting in 0.1.7, the shader calculates face-normal pressing live while editing. Changes to proxy center, radius, Sphere/Cylinder/Capsule shape, axis, height, or press amount appear immediately without a separate Mesh bake.
 
-Proceeding this way breaks the restoration path.
-:::
+### During VRChat Upload
 
-Restoration fails with `N renderer(s) have no recorded original mesh in the project and could not be restored.` You'll need to reimport the original model or manually assign the mesh.
+The VRChat upload hook can create a face-normal payload in UV7 only on the upload copy. It uses an upload-specific output path separate from authoring conversion, then restores Renderers and shared materials to Live state after upload.
 
----
+The following Renderers skip upload baking and remain on the Live shader path to preserve their result:
+
+- Face SDF owns UV7 through `Baked Front UV7`
+- A texture Face Area Mask is enabled with strength greater than 0
+- Several Face slots on one Renderer use different proxies, normal methods, or runtime face frames
+- The source Mesh already contains non-MingToon data in UV7
+
+### Return a Legacy Face-Normal Bake
+
+If `_FaceNormalBaked` remains from an older version and moving the proxy no longer changes the result, run `Return Face Normals to Live` in MingToon Manager.
+
+This operation:
+
+- disables the baked float and keyword
+- returns `Face Map Coordinates` to Base UV so a tangent-normal payload is not misread as Face SDF coordinates
+- does not alter Mesh bytes
+- records all materials as one Undo operation and saves only changed assets
+
+The next normal conversion rebuilds from the source Mesh, naturally removing the unused legacy UV7 payload.
+
+### Baked Front UV7 for Face SDF
+
+For Face SDF, UV7 stores **front-projected coordinates**, not normals. When the separate Face SDF Studio product is installed, it can bake SceneView's front view into TEXCOORD6 of a duplicate Mesh.
+
+1. Align the face to the front.
+2. Select `Baked Front UV7` in Studio.
+3. Bake the duplicate Mesh and apply it to the target Renderer.
+4. Confirm that `Face Map Coordinates` on the MingToon material uses the same mode.
+
+An SDF authored for Base UV does not require UV7. → [Face SDF](/guides/face-sdf)
 
 ## Character Height (UV4) {#캐릭터-높이-uv4}
 
-**What it does** — Bakes the root-space height of the entire **character** into UV4.x on every mesh.
+Stores height relative to the entire character root in UV4.x on every Mesh. Separate upper- and lower-body Meshes share one continuous axis.
 
-The key point: **Character level, not mesh level**. Even if top and bottom are separate meshes, they share one continuous height axis.
+### Procedure in MingToon Manager
 
-### Procedure (from MingToon Manager)
+1. Open `Character Height UV4` under `3 · Details`.
+2. Check existing UV4 data and target Renderers.
+3. Enable overwrite only after confirming ownership.
+4. Run the full-character UV4 bake.
+5. Apply the height settings to all child MingToon materials.
 
-1. Open the `Character Height UV4` group in `MingToon Manager`.
-2. Check the status:
-   - `All character meshes are ready for UV4 height baking.` → Proceed
-   - `UV4 is already occupied on one or more meshes.` → Decide on `Overwrite Existing UV4`
-3. Click `Bake Whole Character UV4`.
-4. Use `Apply to All Child MingToon Materials` to align height settings across materials.
+The Material Inspector can also find open characters that use the selected materials and run the bake. Even if several materials refer to the same character, it processes that character only once.
 
-### Procedure (from material inspector)
+## Decide Which Channel to Bake
 
-The same feature exists on the material side. In the `UV4 Height Bake` group, use `Bake UV4 For Selected Materials`.
-
-It finds the character in the scene using the selected material. **Even if you select all materials and click, it only runs once per character**.
-
-:::caution[Fails if the character isn't in the scene]
-`Could not find any renderer using the selected material in the open scene(s).` → Open the scene or prefab containing the character and try again.
-:::
-
-→ [Character Height Gradient Usage](/guides/character#캐릭터-높이-그라데이션)
-
----
-
-## Decide which channels to bake
-
-| Situation | Channel needed |
+| Situation | Choice |
 |---|---|
-| Outline breaks at sharp edges | **UV8** |
-| Avatar for VRChat / Warudo with stable face | **UV7** |
-| Want to darken the feet or add color to hem | **UV4** |
-| None of the above apply | No need to bake |
+| Outline separates along hard edges | UV8 |
+| Face SDF requires front-projected coordinates | UV7 |
+| A height gradient is used | UV4 |
+| Previewing face-normal proxy changes while editing | Do not bake — Live |
+| Optimizing VRChat face normals | Do not bake manually — upload hook |
 
-MingToon works normally without baking. Each channel is **only needed when you use that feature**.
+→ [MingToon Manager](/workflow/character-manager) · [Character Expression](/guides/character)

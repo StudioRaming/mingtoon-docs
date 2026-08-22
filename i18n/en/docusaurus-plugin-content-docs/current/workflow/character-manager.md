@@ -24,14 +24,14 @@ You can also find `MingToon Manager` in Add Component. **Attach it to the root b
 
 | Stage | Task |
 |---|---|
-| **1 · Convert** | Different shader → MingToon, face/skin assignment, mesh channel bake |
-| **2 · Setup** | Target scope, editor runtime preview, runtime face direction |
-| **3 · Advanced** | Individual mesh bakes, etc. |
-| **Look / Face** | Apply look presets |
-| **Optimize / Bake** | Lightweight shader bake |
-| **Export / Validate** | Upload readiness check · VRChat preflight · Quest check |
+| **1 · Convert** | Other shaders → MingToon, Face / Skin / Common roles, conversion look |
+| **2 · Setup** | Character scope, Editor/Warudo preview, runtime face direction |
+| **3 · Details** | Reapply looks, connect Face SDF, UV4/UV8 mesh bakes, return Live face normals |
+| **4 · Ship** | Lightweight shaders, texture caps, VRC menus, upload readiness and platform checks |
 
-**Quick actions** and **status panel** always appear at the top.
+The status panel at the top recommends the next step for the current material composition. `Texture Optimization` is a separate, project-wide setting rather than a character setting.
+
+**Quick actions** and the **status panel** always remain at the top.
 
 ---
 
@@ -121,24 +121,19 @@ Materials judged as faces receive face values, those judged as skin receive skin
 
 `Last applied by this editor` is shown, so you can check what was applied later.
 
-### Mesh channels to bake together {#함께-구울-메쉬-채널}
+### Mesh Channels to Bake Together {#함께-구울-메쉬-채널}
 
-Automatically bakes checked channels right after conversion.
+Bakes only the static channels needed immediately after conversion.
 
 | Channel | Purpose |
 |---|---|
-| `Outline Smooth Normals (UV8)` | Prevent outline breaks at sharp edges |
-| `Face Front-View Normals (UV7)` | Keep face shadows clean at nose/eyelids |
-| `Character Height Gradient (UV4)` | Height-based color gradient |
-| `Overwrite Occupied UV Channels` | **Enable only when re-converting** |
+| `Outline Smooth Normals (UV8)` | Prevent outline separation at hard edges |
+| `Character Height Gradient (UV4)` | Height gradient relative to the character root |
+| `Overwrite Occupied UV Channels` | Use only during reconversion after confirming ownership |
 
-Leave defaults and it bakes automatically. → [Mesh UV Bake](/guides/mesh-bakes)
+Face normals in 0.1.7 are calculated Live while editing, so **conversion no longer bakes UV7 by default.** During VRChat upload, they are baked only into the upload copy. When a texture face-region mask is required or Face SDF owns UV7, the Live path is kept to preserve the result.
 
-:::caution[UV7 cannot be shared]
-`UV7 is used by both face normal bake and face SDF projection. Only one can own it, so if you plan to use SDF, turn off face normal bake.`
-:::
-
-`UV Channel Occupancy` shows which of `UV4 · UV7 · UV8` are free or in use.
+Check ownership of UV4, UV7, and UV8 under `UV Channel Usage` first. → [Mesh UV Bakes](/guides/mesh-bakes)
 
 ### Recovery
 
@@ -159,12 +154,12 @@ You can check converted pairs with `Audit Converted Pairs`. Finding original rec
 | `Scope` · `Include Inactive Children` | How far down to consider this character |
 | `Refresh Child Renderers` | Run after changing clothing |
 | `Select All MingToon Materials` | Pass to [bulk editing](/guides/bulk-editing) |
-| `Select Face + Skin Only` · `Select Common Only` | Pick by role |
+| `Select Face Materials Only` · `Select Face + Skin Only` · `Select Common Only` | Pick by role |
 
 ### Editor Runtime Preview
 
 :::caution[Does not ship to VRChat]
-`This group works only in script-retaining environments like the editor and Warudo. This component is removed on VRChat upload, so results made here do not ship to the avatar.`
+These two groups work only in script-retaining environments such as the Editor and Warudo. In VRChat, the components are marked `IEditorOnly`, but automatic deletion is not guaranteed. Verify that the actual build clone contains zero MingToon runtime components after SDK processing, and do not expect these runtime results to define the avatar's appearance.
 :::
 
 `Use Look Profile` · `Preview In Edit Mode` · `Look Profile`
@@ -176,17 +171,17 @@ Turn on `Publish Head Direction` to pass head bone direction to the shader; face
 - `Head Bone` — auto-detect if empty
 - `Auto-Detect Head Axes` · `Head Local Forward` · `Head Local Up`
 
-:::note[Warudo export needs a separate component]
-This setting is for editor and Warudo environments. **When building in Warudo mode, attach `WARUDO Runtime Root` separately.** → [Warudo](/platforms/warudo#내보내기-전-필수--warudo-runtime-root)
+:::note[Warudo Does Not Need a Separate Runtime Root]
+Warudo mode retains the MingToon Manager component. Do not attach a separate Runtime Root to the prefab. Depth effects such as 2D Rim, 2D Shadow, and SSAO require the global Playground plugin `MingToonWarudoDepthBridge.cs`, not a character component. → [Warudo Depth Bridge](/platforms/warudo#warudo-depth-bridge)
 :::
 
 ---
 
-## 3 · Advanced
+## 3 · Details
 
-`Standalone Mesh Bakes` — only needed if you unchecked the bake in step 1 conversion or a bake failed. Already-filled channels are rejected unless `Overwrite` is on.
+`Standalone Mesh Bakes` are needed only when the stage 1 conversion checkbox was disabled or that bake failed. Already-filled channels are rejected unless `Overwrite` is enabled.
 
-`Character Height UV4` · `Outline Smooth Normal UV8` · face front-view normal can be run individually. → [Mesh UV Bake](/guides/mesh-bakes)
+`Character Height UV4` and `Outline Smooth Normals UV8` can be run individually. Face normals are Live by default. If `_FaceNormalBaked` remains from an older conversion and proxy adjustments do not appear, run `Return Face Normals to Live`. It clears the material's baked flag and an incorrect Face SDF UV7 selection in one Undo step. → [Mesh UV Bakes](/guides/mesh-bakes)
 
 ---
 
@@ -200,31 +195,33 @@ If not yet converted, `No MingToon materials yet. Run step 1 conversion first, t
 
 `Open Front-View SDF TEXCOORD6 (Unity UV7) Baker`
 
-:::note[Separate package]
-If `Face SDF Baker is not installed`, you must install a **separate editor package** from Studio Raming before this button opens.
+:::note[Face SDF Studio Is a Separate Product]
+When installed, this button opens Studio. When it is not installed, purchase and installation guidance appears. MingToon Face Shading and Base UV face SDF remain usable without Studio.
 :::
 
 → [Face SDF Authoring](/guides/face-sdf)
 
 ---
 
-## Optimize / Bake
+## 4 · Ship {#4--출하}
+
+### Optimization / Bake
 
 :::tip[Most cases can skip this]
-VRChat upload and Warudo mode build automatically apply [build-time optimization](/workflow/build-optimization), and materials stay editable.
+VRChat upload and Warudo mod builds automatically apply [Automatic Build Optimization](/workflow/build-optimization), and materials remain editable.
 :::
 
 `Lightweight Shader Bake (Editor Only)` · `Preserve Animatable Passes (Safe)`
 
-:::caution[Texture rewrites are separate]
-`The check below applies only to bakes run directly in this panel.` The auto one on upload is `Reviewed Texture Rewrites On Build (Opt-In)`, and can be restored from `Tools > Studio Raming > MingToon` menu.
+:::caution[Texture Optimization Is a Project-Wide Setting]
+Upload resolution caps by slot type—including base, normal, and mask—and `Reviewed Texture Rewrites On Build (Opt-In)` are stored in Editor preferences. They are not stored in a Scene or Prefab and apply to every character shipped from this project. Only upload copies change; source textures are preserved.
 :::
 
 → [Manual Bake and Restore](/workflow/bake-and-restore)
 
 ---
 
-## VRChat Expression Menu {#vrchat-표현식-메뉴}
+### VRChat Expression Menu {#vrchat-표현식-메뉴}
 
 In a Unity 2022.3 VCC project, `MingToon Manager` prepares the Virtual Light and Master Adjust menus.
 
@@ -237,13 +234,13 @@ In a Unity 2022.3 VCC project, `MingToon Manager` prepares the Virtual Light and
 MingToon compiles without Modular Avatar. Reopen the Inspector after installation to use it automatically; for manual merging, turn off the toggle and use `Register VRC Menu with One Click`.
 
 :::caution[Expression Parameters budget]
-This feature uses **21 synced parameters · 154 bits**. Before installation, it checks type conflicts with the existing avatar, the 256-bit budget, and the eight-slot-per-menu limit, and reverts changes on failure.
+The final 0.1.7 installation uses **22 synced parameters · 120 bits**. Before changing anything, it checks type conflicts with the existing avatar, the 256-bit budget, and the eight-slot-per-menu limit, and rolls changes back on failure.
 :::
 
-Menus are divided into `MingToon Controls > Virtual Light` and `Master Adjust > Highlight / Shadow / Final Output`. `Reset All` restores the direction, mode, color, brightness, and intensity of Virtual Light and the three Master Adjust groups to installation defaults without using extra parameters or network bits.
-## Export / Validate {#내보내기--검증}
+Menus include `Virtual Light`, `Master Adjust`, and `Quality`. Quality preserves authored values on High, caps sample counts on Mid, and lowers sample counts further while disabling the Depth Effects Master and projected-shadow feathering on Low. Opted-in materials also show a `Shadow Projection` toggle. Enable `Place Directly in Expressions Root` to flatten controls into the root without a MingToon Controls submenu. `Reset All` returns to authored values from installation without extra network bits.
+### Export / Validate {#내보내기--검증}
 
-### Upload Readiness {#업로드-준비-점검}
+#### Upload Readiness {#업로드-준비-점검}
 
 `Run Readiness Check` — scans hierarchy and manifest, so it **runs only when clicked**.
 
@@ -262,11 +259,11 @@ Key diagnostic items:
 
 You can also run [Validate Project](/reference/validator) here with `Run Project Validator`.
 
-:::note[Depth promotion notice]
-`On upload, N material(s) change depth mode from Auto to Force On. On VRChat avatars, Auto never turns on.` → [Build-time Optimization](/workflow/build-optimization#vrchat-깊이-자동-승격)
+:::note[Depth Auto Does Not Change on Upload]
+`Auto` directly reads the bound depth texture and Photo Camera state and is not promoted to `Force On` during upload. If the main view needs depth, review the cost of the separate `Include Depth Light on Upload` opt-in. → [Automatic Build Optimization](/workflow/build-optimization#vrchat-깊이-자동-승격)
 :::
 
-### VRChat Preflight
+#### VRChat Preflight
 
 `Rule version · validated Unity` is shown, and checks:
 
@@ -275,16 +272,16 @@ You can also run [Validate Project](/reference/validator) here with `Run Project
 
 → [VRChat Compatibility Rules](/internals/vrc-rules)
 
-### Quest / Android
+#### Quest / Android
 
 `MingToon does not support Quest (Android) builds.` If you plan a Quest variant, **assume all features below are missing.**
 
 `Lost on Quest` — counts actual instances: `outline N · transparent N · depth effects N`.
 
-### Script Removal Check
+#### Script Removal Check
 
-:::danger[Do not delete MingToon components manually]
-`MingToon runtime components are removed automatically on VRChat upload, so do not delete them. Deleting this manager loses the cached renderer list, and upload optimization loses its scope.`
+:::danger[Do Not Delete MingToon Components Manually]
+Do not remove MingToon components from the authoring Scene. Deleting Manager removes the cached Renderer list and makes upload optimization lose its scope. These components are marked `IEditorOnly`, but automatic deletion is not guaranteed, so verify `RuntimeComponentCount = 0` on the actual build clone after SDK processing.
 
 Warudo mode follows **a separate script-retaining** rule. This panel only checks.
 :::
@@ -294,17 +291,15 @@ Warudo mode follows **a separate script-retaining** rule. This panel only checks
 ## Full workflow summary
 
 ```text
-Attach MingToon Manager to root
+Attach MingToon Manager to the root
         ↓
-1 · Convert      Assign face/skin slots → look preset → bake UV8/UV7/UV4 together → convert
-        ↓         Read loss report
-2 · Setup        If changed clothing, refresh renderers
+1 · Convert      Assign roles → choose conversion look → convert → review loss report
         ↓
-Look / Face      Adjust looks per-material (look authoring docs)
+2 · Setup        Refresh scope → Editor/Warudo preview and face direction
         ↓
-Optimize         Usually skip — build-time optimization is enough
+3 · Details      Reapply look → connect SDF → bake UV4/UV8 only when needed
         ↓
-Validate         Run readiness check → VRChat preflight → upload
+4 · Ship         Texture caps → VRC menu → automatic/manual bake → readiness check → upload
 ```
 
-If exporting to Warudo, add a [WARUDO Runtime Root](/platforms/warudo#내보내기-전-필수--warudo-runtime-root) step here.
+No separate Runtime Root is required for Warudo export. If you use depth effects, install [Warudo Depth Bridge](/platforms/warudo#warudo-depth-bridge) in Playground.

@@ -6,7 +6,7 @@ sidebar_position: 13
 
 # Face SDF and Face SDF Studio
 
-**After reading this document**, you will understand the difference between Face Shading and face SDF, and create directional face shadows in the included Face SDF Studio for use on materials.
+**After reading this guide,** you will understand the difference between Face Shading and face SDF and, when the separate Face SDF Studio product is installed, create directional face shadows and apply them to a material.
 
 ## Distinguish These First
 
@@ -18,8 +18,10 @@ sidebar_position: 13
 
 Face Shading works without an SDF. First clean up the face with [Face Shading](/guides/character#페이스-셰이딩), then add an SDF when you need animated-like shadow transitions as the light moves.
 
-:::note[Studio is included in 0.1.4]
-No separate package is required. Open it from `Tools > Studio Raming > Face SDF Studio > Open`. Studio is Editor-only; the final result consists of a texture and an optional duplicate Mesh, so no runtime scripts are added.
+:::note[Face SDF Studio is a separate product]
+Face SDF Studio is not bundled with MingToon 0.1.7. After installing it separately, `Tools > Studio Raming > Face SDF Studio > Open` and the MingToon integration buttons appear. Studio is Editor-only; the final result consists of a texture and an optional duplicate Mesh, so no runtime scripts are added.
+
+Even without Studio installed, you can assign an existing SDF texture directly in the MingToon Inspector.
 :::
 
 ## SDF Map Formats {#sdf-맵-형식}
@@ -38,8 +40,10 @@ Single Channel does not use vertical-light influence. Use Packed RGBA when you n
 - `Base Texture UV (Legacy)` — Reads the existing UV0 as-is.
 - `Baked Front UV7` — Projects the Scene front view into UV7. Recommended when the face mesh is split into multiple UV islands or when a stable front reference is needed in VRChat or Warudo.
 
-:::caution[UV7 cannot be owned by both features]
-The face front-view normal bake and Face SDF front projection use the same UV7. If you bake UV7 in Face SDF Studio, disable the Manager's automatic `Face Front-View Normal (UV7)` bake. → [Mesh UV Bake](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
+:::caution[UV7 has only one owner]
+In 0.1.7, face normals are Live while editing and are automatically baked only into the VRChat upload copy. When Face SDF uses `Baked Front UV7`, SDF owns UV7 and the upload face-normal bake skips that Renderer.
+
+Selecting `Baked Front UV7` on a material that still contains legacy tangent normals in UV7 reads the wrong coordinates. Run `Return Face Normals to Live` in MingToon Manager, or rebake UV7 in Studio. → [Mesh UV Bake](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
 :::
 
 ## Face SDF Studio Workflow {#face-sdf-studio-작업-순서}
@@ -108,13 +112,14 @@ When `Face SDF Map` is empty, the Inspector shows a warning and an Open Face SDF
 
 ### Base Pass disappears when Face Shading is enabled
 
-0.1.4 automatically restores BRP `ForwardBase` and URP `UniversalForwardOnly` for older materials. If it still disappears:
+Release builds of 0.1.7 do not expose internal compilation-diagnostic toggles. Check in this order:
 
-1. Disable MingToon Inspector's development option `Advanced Diagnostics: Force Compile All Editor Features (Optional)`. It is off by default.
-2. Select the material again to run keyword and base-pass migration.
-3. Check shader compilation errors in the Console.
+1. Resolve shader and C# compilation errors in the Console.
+2. Select the material again to run schema and keyword synchronization.
+3. If it is a baked material, restore the authoring material in MingToon Manager and bake again.
+4. If it still disappears, submit the error log together with the Unity version and graphics API.
 
-This diagnostic option fixes maximum features in one variant and can exceed D3D11's 64 texture-resource limit per stage. Do not enable it for normal authoring.
+Maintainer variant dumps and technical diagnostics are available only in `MINGTOON_DEV` development builds.
 
 ### Left and right move in reverse
 
@@ -122,7 +127,7 @@ Check the Packed RGBA R/G channel layout and the face front direction. Single Ch
 
 ### White zigzags appear on the face boundary
 
-0.1.4 limits the screen-derivative width of form-shadow boundaries. Confirm that no older MingToon shader or bake component remains, switch the material back to the 0.1.4 authoring shader, and bake again.
+If the form-shadow boundary breaks up, confirm that no older MingToon shader or stale baked copy remains. Return the material to the current 0.1.7 authoring shader and bake Face SDF again to apply the latest boundary correction.
 
 ## Decide Whether to Use SDF
 
@@ -136,5 +141,5 @@ Check the Packed RGBA R/G channel layout and the face front direction. Single Ch
 ## Related Documents
 
 - [Character Expression — Face Shading](/guides/character#페이스-셰이딩)
-- [Mesh UV Bake — Face Front-View Normal](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
-- [Light and Shadow — Grazing shadow on face](/guides/light-and-shadow#얼굴의-스치는-그림자)
+- [Mesh UV Bake — Live Face Normals and UV7 Ownership](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
+- [Light and Shadow — Face Shadow Adjustment](/guides/light-and-shadow#얼굴의-스치는-그림자)
