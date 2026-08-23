@@ -33,6 +33,7 @@ Configure view-angle-responsive rim lighting.
 |---|---|---|
 | **Enable Fresnel Rim** | On by default. Composites rim light toward silhouette edges viewed at a grazing angle. Off preserves values but skips this pass. | `_MingFresnelRimEnabled` |
 | **Fresnel Rim Color** | HDR rim-light color; default is (26.17, 26.17, 26.17). It is multiplied by Blend Opacity, and very high values can clip to white without bloom. | `_MingFresnelRimColor` |
+| **Color Purity** | Range 0-10; default 1. Applied after the Base Color and Fresnel rim color are composited. 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate it. | `_MingFresnelRimColorPurity` |
 | **Fresnel Rim Blend Mode** | Chooses Normal, Multiply, Add, Hue, Screen, Color, or Overlay for the rim. Default Add (2) increases brightness, so high HDR color or opacity can clip or bloom. | `_MingFresnelRimBlendMode` |
 | **Blend Opacity** | How strongly the fresnel rim blends in. Use it to dial the rim's presence down without touching its color or intensity; 0 turns the rim off entirely. | `_MingFresnelRimBlendOpacity` |
 | **Intensity** | Range 0-20; default 0.52. Brightness multiplier for the Fresnel rim. At 0 the rim never appears no matter how its color or width is set. | `_MingFresnelRimIntensity` |
@@ -56,6 +57,7 @@ Configure the independent band produced by light behind the surface.
 |---|---|---|
 | **Enable Backlight** | On by default. Adds an accent when the main light is behind the surface. Off preserves values but skips this module's color contribution and pixel work. | `_MingBacklightEnabled` |
 | **Backlight Color** | HDR backlight color; default is (2, 2, 2). It is multiplied by Strength, and high values can clip to white without bloom. | `_MingBacklightColor` |
+| **Color Purity** | Range 0-10; default 1. Applied after the Base Color and backlight color are composited. 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate it. | `_MingBacklightColorPurity` |
 | **Backlight Strength** | Range 0-10; default 0.29. Multiplies backlight brightness; at 0 the backlight is invisible, so color and border changes cannot be seen. | `_MingBacklightStrength` |
 | **Backlight Border** | Range 0-1; default 0.66. Sets where backlight starts: higher covers more of the surface, lower keeps it near the silhouette. | `_MingBacklightBorder` |
 | **Backlight Softness** | Range 0.001-1; default 0.5. Width of the border transition. Low is a hard cel band; high spreads a softer gradient. | `_MingBacklightSoftness` |
@@ -74,6 +76,7 @@ Configure a Fresnel reflection band visible only inside shadow.
 |---|---|---|
 | **Enable Shadow Interior Reflection** | On by default. Adds a reflection band only inside regions darkened by lighting, cast shadows, or 2D shadows. Off skips the entire effect, including its shadow gate. | `_MingShadowReflectionEnabled` |
 | **Shadow Interior Reflection Color** | HDR color for the shadow-interior reflection; default is (3.81, 3.81, 3.81). Blend Opacity and Intensity also apply, and high values can clip without bloom. | `_MingShadowReflectionColor` |
+| **Color Purity** | Range 0-10; default 1. Applied after the Base Color and reflection color are composited. 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate it. | `_MingShadowReflectionColorPurity` |
 | **Shadow Reflection Blend Mode** | Chooses Normal, Multiply, Add, Hue, Screen, Color, or Overlay for the shadow reflection. Default Add (2) adds brightness; the shadow gate and opacity still limit where it appears. | `_MingShadowReflectionBlendMode` |
 | **Blend Opacity** | How strongly the shadow interior reflection layer blends in. Lower it when the bounce light inside shadows reads too strong; 0 turns it off. | `_MingShadowReflectionBlendOpacity` |
 | **Shadow Interior Reflection Intensity** | Range 0-20; default 0.5. Brightness multiplier for the reflection inside shadow regions; at 0 it adds no color even when the shadow shape is configured. | `_MingShadowReflectionIntensity` |
@@ -98,6 +101,7 @@ Configure an independent front-facing accent light.
 |---|---|---|
 | **Enable Front Light** | On by default. Adds an independent accent on front-facing surfaces using the current light and view. Off skips this effect's pixel work. | `_MingFrontLightEnabled` |
 | **Front Light Color** | HDR front-light color; default is (1, 1, 1). Final output is also affected by Strength and the surface blend. | `_MingFrontLightColor` |
+| **Color Purity** | Range 0-10; default 1. Applied after the Base Color and front-light color are composited. 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate it. | `_MingFrontLightColorPurity` |
 | **Front Light Strength** | Range 0-10; default 0.2. Multiplies the front-light accent; at 0 the remaining border and color controls have no visible contribution. | `_MingFrontLightStrength` |
 | **Front Light Border** | Range 0-1; default 0.9. Sets where the front-light accent starts. Higher covers more; lower keeps it near the center-facing area. | `_MingFrontLightBorder` |
 | **Front Light Softness** | Range 0.001-1; default 0.17. Border transition width. Low is a crisp cel band; high makes a softer transition. | `_MingFrontLightSoftness` |

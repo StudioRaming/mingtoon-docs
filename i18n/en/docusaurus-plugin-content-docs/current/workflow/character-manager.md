@@ -223,21 +223,51 @@ Upload resolution caps by slot type—including base, normal, and mask—and `Re
 
 ### VRChat Expression Menu {#vrchat-표현식-메뉴}
 
-In a Unity 2022.3 VCC project, `MingToon Manager` prepares the Virtual Light and Master Adjust menus.
+In a Unity 2022.3 VCC project, `MingToon Manager` prepares Virtual Light and Quality
+menus for Avatar SDK/upload builds. The default Full profile also includes Palette,
+Master Adjust, and Photo Looks.
 
 1. Select `MingToon Manager` under the Avatar Root.
 2. Enable `Non-Destructive Modular Avatar Install`. It is enabled by default.
-3. Save the Scene or Prefab and reopen the Manager Inspector.
-4. Confirm that `MingToon Controls` appears in Gesture Manager.
-5. Upload as usual with the VRChat SDK Builder. Menus, parameters, and FX are merged into the build clone, not the original.
+3. Choose `Use Full Control Menu`. On installs the Full 77-bit profile; off installs the
+   Lightweight 31-bit profile.
+4. Choose `Place Directly In Expressions Root`, save the Scene or Prefab, and reopen the
+   Manager Inspector.
+5. Confirm the selected `MingToon Controls` configuration in Gesture Manager.
+6. Upload with VRChat SDK Builder. Menus, parameters, and FX are merged into the build
+   clone.
 
-MingToon compiles without Modular Avatar. Reopen the Inspector after installation to use it automatically; for manual merging, turn off the toggle and use `Register VRC Menu with One Click`.
+MingToon compiles without Modular Avatar. To merge directly, turn off
+`Non-Destructive Modular Avatar Install` and use `Install VRC Controls`.
 
 :::caution[Expression Parameters budget]
-The final 0.1.7 installation uses **22 synced parameters · 120 bits**. Before changing anything, it checks type conflicts with the existing avatar, the 256-bit budget, and the eight-slot-per-menu limit, and rolls changes back on failure.
+- **Full (default):** 28 total / 21 synchronized · 77 bits / 7 local commands · 0 bits
+- **Lightweight:** 12 total / 10 synchronized · 31 bits / 2 local commands · 0 bits
+
+Full synchronization is Bool 13 + Int 2 + Float 6. Lightweight is Bool 7 + Float 3.
+Before making changes, MingToon checks type conflicts against the existing avatar, the
+combined 256-bit budget, and the eight-slot-per-menu limit, and rolls changes back on
+failure.
 :::
 
-Menus include `Virtual Light`, `Master Adjust`, and `Quality`. Quality preserves authored values on High, caps sample counts on Mid, and lowers sample counts further while disabling the Depth Effects Master and projected-shadow feathering on Low. Opted-in materials also show a `Shadow Projection` toggle. Enable `Place Directly in Expressions Root` to flatten controls into the root without a MingToon Controls submenu. `Reset All` returns to authored values from installation without extra network bits.
+Both profiles retain core Virtual Light—Enabled, Direction, Intensity, Follow Character,
+and Auto/Replace/Add—plus explicit High/Mid/Low Quality, independent Shadow Projection,
+and Reset All. Full alone adds the eight-color × four-saturation Palette, independent
+Intensity and Tint amounts for Highlight / Shadow / Final Output, and eight Photo Looks.
+Lightweight omits those controls and their parameters and FX layers. Switching profiles
+and reinstalling removes stale MingToon parameters, FX layers, and generated menus.
+Reset All restores the selected profile's installed defaults, not a pre-install authored
+snapshot. Full uses Reset, Quality, Palette, Photo, and the three Tint selectors as its
+seven local commands; Lightweight uses Reset and Quality.
+
+Folder placement spends one root slot. Full has eight controls under `MingToon Controls`;
+Lightweight has seven. With `Place Directly In Expressions Root` enabled, Full places
+`Virtual Light`, `Master Adjust`, and `Reset All` at the root; Lightweight places
+`Virtual Light`, `Quality`, and `Reset All`. Both require three free root slots and fall
+back to folder placement when they do not fit. Photo Looks synchronizes only the user's
+own avatar. Controlling every other avatar in one user's view requires world/Udon
+authority and is excluded from this avatar installation.
+
 ### Export / Validate {#내보내기--검증}
 
 #### Upload Readiness {#업로드-준비-점검}

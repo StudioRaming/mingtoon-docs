@@ -147,6 +147,7 @@ Final thickness = `Master Width` × `Rim Width Multiplier`.
 
 - `Rim Intensity` — **If 0, calculation is skipped.** Changing color and width has no effect.
 - `Mix Base Color` — 0 = solid color rim, 1 = multiply base map color for per-area variation.
+- `Color Purity` — range 0–10, default 1; saturation after the Base Color and rim color are composited. 0 is grayscale, 1 is the existing color, and values above 1 oversaturate the 2D rim.
 - `360 Rim` — 0 = light direction only, 1 = wraps entire silhouette.
 - `2D Rim Direction` — Direction the rim shifts.
 - `Rim Sample Quality` — Low 1 tap / Standard 2 taps / High 4 taps. Width stays the same; only internal-line suppression and cost change. At 1 tap, eyes, nose, or clothing boundaries may leak into the rim or shake by one texel as the camera moves. Four taps filters narrow internal lines more reliably.
@@ -330,6 +331,8 @@ The default tips the center layer red-warm with higher saturation, creating the 
 
 Neutral value `(0,1,1,1)` skips correction.
 :::
+
+Each layer also has its own `Color Purity`. It is applied after HSVG color correction, tint, and thickness-based channel saturation have been composited: 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate only that layer.
 
 ---
 

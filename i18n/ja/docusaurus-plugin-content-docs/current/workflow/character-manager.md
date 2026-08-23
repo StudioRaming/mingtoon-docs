@@ -223,21 +223,49 @@ VRChat アップロード と Warudoモードビルドでは、[ビルド時の�
 
 ### VRChat Expression Menu {#vrchat-표현식-메뉴}
 
-Unity 2022.3 VCCプロジェクトでは、`MingToon Manager`がVirtual LightとMaster Adjustメニューを準備します。
+Unity 2022.3 VCCプロジェクトでは、`MingToon Manager` がAvatar SDK / アップロード用の
+Virtual LightとQualityメニューを準備します。既定のフルプロファイルにはPalette、
+Master Adjust、Photo Looksも含まれます。
 
-1. Avatar Rootの下にある`MingToon Manager`を選択します。
-2. `Non-Destructive Modular Avatar Install`を有効にします。デフォルトで有効です。
-3. SceneまたはPrefabを保存し、Manager Inspectorを開き直します。
-4. Gesture Managerに`MingToon Controls`が表示されることを確認します。
-5. VRChat SDK Builderで通常どおりアップロードします。メニュー、パラメーター、FXは元データではなくbuild cloneに統合されます。
+1. Avatar Rootの下にある `MingToon Manager` を選択します。
+2. `Modular Avatarで非破壊インストール` をオンにします。既定はオンです。
+3. `フル調整メニューを使用` を選びます。オンならフル77ビット、オフなら軽量31ビットです。
+4. `Expressionsルートに直接配置` を選び、SceneまたはPrefabを保存してManager Inspectorを
+   開き直します。
+5. Gesture Managerで選択した `MingToon Controls` の構成を確認します。
+6. VRChat SDK Builderでアップロードします。メニュー・パラメーター・FXはbuild cloneへ
+   統合されます。
 
-Modular AvatarがなくてもMingToonは動作します。インストール後にInspectorを開き直すと自動的に使用できます。手動で統合する場合はトグルを無効にし、`Register VRC Menu with One Click`を使用します。
+Modular AvatarがなくてもMingToonはコンパイルできます。直接統合する場合は
+`Modular Avatarで非破壊インストール` をオフにし、`VRC操作を登録` を使います。
 
 :::caution[Expression Parametersの予算]
-最終0.1.7インストールは**同期パラメーター22個・120ビット**を使用します。既存アバターと統合した型競合、256ビット予算、メニューごとの8スロット制限を先に検査し、失敗時は変更を元に戻します。
+- **フル（既定）：** 合計28個 / 同期21個・77ビット / ローカルコマンド7個・0ビット
+- **軽量：** 合計12個 / 同期10個・31ビット / ローカルコマンド2個・0ビット
+
+同期内訳はフルが Bool 13 + Int 2 + Float 6、軽量が Bool 7 + Float 3 です。
+既存アバターとの型競合、合計256ビット予算、メニューごとの8枠を事前に検査し、
+失敗時は変更をロールバックします。
 :::
 
-メニューには`Virtual Light`、`Master Adjust`、`Quality`が入ります。QualityはHighでオーサリング値を維持し、Midでサンプル数を制限します。Lowではサンプル数をさらに下げ、深度エフェクトマスターと投影シャドウフェザーを無効にします。オプトインしたマテリアルには`Shadow Projection`トグルも表示します。`Expressionsルートへ直接配置`を有効にすると、MingToon Controlsサブフォルダーを使わずルートメニューへフラット化します。`Reset All`はインストール時のオーサリング値へ戻し、別のネットワークビットは使用しません。
+どちらのプロファイルもVirtual Lightの基本操作（Enabled、Direction、Intensity、
+Follow Character、Auto/Replace/Add）、明示的なHigh/Mid/Low、独立した
+Shadow Projection、Reset Allを維持します。フルだけに8色×4段階のPalette、
+Highlight / Shadow / Final OutputそれぞれのIntensity・Tint量、8種類のPhoto Looksを
+追加します。軽量ではそれらの操作と専用パラメーター・FXレイヤーを除外します。
+プロファイルを切り替えて再インストールすると、使わなくなったMingToonパラメーター、
+FXレイヤー、生成メニューを削除します。Reset Allは選択中のプロファイルの
+インストール時既定値へ戻し、インストール前のオーサリング値スナップショットは
+復元しません。フルのローカルコマンドはReset、Quality、Palette、Photo、3つのTint選択、
+軽量はResetとQualityです。
+
+フォルダー方式はRootの1枠を使い、`MingToon Controls` の中にフルは8操作、
+軽量は7操作を置きます。`Expressionsルートに直接配置` をオンにすると、フルは
+`Virtual Light`・`Master Adjust`・`Reset All`、軽量は `Virtual Light`・
+`Quality`・`Reset All` をRootへ置きます。どちらも空き3枠が必要で、収まらない場合は
+フォルダー方式へ戻ります。Photo Looksは自分のアバターの結果だけを同期します。
+1人の画面内にいる他アバターをまとめて操作するにはWorld/Udon権限が必要なため、
+このアバター機能には含まれません。
 
 ---
 

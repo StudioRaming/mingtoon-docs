@@ -33,7 +33,7 @@ Configure ranges and masks for depth-driven effects.
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Use VRC Quality Menu** | Lets the VRChat expression menu's Quality control (Low/Mid/High) reach this material. The tier is a ceiling only - High is exactly what you set here, Mid lowers the sample-count settings, and Low turns Depth Effects and Projected Shadow Feather off. With this off, the bake folds the tier to High and the menu does nothing to this material. | `_MingVrcQualityMenuEnabled` |
+| **Use VRC Runtime Controls** | Lets the VRChat expression menu's Quality control (Low/Mid/High) reach this material. The tier is a ceiling only - High is exactly what you set here, Mid lowers the sample-count settings, and Low turns Depth Effects and Projected Shadow Feather off. With this off, the bake folds the tier to High and the menu does nothing to this material. | `_MingVrcQualityMenuEnabled` |
 | **Switch Shadow Projection From FX** | Lets the VRChat expression menu switch 'Shadow Projection' on and off. Upload with the shadow on and turn it off in a crowded instance. Switched off at runtime, the projection feather's samples, the cast composite and the translucency cast term are all skipped per pixel. With this option off, the bake folds 'Shadow Projection' to a constant and the menu does nothing. | `_MingCastShadowRuntimeToggle` |
 | **Quality Tier Preview** | The in-game menu moves this value. Change it here to preview what Low and Mid look like in the editor. Leave it on High when you save: this value is the material's own starting state. | `_MingVrcQualityTier` |
 
@@ -49,6 +49,7 @@ Configure rim effects generated from screen-depth differences.
 | **Invert** | Flips the rim mask black-for-white so the rim applies to the opposite area. | `_DepthRimMaskInvert` |
 | **Strength** | How far the mask cuts the rim. At 1 the rim disappears completely where the mask is black; lower values leave part of it. | `_DepthRimMaskStrength` |
 | **Rim Color** | Color of the 2D rim. It is HDR, so raising its intensity can push it into bloom. | `_DepthRimColor` |
+| **Color Purity** | Range 0-10; default 1. Applied after the Base Color and 2D rim color are composited. 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate it. | `_DepthRimColorPurity` |
 | **Rim Width Multiplier** | A 2D-rim-only multiplier on Master Width. The final thickness is Master Width times this value, so raising it does nothing while Master Width is 0. | `_DepthRimWidth` |
 | **Rim Intensity** | Brightness multiplier for the 2D rim. At 0 the rim is skipped entirely, so its color and width change nothing. | `_DepthRimIntensity` |
 | **Mix Base Color** | 0 draws the rim in the flat color you picked; 1 multiplies it by the Base Map so each material area gets its own rim tint. | `_DepthRimBaseColorMix` |
@@ -114,12 +115,14 @@ Measures how far light travelled through the character along the light, so thin 
 | **Edge Softness** | How gently the edge band fades out. Higher values feather it; lower values keep it a crisp band. | `_TranslucencyEdgeSoftness` |
 | **Edge HSVG** | Derives the edge layer's color from the base color instead of an absolute one, so blonde hair, dark hair and skin all read correctly from one setting. The neutral (0,1,1,1) skips the adjustment entirely. | `_TranslucencyEdgeHSVG` |
 | **Edge Tint** | Multiplied onto the edge color after the HSVG adjustment. White changes nothing. | `_TranslucencyEdgeTint` |
+| **Color Purity** | Range 0-10; default 1. Applied after Base Color, HSVG, Tint, and thickness-based channel saturation are composited. 0 is grayscale, 1 is the existing result, and values above 1 oversaturate the edge layer. | `_TranslucencyEdgeColorPurity` |
 | **Center Intensity** | Strength of the layer that lights the interior. Set it to 0 and the result is exactly a single edge layer. | `_TranslucencyCenterIntensity` |
 | **Center Falloff** | How tightly the center layer gathers on camera-facing surfaces. | `_TranslucencyCenterPower` |
 | **Center Width** | Width of the facing (center) transmission band - how far the middle of thin parts like ears and fingertips glows. | `_TranslucencyCenterWidth` |
 | **Center Softness** | How gently the center band fades out. Higher values feather it; lower values sharpen it. | `_TranslucencyCenterSoftness` |
 | **Center HSVG** | Derives the center layer's color from the base color. The default rotates the hue toward red and raises saturation, giving hair a near-white outer edge over a warm glowing interior. | `_TranslucencyCenterHSVG` |
 | **Center Tint** | Multiplied onto the center color after the HSVG adjustment. White changes nothing. | `_TranslucencyCenterTint` |
+| **Color Purity** | Range 0-10; default 1. Applied after Base Color, HSVG, Tint, and thickness-based channel saturation are composited. 0 is grayscale, 1 is the existing result, and values above 1 oversaturate the center layer. | `_TranslucencyCenterColorPurity` |
 | **Backlight Falloff** | How precisely the camera and the light must oppose each other for the effect to peak. Higher values confine the peak to a narrow, exactly backlit band; how much survives in front light is set by Front Light Floor. | `_TranslucencyLightPower` |
 | **Front Light Floor** | How much transmitted light survives in full front light. Scattering only gets stronger when backlit; it does not switch off, and at 0 skin stops reading as skin. | `_TranslucencyAmbient` |
 | **Normal Bend** | Bends the light vector toward the surface normal so a curved strand keeps transmitting slightly off the exact backlight axis. At 0 only the plain backlight response remains. | `_TranslucencyDistortion` |

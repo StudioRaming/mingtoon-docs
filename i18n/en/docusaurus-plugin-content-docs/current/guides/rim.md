@@ -26,6 +26,12 @@ Enable one at a time and check as you adjust. Especially if you raise Rim Light 
 
 All five of these **require no camera depth.** Since they work in any environment, you can use them to maintain silhouette in VRChat's standard view where depth isn't available. The depth-reading `2D Rim Light` is covered in [Depth-Based Effects](/guides/depth-effects).
 
+### Color Purity by Rim Type {#종류별-색-순도}
+
+Every rim that adds color has its own `Color Purity` control. Backlight, Front Light, Fresnel Rim, and Shadow Interior Reflection are independent, as are [2D Rim and the two Translucency layers](/guides/depth-effects). The range is 0–10 with a default of 1. 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate only that layer.
+
+Purity is applied **after Base Color + the relevant rim color/tint + Master Tint** have been composited. For Translucency, it is applied after HSVG and thickness-based channel saturation are calculated. This lets you directly lower or raise the saturation inherited from the Base Color even when the tint is white. `Rim Shade`, which adds no color, and Glitter, which is a separate particle effect, have no purity control.
+
 ### Edge Rim Master {#가장자리-림-마스터}
 
 `Master Adjustment` under Basic Settings contains a dedicated group for four overlapping silhouette layers.

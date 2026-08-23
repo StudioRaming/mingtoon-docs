@@ -223,24 +223,37 @@ VRChat 업로드와 Warudo 모드 빌드에서는 [빌드 시 자동 최적화](
 
 ### VRChat 표현식 메뉴 {#vrchat-표현식-메뉴}
 
-Unity 2022.3 VCC 프로젝트에서 `밍툰 매니저`가 가상 라이트와 Master Adjust 메뉴를 준비합니다.
+Unity 2022.3 VCC 프로젝트에서 `밍툰 매니저`가 Virtual Light와 품질 메뉴를
+준비합니다. 기본 전체 메뉴에는 Palette, Master Adjust, Photo Looks도 포함됩니다.
 
 1. Avatar Root 아래의 `MingToon Manager`를 선택합니다.
 2. `Modular Avatar로 비파괴 설치`를 켭니다. 기본값은 켜짐입니다.
-3. Scene 또는 Prefab을 저장하고 Manager Inspector를 다시 엽니다.
-4. Gesture Manager에서 `MingToon Controls`가 보이는지 확인합니다.
-5. 평소처럼 VRChat SDK Builder에서 업로드합니다. 메뉴·파라미터·FX는 원본이 아니라 build clone에 합쳐집니다.
+3. `전체 조정 메뉴 사용`을 고릅니다. 켜면 전체 77비트, 끄면 가벼운 31비트입니다.
+4. 메뉴 위치를 고르고 Scene 또는 Prefab을 저장한 뒤 Manager Inspector를 다시 엽니다.
+5. Gesture Manager에서 선택한 `MingToon Controls` 구성을 확인합니다.
+6. VRChat SDK Builder에서 업로드합니다. 메뉴·파라미터·FX는 build clone에 합쳐집니다.
 
-Modular Avatar가 없어도 MingToon은 컴파일됩니다. 설치 뒤 Inspector를 다시 열면 자동으로 사용할 수 있고, 직접 병합하려면 토글을 끈 뒤 `원클릭으로 VRC 메뉴 등록`을 사용합니다.
+Modular Avatar가 없어도 MingToon은 컴파일됩니다. 직접 병합하려면 토글을 끈 뒤
+`원클릭으로 VRC 메뉴 등록`을 사용합니다.
 
 :::caution[Expression Parameters 예산]
-최종 0.1.7 설치는 **22개 동기화 파라미터 · 120비트**를 사용합니다. 기존 아바타와 합친 타입 충돌, 256비트 예산, 메뉴당 8칸 제한을 먼저 검사하고 실패하면 변경을 되돌립니다.
+- **전체 메뉴(기본):** 총 28개 / 동기화 21개·77비트 / 로컬 명령 7개·0비트
+- **가벼운 메뉴:** 총 12개 / 동기화 10개·31비트 / 로컬 명령 2개·0비트
+
+기존 아바타와 합친 타입 충돌, 256비트 예산, 메뉴당 8칸을 검사하고 실패하면
+변경을 되돌립니다.
 :::
 
-메뉴에는 `Virtual Light`, `Master Adjust`, `Quality`가 들어갑니다. Quality는 High에서 저작값을 유지하고, Mid에서 샘플 수를 제한하며, Low에서 샘플 수를 더 낮추고 깊이 효과 마스터와 투영 그림자 페더를 끕니다. 옵트인한 재질에는 `Shadow Projection` 토글도 표시합니다. `Expressions 루트에 직접 배치`를 켜면 MingToon Controls 하위 폴더 없이 루트 메뉴에 평탄화합니다. `Reset All`은 설치 당시 저작값으로 되돌리며 별도 네트워크 비트를 쓰지 않습니다.
+두 프로필 모두 Virtual Light 핵심, High/Mid/Low, Shadow Projection, Reset을
+유지합니다. 전체 메뉴만 8색×4채도 Palette, Highlight / Shadow / Final Output의
+독립 Intensity·Tint 양, Photo Looks 8종을 추가합니다. 프로필을 바꿔 다시 설치하면
+더 이상 쓰지 않는 MingToon 파라미터·FX 레이어·생성 메뉴를 정리합니다.
 
----
-
+`Expressions 루트에 직접 배치`를 켜면 전체 메뉴는
+`Virtual Light`·`Master Adjust`·`Reset All`, 가벼운 메뉴는
+`Virtual Light`·`Quality`·`Reset All`을 루트에 둡니다. Photo Looks는 자기
+아바타 결과만 동기화합니다. 내 화면의 다른 아바타를 일괄 제어하려면 월드/Udon이
+필요해 이번 아바타 설치에는 포함하지 않습니다.
 ### 내보내기 / 검증 {#내보내기--검증}
 
 #### 업로드 준비 점검 {#업로드-준비-점검}

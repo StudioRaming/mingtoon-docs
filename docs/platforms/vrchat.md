@@ -41,26 +41,54 @@ Warudo는 스크립트를 유지하는 반대 규칙을 사용합니다. → [Wa
 
 ## Expressions 메뉴 {#expressions-메뉴}
 
-밍툰 매니저는 Modular Avatar로 메뉴·파라미터·FX를 build clone에 비파괴 설치할 수 있습니다. Modular Avatar가 없다면 직접 병합 방식도 사용할 수 있습니다.
+밍툰 매니저는 Modular Avatar로 메뉴·파라미터·FX를 build clone에 비파괴 설치할 수
+있습니다. Modular Avatar가 없다면 직접 병합 방식도 사용할 수 있습니다.
 
-최종 0.1.7 예산은 **동기화 파라미터 22개, 120비트**입니다. 설치 전에 기존 파라미터와의 타입 충돌, 256비트 예산과 메뉴당 8칸 제한을 검사하며 실패하면 변경을 되돌립니다.
+Manager의 `전체 조정 메뉴 사용`으로 업로드 전에 두 프로필 중 하나를 고릅니다.
 
-메뉴 구성:
+| 프로필 | 유지되는 기능 | 추가 기능 | 동기화 비용 |
+|---|---|---|---:|
+| 전체(기본) | Virtual Light 핵심 · High/Mid/Low · Shadow Projection · Reset | Palette · Master Adjust · Photo Looks | 21개 · 77비트 |
+| 가벼운 메뉴 | Virtual Light 핵심 · High/Mid/Low · Shadow Projection · Reset | 없음 | 10개 · 31비트 |
 
-- **Virtual Light** — 방향·색·밝기·모드
-- **Master Adjust** — Highlight / Shadow / Final Output
-- **Quality** — Low / Mid / High와 옵트인한 `Shadow Projection`
-- **Reset All** — 별도 비트 없이 설치 당시 저작값으로 복귀
+전체 메뉴는 총 28개(동기화 21개 + 로컬 7개), 가벼운 메뉴는 총 12개(동기화
+10개 + 로컬 2개)입니다. 로컬 명령은 0비트입니다. 설치 전에 기존 파라미터 타입,
+256비트 예산, 메뉴당 8칸을 검사하고 실패하면 되돌립니다.
 
-`Expressions 루트에 직접 배치`를 켜면 `MingToon Controls` 하위 메뉴 대신 Expressions 루트에 평탄화합니다.
+공통 메뉴:
 
+- **Virtual Light** — Enabled, Direction, Intensity, Follow Character,
+  Auto/Replace/Add Mode
+- **Quality** — 명시적인 High / Mid / Low 버튼과 독립적인 `Shadow Projection`
+- **Reset All** — 현재 프로필의 12개 또는 28개 값을 설치 기본값으로 복원
+
+전체 메뉴에서만 추가:
+
+- **Palette** — Warm / Gold / Mint / Cyan / Blue / Violet / Rose / Red 8색 ×
+  Neutral / Soft / Medium / Full 4단계 채도. 32조합을 Int 한 개에 압축합니다.
+- **Master Adjust** — Highlight / Shadow / Final Output의 강도와 Tint
+  Off / Low / Mid / Full. 팔레트는 공유하지만 색 영향량과 강도는 각 그룹이
+  따로입니다.
+- **Photo Looks** — Neutral, Dark World Rescue, Flat Studio, Unlit Reference,
+  Warm Portrait, Cool Portrait, No Emission, No Backlight
+
+`Expressions 루트에 직접 배치`를 끄면 두 프로필 모두 루트 슬롯 하나짜리
+`MingToon Controls` 폴더를 씁니다. 켜면 전체 프로필은
+`Virtual Light`·`Master Adjust`·`Reset All`, 가벼운 프로필은
+`Virtual Light`·`Quality`·`Reset All`을 루트에 놓습니다. 세 칸이 없으면
+폴더 방식으로 돌아갑니다. 프로필을 바꿔 다시 설치하면 이전 MingToon
+파라미터·FX 레이어·생성 메뉴를 정리합니다.
+
+Photo Looks는 전체 프로필에서 자기 아바타의 밝기 범위·광색 영향·Unlit 혼합·발광·
+백라이트·색온도를 묶어 동기화합니다. 다른 사용자는 그 아바타에 적용된 결과를 봅니다.
+내 화면의 다른 아바타 전부를 동시에 바꾸는 기능은 월드/Udon 권한이 필요하므로
+포함하지 않습니다.
 ### 품질 티어와 런타임 전환 {#품질-티어와-런타임-전환}
 
-`High`는 저작값을 그대로 유지하고, `Mid`는 2D 림·SSAO·투영 그림자의 샘플 수를 제한합니다. `Low`는 샘플 수를 더 낮추고 깊이 효과 마스터와 투영 그림자 페더를 끕니다. 품질 메뉴를 쓸 재질은 밍툰 매니저에서 옵트인해야 하며, 옵트인하지 않은 값은 베이크에서 상수로 접혀 가장 가볍습니다.
+`High`는 저작값을 유지하고, `Mid`는 2D 림·SSAO·투영 그림자 샘플 수를 제한합니다. `Low`는 샘플 수를 더 낮추고 깊이 효과 마스터와 투영 그림자 페더를 끕니다. 티어는 저작값을 덮어쓰지 않는 상한입니다. 품질 메뉴를 쓸 재질은 밍툰 매니저에서 옵트인해야 하며, 옵트인하지 않은 값은 베이크에서 상수로 접혀 가장 가볍습니다.
 
 - `FX 애니메이터로 깊이 효과 전환` — 깊이 효과 전체 마스터를 애니메이션합니다.
 - `FX 메뉴로 그림자 투영 전환` — Quality 메뉴의 `Shadow Projection`으로 투영 그림자만 끕니다. OFF에서는 페더·캐스트 합성·관련 투과광 계산을 건너뜁니다.
-
 ## 업로드에서 자동으로 처리되는 것 {#빌드-시-자동으로-처리되는-것}
 
 업로드 훅은 원본 씬 에셋이 아니라 SDK가 만든 복사본만 변경합니다.

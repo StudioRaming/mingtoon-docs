@@ -183,6 +183,8 @@ Response to point/spot lights is separate:
 - `Additional Light PBR / Toon Blend` · `Additional Light Toon Threshold` · `Additional Light Toon Softness` (Full Settings)
 - `Additional Light Maximum Brightness` — an absolute HDR peak cap for the additional-light result, not a base-color multiplier
 
+With `Bound Added Light Too` on, the same value also caps the scene-light intensity received by rims, backlight, front light, translucency, matcaps, emission, and glitter from both the directional key light and additional lights. 1 allows intensity up to 1; 3 allows up to 3. Turning it off disables both the final additive ceiling and this effect-input cap.
+
 To maintain the same tone as the key light, adjust the toon threshold for additional lights as well. The absolute cap limits multi-light overexposure without crushing specular on dark materials into the base color.
 
 ### Master Adjustment and Edge Rim

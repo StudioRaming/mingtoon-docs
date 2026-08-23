@@ -41,18 +41,55 @@ Warudoではスクリプトを維持する逆のルールを使います。→ [
 
 ## Expressionsメニュー {#expressions-메뉴}
 
-MingToon ManagerはModular Avatarを使い、メニュー・パラメーター・FXをbuild cloneへ非破壊でインストールできます。Modular Avatarがなければ直接マージ方式も使用できます。
+MingToon ManagerはModular Avatarを使い、メニュー・パラメーター・FXをbuild cloneへ
+非破壊でインストールできます。Modular Avatarがなければ直接マージ方式も使用できます。
+これはAvatar SDK / アップロード専用機能で、World/Udonへのインストールは行いません。
 
-最終0.1.7予算は**同期パラメーター22個、120ビット**です。インストール前に既存パラメーターとの型競合、256ビット予算、メニューごとの8スロット制限を検査し、失敗した場合は変更を元に戻します。
+アップロード前にManagerの `フル調整メニューを使用` で2つのプロファイルから選びます。
+既定はオンです。
 
-メニュー構成：
+| プロファイル | 維持される機能 | 追加機能 | 同期コスト |
+|---|---|---|---:|
+| フル（既定） | Virtual Light基本操作・High/Mid/Low・Shadow Projection・Reset | Palette・Master Adjust・Photo Looks | 21・77ビット |
+| 軽量 | Virtual Light基本操作・High/Mid/Low・Shadow Projection・Reset | なし | 10・31ビット |
 
-- **Virtual Light** — 方向・色・明るさ・モード
-- **Master Adjust** — Highlight / Shadow / Final Output
-- **Quality** — Low / Mid / Highとオプトインした`Shadow Projection`
-- **Reset All** — 別ビットを使わず、インストール時のオーサリング値へ復帰
+フルは合計28個（同期パラメーター21個 + ローカルコマンド7個）、軽量は合計12個
+（同期パラメーター10個 + ローカルコマンド2個）です。ローカルコマンドは0ビットです。
+同期内訳はフルが Bool 13 + Int 2 + Float 6、軽量が Bool 7 + Float 3 です。
+インストール前に既存パラメーターとの型競合、256ビット予算、メニューごとの8枠を検査し、
+失敗時は変更をロールバックします。
 
-`Expressionsルートへ直接配置`を有効にすると、`MingToon Controls`サブメニューではなくExpressionsルートへフラット化します。
+共通メニュー：
+
+- **Virtual Light** — Enabled、Direction、Intensity、Follow Character、
+  Auto/Replace/Add Mode
+- **Quality** — 明示的な High / Mid / Low ボタンと、独立した
+  `Shadow Projection`
+- **Reset All** — 選択中のプロファイルにある12個または28個の値をインストール時の
+  既定値へ戻します。インストール前の任意のオーサリング値スナップショットへ
+  戻すボタンではありません。
+
+フルだけに追加：
+
+- **Palette** — Warm / Gold / Mint / Cyan / Blue / Violet / Rose / Red の8色 ×
+  Neutral / Soft / Medium / Full の4段階。32通りを1つの Int に圧縮します。
+- **Master Adjust** — Highlight / Shadow / Final Output は、それぞれ独立した
+  Intensity と Tint Off / Low / Mid / Full を持ちます。パレットは共有しますが、
+  色の適用量と強度は個別です。
+- **Photo Looks** — Neutral、Dark World Rescue、Flat Studio、Unlit Reference、
+  Warm Portrait、Cool Portrait、No Emission、No Backlight
+
+`Expressionsルートに直接配置` をオフにすると、どちらのプロファイルもRootの1枠を
+`MingToon Controls` フォルダーに使います。フルはフォルダー内に8操作、軽量は7操作です。
+オンにすると、フルは `Virtual Light`・`Master Adjust`・`Reset All`、軽量は
+`Virtual Light`・`Quality`・`Reset All` をRootへ配置します。どちらも空き3枠が
+必要で、収まらない場合はフォルダー方式へ戻ります。プロファイルを切り替えて
+再インストールすると、古いMingToonパラメーター・FXレイヤー・生成メニューを削除します。
+
+フルプロファイルのPhoto Looksは、自分のアバターの明るさ範囲・ライトカラー影響・
+Unlitブレンド・発光・バックライト・色温度をまとめて同期します。他のユーザーには、
+そのアバターへ適用された結果が表示されます。1人のローカルメニューから画面内の
+他アバターすべてを操作するにはWorld/Udon権限が必要なため、この機能には含まれません。
 
 ### 品質ティアとランタイム切り替え {#품질-티어와-런타임-전환}
 

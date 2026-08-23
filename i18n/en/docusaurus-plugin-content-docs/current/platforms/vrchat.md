@@ -41,18 +41,54 @@ Warudo uses the opposite policy and retains scripts. → [Warudo](/platforms/war
 
 ## Expressions Menu {#expressions-메뉴}
 
-MingToon Manager can install menus, parameters, and FX non-destructively into the build clone through Modular Avatar. A direct-merge path is also available when Modular Avatar is absent.
+MingToon Manager can install menus, parameters, and FX non-destructively into the build clone through Modular Avatar. A direct-merge path is also available when Modular Avatar is absent. This is an Avatar SDK/upload feature; world/Udon installation is not provided.
 
-The final 0.1.7 budget is **22 synced parameters and 120 bits**. Before installation, MingToon checks type collisions with existing parameters, the 256-bit budget, and the eight-control limit per menu. It rolls changes back on failure.
+Choose one of two profiles before upload with the Manager's `Use Full Control Menu` option. It is enabled by default.
 
-Menu contents:
+| Profile | Retained features | Additional features | Synchronization cost |
+|---|---|---|---:|
+| Full (default) | Core Virtual Light · High/Mid/Low · Shadow Projection · Reset | Palette · Master Adjust · Photo Looks | 21 · 77 bits |
+| Lightweight | Core Virtual Light · High/Mid/Low · Shadow Projection · Reset | None | 10 · 31 bits |
 
-- **Virtual Light** — direction, color, brightness, and mode
-- **Master Adjust** — Highlight / Shadow / Final Output
-- **Quality** — Low / Mid / High and opted-in `Shadow Projection`
-- **Reset All** — returns to authored values from installation without an additional bit
+Full contains 28 total controls: 21 synchronized parameters and seven local commands.
+Lightweight contains 12: 10 synchronized parameters and two local commands. Local
+commands use 0 bits. Full synchronization is Bool 13 + Int 2 + Float 6; Lightweight is
+Bool 7 + Float 3. Before installation, MingToon checks existing parameter types, the
+256-bit budget, and the eight-control-per-menu limit, and rolls back on failure.
 
-Enable `Place Directly in Expressions Root` to flatten the controls into the Expressions root instead of using a `MingToon Controls` submenu.
+Shared menus:
+
+- **Virtual Light** — Enabled, Direction, Intensity, Follow Character, and
+  Auto/Replace/Add Mode
+- **Quality** — explicit High / Mid / Low buttons plus an independent
+  `Shadow Projection` toggle
+- **Reset All** — restores the selected profile's 12 or 28 values to their installed
+  defaults, not a pre-install authored snapshot
+
+Added only in Full:
+
+- **Palette** — eight colors, Warm / Gold / Mint / Cyan / Blue / Violet / Rose / Red, ×
+  four saturation levels, Neutral / Soft / Medium / Full. All 32 combinations are
+  compressed into one Int.
+- **Master Adjust** — Highlight / Shadow / Final Output each have independent Intensity
+  and Tint Off / Low / Mid / Full controls. They share the palette, but each group
+  controls its color influence and intensity separately.
+- **Photo Looks** — Neutral, Dark World Rescue, Flat Studio, Unlit Reference,
+  Warm Portrait, Cool Portrait, No Emission, and No Backlight
+
+With `Place Directly In Expressions Root` off, both profiles spend one root slot on the
+`MingToon Controls` folder. Full has eight folder controls; Lightweight has seven. With
+root placement on, Full places `Virtual Light`, `Master Adjust`, and `Reset All` at the
+root, while Lightweight places `Virtual Light`, `Quality`, and `Reset All`. Both need
+three free slots and fall back to folder placement when they do not fit. Switching the
+profile and reinstalling removes stale MingToon parameters, FX layers, and generated
+menus.
+
+In Full mode, Photo Looks synchronizes the selected user's own avatar, including its
+brightness range, light-color influence, Unlit blend, emission, backlight, and color
+temperature. Other users see the result applied to that avatar. One user's local menu
+cannot control every other avatar in view; that requires world/Udon authority and is
+excluded from this avatar feature.
 
 ### Quality Tiers and Runtime Switching {#품질-티어와-런타임-전환}
 
