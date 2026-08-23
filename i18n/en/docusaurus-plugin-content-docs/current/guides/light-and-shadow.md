@@ -113,7 +113,6 @@ The nonfunctional `Uniform Face Cast` and `Face Cast Stabilization` controls wer
 1. Under Face Shading, choose real-time shadow or `Soft 2D Shadow (Face Corrected)` for `Shadow Mode`.
 2. Adjust `Real Shadow Caster Offset` only when the 2D assist is not in use. Otherwise, the row appears disabled.
 3. Align the face proxy center, normal alignment, and Face SDF transition first.
-4. If world SSAO or facial self-shadow relief is the problem, consider [Face Proxy Depth](/guides/character#얼굴-프록시-뎁스), which is off by default.
 
 ### When shadow boundaries are jagged like steps {#그림자-경계가-계단처럼-각질-때}
 

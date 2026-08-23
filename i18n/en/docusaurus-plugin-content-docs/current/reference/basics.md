@@ -54,16 +54,19 @@ Configure surface type, culling, and alpha handling.
 | **Opacity At Silhouette** | Opacity at the silhouette edge. Lower than the facing value makes the rim see-through; higher leaves only the rim. The two values decide the direction, which is why there is no mode to pick. | `_MingAlphaFresnelEdge` |
 | **Edge Falloff** | How fast the value travels from facing to edge. Higher confines the edge value to very grazing angles and narrows the band; lower spreads it wide. | `_MingAlphaFresnelPower` |
 
-## View Clip Guard
+## Avatar Interior Shield
 
-Stop a camera pressed up close from cutting the surface open and showing the inside of the head.
+Covers the inside and separate meshes behind it with a chosen colour after the camera actually crosses a closed surface. Camera distance alone does not trigger it.
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **View Clip Guard** | Pushes back any surface about to be cut away when a camera comes very close, so the inside of the head cannot be seen through the gap. Turn it on when selfies or close mirrors punch a hole in the face. Off by default, and a material that leaves it off carries no cost after optimization. | `_MingViewClipGuardEnabled` |
-| **Clearance** | How far in front of the cut-off boundary, in metres, the surface starts being pushed. Raising it guards with more margin, at the cost of the surface flattening a little sooner. | `_MingViewClipGuardClearance` |
-| **Push Limit** | The furthest a single vertex may travel. It is the ceiling that stops the mesh being dragged out when a camera ends up inside the head; lowering it deforms less but stops covering the deepest intrusions. | `_MingViewClipGuardLimit` |
-| **Front Facing Only** | Decides whether only surfaces squarely facing the camera are pushed, or ones turned aside and away as well. Higher values move only what faces the camera. Set it too low and interior surfaces such as eyes or the inside of the mouth are pushed too, land level with the outer skin and flicker against it - leaving the outer shell alone to move is the safe setting. | `_MingViewClipGuardFacing` |
+| **Avatar Interior Shield** | Enables interior coverage. Off by default. | `_MingAvatarInteriorShieldEnabled` |
+| **Quality** | Fast (0) uses 3 stages, Balanced (1) 4, and Robust (2) 5. More stages also add CPU and draw cost. | `_MingAvatarInteriorShieldQuality` |
+| **Penetration Boundary Stability** | Adds a small inward margin to reduce flicker at the crossing boundary. It does not create a distance-based fade before penetration. | `_MingAvatarInteriorShieldStability` |
+| **Colour** | Colour used to cover the interior; it is not limited to black. | `_MingAvatarInteriorShieldColor` |
+| **Opacity** | Coverage strength. 1 is fully covered and 0 is no coverage. | `_MingAvatarInteriorShieldOpacity` |
+
+Cross-mesh coverage in the Editor and WARUDO requires a `MingToonManager` on the same character root. VRChat keeps local surface coverage only, and Quest is unsupported.
 
 ## Stencil Settings
 

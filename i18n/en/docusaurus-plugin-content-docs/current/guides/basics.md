@@ -50,15 +50,17 @@ Enable **`Transparent Depth Prepass`** under `Surface Rendering`. It writes surf
 
 If backfaces on a double-sided material look unnaturally dark, try enabling `Flip Backface Lighting Normal`.
 
-### Near-Clip Protection {#근접-클리핑-방지}
+### Avatar Interior Shield {#avatar-interior-shield}
 
-If the camera near clip cuts through the facial surface in a selfie or close mirror and exposes the inside of the head, enable `Near-Clip Protection`.
+Fills the interior with a chosen colour **only after the camera has actually crossed** the body or face surface. Merely moving close does not suddenly cover the view.
 
-- `Safety Margin` — clearance to keep from the near plane
-- `Push Limit` — maximum distance the surface may be pushed back
-- `Front-Facing Test` — strength of limiting the effect to surfaces facing the camera
+- `Quality` — Fast uses 3 stages, Balanced 4, and Robust 5 for progressively better handling of gaps and complex overlap.
+- `Penetration Boundary Stability` — reduces flicker only at the crossing boundary. Raising it does not start coverage before penetration.
+- `Colour` / `Opacity` — choose any interior colour and coverage strength, not only black.
 
-It is off by default, and a disabled material has no cost for this feature after optimization. Large values can misalign the facial silhouette and depth position, so use only as much as needed.
+Use a body mesh that is as closed as practical. If the inspector's closed-surface diagnostic reports open boundaries or non-manifold geometry, openings such as the neck or sleeves can leak or flicker.
+
+In the Editor and WARUDO, separate eyes, mouth parts, and clothing under the same `MingToonManager` are covered together. VRChat upload removes the Manager, so only local coverage on the enabled MingToon surface remains. Cross-mesh coverage, per-camera exceptions, and Quest are not supported there.
 
 ## 2. Base Color {#2-베이스-색}
 

@@ -134,16 +134,6 @@ SDF changes the order in which shadow covers the face. It cannot replace correct
 
 <!-- SCREENSHOT: Face SDF Studio -->
 
-### Face Proxy Depth (Experimental) {#얼굴-프록시-뎁스}
-
-`Face Proxy Depth (Experimental)` keeps the actual face Mesh in the color pass but replaces Camera Depth, and optionally ShadowCaster, with the proxy volume. Use it when world SSAO overstates the nose or brow cavities or the face casts mottled shadows onto itself.
-
-- `Proxy Depth Amount` — blend between actual and proxy depth
-- `Proxy Depth Scope` — Camera Depth only, or Camera Depth + ShadowCaster
-- `Shadow Caster Shrink` — clearance that reduces projected-shadow acne within the face
-
-It is off by default. A misplaced proxy can misalign the silhouettes of depth-based effects and world post effects, so check SceneView and GameView together.
-
 ---
 
 ## Character Height Gradient {#캐릭터-높이-그라데이션}
