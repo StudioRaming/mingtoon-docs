@@ -54,20 +54,6 @@ sidebar_position: 1
 | **輪郭の不透明度** | シルエット部分の不透明度です。正面の値より低いと輪郭が透け、高いと輪郭だけが残ります。2つの値が方向を決めるため、モード選択はありません。 | `_MingAlphaFresnelEdge` |
 | **輪郭の幅** | 正面から輪郭へ移り変わる速さです。上げると浅い角度にだけ輪郭の値が効いて帯が狭まり、下げると広がります。 | `_MingAlphaFresnelPower` |
 
-## Avatar Interior Shield
-
-カメラが閉じた表面を実際に通過した後、内部とその奥にある分離メッシュを指定色で覆います。カメラ距離だけでは作動しません。
-
-| 項目 | 説明 | シェーダープロパティ |
-|---|---|---|
-| **Avatar Interior Shield** | 内部遮蔽を有効にします。デフォルトはOFFです。 | `_MingAvatarInteriorShieldEnabled` |
-| **品質** | Fast(0)は3段階、Balanced(1)は4段階、Robust(2)は5段階です。段階が増えるほどCPU・描画コストも増えます。 | `_MingAvatarInteriorShieldQuality` |
-| **貫通境界の安定化** | 表面を通過する瞬間のちらつきを抑える小さな内側余裕です。貫通前の距離フェードは作りません。 | `_MingAvatarInteriorShieldStability` |
-| **カラー** | 内部を覆う色です。黒に限定されません。 | `_MingAvatarInteriorShieldColor` |
-| **不透明度** | 遮蔽の強さです。1で完全遮蔽、0で遮蔽なしです。 | `_MingAvatarInteriorShieldOpacity` |
-
-Editor・WARUDOで分離メッシュ全体を覆うには、同じキャラクタールートの`MingToonManager`が必要です。VRChatではローカル表面遮蔽だけが残り、Questには対応しません。
-
 ## ステンシル設定
 
 通常パスとノーマルアウトラインパスのステンシル状態を個別に設定します。

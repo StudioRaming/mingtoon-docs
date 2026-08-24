@@ -54,20 +54,6 @@ Configure surface type, culling, and alpha handling.
 | **Opacity At Silhouette** | Opacity at the silhouette edge. Lower than the facing value makes the rim see-through; higher leaves only the rim. The two values decide the direction, which is why there is no mode to pick. | `_MingAlphaFresnelEdge` |
 | **Edge Falloff** | How fast the value travels from facing to edge. Higher confines the edge value to very grazing angles and narrows the band; lower spreads it wide. | `_MingAlphaFresnelPower` |
 
-## Avatar Interior Shield
-
-Covers the inside and separate meshes behind it with a chosen colour after the camera actually crosses a closed surface. Camera distance alone does not trigger it.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Avatar Interior Shield** | Enables interior coverage. Off by default. | `_MingAvatarInteriorShieldEnabled` |
-| **Quality** | Fast (0) uses 3 stages, Balanced (1) 4, and Robust (2) 5. More stages also add CPU and draw cost. | `_MingAvatarInteriorShieldQuality` |
-| **Penetration Boundary Stability** | Adds a small inward margin to reduce flicker at the crossing boundary. It does not create a distance-based fade before penetration. | `_MingAvatarInteriorShieldStability` |
-| **Colour** | Colour used to cover the interior; it is not limited to black. | `_MingAvatarInteriorShieldColor` |
-| **Opacity** | Coverage strength. 1 is fully covered and 0 is no coverage. | `_MingAvatarInteriorShieldOpacity` |
-
-Cross-mesh coverage in the Editor and WARUDO requires a `MingToonManager` on the same character root. VRChat keeps local surface coverage only, and Quest is unsupported.
-
 ## Stencil Settings
 
 Configure stencil state separately for the general and Normal Outline passes.

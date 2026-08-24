@@ -54,20 +54,6 @@ sidebar_position: 1
 | **가장자리 불투명도** | 실루엣 가장자리의 불투명도입니다. 정면 값보다 낮으면 가장자리가 비치고, 높으면 가장자리만 남습니다. 두 값이 방향을 정하므로 별도의 모드 선택이 없습니다. | `_MingAlphaFresnelEdge` |
 | **가장자리 폭** | 정면에서 가장자리로 넘어가는 속도입니다. 값을 올리면 아주 얕은 각도에만 가장자리 값이 적용되어 띠가 좁아지고, 내리면 넓게 퍼집니다. | `_MingAlphaFresnelPower` |
 
-## Avatar Interior Shield
-
-카메라가 닫힌 표면을 실제로 통과했을 때 내부와 그 뒤의 분리 메쉬를 지정 색으로 가립니다. 근접 거리만으로는 작동하지 않습니다.
-
-| 항목 | 설명 | 셰이더 프로퍼티 |
-|---|---|---|
-| **Avatar Interior Shield** | 내부 차폐를 켭니다. 기본은 꺼짐입니다. | `_MingAvatarInteriorShieldEnabled` |
-| **품질** | Fast(0)는 3단계, Balanced(1)는 4단계, Robust(2)는 5단계 차폐를 사용합니다. 단계가 늘수록 CPU·드로우 비용도 증가합니다. | `_MingAvatarInteriorShieldQuality` |
-| **관통 경계 안정화** | 표면을 막 통과하는 순간의 깜빡임을 줄이는 안쪽 여유입니다. 관통 전 거리 기반 페이드는 만들지 않습니다. | `_MingAvatarInteriorShieldStability` |
-| **색상** | 내부를 덮을 색입니다. 검정으로 제한되지 않습니다. | `_MingAvatarInteriorShieldColor` |
-| **불투명도** | 차폐 강도입니다. 1은 완전 차폐, 0은 차폐 없음입니다. | `_MingAvatarInteriorShieldOpacity` |
-
-Editor·WARUDO의 분리 메쉬 전체 차폐에는 같은 캐릭터 루트의 `MingToonManager`가 필요합니다. VRChat에서는 로컬 표면 차폐만 남으며 Quest는 지원하지 않습니다.
-
 ## 스텐실 설정
 
 일반 패스와 노멀 아웃라인 패스의 스텐실 상태를 각각 설정합니다.
