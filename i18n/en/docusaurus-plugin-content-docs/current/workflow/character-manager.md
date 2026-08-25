@@ -137,6 +137,8 @@ Check ownership of UV4, UV7, and UV8 under `UV Channel Usage` first. → [Mesh U
 
 ### Recovery
 
+Conversion records Renderers, Meshes, materials, Prefab overrides, and dirty state in a persistent journal. It writes the planned state before each persistent mutation, covering the crash window immediately after a change. The journal is written atomically under `ProjectSettings`; a backup repairs a damaged primary file, and a journal from the older `Library` location is migrated once. Recovery preserves later user changes instead of overwriting them. After eight failed automatic attempts, retry from `Tools > Studio Raming > MingToon > Advanced`.
+
 `Restore Original Materials` **for the current slot only** reverts to the original material. Does not delete converted materials or mesh UV bakes.
 
 :::caution[Restore is one undo step]

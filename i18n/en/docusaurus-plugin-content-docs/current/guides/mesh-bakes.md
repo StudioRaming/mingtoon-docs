@@ -44,7 +44,9 @@ Starting in 0.1.7, the shader calculates proxy face normals live while editing. 
 
 ### During VRChat Upload
 
-The VRChat upload hook isolates the build Renderer's Face slots with transaction-owned temporary materials and creates the UV7 face-normal payload only on those copies. It does not mutate the scene's original Meshes and materials or materials shared by another avatar. After upload it restores the Renderer slots to Live state, and a persistent journal continues recovery even across script reloads or editor restarts.
+For every face-normal optimization build root, the VRChat upload hook first **journals the original Mesh and material slots of every Renderer that has a Mesh**. A later upload conversion can replace Meshes even on non-Face Renderers, so recording only Face slots would not fully restore the original arrangement.
+
+Face slots are isolated with transaction-owned temporary materials, and the UV7 face-normal payload is created only on those copies. The scene's original Meshes and materials, and materials shared by another avatar, remain untouched. After upload the complete journal restores the original arrangement, and recovery continues across script reloads or editor restarts. If the user changed a target after the upload mutation, recovery preserves that newer state and leaves the entry pending for a later retry.
 
 The following Renderers skip upload baking and remain on the Live shader path to preserve their result:
 
