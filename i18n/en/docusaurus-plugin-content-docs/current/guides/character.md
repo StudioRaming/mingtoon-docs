@@ -21,7 +21,7 @@ The nose and brow have real geometric curvature, so using the same form-shadow s
 MingToon handles this in two parts:
 
 1. **Where the face ends** — define the face region
-2. **What changes inside the face** — press normals, adjust the boundary, and remove shadows
+2. **What changes inside the face** — proxy normals, adjust the boundary, and remove shadows
 
 <!-- SCREENSHOT: Face shading before / after comparison -->
 
@@ -68,7 +68,7 @@ Without a mask texture, treat the inside of a sphere, cylinder, or capsule as th
 4. Use `Proxy Boundary Softness` to tune the transition width at the neck and hairline.
 
 :::caution[If the volume is too large]
-The neck or hands may also be treated as the face. If multiple Face slots share one Renderer, keep their proxy, normal method, and runtime face frame identical. If they differ, upload baking safely keeps them on the Live path.
+The neck or hands may also be treated as the face. If multiple Face slots share one Renderer, keep their proxy shape, strength, and runtime face frame identical. If they differ, upload baking safely keeps them on the Live path.
 :::
 
 :::note[Mask priority]
@@ -77,14 +77,17 @@ Texture face mask → vertex paint → proxy volume → entire material. If text
 
 ### Step 2: Remove Nose Shadows {#2단계-코-그림자-없애기}
 
-Press the face normals to clean up untidy nose and brow shading caused by geometric relief.
+Replace the face normals with proxy curvature to clean up untidy nose and brow shading caused by geometric relief.
 
-1. Raise `Normal Press Amount`. At 0, the original mesh normals are used.
-2. Use `Normal Method` to choose between frontal flattening and the proxy surface.
-3. Align the front and up axes with `Face Normal Alignment` and the fixed direction.
-4. When using the proxy surface, first align the sphere, cylinder, or capsule center, radius, axis, and height.
+1. Raise Proxy Normal Strength. At 0 the original mesh normal is used; at 1 the proxy target normal is used.
+2. Choose Sphere / Cylinder / Capsule and align the center, axis, and height.
+3. Set the curvature with the radius. Smaller values are rounder; larger values are flatter.
+4. Align the front and up axes with Face Normal Alignment and the fixed direction.
+5. If the normal map creates a broad shadow boundary that does not match the SceneView normal lines, lower Shadow Normal Map Influence.
 
-In 0.1.7, this calculation is **live while editing**. Changes to the proxy or press values appear immediately without a separate mesh bake. On VRChat upload, MingToon creates the UV7 payload only in the upload copy, then restores the scene's original Mesh and material to Live state.
+In 0.1.7, this calculation is **live while editing**. Changes to the proxy or strength appear immediately without a separate mesh bake. The upper-left SceneView panel can toggle normal lines and the proxy volume independently; line length and density affect display only, not lighting. On VRChat upload, MingToon creates the UV7 payload only in the upload copy, then restores the scene's original Mesh and material to Live state.
+
+When a texture face-region mask is active, the SceneView normal lines also follow UV0, Tiling/Offset, HSVG, channel selection, inversion, and remapping. If the GPU sample or UV data cannot be read, MingToon hides the lines and reports the reason in the panel instead of drawing a misleading preview.
 
 :::caution[If moving the proxy has no effect]
 The material may have face normals baked into UV7 by an older version. Run `Return Face Normals to Live` in MingToon Manager. A texture face-region mask needs per-pixel sampling, so it remains on the Live path even during upload.
@@ -129,7 +132,7 @@ The nonfunctional `Uniform Face Cast` and `Face Cast Stabilization` controls wer
 When the separate Face SDF Studio product is installed, it can create four-direction Packed RGBA or Single Channel face SDF maps. Base UV works on its own; selecting `Baked Front UV7` fixes the projected front coordinates. → [Face SDF and Face SDF Studio](/guides/face-sdf)
 
 :::tip[Set up Face Shading first]
-SDF changes the order in which shadow covers the face. It cannot replace correct face-region selection, normal pressing, or `Face Boundary` setup.
+SDF changes the order in which shadow covers the face. It cannot replace correct face-region selection, proxy normals, or `Face Boundary` setup.
 :::
 
 <!-- SCREENSHOT: Face SDF Studio -->

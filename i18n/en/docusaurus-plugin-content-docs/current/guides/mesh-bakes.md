@@ -40,17 +40,17 @@ Enable `Calculate for Models with Edited Normals` to rebuild the outline directi
 
 ## Live Face Normals and UV7 {#얼굴-프론트뷰-노멀-uv7}
 
-Starting in 0.1.7, the shader calculates face-normal pressing live while editing. Changes to proxy center, radius, Sphere/Cylinder/Capsule shape, axis, height, or press amount appear immediately without a separate Mesh bake.
+Starting in 0.1.7, the shader calculates proxy face normals live while editing. Changes to proxy center, radius, Sphere/Cylinder/Capsule shape, axis, height, or strength appear immediately without a separate Mesh bake. The radius changes the target-normal curvature, not only the displayed size.
 
 ### During VRChat Upload
 
-The VRChat upload hook can create a face-normal payload in UV7 only on the upload copy. It uses an upload-specific output path separate from authoring conversion, then restores Renderers and shared materials to Live state after upload.
+The VRChat upload hook isolates the build Renderer's Face slots with transaction-owned temporary materials and creates the UV7 face-normal payload only on those copies. It does not mutate the scene's original Meshes and materials or materials shared by another avatar. After upload it restores the Renderer slots to Live state, and a persistent journal continues recovery even across script reloads or editor restarts.
 
 The following Renderers skip upload baking and remain on the Live shader path to preserve their result:
 
 - Face SDF owns UV7 through `Baked Front UV7`
 - A texture Face Area Mask is enabled with strength greater than 0
-- Several Face slots on one Renderer use different proxies, normal methods, or runtime face frames
+- Several Face slots on one Renderer use different proxy targets, strengths, or runtime face frames
 - The source Mesh already contains non-MingToon data in UV7
 
 ### Return a Legacy Face-Normal Bake
