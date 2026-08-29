@@ -19,6 +19,10 @@
     "message": "対応環境",
     "description": "The label of footer link with label=Compatibility linking to /platforms/compatibility"
   },
+  "link.item.label.Third-party credits": {
+    "message": "サードパーティ表記とライセンス",
+    "description": "The label of footer link with label=Third-party credits linking to /legal/third-party-credits"
+  },
   "link.item.label.studioraming@gmail.com": {
     "message": "studioraming@gmail.com",
     "description": "The label of footer link with label=studioraming@gmail.com linking to mailto:studioraming@gmail.com"

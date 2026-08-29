@@ -171,6 +171,10 @@ const config = {
             title: 'Support',
             items: [
               {
+                label: 'Third-party credits',
+                to: '/legal/third-party-credits',
+              },
+              {
                 label: 'studioraming@gmail.com',
                 href: 'mailto:studioraming@gmail.com',
               },
