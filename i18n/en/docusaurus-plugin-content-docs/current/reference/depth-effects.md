@@ -18,15 +18,15 @@ Configure ranges and masks for depth-driven effects.
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Depth Effects** | Master switch for every depth effect - 2D depth rim, depth translucency and 2D shadow. Off, all three modules stop. These effects need a camera depth texture to run. | `_DepthEffectsEnabled` |
+| **Depth Effects** | Master switch for every depth effect - 2D Rim Light, depth translucency and 2D shadow. Off, all three modules stop. These effects need a camera depth texture to run. | `_DepthEffectsEnabled` |
 | **Depth Availability** | How the shader decides whether a depth texture exists. Keep Auto. Force On is for hosts the automatic probes cannot see, when you can vouch for the buffer yourself; Force Off blocks depth effects entirely; Diagnostic paints the detection state on screen. | `_MingDepthAvailabilityMode` |
-| **Master Width** | A shared multiplier on the screen offset used by both 2D Depth Rim and 2D Shadow. Setting it to 0 here kills both effects no matter how high their own width sliders go. | `_DepthWidth` |
+| **Master Width** | A shared multiplier on the screen offset used by both 2D Rim Light and 2D Shadow. Setting it to 0 here kills both effects no matter how high their own width sliders go. | `_DepthWidth` |
 | **Width Mode** | Screen Pixels keeps the offset in screen pixels, so the line looks relatively thicker as the camera pulls back; Distance Stable holds a constant apparent thickness across distance and FOV. With Screen Pixels selected, Distance Scaling does nothing. | `_DepthWidthMode` |
 | **Distance Scaling** | Sets the reference distance for the thickness while Width Mode is Distance Stable. Ignored when Width Mode is Screen Pixels. | `_DepthDistanceScale` |
 | **Master Bias** | How much screen-depth difference counts as a real front-to-back edge. Lower catches shallow creases and gets noisy; higher drops the line on thin parts. | `_DepthBias` |
 | **Master Softness** | Transition width of the depth-edge test. Low gives a hard ink edge, high a soft feathered one. | `_DepthSoftness` |
 | **Switch Depth Effects From FX** | Lets an animator - a VRChat FX layer, for example - switch the Depth Effects master on and off. Use it to keep depth effects off in worlds with no depth texture and turn them on only while the camera is up. With this off, the bake folds the master to a constant and the animation does nothing. | `_MingDepthEffectsRuntimeToggle` |
-| **Cast MingToon 2D Projected Shadow** | Controls whether this material writes to MingToon's camera-depth field. Turn it off on glasses or accessories to exclude Opaque, Cutout, and Transparent surfaces from the 2D projected-shadow caster. Normal color rendering, transparent depth priming, and Unity real-time ShadowCaster shadows all stay enabled, so self-sorting and outlines look exactly as they did with the switch on. A disabled material is absent from the depth it reads, so its own Depth Rim, Inner 2D Edge, 2D Shadow, and translucency cannot see behind it. If the glasses themselves need a rim, use Fresnel Rim, which reads no depth. | `_Ming2DShadowCasterEnabled` |
+| **Cast MingToon 2D Projected Shadow** | Controls whether this material writes to MingToon's camera-depth field. Turn it off on glasses or accessories to exclude Opaque, Cutout, and Transparent surfaces from the 2D projected-shadow caster. Normal color rendering, transparent depth priming, and Unity real-time ShadowCaster shadows all stay enabled, so self-sorting and outlines look exactly as they did with the switch on. A disabled material is absent from the depth it reads, so its own 2D Rim Light, Inner 2D Edge, 2D Shadow, and translucency cannot see behind it. If the glasses themselves need a rim, use Fresnel Rim, which reads no depth. | `_Ming2DShadowCasterEnabled` |
 | **2D Shadow Far Distance** | The distance, in metres, at which the 2D shadow is fully gone. The fade begins at 75% of it, so 12 starts thinning at 9m and reaches zero at 12m. The per-pixel depth reads fall over that same stretch, so a character past this distance costs nothing at all - which makes lowering this the surest optimisation in a crowded scene. 0 disables the distance fade, and the saving with it. | `_MingDepthShadowFarDistance` |
 
 ## Runtime Switching
@@ -43,8 +43,8 @@ Configure rim effects generated from screen-depth differences.
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **2D Depth Rim** | Toggles the 2D depth rim, drawn from silhouette depth differences. Unlike the normal-based fresnel rim it gives an even-width line along the outline. Needs the camera depth texture. | `_DepthRimEnabled` |
-| **Depth Rim Mask** | Enables a mask that limits the 2D rim to chosen areas - keeping the rim on metal trim only, for example. | `_DepthRimMaskEnabled` |
+| **2D Rim Light** | Toggles the 2D rim light, drawn from silhouette depth differences. Unlike the normal-based fresnel rim it gives an even-width line along the outline. Needs the camera depth texture. | `_DepthRimEnabled` |
+| **2D Rim Light Mask** | Enables a mask that limits the 2D rim to chosen areas - keeping the rim on metal trim only, for example. | `_DepthRimMaskEnabled` |
 | **Channel** | Which channel of the rim mask to read. Split channels when several masks share one packed texture. | `_DepthRimMaskChannel` |
 | **Invert** | Flips the rim mask black-for-white so the rim applies to the opposite area. | `_DepthRimMaskInvert` |
 | **Strength** | How far the mask cuts the rim. At 1 the rim disappears completely where the mask is black; lower values leave part of it. | `_DepthRimMaskStrength` |
@@ -72,7 +72,7 @@ Configure a lightweight character shadow from the screen-depth silhouette of obj
 | **2D Shadow Color** | Color of the 2D shadow - the depth-based shadow hair drops on the face. Keep its tone in line with the other shadow colors. | `_DepthShadowColor` |
 | **Blend Opacity** | How strongly the 2D shadow color blends in. In Unified Shadow mode it doubles as the overlap depth - at 0 the 2D shadow merges fully into one color with the form shadow; raising it lets the 2D shape stay darker inside it. | `_DepthShadowColorBlendOpacity` |
 | **Shadow Brightness** | Brightness multiplier on the 2D shadow color; lower is darker. When 2D and cast shadows are unified, this becomes the brightness of the merged layer. | `_DepthShadowBrightness` |
-| **Face 2D Shadow Assist** | Off by default. After defining the face area, enable this to suppress self-overlap from MingToon's camera-depth projected shadow there. Other effects sharing that depth, such as depth rim and inner edge, can change too. | `_DepthShadowFaceAssistEnabled` |
+| **Face 2D Shadow Assist** | Off by default. After defining the face area, enable this to suppress self-overlap from MingToon's camera-depth projected shadow there. Other effects sharing that depth, such as 2D Rim Light and inner edge, can change too. | `_DepthShadowFaceAssistEnabled` |
 | **Strength** | How far the mask cuts the 2D shadow. At 1 the shadow disappears completely where the mask is black; lower values leave part of it. | `_DepthShadowMaskStrength` |
 
 ## SSAO (Screen Space Occlusion)
@@ -104,7 +104,7 @@ Measures how far light travelled through the character along the light, so thin 
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Enable Translucency** | Makes thin parts - hair tails, cloth hems - read as if they were holding the light. It reads depth twice along the light to measure how far the light travelled through the character, so it works on its own with the 2D Depth Rim off. | `_TranslucencyEnabled` |
+| **Enable Translucency** | Makes thin parts - hair tails, cloth hems - read as if they were holding the light. It reads depth twice along the light to measure how far the light travelled through the character, so it works on its own with the 2D Rim Light off. | `_TranslucencyEnabled` |
 | **Measure Width** | How far along the light this pixel looks to measure the distance the light travelled. Larger values let thicker parts count as thin; smaller values light only the very tips. | `_TranslucencyWidth` |
 | **Depth Range** | A gap this deep in metres counts as fully open. Raise it when a surface only a little further back - cloth standing behind hair - is mistaken for background and lights up. | `_TranslucencyDepthRange` |
 | **Shell Floor** | A hollow garment - a skirt, a cape, a veil - is wide on screen so it measures as thick, while the cloth itself is under a millimetre. Give such a material about 0.8 and it always counts as thin regardless of the measurement. Leave solid parts like skin and hands at 0 and let the measurement decide. | `_TranslucencyShellFloor` |

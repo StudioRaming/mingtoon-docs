@@ -19,7 +19,7 @@ Check from top to bottom.
 | Not showing | Check parent value first |
 |---|---|
 | Base tint | `Tint Opacity` |
-| Depth rim / 2D shadow | `Master Width` → each module's `Intensity` |
+| 2D rim light / 2D shadow | `Master Width` → each module's `Intensity` |
 | PBR highlight · environment reflection | `Specular Strength` |
 | Texture/normal/matcap layer | `Layer Count` → each layer's `Opacity`/`Intensity` |
 | Rim light | `Intensity` → `Width` |
@@ -54,7 +54,7 @@ SubShader is entirely rejected, so the log is silent. Pink is the only signal.
 
 2022.3.22f1 is a validated support version so no warnings appear. → [Full Validator code](/reference/validator)
 
-## Depth rim / 2D shadow / inner 2D edge not showing
+## 2D rim light / 2D shadow / inner 2D edge not showing
 
 | Cause | Action |
 |---|---|

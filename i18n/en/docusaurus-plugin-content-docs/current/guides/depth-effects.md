@@ -6,9 +6,9 @@ sidebar_position: 6
 
 # Depth Effects
 
-**After reading this document** you will be able to diagnose why Depth Rim, 2D Shadow, and Inner 2D Edge are not visible, and learn how to ensure depth is available on each platform.
+**After reading this document** you will be able to diagnose why 2D Rim Light, 2D Shadow, and Inner 2D Edge are not visible, and learn how to ensure depth is available on each platform.
 
-This document covers the **Depth Effects** group in the inspector — `Depth`, `Depth Rim`, `2D Shadow`, and `Inner 2D Edge`. For a complete list of all parameters, see [Depth Effects Reference](/reference/depth-effects).
+This document covers the **Depth Effects** group in the inspector — `Depth`, `2D Rim Light`, `2D Shadow`, and `Inner 2D Edge`. For a complete list of all parameters, see [Depth Effects Reference](/reference/depth-effects).
 
 ## What Uses Depth
 
@@ -19,7 +19,7 @@ The inspector tells you the status directly.
 
 - `Depth Effects is off, so this module does not draw.` → `Turn Depth Effects On`
 - `This effect only appears on cameras with Depth enabled.`
-- `2D Depth Rim and 2D Shadow require an opaque or cutout material that records depth. Depth Effects are disabled in the transparent queue.`
+- `2D Rim Light and 2D Shadow require an opaque or cutout material that records depth. Depth Effects are disabled in the transparent queue.`
 - `The active Scene/Game camera's depth texture is not ready.`
 
 It's pointless to adjust width or intensity while these messages appear.
@@ -78,7 +78,7 @@ Decides **how the shader determines whether depth texture exists**. Choose from 
 | `Diagnostic` | Paints detection status on screen in solid color. **For bug reporting** |
 
 :::caution[`Force On` does not enable mirrors]
-A mirror camera does not draw its own depth texture, but the player camera's depth buffer stays bound. Read as-is, the character wears **a stranger's silhouette** as its own shadow — that is exactly what was happening when 2D Shadow and Depth Rim slid across the body every time the player looked around.
+A mirror camera does not draw its own depth texture, but the player camera's depth buffer stays bound. Read as-is, the character wears **a stranger's silhouette** as its own shadow — that is exactly what was happening when 2D Shadow and 2D Rim Light slid across the body every time the player looked around.
 
 So `Force On` means "enable even where the host cannot report it, **except in mirrors**". Inside a mirror the depth modules stand down whatever you picked.
 :::
@@ -360,7 +360,7 @@ Check the `Apply to Inner Edge Outline` toggle. This toggle is in the Normal Out
 
 Surface Mode splits two ways, differing in **whether depth is recorded**.
 
-- **Transparent · Outline Depth Ready** — **Inside** the depth texture range. 2D Shadow, Depth Rim, and Inner 2D Edge all work. **If translucency is needed, review this option first.**
+- **Transparent · Outline Depth Ready** — **Inside** the depth texture range. 2D Shadow, 2D Rim Light, and Inner 2D Edge all work. **If translucency is needed, review this option first.**
 - **Transparent** — **Outside** that range. Depth-based modules stay off. Enabling them compares against what's behind the character.
 
 Opaque and cutout are unaffected and always have complete depth.

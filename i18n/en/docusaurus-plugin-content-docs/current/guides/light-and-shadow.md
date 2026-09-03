@@ -186,7 +186,7 @@ With `Bound Added Light Too` on, the same value also caps the scene-light intens
 
 To maintain the same tone as the key light, adjust the toon threshold for additional lights as well. The absolute cap limits multi-light overexposure without crushing specular on dark materials into the base color.
 
-### Master Adjustment and Edge Rim
+### Master Adjustment and Edge Rim {#마스터-조정과-가장자리-림}
 
 `Master Adjustment` corrects the color, brightness, and saturation of the lit side, shadow, and final output in one place. The `Edge Rim` master controls the combined strength, dedicated color, and HDR cap for silhouette effects such as 2D Rim, Fresnel Rim, and Backlight. See [Rim](/guides/rim) for individual rim controls.
 

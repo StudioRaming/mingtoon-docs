@@ -92,6 +92,14 @@ All MingToon passes declare `#pragma target 4.5`. On these targets, **the SubSha
 
 **Fix** — Recover the Shaders folder from the release package and validate again.
 
+### MING-SHADER-FRESNEL-AREA-RANGE {#ming-shader-fresnel-area-range}
+
+**Error.** The shader doesn't declare every normalized area-shaping control as `Range(0, 1)`. The report names the offending properties.
+
+Area-shaping properties such as Fresnel Width / Softness and Front Light Size / Softness / direction ratios / core size follow a 0–1 slider contract. If one isn't a Range type, or its range isn't 0–1, **the area UI can no longer guarantee 0 = none, 1 = full support, or normalized softness and direction ratios.**
+
+**Fix** — Recover `Assets/StudioRaming/MingToon/Shaders` from the release package and validate again.
+
 ---
 
 ## Material
@@ -116,7 +124,7 @@ All MingToon passes declare `#pragma target 4.5`. On these targets, **the SubSha
 
 ### MING-MAT-TRANSPARENT-DEPTH-EFFECTS
 
-**Error.** Using camera depth effects in transparent queue. Sorting and self-depth become unstable, so **depth rim and 2D shadow flicker or read surfaces behind.**
+**Error.** Using camera depth effects in transparent queue. Sorting and self-depth become unstable, so **2D rim light and 2D shadow flicker or read surfaces behind.**
 
 **Fix** — Turn off both modules on this material, or switch surface mode to Opaque / Cutout. If transparency is needed, use `Transparent · Outline Depth Ready`. → [Basics](/guides/basics#1-표면-모드부터-정합니다)
 
@@ -132,7 +140,7 @@ All MingToon passes declare `#pragma target 4.5`. On these targets, **the SubSha
 
 ### MING-URP-DEPTH-FEATURE-MISSING
 
-**Error.** URP material uses depth rim or 2D shadow but the Renderer Feature is missing, so **both effects draw nothing.** Three cases:
+**Error.** URP material uses 2D rim light or 2D shadow but the Renderer Feature is missing, so **both effects draw nothing.** Three cases:
 
 | Situation | Fix |
 |---|---|
@@ -152,11 +160,23 @@ Install on one renderer only and the effect won't draw on others while controls 
 
 ---
 
+## Bake
+
+### MING-BAKE-GENERATOR-OUTDATED {#ming-bake-generator-outdated}
+
+**Warning.** The bake manifest was created with an older shader generator version than the one this MingToon package generates. The report names the manifest path and both versions.
+
+The baked materials it lists **still render, but with shaders an older generator wrote.** They carry none of the fixes a current bake would give them, and **the build preparation check will refuse them.**
+
+**Fix** — Run the bake again from the MingToon Manager to regenerate them. → [Manual Bake and Restore](/workflow/bake-and-restore)
+
+---
+
 ## Runtime
 
 ### MING-RUNTIME-PROVIDER-MISSING
 
-**Error.** Built-in RP depth provider not found or changed shape. No camera gets depth texture request, so **depth rim, 2D shadow, depth-based outline stay empty regardless of settings.**
+**Error.** Built-in RP depth provider not found or changed shape. No camera gets depth texture request, so **2D rim light, 2D shadow, depth-based outline stay empty regardless of settings.**
 
 | Detail | Means |
 |---|---|

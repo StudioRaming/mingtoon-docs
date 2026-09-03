@@ -18,7 +18,7 @@ Choose **Surface Mode** before assigning the base map. Changing it later moves t
 |---|---|---|
 | **Opaque** | Body, clothing, and most parts | Fully writes depth, so all effects work |
 | **Cutout** | Hair, eyelashes, and clipped parts | `Alpha Cutoff` around 0.3–0.6 is usually safe. Near 0, untidy translucent edges remain |
-| **Transparent · Outline Depth Ready** | Translucent parts that also need depth effects | Writes depth, so 2D Shadow, Depth Rim, and Inner 2D Boundary all work. **Try this first when you need translucency** |
+| **Transparent · Outline Depth Ready** | Translucent parts that also need depth effects | Writes depth, so 2D Shadow, 2D Rim Light, and Inner 2D Boundary all work. **Try this first when you need translucency** |
 | **Transparent** | Fully translucent surfaces | Does not write depth, so **all depth-based modules are disabled** |
 
 :::note[What Surface Mode changes]

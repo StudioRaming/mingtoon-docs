@@ -28,7 +28,7 @@ VRChat uses Unity **2022.3.22f1**, while Warudo uses **2021.3.45f2**. Keep separ
 
 ## Camera Depth Setup — WARUDO Depth Bridge {#warudo-depth-bridge}
 
-Screen-depth effects such as 2D Depth Rim, 2D Shadow, Inner 2D Boundary, and SSAO require a depth texture from the Warudo camera. The 0.1.7 package includes the source for an independent Warudo plugin that provides it.
+Screen-depth effects such as 2D Rim Light, 2D Shadow, Inner 2D Boundary, and SSAO require a depth texture from the Warudo camera. The 0.1.7 package includes the source for an independent Warudo plugin that provides it.
 
 ### Installation
 
@@ -93,7 +93,7 @@ Warudo export also uses automatic build-time optimization. Unless you specifical
 - Used Unity 2021.3.45f2 and the Built-in shader.
 - Installed `MingToonWarudoDepthBridge.cs` in Warudo Playground.
 - The `Warudo > Build Mod` Console contains no optimization or restoration errors.
-- Checked 2D Depth Rim, 2D Shadow, and Inner Boundary in the main view and actual broadcast cameras.
+- Checked 2D Rim Light, 2D Shadow, and Inner Boundary in the main view and actual broadcast cameras.
 - Adjusted `Preserve Base Color` and `Minimum Final Brightness` if scene lighting is difficult to control.
 
 ## Next

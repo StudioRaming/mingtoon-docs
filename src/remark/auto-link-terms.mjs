@@ -73,7 +73,9 @@ const GLOSSARY = {
 
   // 깊이 기반 효과
   '깊이 기반 효과': '/guides/depth-effects',
-  '깊이 림': '/guides/depth-effects#깊이-림-2d-림',
+  // The anchor keeps its old slug on purpose: renaming it would break every
+  // inbound link, including the ones written in the en/ja translations.
+  '2D 림라이트': '/guides/depth-effects#깊이-림-2d-림',
   '2D 그림자': '/guides/depth-effects#2d-그림자',
   '내부 2D 경계': '/guides/depth-effects#내부-2d-경계',
   '마스터 폭': '/guides/depth-effects#깊이--공통-값',

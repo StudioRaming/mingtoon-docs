@@ -1,7 +1,7 @@
 ---
 id: tiled-materials
 title: Tiled Material Composer
-sidebar_position: 14
+sidebar_position: 16
 ---
 
 # Tiled Material Composer

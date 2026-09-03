@@ -18,7 +18,7 @@ One multiply and tint each over everything that adds light, over every shadow, a
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Intensity** | Scales every light-adding layer at once - backlight, front light, fresnel rim, shadow interior reflection, 2D depth rim and depth translucency. When a new scene makes them all read too strong or too weak, move this instead of retuning each module. 1 is neutral. | `_MingRimMasterIntensity` |
+| **Intensity** | Scales every light-adding layer at once - backlight, front light, fresnel rim, shadow interior reflection, 2D rim light and depth translucency. When a new scene makes them all read too strong or too weak, move this instead of retuning each module. 1 is neutral. | `_MingRimMasterIntensity` |
 | **Base Color** | Color multiplied into every light-adding layer. Use it to lean the overall cast toward the scene while each module keeps its authored color. White is neutral. | `_MingRimMasterTint` |
 | **Color Pad X** | Color-wheel coordinate laid over Base Color. With both X and Y at 0 nothing changes; the further from center, the stronger the tint toward that hue. | `_MingRimMasterColorX` |
 | **Color Pad Y** | Pairs with Color Pad X to pick a spot on the color wheel. Both at 0 leaves the color unchanged. | `_MingRimMasterColorY` |
@@ -33,7 +33,7 @@ One multiply and tint each over everything that adds light, over every shadow, a
 | **Color Pad X** | Color-wheel coordinate laid over the output Base Color. With both X and Y at 0 nothing changes; the further from center, the stronger the tint toward that hue. | `_MingOutputMasterColorX` |
 | **Color Pad Y** | Pairs with Color Pad X to pick a spot on the color wheel. Both at 0 leaves the color unchanged. | `_MingOutputMasterColorY` |
 | **Brightness** | Brightness of the color-pad tint. Lowering it darkens the entire final output. 1 is neutral. | `_MingOutputMasterColorValue` |
-| **Edge Rim Multiplier** | Multiplies only the four layers that draw on the silhouette: 2D depth rim, fresnel rim, backlight and the edge layer of depth translucency. One step below the multiplier above, so lowering it leaves front light, the shadow interior reflection and the translucency interior exactly where they are. 1 is neutral. | `_MingEdgeRimMasterIntensity` |
+| **Edge Rim Multiplier** | Multiplies only the four layers that draw on the silhouette: 2D rim light, fresnel rim, backlight and the edge layer of depth translucency. One step below the multiplier above, so lowering it leaves front light, the shadow interior reflection and the translucency interior exactly where they are. 1 is neutral. | `_MingEdgeRimMasterIntensity` |
 | **Edge Rim Maximum Multiplier** | Ceiling after those four have been added together. Each effect keeps its own settings - only the sum is held down - so the outline no longer burns to white with all four at maximum. 0 means no ceiling, and that is the default. | `_MingEdgeRimBrightnessMaximum` |
 | **Minimum Final Brightness** | Floor that stops the character going darker than this in any scene. Raise it when dark worlds swallow the character into black. Measured as a multiplier over the completed base color. | `_MingLightBrightnessMinimum` |
 | **Maximum Final Brightness** | Ceiling that stops the character burning brighter than this in bright scenes. At 1 the light's color survives but nothing exceeds the artwork's brightness. Lower it when strong lights blow the character out to white. | `_MingLightBrightnessMaximum` |

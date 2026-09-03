@@ -89,7 +89,7 @@ LightMode가 `ForwardBase`라서 주광 패스와 함께 돌지만, 자체 `_Out
 그림자 맵을 씁니다. **그런데 이 패스는 그림자만을 위한 것이 아닙니다.**
 
 :::danger[두 투명 모드 모두 ShadowCaster 패스를 켠 채로 둡니다]
-Built-in은 **`_CameraDepthTexture`를 이 패스를 통해 채웁니다.** 그 텍스처가 바로 2D 그림자·깊이 림·내부 2D 경계가 읽는 것입니다.
+Built-in은 **`_CameraDepthTexture`를 이 패스를 통해 채웁니다.** 그 텍스처가 바로 2D 그림자·2D 림라이트·내부 2D 경계가 읽는 것입니다.
 
 패스를 끄면 캐릭터가 자기 깊이에서 사라지고, 그래서 예전에는 투명 재질에서 이 모듈들을 통째로 꺼야 했습니다.
 
@@ -145,7 +145,7 @@ MingToon은 대부분의 모듈을 **`shader_feature_local_fragment`** 로 컴�
 | `_MING_FORM_SHADOW` · `_MING_FORM_SHADOW_2ND` | 형태 그림자 1차 / 2차 |
 | `_MING_SHADOW_PATTERN` · `_MING_SHADOW_PATTERN_TILE` | 그림자 패턴 / 모양 타일 |
 | `_MING_DEPTH_SHADOW` · `_MING_DEPTH_SHADOW_MASK` | 2D 그림자 / 마스크 |
-| `_MING_DEPTH_RIM` · `_MING_DEPTH_RIM_MASK` | 깊이 림 / 마스크 |
+| `_MING_DEPTH_RIM` · `_MING_DEPTH_RIM_MASK` | 2D 림라이트 / 마스크 |
 | `_MING_INNER_EDGE_MASK` | 내부 2D 경계 마스크 |
 | `_MING_ALPHA_MASK` | 알파 마스크 |
 | `_ALPHATEST_ON` | 컷아웃 |

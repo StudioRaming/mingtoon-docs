@@ -32,7 +32,7 @@ do not go black.
 → [Light and Shadow](/guides/light-and-shadow) · [Depth Effects](/guides/depth-effects)
 
 **Four more effects out of that same single depth read.**
-Depth rim (the 2D silhouette line), inner 2D edge, depth translucency for thin
+2D rim light (the 2D silhouette line), inner 2D edge, depth translucency for thin
 parts holding light, and SSAO darkening creases and contact areas. No extra
 light, no post-process pass, no second camera - they share the one camera depth
 texture the avatar shader is already reading.
@@ -88,7 +88,7 @@ Section 1 of the installation page settles the Unity version. It differs by targ
 | Start creating a look | [Basics](/guides/basics) → [Light and Shadow](/guides/light-and-shadow) |
 | Migrate an existing lilToon avatar | [lilToon Conversion](/workflow/liltoon-conversion) |
 | Upload an avatar | [Automatic Optimization On Build](/workflow/build-optimization) |
-| Depth rim · 2D shadow not showing | [Depth Effects](/guides/depth-effects) |
+| 2D rim light · 2D shadow not showing | [Depth Effects](/guides/depth-effects) |
 | Find the meaning of one property | [Property Reference](/reference/basics) |
 | Something is wrong | [Troubleshooting](/troubleshooting) |
 | Want to understand why it works that way | [Internal Architecture](/internals/shader-structure) |

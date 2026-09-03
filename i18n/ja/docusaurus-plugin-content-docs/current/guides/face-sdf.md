@@ -22,6 +22,8 @@ SDF がなくてもフェイスシェーディングは動作します。まず 
 MingToon 0.1.7パッケージにはStudioは同梱されません。別途インストールすると`Tools > Studio Raming > Face SDF Studio > Open`とMingToon連携ボタンが表示されます。StudioはEditor専用で、最終結果はテクスチャと任意の複製Meshのみなので、ランタイムスクリプトは追加しません。
 
 インストールしなくても、既存のSDFテクスチャをMingToon Inspectorへ直接設定して使用できます。
+
+他の別売り連携については[Mask Maker 連携](/guides/mask-maker)と[Ming Light Controller 連携](/guides/ming-light-controller)を参照してください。
 :::
 
 ## SDF マップ形式 {#sdf-맵-형식}

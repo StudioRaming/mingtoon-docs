@@ -136,7 +136,7 @@ Reference: [VRC Camera Settings](https://creators.vrchat.com/worlds/udon/vrc-gra
 
 The same note appears in the inspector:
 
-> VRC upload builds cannot contain arbitrary user scripts, so verify zero MingToon components in the SDK build clone. 2D shadow and 2D depth rim **only look identical when camera depth texture is provided**, not guaranteed by avatar alone.
+> VRC upload builds cannot contain arbitrary user scripts, so verify zero MingToon components in the SDK build clone. 2D shadow and 2D rim light **only look identical when camera depth texture is provided**, not guaranteed by avatar alone.
 
 > **On VRChat, Classic Hull works with material only**. Internal 2D edge is identical only when camera depth texture is provided.
 

@@ -89,7 +89,7 @@ LightMode is `ForwardBase` so it runs with the main light pass, but it has its o
 Writes the shadow map. **But this pass is not just for shadows.**
 
 :::danger[Both transparent modes keep the ShadowCaster pass on]
-Built-in **fills `_CameraDepthTexture` through this pass.** That's the texture read by 2D shadow, depth rim, and inner 2D edge.
+Built-in **fills `_CameraDepthTexture` through this pass.** That's the texture read by 2D shadow, 2D rim light, and inner 2D edge.
 
 If you turn off the pass, the character disappears from its own depth, which is why transparent materials had to disable these modules entirely before.
 
@@ -145,7 +145,7 @@ MingToon compiles most modules as **`shader_feature_local_fragment`**. You can t
 | `_MING_FORM_SHADOW` · `_MING_FORM_SHADOW_2ND` | Form Shadow 1st / 2nd |
 | `_MING_SHADOW_PATTERN` · `_MING_SHADOW_PATTERN_TILE` | Shadow Pattern / Shape Tile |
 | `_MING_DEPTH_SHADOW` · `_MING_DEPTH_SHADOW_MASK` | 2D Shadow / Mask |
-| `_MING_DEPTH_RIM` · `_MING_DEPTH_RIM_MASK` | Depth Rim / Mask |
+| `_MING_DEPTH_RIM` · `_MING_DEPTH_RIM_MASK` | 2D Rim Light / Mask |
 | `_MING_INNER_EDGE_MASK` | Inner 2D Edge Mask |
 | `_MING_ALPHA_MASK` | Alpha Mask |
 | `_ALPHATEST_ON` | Cutout |

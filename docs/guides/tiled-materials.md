@@ -1,7 +1,7 @@
 ---
 id: tiled-materials
 title: 타일드 머티리얼 컴포저
-sidebar_position: 14
+sidebar_position: 16
 ---
 
 # 타일드 머티리얼 컴포저

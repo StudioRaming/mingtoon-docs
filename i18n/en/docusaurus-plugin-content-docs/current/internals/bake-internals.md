@@ -135,7 +135,7 @@ By splitting profiles, a material with a different value stays uniform within it
 | Target | Condition |
 |---|---|
 | Unused **passes** | The feature is off and not animated |
-| Fresnel rim · 2nd-order form shadow · depth effect · depth rim · 2D shadow | Same as above |
+| Fresnel rim · 2nd-order form shadow · depth effect · 2D rim light · 2D shadow | Same as above |
 | Inactive **texture module** math | |
 | **Slot math exceeding layer count** | Crossing tier boundaries actually shrinks code |
 | **Texture samples** of masks proved identity | |

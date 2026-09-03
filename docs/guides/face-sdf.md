@@ -22,6 +22,8 @@ SDF 없이도 페이스 셰이딩은 동작합니다. 먼저 [페이스 셰이�
 MingToon 0.1.7 패키지에는 Studio가 동봉되지 않습니다. 별도로 설치하면 `Tools > Studio Raming > Face SDF Studio > Open`과 MingToon 연동 버튼이 나타납니다. Studio는 Editor 전용이며 최종 결과는 텍스처와 선택적인 복제 Mesh뿐이라 런타임 스크립트를 추가하지 않습니다.
 
 설치하지 않아도 기존 SDF 텍스처를 MingToon 인스펙터에 직접 넣어 사용할 수 있습니다.
+
+다른 별매 연동은 [Mask Maker 연동](/guides/mask-maker)과 [Ming Light Controller 연동](/guides/ming-light-controller)을 참고하세요.
 :::
 
 ## SDF 맵 형식 {#sdf-맵-형식}

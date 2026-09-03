@@ -30,7 +30,7 @@ MingToon にはさらに **2Dシャドウ**があります — カメラ深度�
 → [ライトとシャドウ](/guides/light-and-shadow) · [深度ベースの効果](/guides/depth-effects)
 
 **同じ深度1枚からさらに4つ。**
-深度リム(2Dのシルエット線)、内部2Dエッジ、薄い部位が光を含む深度透過光、折り目や接地部を
+2Dリムライト(2Dのシルエット線)、内部2Dエッジ、薄い部位が光を含む深度透過光、折り目や接地部を
 暗くする SSAO。新しいライトも、ポストプロセスパスも、別カメラも使いません — アバターの
 シェーダーがすでに読んでいるカメラ深度テクスチャ1枚を分け合います。
 → [深度ベースの効果](/guides/depth-effects)
@@ -82,7 +82,7 @@ MingToon にはさらに **2Dシャドウ**があります — カメラ深度�
 | ルックを作り始める | [基本設定](/guides/basics) → [ライトとシャドウ](/guides/light-and-shadow) |
 | 既存の lilToon アバターを移行する | [lilToon 変換](/workflow/liltoon-conversion) |
 | アバターをアップロードする | [ビルド時の自動最適化](/workflow/build-optimization) |
-| 深度リム・2Dシャドウが表示されない | [深度ベースの効果](/guides/depth-effects) |
+| 2Dリムライト・2Dシャドウが表示されない | [深度ベースの効果](/guides/depth-effects) |
 | 項目ひとつの意味を調べる | [項目リファレンス](/reference/basics) |
 | 何かおかしい | [トラブルシューティング](/troubleshooting) |
 | なぜそう動くのか知りたい | [内部動作](/internals/shader-structure) |

@@ -89,7 +89,7 @@ LightModeが `ForwardBase` なので主光源パスと一緒に実行されま�
 シャドウマップを使用します。**ただしこのパスはシャドウだけのためではありません。**
 
 :::danger[2つの透明モードとも ShadowCaster パスをオンのままにしてください]
-Built-inは **`_CameraDepthTexture` をこのパスを通して埋めます。** そのテクスチャが、2Dシャドウ、深度リム、内側2Dエッジが読み込むものです。
+Built-inは **`_CameraDepthTexture` をこのパスを通して埋めます。** そのテクスチャが、2Dシャドウ、2Dリムライト、内側2Dエッジが読み込むものです。
 
 パスをオフにするとキャラクターが自身の深度から消え、だから以前は透明なマテリアルではこれらのモジュール全体をオフにする必要がありました。
 
@@ -145,7 +145,7 @@ MingToonはほとんどのモジュールを **`shader_feature_local_fragment`**
 | `_MING_FORM_SHADOW` · `_MING_FORM_SHADOW_2ND` | フォームシャドウ 1段目 / 2段目 |
 | `_MING_SHADOW_PATTERN` · `_MING_SHADOW_PATTERN_TILE` | シャドウパターン / 形状タイル |
 | `_MING_DEPTH_SHADOW` · `_MING_DEPTH_SHADOW_MASK` | 2Dシャドウ / マスク |
-| `_MING_DEPTH_RIM` · `_MING_DEPTH_RIM_MASK` | 深度リム / マスク |
+| `_MING_DEPTH_RIM` · `_MING_DEPTH_RIM_MASK` | 2Dリムライト / マスク |
 | `_MING_INNER_EDGE_MASK` | 内側2Dエッジマスク |
 | `_MING_ALPHA_MASK` | アルファマスク |
 | `_ALPHATEST_ON` | カットアウト |

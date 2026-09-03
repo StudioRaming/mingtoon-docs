@@ -22,6 +22,8 @@ Face Shading works without an SDF. First clean up the face with [Face Shading](/
 Face SDF Studio is not bundled with MingToon 0.1.7. After installing it separately, `Tools > Studio Raming > Face SDF Studio > Open` and the MingToon integration buttons appear. Studio is Editor-only; the final result consists of a texture and an optional duplicate Mesh, so no runtime scripts are added.
 
 Even without Studio installed, you can assign an existing SDF texture directly in the MingToon Inspector.
+
+For the other separately sold integrations, see [Mask Maker Integration](/guides/mask-maker) and [Ming Light Controller Integration](/guides/ming-light-controller).
 :::
 
 ## SDF Map Formats {#sdf-맵-형식}

@@ -15,7 +15,7 @@ Based on MingToon `0.1.3-preview`.
 - **VRChat Quest is not a direct MingToon execution target.**
 - Warudo is in **real-world verification pending** status.
 - URP support scope is limited to **Unity 2021.3 + URP 12.x**, and VRChat does not use URP.
-- Depth rim · 2D shadow · inner 2D edge **depend on the host providing camera depth**. On regular VRChat player screens, avatars cannot force depth.
+- 2D rim light · 2D shadow · inner 2D edge **depend on the host providing camera depth**. On regular VRChat player screens, avatars cannot force depth.
 - lilToon conversion is an **interop tool** and does not mathematically replicate results from other shaders.
 - Current distribution is **source** not DLL-obfuscated product.
 

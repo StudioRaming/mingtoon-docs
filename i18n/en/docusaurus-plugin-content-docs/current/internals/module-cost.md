@@ -100,7 +100,7 @@ These are values declared in the module catalog of the source. Order is executio
 | MatCap Layers | **10** | 0 | 0 | 9 |
 | Emission | 1 | 0 | 0 | 3 |
 | Occlusion | 1 | 0 | 0 | 2 |
-| Rim Light (includes Depth Rim) | 2 | 1 | 0 | 7 |
+| Rim Light (includes 2D Rim Light) | 2 | 1 | 0 | 7 |
 | Backlight | 0 | 0 | 0 | 4 |
 | Front Light | 0 | 0 | 0 | 4 |
 | Glitter | 0 | 0 | 0 | **36** |

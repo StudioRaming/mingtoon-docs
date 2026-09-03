@@ -30,7 +30,7 @@ MingToon에는 **2D 그림자**가 더 있습니다 — 카메라 깊이를 읽�
 → [조명과 그림자](/guides/light-and-shadow) · [깊이 기반 효과](/guides/depth-effects)
 
 **같은 깊이 한 장으로 네 가지를 더 합니다.**
-깊이 림(2D 실루엣 선), 내부 2D 경계, 얇은 부위가 빛을 머금는 깊이 투과광, 접히는 곳을
+2D 림라이트(2D 실루엣 선), 내부 2D 경계, 얇은 부위가 빛을 머금는 깊이 투과광, 접히는 곳을
 어둡게 하는 SSAO. 새 광원도, 포스트 프로세스 패스도, 별도 카메라도 쓰지 않습니다 —
 아바타 셰이더가 이미 읽고 있는 카메라 깊이 텍스처 하나를 나눠 씁니다.
 → [깊이 기반 효과](/guides/depth-effects)
@@ -81,7 +81,7 @@ MingToon에는 **2D 그림자**가 더 있습니다 — 카메라 깊이를 읽�
 | 룩을 만들기 시작한다 | [기본 설정](/guides/basics) → [조명과 그림자](/guides/light-and-shadow) |
 | 기존 lilToon 아바타를 옮긴다 | [lilToon 변환](/workflow/liltoon-conversion) |
 | 아바타를 업로드한다 | [빌드 시 자동 최적화](/workflow/build-optimization) |
-| 깊이 림·2D 그림자가 안 보인다 | [깊이 기반 효과](/guides/depth-effects) |
+| 2D 림라이트·2D 그림자가 안 보인다 | [깊이 기반 효과](/guides/depth-effects) |
 | 항목 하나의 의미를 찾는다 | [항목 레퍼런스](/reference/basics) |
 | 뭔가 이상하다 | [문제 해결](/troubleshooting) |
 | 왜 그렇게 동작하는지 알고 싶다 | [내부 동작](/internals/shader-structure) |
