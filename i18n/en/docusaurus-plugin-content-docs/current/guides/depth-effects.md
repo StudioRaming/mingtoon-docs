@@ -257,6 +257,8 @@ With `SSAO Distance Compensation` at 1, its default, the same crease gets the sa
 
 :::caution[No depth, no effect - silently]
 Each effect samples the camera depth texture as needed. There is no post-process pass or second camera, but some environments may need a depth-enabling assist light; check MingToon Manager and the platform guidance above. [Getting depth per platform](#플랫폼별-깊이-확보) still applies; without depth, occlusion is fixed at 1 (no occlusion). VRChat client behaviour is still unverified.
+
+The compatibility-retest candidate uses an `Important` (ForcePixel) assist light. Per-light shadow-map and pixel-light-slot costs may be added to the camera depth pass. The affected worlds require testing in the actual VRChat client; restoring the setting does not confirm a fix.
 :::
 
 ## 2D Translucency {#깊이-투과광}

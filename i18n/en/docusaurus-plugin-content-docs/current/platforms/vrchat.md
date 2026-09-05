@@ -130,6 +130,8 @@ World creators can request depth through the Screen Camera settings in the [offi
 
 `Include Depth Light on Upload` is an opt-in workaround that adds one shadow-casting Directional Light to the upload copy to encourage a depth pass in the main view.
 
+The light is carried as **Important (Render Mode = Important / ForcePixel)**. The Not Important optimisation introduced on 2026-09-05 passed Unity editor probes only. After reports of depth-shadow regressions in specific VRChat worlds, the 2026-09-04 configuration was restored on 2026-09-06. Important can incur a per-light shadow map and a pixel-light slot in addition to the camera depth pass. **Restoring this setting does not establish that the regressions are fixed; the affected worlds still require testing in the actual VRChat client.** The Everything culling mask, remaining light settings, and build-clone-only policy are retained.
+
 :::danger[Cost and Limitations]
 
 1. Adds an extra depth-pass cost to other users' cameras when they view the avatar.
