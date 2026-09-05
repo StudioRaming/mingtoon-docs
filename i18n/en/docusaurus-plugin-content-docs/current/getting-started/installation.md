@@ -4,6 +4,8 @@ title: Installation
 sidebar_position: 1
 ---
 
+Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
+
 # Installation
 
 **After this guide**, you will have a Unity project with MingToon imported without errors.

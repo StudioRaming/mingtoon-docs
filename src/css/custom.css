@@ -123,3 +123,4 @@ article > section.row .theme-doc-card-heading {
   margin-bottom: 0.3rem;
   font-size: 1.15rem;
 }
+.navbar pre[aria-hidden="true"] { right: 0; }

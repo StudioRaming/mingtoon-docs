@@ -150,7 +150,8 @@ source  converted  resolution  face  surfaceMode  renderQueue  cull
 | `resolution` | 元のマテリアルをどのように見つけたか |
 | `face` | 顔判定の結果 |
 | `surfaceMode` · `renderQueue` · `cull` | レンダー状態が元と一致しているか |
-| `surfaceLayers` · `normalLayers` · `matcapLayers` | レイヤーが何個に変換されたか |
+| `surfaceLayers` ·
+ormalLayers` · `matcapLayers` | レイヤーが何個に変換されたか |
 | `passes` · `keywords` | コンパイルされるコードの形状 |
 | `mismatches` | 元と異なる項目 |
 | `losses` | 損失項目 |

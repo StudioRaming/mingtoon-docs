@@ -4,6 +4,8 @@ title: Separately Sold Add-ons
 sidebar_label: Separately Sold Add-ons
 ---
 
+Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
+
 # Separately Sold Add-ons
 
 MingToon installs, compiles and renders without any of the add-ons below. Each add-on supplies only the authoring job that needs it, such as mask painting, face-SDF creation, or VRChat runtime-menu authoring. MingToon detects them without a hard assembly reference, so adding or removing one later does not disable the shader itself.
@@ -25,4 +27,3 @@ A separate add-on that non-destructively authors VRChat avatar lighting and look
 1. Import the add-on and wait for Unity to finish compiling.
 2. Reopen the matching button in the MingToon inspector or Manager.
 3. If it still shows the installation notice, resolve Console compile errors first.
-

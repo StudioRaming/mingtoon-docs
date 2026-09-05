@@ -22,12 +22,13 @@ You can also find `MingToon Manager` in Add Component. **Attach it to the root b
 
 ## Inspector Layout
 
-| Stage | Task |
+| Tab | Next action |
 |---|---|
-| **1 · Convert** | Other shaders → MingToon, Face / Skin / Common roles, conversion look |
-| **2 · Setup** | Character scope, Editor/Warudo preview, runtime face direction |
-| **3 · Details** | Reapply looks, connect Face SDF, UV4/UV8 mesh bakes, return Live face normals |
-| **4 · Ship** | Lightweight shaders, texture caps, VRC menus, upload readiness and platform checks |
+| **Overview** | Read current state and the next button |
+| **Setup** | Set conversion inputs and scope |
+| **Look & Bake** | Reapply after conversion and bake the selected scope |
+| **Upload** | Check the normal automatic path, current avatar, and advanced manual bake when needed |
+| **Optimize** | Check automatic hooks and avoid duplicate processing |
 
 The status panel at the top recommends the next step for the current material composition. `Texture Optimization` is a separate, project-wide setting rather than a character setting.
 
@@ -205,7 +206,7 @@ When installed, this button opens Studio. When it is not installed, purchase and
 
 ---
 
-## 4 · Ship {#4--출하}
+## 5 · Ship {#4--출하}
 
 ### Optimization / Bake
 
@@ -331,7 +332,7 @@ Attach MingToon Manager to the root
         ↓
 3 · Details      Reapply look → connect SDF → bake UV4/UV8 only when needed
         ↓
-4 · Ship         Texture caps → VRC menu → automatic/manual bake → readiness check → upload
+5 · Ship         Texture caps → VRC menu → automatic/manual bake → readiness check → upload
 ```
 
 No separate Runtime Root is required for Warudo export. If you use depth effects, install [Warudo Depth Bridge](/platforms/warudo#warudo-depth-bridge) in Playground.

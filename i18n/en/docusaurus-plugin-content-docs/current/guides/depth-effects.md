@@ -256,7 +256,7 @@ With `SSAO Distance Compensation` at 1, its default, the same crease gets the sa
 - `SSAO Tint` · `SSAO Brightness` · `SSAO Saturation` — apply to the full SSAO coverage. They remain visible inside form shadows and backlighting; the default white color and brightness 1 preserve the result.
 
 :::caution[No depth, no effect - silently]
-It is not a light, not a provider, and not a post-process pass. [Getting depth per platform](#플랫폼별-깊이-확보) above applies unchanged: it appears where the 2D depth shadow appears. With no depth, occlusion is pinned to 1 (no occlusion), so the look does not break.
+Each effect samples the camera depth texture as needed. There is no post-process pass or second camera, but some environments may need a depth-enabling assist light; check MingToon Manager and the platform guidance above. [Getting depth per platform](#플랫폼별-깊이-확보) still applies; without depth, occlusion is fixed at 1 (no occlusion). VRChat client behaviour is still unverified.
 :::
 
 ## 2D Translucency {#깊이-투과광}

@@ -34,6 +34,7 @@ const sidebars = {
         'guides/texture-modules',
         'guides/bulk-editing',
         'guides/face-sdf',
+        'guides/add-ons',
         'guides/mask-maker',
         'guides/ming-light-controller',
         'guides/tiled-materials',
@@ -101,6 +102,7 @@ const sidebars = {
     },
     'troubleshooting',
     'limitations',
+    'legal/beta-license',
   ],
 };
 

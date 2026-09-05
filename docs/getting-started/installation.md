@@ -4,7 +4,11 @@ title: 설치
 sidebar_position: 1
 ---
 
+모든 상업 라이선스에는 URP 버전이 포함됩니다. Personal Streaming·Personal Creator의 Early Access Founders Edition에는 MLC가 포함되며, 정식 출시 이후 구성은 변경될 수 있습니다. 현재 오픈 베타의 상업 이용은 금지됩니다. [라이선스 및 포함 구성](/legal/beta-license)을 확인하세요.
+
 # 설치
+
+MingToon 0.1.7 베타 릴리스 후보 본체는 BRP 대상입니다. URP는 본체에 포함되지 않는 별도 판매 애드온입니다.
 
 **이 문서를 마치면** MingToon이 오류 없이 임포트된 Unity 프로젝트를 갖게 됩니다.
 

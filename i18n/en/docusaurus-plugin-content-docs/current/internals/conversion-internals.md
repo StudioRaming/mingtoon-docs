@@ -150,7 +150,8 @@ source  converted  resolution  face  surfaceMode  renderQueue  cull
 | `resolution` | How source was located |
 | `face` | Face classification result |
 | `surfaceMode` · `renderQueue` · `cull` | Whether render state matches source |
-| `surfaceLayers` · `normalLayers` · `matcapLayers` | How many layers came over |
+| `surfaceLayers` ·
+ormalLayers` · `matcapLayers` | How many layers came over |
 | `passes` · `keywords` | Code shape that compiles |
 | `mismatches` | Items differing from source |
 | `losses` | Loss entries |

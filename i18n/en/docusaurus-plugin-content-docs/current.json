@@ -28,7 +28,7 @@
     "description": "The label for category 릴리스 노트 in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.내부 동작": {
-    "message": "내부 동작",
+    "message": "Internal architecture",
     "description": "The label for category '내부 동작' in sidebar 'docsSidebar'"
   },
   "sidebar.docsSidebar.category.패치노트": {

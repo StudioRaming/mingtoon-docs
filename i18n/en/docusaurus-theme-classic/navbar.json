@@ -18,5 +18,9 @@
   "item.label.v0.1.7": {
     "message": "v0.1.7",
     "description": "Navbar item with label v0.1.7"
+  },
+  "item.label.Official website": {
+    "message": "Official website",
+    "description": "Navbar link to the official website"
   }
 }

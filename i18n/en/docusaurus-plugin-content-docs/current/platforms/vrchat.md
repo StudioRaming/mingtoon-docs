@@ -10,7 +10,7 @@ sidebar_position: 1
 
 VRChat PC is MingToon's primary target.
 
-:::caution[Closed Beta]
+:::caution[BRP core Open Beta]
 VRChat PC requires manual verification. Before uploading, complete this page's checklist and MingToon Manager's readiness checks yourself. VRChat Quest does not run the MingToon shader directly. → [Supported Environments](/platforms/compatibility#vrchat-quest)
 :::
 

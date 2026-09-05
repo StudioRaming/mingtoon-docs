@@ -119,9 +119,9 @@ const config = {
         // served to ko, en, and ja alike - an href here would send two of the
         // three locales to the Korean page. The clickable version is the
         // navbar badge below, which resolves the locale prefix itself.
-        id: 'closed-beta',
+        id: 'open-beta-brp',
         content:
-          `MingToon ${MINGTOON_VERSION} — Closed Beta. studioraming@gmail.com`,
+          `MingToon ${MINGTOON_VERSION} Open Beta. studioraming@gmail.com`,
         backgroundColor: '#5b3fd6',
         textColor: '#ffffff',
         isCloseable: true,
@@ -139,6 +139,7 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
+          {href: 'https://studioraming.github.io/mingtoon-site/', label: 'Official website', position: 'left'},
           {to: '/changelog', label: '패치노트', position: 'left'},
           {
             type: 'localeDropdown',

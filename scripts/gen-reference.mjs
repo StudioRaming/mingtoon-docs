@@ -21,6 +21,7 @@ if (!SRC) {
 
 const TEXT_CS = path.join(SRC, 'Editor/InspectorUx/MingInspectorText.cs');
 const GUI_DIR = path.join(SRC, 'Editor/InspectorUx');
+const BRP_SHADER = path.join(SRC, 'Shaders/MingToonBRP.shader');
 const LOCALES = ['ko', 'en', 'ja'];
 
 // ------------------------------------------------------------- text table
@@ -145,7 +146,8 @@ const PAGES = [
     sections: [
       {key: 'section.surface', match: (n) => /^_(MainTex|Color|ColorBlend|Cutoff|Base(Channel|Invert|Tint)|MingBaseAdjustMask)/.test(n)},
       {key: 'section.surface_rendering', match: (n) => /^_(AlphaMask|MingSurfaceMode|MingAlphaToCoverage|Cull|ZWrite|ZTest|SrcBlend|DstBlend|BlendOp|ColorMask|FlipBackfaceNormal|OutlineColorMask)/.test(n)},
-      {key: 'surface.alpha_fades', match: (n) => /^_Ming(AlphaDistanceFade|AlphaFresnel|AlphaFade)/.test(n)},
+      {key: 'surface.alpha_fades', match: (n) => /^_(Ming)?(AlphaDistanceFade|AlphaFresnel|AlphaFade|AlphaDirectional|AlphaViewMask)/.test(n) || n === '_SurfaceAlphaEffectsEnabled'},
+      {key: 'section.base_adjust', match: (n) => /^_(BaseMapOpacity|BaseHueColorSpace|BaseGradation|BaseAdjustMask|AlphaToCoverage|TransparentDepthPrepassCutoff)/.test(n)},
       {key: 'section.view_clip_guard', match: (n) => n.startsWith('_MingViewClipGuard')},
       {key: 'section.stencil', match: (n) => n.startsWith('_Stencil')},
       {key: 'section.common_maps', match: (n) => /^_(BumpMap|BumpScale|OcclusionMap|OcclusionStrength)/.test(n)},
@@ -161,12 +163,13 @@ const PAGES = [
       ja: 'トゥーンの印象を最も大きく左右するグループです。フォームシャドウ（光の向きによる陰影）とシャドウ投影（実時間で落ちる影）は別セクションなので区別して見てください。',
     },
     sections: [
-      {key: 'section.master_adjust', match: (n) => /^_Ming(RimMaster|ShadowMaster|OutputMaster|EdgeRimMaster|EdgeRimBrightness|LightBrightness)/.test(n)},
-      {key: 'section.lighting', match: (n) => /^_(LitBrightness|IndirectStrength|BaseColorPreservation|LightColorInfluence|AdditionalLight|MingAdditional|MingMinimum|MingMaximum|MingFinal|MingVirtualLight|MingLightVolumes)/.test(n)},
+      {key: 'section.master_adjust', match: (n) => /^_(Ming)?(RimMaster|ShadowMaster|OutputMaster|EdgeRimMaster|EdgeRimBrightness|LightBrightness)/.test(n)},
+      {key: 'section.lighting', match: (n) => /^_(LitBrightness|IndirectStrength|BaseColorPreservation|LightColorInfluence|AdditionalLight|MingAdditional|MingMinimum|MingMaximum|MingFinal|MingVirtualLight|MingLightVolumes|EnvironmentColorInfluence|LightResponse|LightBrightness|LightVolumes|ShadowAmbientInfluence)/.test(n)},
       {key: 'section.form_shadow', match: (n) => /^_(FormShadow|MingShadowBorder|ShadowBorder)/.test(n)},
       {key: 'section.shadow_color', match: (n) => /^_(MingUnifiedShadow|ShadowColor|MingShadowColor|MingShadowAmbient)/.test(n)},
       {key: 'section.cast_shadow', match: (n) => /^_(CastShadow|CastProjection|SelfShadow|MingFaceCast|LinkDepthShadowToCastShadow)/.test(n)},
-      {key: 'shadow.pattern.group', match: (n) => n.startsWith('_ShadowPattern')},
+      {key: 'shadow.pattern.group', match: (n) => n.startsWith('_ShadowPattern') || n === '_UnifiedShadowEnabled'},
+      {key: 'section.performance', match: (n) => /^_PerfDistance/.test(n)},
     ],
   },
   {
@@ -179,11 +182,11 @@ const PAGES = [
       ja: 'シルエットを立て、キャラクターを背景から切り離すグループです。重ねるとすぐ過剰になるので、ひとつずつ確認しながら上げてください。',
     },
     sections: [
-      {key: 'section.rim_shade', match: (n) => n.startsWith('_MingRimShade')},
-      {key: 'section.fresnel_rim', match: (n) => n.startsWith('_MingFresnelRim')},
-      {key: 'section.backlight', match: (n) => n.startsWith('_MingBacklight')},
-      {key: 'section.shadow_reflection', match: (n) => n.startsWith('_MingShadowReflection')},
-      {key: 'section.front_light', match: (n) => n.startsWith('_MingFrontLight')},
+      {key: 'section.rim_shade', match: (n) => /^_(Ming)?RimShade/.test(n)},
+      {key: 'section.fresnel_rim', match: (n) => /^_(Ming)?FresnelRim/.test(n)},
+      {key: 'section.backlight', match: (n) => /^_(Ming)?Backlight/.test(n)},
+      {key: 'section.shadow_reflection', match: (n) => /^_(Ming)?ShadowReflection/.test(n)},
+      {key: 'section.front_light', match: (n) => /^_(Ming)?FrontLight/.test(n)},
     ],
   },
   {
@@ -201,9 +204,9 @@ const PAGES = [
         title: {ko: '런타임 전환', en: 'Runtime Switching', ja: '実行時の切り替え'},
         match: (n) => /^_Ming(VrcQualityMenuEnabled|VrcQualityTier|CastShadowRuntimeToggle)$/.test(n),
       },
-      {key: 'section.depth_rim', match: (n) => n.startsWith('_DepthRim')},
-      {key: 'section.depth_shadow', match: (n) => n.startsWith('_DepthShadow')},
-      {key: 'section.ssao', match: (n) => n.startsWith('_MingSsao')},
+      {key: 'section.depth_rim', match: (n) => n.startsWith('_DepthRim') || n === '_EdgeRimLightResponseFloor'},
+      {key: 'section.depth_shadow', match: (n) => n.startsWith('_DepthShadow') || n === '_2DShadowCasterEnabled' || n === '_DepthAvailabilityMode' || n.startsWith('_ScreenSpaceShadow')},
+      {key: 'section.ssao', match: (n) => /^_(Ming)?Ssao/.test(n)},
       {key: 'section.translucency', match: (n) => n.startsWith('_Translucency')},
       {key: 'section.inner_outline', match: (n) => n.startsWith('_OutlineInnerEdge') || n === '_OutlineHullPressureSource'},
     ],
@@ -218,17 +221,18 @@ const PAGES = [
       ja: 'ベースの上に重ねるレイヤーと質感です。レイヤー系はすべて同じ罠を共有します — レイヤー数より後ろのスロットは計算自体をスキップします。',
     },
     sections: [
-      {key: 'section.stack', match: (n) => n.startsWith('_MingStack')},
-      {key: 'section.normal_layers', match: (n) => n.startsWith('_MingNormal')},
-      {key: 'section.matcap_layers', match: (n) => n.startsWith('_MingMatcap')},
-      {key: 'section.pbr', match: (n) => /^_(MingPbr|Metallic|Smoothness|MaskMap|WorkflowMode)/.test(n)},
+      {key: 'section.stack', match: (n) => /^_(Ming)?Stack/.test(n)},
+      {key: 'section.normal_layers', match: (n) => /^_(Ming)?Normal/.test(n)},
+      {key: 'section.matcap_layers', match: (n) => /^_(Ming)?Matcap/.test(n)},
+      {key: 'section.pbr', match: (n) => /^_(MingPbr|Metallic|Smoothness|MaskMap|WorkflowMode|Pbr|Region)/.test(n)},
+      {key: 'section.reflection', match: (n) => /^_(Reflection|PbrReflection)/.test(n)},
       // Region Mask first: its per-region deltas are named _MingRegionToonSpecular*,
       // which the toon specular rule below would otherwise swallow.
       {key: 'section.region_mask', match: (n) => n.startsWith('_MingRegion')},
-      {key: 'section.toon_specular', match: (n) => n.startsWith('_MingToonSpecular')},
-      {key: 'section.emission', match: (n) => /^_(EmissionMap|EmissionIntensity|EmissionEnabled|EmissionShadowVisibility|MingEmission)/.test(n)},
+      {key: 'section.toon_specular', match: (n) => /^_(Ming)?ToonSpecular/.test(n)},
+      {key: 'section.emission', match: (n) => /^_(EmissionMap|EmissionIntensity|EmissionEnabled|EmissionShadowVisibility|Emission|MingEmission)/.test(n)},
       {key: 'section.occlusion', match: (n) => /^_(MingOcclusion|OcclusionEnabled)/.test(n)},
-      {key: 'section.glitter', match: (n) => n.startsWith('_MingGlitter')},
+      {key: 'section.glitter', match: (n) => /^_(Ming)?Glitter/.test(n)},
     ],
   },
   {
@@ -244,7 +248,7 @@ const PAGES = [
       {key: 'section.face', match: (n) => n.startsWith('_Face') || (n.startsWith('_MingFace') && !n.startsWith('_MingFaceCast'))},
       {
         key: 'section.character_height',
-        match: (n) => /^_(MingHeight|MingCharacterHeight|HeightGradient)/.test(n),
+        match: (n) => /^_(MingHeight|MingCharacterHeight|CharacterHeight|HeightGradient)/.test(n),
         extraKeys: [
           'height.gradient.low_color',
           'height.gradient.high_color',
@@ -296,10 +300,29 @@ const UI_STRINGS = {
 const text = readText();
 const order = readInspectorOrder();
 
+function readBrpProperties() {
+  const src = fs.readFileSync(BRP_SHADER, 'utf8');
+  return new Set([...src.matchAll(/^\s*(?:\[[^\]]*\]\s*)*(_[A-Za-z0-9]+)\s*\(/gm)].map((m) => m[1]));
+}
+
+const brpProperties = readBrpProperties();
+const omitted = [];
+
 // Everything with a translated label is a control an artist can actually see.
 const allProps = Object.keys(text)
   .filter((k) => k.startsWith('prop._'))
   .map((k) => k.slice('prop.'.length))
+  .filter((name) => {
+    if (/^_MingAvatarInteriorShield/.test(name)) {
+      omitted.push(`${name} [experimentalNotPublic]`);
+      return false;
+    }
+    if (!brpProperties.has(name)) {
+      omitted.push(`${name} [absentBRPProperty]`);
+      return false;
+    }
+    return true;
+  })
   .sort((a, b) => (order.get(a) ?? 1e9) - (order.get(b) ?? 1e9));
 
 function escapeCell(s) {
@@ -339,6 +362,12 @@ for (const page of PAGES) {
 }
 
 const unclaimed = allProps.filter((n) => !claimed.has(n));
+
+// A labelled property is included only when it is declared by the current BRP
+// shader and is public. Retired/localisation-only properties absent from BRP,
+// and hidden experimental properties, are omitted with an explicit reason.
+// Do not add a catch-all "Other" page: an unclassified control needs a real
+// section rule and must remain visible in this diagnostic.
 
 for (const locale of LOCALES) {
   for (const page of PAGES) {
@@ -408,8 +437,10 @@ for (const locale of LOCALES) {
 }
 
 console.log(
-  `properties with labels: ${allProps.length}  placed: ${claimed.size}  unplaced: ${unclaimed.length}`
+  `properties with BRP labels: ${allProps.length}  placed: ${claimed.size}  unplaced: ${unclaimed.length}`
 );
+if (omitted.length) console.log('omitted -> ' + omitted.join(', '));
 if (unclaimed.length) {
   console.log('unplaced -> ' + unclaimed.join(', '));
+  process.exitCode = 1;
 }

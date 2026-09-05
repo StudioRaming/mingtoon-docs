@@ -4,6 +4,8 @@ title: インストール
 sidebar_position: 1
 ---
 
+すべての商用ライセンスにURPバージョンが含まれます。Personal Streaming・Personal CreatorのEarly Access Founders EditionにはMLCが含まれ、正式リリース後に構成が変更される場合があります。現在のオープンベータでは商用利用は禁止です。[ライセンスと同梱構成](/legal/beta-license)をご確認ください。
+
 # インストール
 
 **このドキュメントを完了すると、** MingToonがエラーなくインポートされたUnityプロジェクトが手に入ります。

@@ -150,7 +150,8 @@ source  converted  resolution  face  surfaceMode  renderQueue  cull
 | `resolution` | 원본을 어떻게 찾았는지 |
 | `face` | 얼굴 판정 결과 |
 | `surfaceMode` · `renderQueue` · `cull` | 렌더 상태가 원본과 맞는지 |
-| `surfaceLayers` · `normalLayers` · `matcapLayers` | 레이어가 몇 개로 옮겨졌는지 |
+| `surfaceLayers` ·
+ormalLayers` · `matcapLayers` | 레이어가 몇 개로 옮겨졌는지 |
 | `passes` · `keywords` | 컴파일되는 코드 모양 |
 | `mismatches` | 원본과 다른 항목 |
 | `losses` | 손실 항목 |

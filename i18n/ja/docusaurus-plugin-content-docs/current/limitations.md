@@ -4,9 +4,11 @@ title: 現在の制限とリリース
 sidebar_position: 91
 ---
 
+すべての商用ライセンスにURPバージョンが含まれます。Personal Streaming・Personal CreatorのEarly Access Founders EditionにはMLCが含まれ、正式リリース後に構成が変更される場合があります。現在のオープンベータでは商用利用は禁止です。[ライセンスと同梱構成](/legal/beta-license)をご確認ください。
+
 # 現在の制限とリリース
 
-MingToon `0.1.3-preview` 時点の内容です。
+MingToon `0.1.7` 時点の内容です。
 
 ## 配布前に知っておくこと
 
@@ -46,7 +48,7 @@ SHA-256 manifestが一緒に記録されます。
 ユーザーが承認したMingToon専用のLICENSE/EULAがない場合、パッケージビルドはブロックされます。
 :::
 
-## クローズドベータのフィードバック
+## ベータのフィードバック
 
 `studioraming@gmail.com`
 
@@ -54,6 +56,6 @@ SHA-256 manifestが一緒に記録されます。
 
 1. Unityバージョンと対象プラットフォーム (VRChat PC / Warudo / 一般Unity)
 2. レンダーパイプライン (BRP / URP 12.x)
-3. MingToonバージョン (`0.1.3-preview`)
+3. MingToonバージョン (`0.1.7`)
 4. Consoleログ全文
 5. 再現手順

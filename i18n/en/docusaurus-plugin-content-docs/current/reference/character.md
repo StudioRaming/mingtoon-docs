@@ -18,33 +18,33 @@ Configure face masks and shade direction. The proxy volume and the SDF also work
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Face Shading Module** | Enables the face-only shading module. Turn it on for face materials only - a body material shaded by face rules looks wrong. | `_MingFaceShadingEnabled` |
+| **Face Shading Module** | Enables the face-only shading module. Turn it on for face materials only - a body material shaded by face rules looks wrong. | `_FaceShadingEnabled` |
 | **Enable Face Area Mask** | Marks which part of a combined head and body material is the face. While off, the channel, strength, invert and remap rows below are all ignored. | `_FaceAreaMaskEnabled` |
 | **Vertex-Painted Face Area** | Off by default. Uses values stored by the face vertex-paint tool as the face area. An enabled texture face mask takes priority. | `_FaceAreaVertexMaskEnabled` |
-| **Use Proxy Sphere As Face Area** | Treats everything inside the proxy sphere as face, with no mask texture. The mask wins when Enable Face Area Mask is on, so this option is ignored then. | `_FaceAreaProxyMaskEnabled` |
+| **Use Proxy Mesh Normals** | Transfers smooth normals from the actual proxy Mesh to face vertices. Off keeps the original mesh normals. An enabled face-area texture or vertex mask limits the transfer coverage; otherwise the proxy volume defines it. | `_FaceAreaProxyMaskEnabled` |
 | **Face Border** | Form-shadow threshold used only on the face area. Range 0 to 1; default 0.25. Lower values delay face darkening, while higher values darken it earlier. Ignored while Form Shadow is off. | `_FaceFormShadowMidPoint` |
 | **Face Softness** | Blur width of the form-shadow terminator on the face area. Ignored while Form Shadow is off. | `_FaceFormShadowSoftness` |
-| **Proxy Sphere Center** | Center of the curvature field. Align it to the selected Face submesh with the Face Proxy scene tool. Moving it along the face's forward axis does not change the target normal tilt. | `_FaceProxyCenterOS` |
-| **Proxy Sphere Radius** | Directly sets the curvature of the proxy normal. Smaller values curve more strongly; larger values are flatter. When the proxy also defines the face region, an oversized radius can classify the neck or hands as face. | `_FaceProxyRadiusOS` |
-| **Proxy Edge Softness** | How far the face area fades out across the proxy sphere's edge, as a fraction of the radius. The face area swaps the form shadow's border and blur for the face values and presses the shading normal with the same coverage, so a small value leaves a hard shading band around the ears and jaw. The radius itself does not move; only the width of the crossing changes. | `_FaceProxyEdgeSoftness` |
-| **Proxy Shape** | Sphere (0, default) suits a round head; Cylinder (1) is an infinite tube along its axis; Capsule (2) is a tube of a set length. Axis applies to Cylinder and Capsule, height only to Capsule. | `_FaceProxyShape` |
-| **Proxy Axis** | Length direction in object space. Used by Cylinder and Capsule. A zero vector automatically uses the runtime face up direction. | `_FaceProxyAxisOS` |
-| **Capsule Height** | Length of the capsule's axis segment. Range 0.001 to 4; default 0.3. Near zero it matches the sphere; oversizing can classify neck or hair as face. | `_FaceProxyHeightOS` |
+| **Proxy Center** | Object-space center of the actual sphere, cylinder or capsule proxy Mesh. Moving it on any axis can change the triangle hit by a face vertex and its interpolated normal. The Face Proxy Scene tool displays this same Mesh. | `_FaceProxyCenterOS` |
+| **Proxy Radius** | Radius of the actual proxy Mesh. Changing it can alter both the projected hit position and the triangle-interpolated normal for each face vertex. When the proxy is also used as the face area, it changes the classification radius too, so an oversized value can include the neck or hands. | `_FaceProxyRadiusOS` |
+| **Proxy Edge Softness** | How far the face area fades out across the selected proxy volume's edge, as a fraction of the radius. The face area swaps the form shadow's border and blur for the face values and presses the shading normal with the same coverage, so a small value leaves a hard shading band around the ears and jaw. The radius itself does not move; only the width of the crossing changes. | `_FaceProxyEdgeSoftness` |
+| **Proxy Shape** | Sphere (0, default) is a closed sphere, Cylinder (1) a finite closed cylinder, and Capsule (2) a straight body capped by hemispheres. All three use the same projected-face and interpolated-vertex-normal transfer. | `_FaceProxyShape` |
+| **Proxy Axis** | Length direction for Cylinder and Capsule. A zero vector automatically uses the face-up direction resolved by Manager/runtime. A non-zero value is an axis in renderer object space. | `_FaceProxyAxisOS` |
+| **Proxy Length** | For Cylinder this is the full cylinder height. For Capsule it is the straight body length between the hemispheres, so total length is this value + 2 × Radius. It is unused for Sphere. Range 0.001 to 4; default 0.3. | `_FaceProxyHeightOS` |
 | **Enable Face SDF Shadow** | Off by default. Produces directional SDF face form shadow. It adds texture sampling and shader work, so enable it only on face materials that need it. | `_FaceSdfEnabled` |
 | **SDF Coordinates** | Base Texture UV (0) follows existing UV islands. Baked Front UV7 (1, default) uses a continuous front projection. When SDF owns UV7, baked face normals safely fall back to geometry normals. | `_FaceMapUvMode` |
 | **Baked Face Normal State** | Hidden output managed by Manager. At 1 it uses UV7 baked normals; missing data or SDF ownership of UV7 falls back to geometry normals. Do not edit directly. | `_FaceNormalBaked` |
 | **Remove Default Face Form Shadow** | At 1 the form shadow is erased on the face area entirely. Use it when the face shading should come only from the 2D shadow or a painted shadow map. | `_FaceFormShadowLift` |
 | **Face Area Mask** | Defines the face area in base UV. White is face and black is not; it is not sampled while its toggle is off. The default white texture classifies the whole material as face. | `_FaceAreaMask` |
-| **Face Casts Real-Time Shadows** | Whether this material's face area casts real-time shadows. Turning it off removes only the shadows the face itself casts onto other surfaces such as the neck or clothing. Bangs shadows are cast by the hair material, so this toggle does not remove them. Camera-depth writes are kept, so the 2D shadow and 2D rim light keep working. | `_FaceShadowCasterEnabled` |
+| **Face Casts Real-Time Shadows** | Whether this material's face area casts real-time shadows. Turning it off removes only the shadows the face itself casts onto other surfaces such as the neck or clothing. Bangs shadows are cast by the hair material, so this toggle does not remove them. Camera-depth writes are kept, so the 2D shadow and 2D Rim Light keep working. | `_FaceShadowCasterEnabled` |
 | **Projected Shadow When Depth Off** | Face 2D Shadow Assist takes the projected shadow off the face so the 2D shadow can take it over. Turn this on and the projected shadow comes back to the face whenever the Depth Effects master is off or Depth Availability is Force Off. While depth is on, nothing changes. | `_FaceDepthOffProjectedShadowEnabled` |
 | **Real ShadowCaster Offset** | Pushes the face area's shadow caster along its normal to adjust how much the real-time shadow overlaps the face itself. Applied only while Face 2D Shadow Assist is on. It does not move the bangs shadow - the hair material casts that. | `_FaceShadowCasterOffset` |
 | **Mask Channel (RGBA)** | Per-channel weights used to read the mask texture. Enter (0, 1, 0, 0) to read the green channel only. | `_FaceAreaMaskChannel` |
-| **Mask Strength** | At 0 the mask texture is ignored and the whole material is treated as face; at 1 the mask is used exactly as painted. | `_FaceAreaMaskStrength` |
+| **Mask Intensity** | At 0 the mask texture is ignored and the whole material is treated as face; at 1 the mask is used exactly as painted. | `_FaceAreaMaskStrength` |
 | **Invert Mask** | Flips the face area mask black-for-white. Use it when the mask was painted with the face in black. | `_FaceAreaMaskInvert` |
 | **Remap Start** | Start of the range the mask gray values are re-spread over. Raising it shrinks the area counted as face. Equal start and end give a fully hard edge. | `_FaceAreaMaskRemapStart` |
 | **Remap End** | End of the range the mask gray values are re-spread over. Lowering it sharpens the face boundary. Equal start and end give a fully hard edge. | `_FaceAreaMaskRemapEnd` |
-| **Proxy Normal Strength** | Blends the original mesh normal with the target normal from the proxy shape. 0 uses the original; 1 uses the Sphere/Cylinder/Capsule curvature directly. No separate flat normal is layered on top; this value is applied once in the shader. | `_FaceNormalFlattenAmount` |
-| **Shadow Normal Map Influence** | Sets how much the normal map contributes to large face-shadow boundaries. At 0 the boundary follows the proxy normal most directly; the normal map remains active for specular and PBR. | `_FaceShadowNormalMapInfluence` |
+| **Proxy Normal Intensity** | Blends once between the original mesh normal and the normal projected and interpolated from the proxy Mesh. 0 uses the original normal, 1 uses the transferred normal, and a soft face-area mask scales that blend. The editor preview and upload store this as the final baked weight, so changing it is reflected by rebuilding the preview or the next build. | `_FaceNormalFlattenAmount` |
+| **Shadow Normal Map Influence** | How much stacked normal-map detail is mixed back into form-shadow boundaries where the custom face normal is active. At 0 the band follows the same proxy direction as the Scene needles; at 1 it uses the full stacked normal. Normal maps for specular and other effects remain unchanged. | `_FaceShadowNormalMapInfluence` |
 | **Global Horizontal Scale** | Horizontal scale around the texture center. Range 0.1 to 4; default 0.5. It multiplies slot Tiling, so adjust one transform layer at a time. | `_FaceMapScaleX` |
 | **Global Vertical Scale** | Vertical scale around the texture center. Range 0.1 to 4; default 0.5. It combines with slot Tiling and outside pixels do not repeat. | `_FaceMapScaleY` |
 | **Global Horizontal Position** | Moves the scaled SDF horizontally. Range -1 to 1; default 0. Align the eye and nose centerline in small steps. | `_FaceMapOffsetX` |
@@ -60,7 +60,7 @@ Configure face masks and shade direction. The proxy volume and the SDF also work
 | **Boundary Softness** | Lit-to-shadow transition width. Range 0.001 to 0.5; default 0.04. Extremely low values reveal texture-resolution and compression noise. | `_FaceSdfSoftness` |
 | **Enable SDF Applicability Mask** | Off by default. Excludes ears, back of head, or other non-SDF areas with a base-UV mask. This is separate from the face-area mask. | `_FaceSdfMaskEnabled` |
 | **SDF Applicability Mask** | Sampled in base UV. White receives SDF; black keeps original shading. It is not sampled while its toggle is off. | `_FaceSdfMask` |
-| **SDF Mask Strength** | Mask limiting strength. Range 0 to 1; default 1. Zero ignores the mask; one uses its painted values fully. | `_FaceSdfMaskStrength` |
+| **SDF Mask Intensity** | Mask limiting strength. Range 0 to 1; default 1. Zero ignores the mask; one uses its painted values fully. | `_FaceSdfMaskStrength` |
 
 ## Character Height Gradient
 
@@ -68,9 +68,9 @@ Grade the lower character color from one root-space height baked into UV4.
 
 | Control | What it does | Shader property |
 |---|---|---|
-| **Character Height Gradient** | Enables the gradient that tints the character differently by height - typically sinking the feet into a slightly darker tone. Accurate placement needs the UV4 height bake. | `_MingCharacterHeightGradientEnabled` |
-| **Low Color** | Color tinting the lower part of the character. White leaves it unchanged; use a slightly darker color to sink the feet. | `_MingCharacterHeightLowColor` |
-| **High Color** | Color tinting the upper part of the character. White leaves it unchanged. | `_MingCharacterHeightHighColor` |
+| **Character Height Gradient** | Enables the gradient that tints the character differently by height - typically sinking the feet into a slightly darker tone. Accurate placement needs the UV4 height bake. | `_CharacterHeightGradientEnabled` |
+| **Low Color** | Color tinting the lower part of the character. White leaves it unchanged; use a slightly darker color to sink the feet. | `_CharacterHeightLowColor` |
+| **High Color** | Color tinting the upper part of the character. White leaves it unchanged. | `_CharacterHeightHighColor` |
 | **Low Color** |  | |
 | **High Color** |  | |
 | **Gradient Direction** | Switching to top-down swaps where the two colors land. | |

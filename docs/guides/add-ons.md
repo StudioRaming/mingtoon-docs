@@ -4,6 +4,8 @@ title: 별매 애드온
 sidebar_label: 별매 애드온
 ---
 
+모든 상업 라이선스에는 URP 버전이 포함됩니다. Personal Streaming·Personal Creator의 Early Access Founders Edition에는 MLC가 포함되며, 정식 출시 이후 구성은 변경될 수 있습니다. 현재 오픈 베타의 상업 이용은 금지됩니다. [라이선스 및 포함 구성](/legal/beta-license)을 확인하세요.
+
 # 별매 애드온
 
 MingToon 본체는 아래 애드온이 하나도 없어도 설치·컴파일·렌더링됩니다. 애드온은 마스크 제작, 얼굴 SDF 제작, VRChat 런타임 메뉴 제작처럼 필요한 저작 기능만 추가합니다. 밍툰은 어셈블리를 직접 참조하지 않고 설치 여부를 확인하므로, 나중에 추가하거나 제거해도 셰이더 본체는 그대로 작동합니다.

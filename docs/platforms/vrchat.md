@@ -10,7 +10,7 @@ sidebar_position: 1
 
 VRChat PC는 MingToon의 주 대상입니다.
 
-:::caution[클로즈 베타]
+:::caution[BRP 본체 Open Beta]
 VRChat PC는 수동 검증 대상입니다. 업로드 전에 이 페이지의 체크리스트와 밍툰 매니저의 준비 상태 검사를 직접 통과시키세요. VRChat Quest는 MingToon 셰이더의 직접 실행 대상이 아닙니다. → [지원 환경](/platforms/compatibility#vrchat-quest)
 :::
 

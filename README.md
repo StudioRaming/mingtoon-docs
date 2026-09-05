@@ -29,7 +29,7 @@ npm run build             # 세 로케일 전부 빌드 + 링크 검사
 툴에서 라벨이 바뀌면 아래를 다시 실행해 세 언어를 한 번에 맞춥니다.
 
 ```bash
-MINGTOON_SRC="E:/Unity/warudo_nilo/My project BRP/Assets/StudioRaming/MingToon" \
+MINGTOON_SRC="<Unity project>/Assets/StudioRaming/MingToon" \
   node scripts/gen-reference.mjs
 ```
 
@@ -69,10 +69,13 @@ MINGTOON_SRC="E:/Unity/warudo_nilo/My project BRP/Assets/StudioRaming/MingToon" 
 외부 서비스로 나가는 것이 없고, 크롤러가 사이트에 접근할 필요도 없습니다.
 
 로케일마다 `search-index.json`이 하나씩 생기고, 한국어·일본어는 각자의 lunr 토크나이저를 씁니다.
-별도 관리는 필요 없고 `npm run build`가 매번 다시 만듭니다.
+별도 관리는 필요 없고
+pm run build`가 매번 다시 만듭니다.
 
-개발 서버(`npm start`)에서는 인덱스가 만들어지지 않으므로 검색을 확인하려면
-`npm run build && npm run serve`를 쓰세요.
+개발 서버(
+pm start`)에서는 인덱스가 만들어지지 않으므로 검색을 확인하려면
+
+pm run build && npm run serve`를 쓰세요.
 
 ## 편집 권한
 

@@ -4,9 +4,11 @@ title: Current Limitations and Release
 sidebar_position: 91
 ---
 
+Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
+
 # Current Limitations and Release
 
-Based on MingToon `0.1.3-preview`.
+Based on MingToon `0.1.7`.
 
 ## What to know before deployment
 
@@ -46,7 +48,7 @@ SHA-256 manifest is recorded along with it.
 Package build is blocked unless a MingToon-exclusive LICENSE/EULA approved by the user exists.
 :::
 
-## Closed beta feedback
+## Beta feedback
 
 `studioraming@gmail.com`
 
@@ -54,6 +56,6 @@ When reporting, including these speeds up reproduction:
 
 1. Unity version and target platform (VRChat PC / Warudo / general Unity)
 2. Render pipeline (BRP / URP 12.x)
-3. MingToon version (`0.1.3-preview`)
+3. MingToon version (`0.1.7`)
 4. Full Console log
 5. Steps to reproduce

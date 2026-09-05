@@ -5,9 +5,13 @@ sidebar_label: About
 slug: /
 ---
 
+Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
+
 # MingToon
 
 **A character toon shader for VRChat avatars.**
+
+MingToon 0.1.7 is the **BRP core open beta**. URP is a separately sold add-on outside this core package, and Ming Light Controller (MLC) is a separate add-on.
 
 The things you actually reach for when drawing a character — where the shadows fall and what colour they are, how the nose shadow sits on a face, outline weight, whether the silhouette holds up in backlight — are separated so each can be set on its own. Everything from the inspector you build the look in to the step that puts it on an avatar and uploads it ships in one package.
 
@@ -15,12 +19,11 @@ Built on the Built-in Render Pipeline (BRP); it also runs in Warudo and in gener
 
 ## What sets it apart from other toon shaders
 
-**What you author with and what gets uploaded are different shaders.**
-A toon shader gets heavier as it gains features, so the usual answer is to leave
-things off in case you never use them. MingToon has you author with everything
-on, then **swaps in a shader carrying only the features that material actually
-used** at upload time and restores the authoring one afterwards. What you did not
-use is compiled out, so it costs nothing. No pruning features avatar by avatar.
+**The build shader is created from the features actually used.**
+Author the look with the features you need. On a supported build optimization
+path, MingToon analyzes usage and animation dependencies and generates a shader
+that keeps the required features. Removed feature operations are omitted, but
+actual cost still depends on the features left, the avatar, and the world.
 → [Automatic Optimization On Build](/workflow/build-optimization)
 
 **Three kinds of shadow — and the third is the one others do not have.**
@@ -31,19 +34,20 @@ will not give you. A unified shadow gathers all three into one colour so overlap
 do not go black.
 → [Light and Shadow](/guides/light-and-shadow) · [Depth Effects](/guides/depth-effects)
 
-**Four more effects out of that same single depth read.**
+**Four more effects use the same camera depth texture.**
 2D rim light (the 2D silhouette line), inner 2D edge, depth translucency for thin
-parts holding light, and SSAO darkening creases and contact areas. No extra
-light, no post-process pass, no second camera - they share the one camera depth
-texture the avatar shader is already reading.
+parts holding light, and SSAO darkening creases and contact areas sample that
+texture as needed. There is no extra post-process pass or second camera. Some
+environments may need a depth-enabling assist light; check MingToon Manager and the Depth Effects guide. Its
+VRChat client behaviour is still unverified.
 → [Depth Effects](/guides/depth-effects)
 
 **The face is a subsystem, not a slot.**
-It does not stop at one face mask. Alongside normal compression, the face region
-mask, and a directional SDF, the product ships **the tool that bakes the SDF
-(Face SDF Studio) and scene-view vertex paint for the face area**. The problem
-where nose and bang shadows wreck an expression is solved without leaving Unity.
-→ [Face SDF](/guides/face-sdf)
+It does not stop at one face mask. Alongside normal compression, the face region mask, and a directional SDF,
+the core supports authored SDF and vertex data. Face SDF Studio and scene-view
+vertex paint are supplied as separate add-ons; existing SDF and vertex data can
+be assigned to core materials. → [Face SDF and add-ons](/guides/face-sdf) ·
+[Add-ons](/guides/add-ons)
 
 **It can look printed.**
 The screentone redraws shadow as halftone dots or line work, and you choose
@@ -51,15 +55,17 @@ whether the lattice sticks to the surface or locks to the screen. Locked to the
 screen, the character slides underneath it - the overprinted, pop-art reading.
 → [Shadow Pattern](/guides/shadow-pattern)
 
-**Adjustable in game.**
-The virtual light and the brightness and colour adjustments go out to a VRChat
-expression menu, installed non-destructively through Modular Avatar so your
-existing menu, parameters, and FX are untouched. → [VRChat](/platforms/vrchat)
+**Adjustable in game (MLC is a separate add-on).**
+With Ming Light Controller installed separately and applied to an upload clone,
+virtual light plus brightness and colour controls can be exposed through a VRChat
+expression menu. The Modular Avatar route is designed to preserve existing menu,
+parameter, and FX assets; successful client upload is still unverified. →
+[Ming Light Controller](/guides/ming-light-controller) · [VRChat](/platforms/vrchat)
 
 <details>
 <summary>What else is in the box</summary>
 
-- **Outline** — works anywhere without depth, and the weight is painted with a brush in the scene view. → [Outline](/guides/outline)
+- **Outline** — works anywhere without depth. Scene-view brush painting requires the separate Mask Maker add-on. → [Outline](/guides/outline)
 - **The rim family** — rim light, rim shade, backlight, front light, shadow interior reflection. → [Rim](/guides/rim)
 - **Detail** — texture, normal, and matcap layers, hybrid PBR, toon specular, glitter, emission. → [Detail Maps](/guides/detail-maps)
 - **Master adjust** — a brightness and a tint on everything that adds light, on every shadow, and on the final output. A change of scene is one adjustment here. → [Basics](/guides/basics)
@@ -73,6 +79,10 @@ existing menu, parameters, and FX are untouched. → [VRChat](/platforms/vrchat)
 **Convert** → **assign roles** (face · bare skin) → **look** → **upload**.
 An existing lilToon avatar starts at step 1; a material you make from scratch
 starts at step 2.
+
+## Beta and commercial use
+
+Check [Beta and commercial use](/legal/beta-license) for the current distribution and commercial-use conditions first.
 
 ## If this is your first time
 
@@ -111,7 +121,7 @@ Section 1 of the installation page settles the Unity version. It differs by targ
 Property names and descriptions are taken exactly as **MingToon inspector displays them**. Terminology never drifts between documentation and screen.
 :::
 
-## Closed beta notes
+## BRP core beta notes
 
 :::warning[This distribution is preview]
 - No validated GPU performance numbers are published.
