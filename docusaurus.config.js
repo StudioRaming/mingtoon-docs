@@ -24,7 +24,7 @@ const LATEST_CHANGELOG = `/changelog/${MINGTOON_VERSION}`;
 const config = {
   title: 'MingToon Docs',
   tagline: 'Character toon shader and authoring toolset for Unity',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   future: {
     v4: true,
@@ -122,16 +122,12 @@ const config = {
         id: 'open-beta-brp',
         content:
           `MingToon ${MINGTOON_VERSION} Open Beta.`,
-        backgroundColor: '#5b3fd6',
-        textColor: '#ffffff',
+        backgroundColor: '#d79aaa',
+        textColor: '#101314',
         isCloseable: true,
       },
       navbar: {
         title: 'MingToon',
-        logo: {
-          alt: 'MingToon',
-          src: 'img/logo.svg',
-        },
         items: [
           {
             type: 'docSidebar',

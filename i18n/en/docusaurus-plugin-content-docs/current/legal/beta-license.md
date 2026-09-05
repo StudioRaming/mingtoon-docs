@@ -12,9 +12,9 @@ Also review the EULA included with your distribution. This page distinguishes cu
 
 All commercial use is prohibited during Open Beta. Commercial license sales begin at Early Access.
 
-In preparation as a standalone paid add-on to the BRP core. Every commercial license includes the URP version.
+URP is excluded from the current BRP Open Beta and included with every commercial license.
 
-Free on the official BOOTH during Open Beta and paid from Early Access. Included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. MLC file sharing and redistribution are prohibited.
+Ming Light Controller (MLC) is free on the official BOOTH during Open Beta and paid from Early Access. Included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. MLC file sharing and redistribution are prohibited.
 
 ## Personal licenses
 
@@ -32,7 +32,7 @@ Freedom for all non-commercial activities.
 
 ### Personal Streaming
 
-**Price: Price TBD · Sales begin at Early Access**
+**Price: Coming soon · Sales begin at Early Access**
 
 For individuals creating monetized streams and video.
 
@@ -48,7 +48,7 @@ Early Access Founders Edition add-ons:
 
 ### Personal Creator
 
-**Price: Price TBD · Sales begin at Early Access**
+**Price: Coming soon · Sales begin at Early Access**
 
 For individuals selling assets or presets and doing paid creative work.
 
@@ -72,7 +72,7 @@ Included add-ons are based on the Early Access Founders Edition; contents may ch
 
 ### Doing both kinds of work?
 
-Personal licenses are purchased per person and per license type. If you both monetize streams and do paid creative work, you need Streaming and Creator. A joint-purchase discount is planned; its rate is not yet set.
+Personal licenses are purchased per person and per license type. If you both monetize streams and do paid creative work, you need Streaming and Creator. Joint-purchase discount benefits are coming soon.
 
 ## Corporate license
 

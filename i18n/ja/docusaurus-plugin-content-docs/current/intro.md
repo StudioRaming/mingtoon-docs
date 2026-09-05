@@ -14,7 +14,7 @@ slug: /
 
 # MingToon
 
-MingToon 0.1.7 は **BRP本体のオープンベータ**です。URPは本体とは別売りのアドオンで、Ming Light Controller（MLC）も別売りのアドオンです。
+MingToon 0.1.7 は **BRP本体のオープンベータ**です。URPは現在のBRPオープンベータには含まれず、すべての商用ライセンスに含まれます。Ming Light Controller（MLC）は別途インストールするアドオンで、Personal Streaming・Personal CreatorのEarly Access Founders Editionに含まれます。
 
 **VRChat アバターのためのキャラクター向けトゥーンシェーダー**です。
 
@@ -55,7 +55,7 @@ MingToon にはさらに **2Dシャドウ**があります — カメラ深度�
 画面に固定すると、キャラクターがその下を通るポップアート印刷のような見え方になります。
 → [シャドウパターン](/guides/shadow-pattern)
 
-**ゲーム内で調整できます（MLC別売アドオン）。**
+**ゲーム内で調整できます（MLC追加インストール）。**
 Ming Light Controllerを別途インストールし、アップロード用クローンに適用すると、バーチャルライトと
 明るさ・色の調整をVRChatの表現メニューへ出せます。Modular Avatar経路は既存のメニュー・
 パラメーター・FXを保持する設計ですが、クライアントへのアップロード成功はまだ未検証です。

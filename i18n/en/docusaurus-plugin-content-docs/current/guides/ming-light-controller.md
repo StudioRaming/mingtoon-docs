@@ -20,7 +20,7 @@ The MLC component in Edit Mode stores this avatar's settings. The actual menu, p
 |---|---|
 | **MingToon BRP beta core** | Material rendering, Inspector and Manager, build optimization |
 | **Ming Light Controller** | Per-avatar control settings and in-game expression menu generation |
-| **URP add-on** | Separately sold URP support package; excluded from the BRP core |
+| **URP add-on** | URP support package excluded from the current BRP Open Beta and included with every commercial license |
 | **Mask Maker / Face SDF Studio** | Separate authoring tools; see [Separately Sold Add-ons](/guides/add-ons) |
 
 ## What Ming Light Controller is {#ming-light-controller란}

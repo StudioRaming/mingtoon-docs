@@ -16,7 +16,7 @@ Every commercial license includes the URP version. MLC is included in the Early 
 
 **A character toon shader for VRChat avatars.**
 
-MingToon 0.1.7 is the **BRP core open beta**. URP is a separately sold add-on outside this core package, and Ming Light Controller (MLC) is a separate add-on.
+MingToon 0.1.7 is the **BRP core open beta**. URP is excluded from the current BRP Open Beta and included with every commercial license. Ming Light Controller (MLC) is installed separately and included in the Personal Streaming and Personal Creator Early Access Founders Editions.
 
 The things you actually reach for when drawing a character — where the shadows fall and what colour they are, how the nose shadow sits on a face, outline weight, whether the silhouette holds up in backlight — are separated so each can be set on its own. Everything from the inspector you build the look in to the step that puts it on an avatar and uploads it ships in one package.
 

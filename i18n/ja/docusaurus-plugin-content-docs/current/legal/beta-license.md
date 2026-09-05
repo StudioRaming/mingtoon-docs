@@ -12,9 +12,9 @@ sidebar_position: 2
 
 現在のオープンベータでは、すべての商用利用を禁止しています。商用ライセンスの販売はEarly Accessから開始します。
 
-BRPコア向けの別売有料アドオンとして準備中です。すべての商用ライセンスにURPバージョンが含まれます。
+URPは現在のBRPオープンベータには含まれず、すべての商用ライセンスに含まれます。
 
-オープンベータ中は公式BOOTHで無料、Early Accessから有料です。Personal Streaming・Personal CreatorのEarly Access Founders Editionに含まれますが、正式リリース後に構成が変更される場合があります。MLCファイルの共有・再配布は禁止です。
+Ming Light Controller（MLC）はオープンベータ中は公式BOOTHで無料、Early Accessから有料です。Personal Streaming・Personal CreatorのEarly Access Founders Editionに含まれますが、正式リリース後に構成が変更される場合があります。MLCファイルの共有・再配布は禁止です。
 
 ## 個人ライセンス
 
@@ -32,7 +32,7 @@ BRPコア向けの別売有料アドオンとして準備中です。すべて�
 
 ### Personal Streaming
 
-**価格: 価格未定 · Early Accessから販売予定**
+**価格: 準備中 · Early Accessから販売予定**
 
 収益化した配信・動画を制作する個人向け。
 
@@ -48,7 +48,7 @@ Early Access Founders Editionの同梱アドオン:
 
 ### Personal Creator
 
-**価格: 価格未定 · Early Accessから販売予定**
+**価格: 準備中 · Early Accessから販売予定**
 
 アセット・プリセット販売や有償制作を行う個人向け。
 
@@ -72,7 +72,7 @@ Photo Booth UnityはUnity用です。Ming Light ControllerはWARUDOアドオン�
 
 ### 両方の活動をする場合
 
-個人ライセンスは1人・ライセンス種別ごとに購入します。収益化配信と有償制作の両方を行う場合、StreamingとCreatorの両方が必要です。同時購入割引を予定していますが、割引率は未定です。
+個人ライセンスは1人・ライセンス種別ごとに購入します。収益化配信と有償制作の両方を行う場合、StreamingとCreatorの両方が必要です。同時購入の割引特典は準備中です。
 
 ## 企業ライセンス
 

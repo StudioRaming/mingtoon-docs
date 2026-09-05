@@ -16,7 +16,7 @@ slug: /
 
 **VRChat 아바타를 위한 캐릭터 툰 셰이더**입니다.
 
-MingToon 0.1.7은 **BRP 본체 오픈 베타**입니다. URP는 본체에 포함되지 않는 별도 판매 애드온이며, Ming Light Controller(MLC)도 별도 애드온입니다.
+MingToon 0.1.7은 **BRP 본체 오픈 베타**입니다. URP는 현재 BRP 오픈 베타에 포함되지 않으며, 모든 상업 라이선스에 포함됩니다. Ming Light Controller(MLC)는 별도로 설치하며 Personal Streaming·Personal Creator의 Early Access Founders Edition에 포함됩니다.
 
 캐릭터를 그릴 때 실제로 손대는 것들 — 그림자가 지는 자리와 색, 얼굴에 코 그림자가 어떻게 놓이는지, 아웃라인 굵기, 역광에서 실루엣이 서는지 — 을 각각 따로 잡을 수 있게 나눠 두었습니다. 룩을 만드는 인스펙터부터 아바타에 실어 업로드하는 단계까지 한 벌로 들어 있습니다.
 

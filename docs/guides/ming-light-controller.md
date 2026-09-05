@@ -20,7 +20,7 @@ Edit Mode의 MLC 컴포넌트는 이 아바타의 설정을 보관합니다. 실
 |---|---|
 | **MingToon BRP 본체** | 재질의 렌더링, 인스펙터와 Manager, 빌드 최적화 |
 | **Ming Light Controller** | 아바타별 조절 설정과 인게임 표현 메뉴 생성 |
-| **URP 애드온** | 별도 판매되는 URP 지원 패키지. BRP 본체에 포함되지 않습니다. |
+| **URP 애드온** | 현재 BRP 오픈 베타에는 제외되며, 모든 상업 라이선스에 포함되는 URP 지원 패키지. |
 | **Mask Maker / Face SDF Studio** | 별도 제작 도구. 자세한 경계는 [별매 애드온](/guides/add-ons)을 확인하세요. |
 
 ## Ming Light Controller란 {#ming-light-controller란}

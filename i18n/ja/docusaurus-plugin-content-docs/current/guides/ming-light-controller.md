@@ -8,7 +8,7 @@ sidebar_position: 15
 
 # Ming Light Controller を使う
 
-Ming Light Controller（MLC）は、MingToon マテリアルの明るさ・色・バーチャルライト・パフォーマンス設定を VRChat の表現メニューから操作できるようにする **別売アドオン**です。MingToon BRP ベータ本体とは別にインストールします。MLC はオープンベータ期間のみ Studio Raming 公式 BOOTH ページで無料配布し、Early Access 開始から有料販売します。無料配布に MingToon の商用ライセンスは含まれず、ファイル共有や再配布も許可しません。このガイドでは、アバターの設定、メニュー予算の確認、Play Mode とアップロードの確認を説明します。
+Ming Light Controller（MLC）は、MingToon マテリアルの明るさ・色・バーチャルライト・パフォーマンス設定を VRChat の表現メニューから操作できるようにする **追加インストールするアドオン**です。MingToon BRP ベータ本体とは別にインストールします。MLC はオープンベータ期間のみ Studio Raming 公式 BOOTH ページで無料配布し、Early Access 開始から有料販売します。無料配布に MingToon の商用ライセンスは含まれず、ファイル共有や再配布も許可しません。このガイドでは、アバターの設定、メニュー予算の確認、Play Mode とアップロードの確認を説明します。
 
 :::note[設定は元のアバターに保存します]
 Edit Mode の MLC コンポーネントはこのアバターの設定を保持します。実際のメニュー・パラメーター・FX と必要なマテリアル処理は、Play Mode またはアップロード用に作られたビルドクローンで行われます。元の FX、メニュー、パラメーター、マテリアルを上書きしません。編集中に Generated フォルダーが作られないのは正常です。
@@ -20,7 +20,7 @@ Edit Mode の MLC コンポーネントはこのアバターの設定を保持�
 |---|---|
 | **MingToon BRP ベータ本体** | マテリアルのレンダリング、インスペクターと Manager、ビルド最適化 |
 | **Ming Light Controller** | アバターごとの操作設定とゲーム内表現メニューの生成 |
-| **URP アドオン** | 別売りの URP 対応パッケージ。BRP 本体には含まれません |
+| **URP アドオン** | 現在のBRPオープンベータには含まれず、すべての商用ライセンスに含まれるURP対応パッケージ |
 | **Mask Maker / Face SDF Studio** | 別売りの制作ツール。詳しくは[別売アドオン](/guides/add-ons)を参照 |
 
 ## Ming Light Controller とは {#ming-light-controller란}
