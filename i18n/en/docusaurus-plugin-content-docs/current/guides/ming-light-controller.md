@@ -10,6 +10,18 @@ Every commercial license includes the URP version. MLC is included in the Early 
 
 Ming Light Controller (MLC) is a **separate add-on** that lets users control MingToon material brightness, colour, virtual lighting, and performance settings from a VRChat expression menu. Install it separately from the MingToon BRP beta core. MLC is free only through Studio Raming's official BOOTH page during the open beta and is sold from the start of Early Access. Free distribution does not include a MingToon commercial license and does not permit file sharing or redistribution. This guide covers avatar setup, menu budget checks, Play Mode, and upload checks.
 
+## Free distribution and shader support
+
+**MLC is free only during the Open Beta.** Paid sales are planned to begin with Early Access. See the [official BOOTH product page](https://raming.booth.pm/items/8810346) for distribution information and packages. Install the MingToon shader separately.
+
+| Shader | Support status |
+|---|---|
+| **MingToon** | Supported in the current version |
+| **lilToon** | Planned for a future update; not supported in the current version |
+| **Poiyomi** | Planned for a future update; not supported in the current version |
+
+Timing and scope for planned support will be announced later. MLC does not convert one shader to another. Free distribution does not include a MingToon commercial license; file sharing and redistribution are prohibited.
+
 :::note[Settings stay on the original avatar]
 The MLC component in Edit Mode stores this avatar's settings. The actual menu, parameters, FX, and required material processing are performed on a Play Mode or upload build clone. Original FX, menus, parameters, and materials are not overwritten. It is normal for no Generated folder to appear while authoring.
 :::
