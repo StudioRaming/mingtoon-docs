@@ -5,6 +5,11 @@ sidebar_label: はじめに
 slug: /
 ---
 
+:::note[オープンベータ参加案内]
+[オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/) — BOOTH商品はまだ公開されていません。公開後、このページに公式商品リンクを追加します。 ダウンロード前に、現在のベータ版の利用条件と対応範囲をご確認ください。
+:::
+
+
 すべての商用ライセンスにURPバージョンが含まれます。Personal Streaming・Personal CreatorのEarly Access Founders EditionにはMLCが含まれ、正式リリース後に構成が変更される場合があります。現在のオープンベータでは商用利用は禁止です。[ライセンスと同梱構成](/legal/beta-license)をご確認ください。
 
 # MingToon
@@ -122,7 +127,7 @@ Ming Light Controllerを別途インストールし、アップロード用ク�
 - デプロイ前に [現在の制限とリリース](/limitations) を確認してください。
 :::
 
-バグ・質問・フィードバック: `studioraming@gmail.com`
+バグの報告は[公式Discordサーバー](https://discord.gg/Zsj6pkWKKs)の**バグ報告チャンネル**をご利用ください。
 
 報告の際は以下を記載していただくと、再現が早くなります。
 

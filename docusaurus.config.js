@@ -121,7 +121,7 @@ const config = {
         // navbar badge below, which resolves the locale prefix itself.
         id: 'open-beta-brp',
         content:
-          `MingToon ${MINGTOON_VERSION} Open Beta. studioraming@gmail.com`,
+          `MingToon ${MINGTOON_VERSION} Open Beta.`,
         backgroundColor: '#5b3fd6',
         textColor: '#ffffff',
         isCloseable: true,
@@ -176,9 +176,10 @@ const config = {
                 to: '/legal/third-party-credits',
               },
               {
-                label: 'studioraming@gmail.com',
+                label: 'Business enquiries',
                 href: 'mailto:studioraming@gmail.com',
               },
+              {label: 'Bug reports (Discord)', href: 'https://discord.gg/Zsj6pkWKKs'},
             ],
           },
         ],

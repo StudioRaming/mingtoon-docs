@@ -239,7 +239,7 @@ SubShaderが丸ごと脱落するためログは静かなままです。ピン�
 
 ## それでも解決しない場合
 
-`studioraming@gmail.com` へ以下を一緒に送ってください。
+[公式Discordサーバー](https://discord.gg/Zsj6pkWKKs)の**バグ報告チャンネル**に以下の情報を添えてご報告ください。
 
 1. Unityバージョンと対象プラットフォーム (VRChat PC / Warudo / 一般Unity)
 2. レンダーパイプライン (BRP / URP 12.x)

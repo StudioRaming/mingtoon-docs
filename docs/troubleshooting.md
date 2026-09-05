@@ -239,7 +239,7 @@ SubShader가 통째로 탈락하기 때문에 로그가 조용합니다. 분홍�
 
 ## 그래도 해결되지 않으면
 
-`studioraming@gmail.com`으로 아래를 함께 보내 주세요.
+[공식 Discord 서버](https://discord.gg/Zsj6pkWKKs)의 **버그 제보 채널**에 아래 정보를 함께 남겨 주세요.
 
 1. Unity 버전과 대상 플랫폼 (VRChat PC / Warudo / 일반 Unity)
 2. 렌더 파이프라인 (BRP / URP 12.x)

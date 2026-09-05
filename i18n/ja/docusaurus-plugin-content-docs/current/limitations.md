@@ -50,7 +50,7 @@ SHA-256 manifestが一緒に記録されます。
 
 ## ベータのフィードバック
 
-`studioraming@gmail.com`
+バグの報告は[公式Discordサーバー](https://discord.gg/Zsj6pkWKKs)の**バグ報告チャンネル**をご利用ください。
 
 ご報告に以下を含めていただけると再現が速くなります。
 

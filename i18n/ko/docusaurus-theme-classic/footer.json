@@ -23,12 +23,16 @@
     "message": "서드파티 차용 및 라이선스",
     "description": "The label of footer link with label=Third-party credits linking to /legal/third-party-credits"
   },
-  "link.item.label.studioraming@gmail.com": {
-    "message": "studioraming@gmail.com",
-    "description": "The label of footer link with label=studioraming@gmail.com linking to mailto:studioraming@gmail.com"
-  },
   "copyright": {
     "message": "© 2026 StudioRaming. MingToon 0.1.7.",
     "description": "The footer copyright"
+  },
+  "link.item.label.Business enquiries": {
+    "message": "기업 문의 · 이메일",
+    "description": "Business email contact"
+  },
+  "link.item.label.Bug reports (Discord)": {
+    "message": "버그 제보 채널 · Discord",
+    "description": "Official Discord bug-report channel 안내"
   }
 }

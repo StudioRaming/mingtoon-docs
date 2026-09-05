@@ -87,7 +87,7 @@ Discuss corporate adoption for the content and production workflows of MCNs and 
 - Sell games, software, or products that include the source
 - URP version included
 
-[Ask on official Discord](https://discord.gg/Zsj6pkWKKs)
+[Email for business enquiries](mailto:studioraming@gmail.com) · studioraming@gmail.com
 
 ## Source code and file distribution
 
@@ -96,3 +96,7 @@ Selling the source code itself is prohibited under every license. Corporate lice
 Current MingToon Beta and MLC files may not be shared or redistributed. Personal license descriptions and included add-on lists do not grant redistribution rights to original product files.
 
 [Full license information](https://studioraming.github.io/mingtoon-site/en/license/)
+
+A separate platform for managing paid licenses may be added in the future.
+
+[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) — The BOOTH product has not been published yet. Its official product link will be added here after publication.

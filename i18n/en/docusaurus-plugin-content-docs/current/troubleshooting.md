@@ -239,7 +239,7 @@ This is normal. The editable shader compiles all features and maximum layer coun
 
 ## Still not resolved
 
-Send these to `studioraming@gmail.com`:
+Post the following in the **bug-report channel** of the [official Discord server](https://discord.gg/Zsj6pkWKKs):
 
 1. Unity version and target platform (VRChat PC / Warudo / general Unity)
 2. Render pipeline (BRP / URP 12.x)

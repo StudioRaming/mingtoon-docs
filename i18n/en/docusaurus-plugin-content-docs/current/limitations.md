@@ -50,7 +50,7 @@ Package build is blocked unless a MingToon-exclusive LICENSE/EULA approved by th
 
 ## Beta feedback
 
-`studioraming@gmail.com`
+Report bugs in the **bug-report channel** of the [official Discord server](https://discord.gg/Zsj6pkWKKs).
 
 When reporting, including these speeds up reproduction:
 

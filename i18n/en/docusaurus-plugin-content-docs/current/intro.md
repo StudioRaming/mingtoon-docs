@@ -5,6 +5,11 @@ sidebar_label: About
 slug: /
 ---
 
+:::note[Join the Open Beta]
+[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) — The BOOTH product has not been published yet. Its official product link will be added here after publication. Review the current beta terms and supported environments before downloading.
+:::
+
+
 Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
 
 # MingToon
@@ -129,7 +134,7 @@ Property names and descriptions are taken exactly as **MingToon inspector displa
 - Check [current limitations and release](/limitations) before deployment.
 :::
 
-Bug reports · questions · feedback: `studioraming@gmail.com`
+Report bugs in the **bug-report channel** of the [official Discord server](https://discord.gg/Zsj6pkWKKs).
 
 When reporting, including these speeds up reproduction:
 

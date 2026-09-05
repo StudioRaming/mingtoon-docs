@@ -50,7 +50,7 @@ SHA-256 manifest가 함께 기록됩니다.
 
 ## 베타 피드백
 
-`studioraming@gmail.com`
+버그 제보는 [공식 Discord 서버](https://discord.gg/Zsj6pkWKKs)의 **버그 제보 채널**을 이용해 주세요.
 
 제보에 아래를 포함해 주시면 재현이 빨라집니다.
 

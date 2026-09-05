@@ -87,7 +87,7 @@ MCN·V-Tuber 기획사의 콘텐츠·제작 워크플로에 맞는 기업 도입
 - 소스를 포함한 게임·프로그램·제품 판매 가능
 - URP 버전 포함
 
-[공식 Discord로 문의](https://discord.gg/Zsj6pkWKKs)
+[이메일로 기업 문의](mailto:studioraming@gmail.com) · studioraming@gmail.com
 
 ## 소스 코드와 파일 배포
 
@@ -96,3 +96,7 @@ MCN·V-Tuber 기획사의 콘텐츠·제작 워크플로에 맞는 기업 도입
 현재 베타의 MingToon 본체와 MLC 파일은 공유·재배포할 수 없습니다. 개인 라이선스 안내나 포함 애드온 목록이 제품 원본 파일의 재배포 권리를 부여하지 않습니다.
 
 [라이선스 안내 전문](https://studioraming.github.io/mingtoon-site/ko/license/)
+
+유료 라이선스 관리를 위한 별도 플랫폼이 향후 추가될 수 있습니다.
+
+[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) — 아직 BOOTH 상품이 게시되지 않았습니다. 게시 후 이 페이지에 공식 상품 링크를 연결합니다.

@@ -4,6 +4,11 @@ title: Installation
 sidebar_position: 1
 ---
 
+:::note[Join the Open Beta]
+[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) — The BOOTH product has not been published yet. Its official product link will be added here after publication. Review the current beta terms and supported environments before downloading.
+:::
+
+
 Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
 
 # Installation

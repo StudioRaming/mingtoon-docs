@@ -5,6 +5,11 @@ sidebar_label: 소개
 slug: /
 ---
 
+:::note[오픈 베타 참여 안내]
+[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) — 아직 BOOTH 상품이 게시되지 않았습니다. 게시 후 이 페이지에 공식 상품 링크를 연결합니다. 다운로드 전에 현재 베타의 이용 조건과 지원 범위를 확인해 주세요.
+:::
+
+
 모든 상업 라이선스에는 URP 버전이 포함됩니다. Personal Streaming·Personal Creator의 Early Access Founders Edition에는 MLC가 포함되며, 정식 출시 이후 구성은 변경될 수 있습니다. 현재 오픈 베타의 상업 이용은 금지됩니다. [라이선스 및 포함 구성](/legal/beta-license)을 확인하세요.
 
 # MingToon
@@ -117,7 +122,7 @@ Ming Light Controller를 별도로 설치하고 업로드 복제본에 적용하
 - 배포 전 [현재 제한과 릴리스](/limitations)를 확인하세요.
 :::
 
-버그·질문·피드백: `studioraming@gmail.com`
+버그 제보는 [공식 Discord 서버](https://discord.gg/Zsj6pkWKKs)의 **버그 제보 채널**을 이용해 주세요.
 
 제보할 때 아래를 함께 적어 주시면 재현이 빨라집니다.
 

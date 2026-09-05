@@ -4,6 +4,11 @@ title: 설치
 sidebar_position: 1
 ---
 
+:::note[오픈 베타 참여 안내]
+[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) — 아직 BOOTH 상품이 게시되지 않았습니다. 게시 후 이 페이지에 공식 상품 링크를 연결합니다. 다운로드 전에 현재 베타의 이용 조건과 지원 범위를 확인해 주세요.
+:::
+
+
 모든 상업 라이선스에는 URP 버전이 포함됩니다. Personal Streaming·Personal Creator의 Early Access Founders Edition에는 MLC가 포함되며, 정식 출시 이후 구성은 변경될 수 있습니다. 현재 오픈 베타의 상업 이용은 금지됩니다. [라이선스 및 포함 구성](/legal/beta-license)을 확인하세요.
 
 # 설치
