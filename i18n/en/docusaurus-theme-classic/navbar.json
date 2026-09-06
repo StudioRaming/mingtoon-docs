@@ -22,5 +22,9 @@
   "item.label.Official website": {
     "message": "Official website",
     "description": "Navbar link to the official website"
+  },
+  "item.label.BOOTH": {
+    "message": "BOOTH",
+    "description": "Navbar link to the BOOTH store page"
   }
 }

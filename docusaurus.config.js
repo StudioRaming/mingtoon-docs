@@ -136,6 +136,7 @@ const config = {
             label: 'Docs',
           },
           {href: 'https://studioraming.github.io/mingtoon-site/', label: 'Official website', position: 'left'},
+          {href: 'https://raming.booth.pm/items/8810209', label: 'BOOTH', position: 'left'},
           {to: '/changelog', label: '패치노트', position: 'left'},
           {
             type: 'localeDropdown',

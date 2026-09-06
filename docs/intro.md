@@ -6,7 +6,7 @@ slug: /
 ---
 
 :::note[오픈 베타 참여 안내]
-[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) — 아직 BOOTH 상품이 게시되지 않았습니다. 게시 후 이 페이지에 공식 상품 링크를 연결합니다. 다운로드 전에 현재 베타의 이용 조건과 지원 범위를 확인해 주세요.
+[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) · **BOOTH 상품:** <https://raming.booth.pm/items/8810209> — 다운로드 전에 현재 베타의 이용 조건과 지원 범위를 확인해 주세요.
 :::
 
 

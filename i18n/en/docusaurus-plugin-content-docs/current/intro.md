@@ -6,7 +6,7 @@ slug: /
 ---
 
 :::note[Join the Open Beta]
-[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) — The BOOTH product has not been published yet. Its official product link will be added here after publication. Review the current beta terms and supported environments before downloading.
+[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) · **BOOTH product:** <https://raming.booth.pm/items/8810209> — Review the current beta terms and supported environments before downloading.
 :::
 
 

@@ -22,6 +22,8 @@ A separate tool for creating face-shadow SDF textures that respond to light dire
 
 A separate add-on that non-destructively authors VRChat avatar lighting and look-control menus, parameters and FX configuration. The MingToon shader and the VRChat/WARUDO Build Depth Light choice still work without MLC. → [Ming Light Controller guide](/guides/ming-light-controller)
 
+**Purchase:** <https://raming.booth.pm/items/8810346> (BOOTH)
+
 ## Confirming installation
 
 1. Import the add-on and wait for Unity to finish compiling.

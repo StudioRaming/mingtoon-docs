@@ -22,5 +22,9 @@
   "item.label.Official website": {
     "message": "公式サイト",
     "description": "Navbar link to the official website"
+  },
+  "item.label.BOOTH": {
+    "message": "BOOTH",
+    "description": "Navbar link to the BOOTH store page"
   }
 }

@@ -22,6 +22,8 @@ MingToon 本体は、以下のアドオンがなくてもインストール・�
 
 VRChat アバターのライティング・ルック操作メニュー、パラメーター、FX 構成を非破壊で作成する別アドオンです。MLC がなくても MingToon シェーダーと VRChat・WARUDO のビルド深度ライト選択機能は動作します。→ [Ming Light Controller ガイド](/guides/ming-light-controller)
 
+**購入:** <https://raming.booth.pm/items/8810346>（BOOTH）
+
 ## インストール確認
 
 1. アドオンをインポートし、Unity のコンパイル完了を待ちます。

@@ -6,7 +6,7 @@ slug: /
 ---
 
 :::note[オープンベータ参加案内]
-[オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/) — BOOTH商品はまだ公開されていません。公開後、このページに公式商品リンクを追加します。 ダウンロード前に、現在のベータ版の利用条件と対応範囲をご確認ください。
+[オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/) · **BOOTH 商品:** <https://raming.booth.pm/items/8810209> — ダウンロード前に、現在のベータ版の利用条件と対応範囲をご確認ください。
 :::
 
 

@@ -22,6 +22,8 @@ MingToon 본체는 아래 애드온이 하나도 없어도 설치·컴파일·�
 
 VRChat 아바타의 조명·룩 제어 메뉴, 파라미터와 FX 구성을 비파괴적으로 만드는 별도 애드온입니다. MLC가 없어도 밍툰 셰이더와 VRChat·WARUDO 빌드 깊이 라이트 선택 기능은 작동합니다. → [Ming Light Controller 가이드](/guides/ming-light-controller)
 
+**구매:** <https://raming.booth.pm/items/8810346> (BOOTH)
+
 ## 설치 확인
 
 1. 애드온을 임포트한 뒤 Unity의 컴파일이 끝날 때까지 기다립니다.
