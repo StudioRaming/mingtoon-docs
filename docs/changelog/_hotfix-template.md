@@ -22,7 +22,8 @@ sidebar_position: 0
   id:               v<버전>-hotfix
   title:            <버전> 핫픽스        (영어: <버전> Hotfix / 일본어: <버전> ホットフィックス)
   sidebar_position: 릴리스 노트의 sidebar_position 에서 0.5 를 뺀 값
-                    (0.1.7 이 -107 이면 핫픽스는 -107.5 → 목록에서 릴리스 바로 위)
+                    (0.1.7 이 -107 이면 핫픽스는 -107.5 → 빌드 결과 목록에서
+                    0.1.7 바로 다음, 0.1.6 앞에 붙는 것을 확인함)
   slug:             /changelog/<버전>-hotfix
 
 ■ 본문 구조 (새 차수는 항상 맨 위에)
