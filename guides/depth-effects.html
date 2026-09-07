@@ -1,0 +1,470 @@
+<!doctype html><html lang=ko-KR dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-guides/depth-effects" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.2"><title data-rh=true>깊이 기반 효과 | MingToon Docs</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true property=og:url content=https://studioraming.github.io/mingtoon-docs/guides/depth-effects /><meta data-rh=true property=og:locale content=ko_KR /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true property=og:locale:alternate content=ja_JP /><meta data-rh=true name=docusaurus_locale content=ko /><meta data-rh=true name=docsearch:language content=ko /><meta data-rh=true name=docusaurus_version content=current /><meta data-rh=true name=docusaurus_tag content=docs-default-current /><meta data-rh=true name=docsearch:version content=current /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-current /><meta data-rh=true property=og:title content="깊이 기반 효과 | MingToon Docs"/><meta data-rh=true name=description content="이 문서를 읽으면 2D 림라이트·2D 그림자·내부 2D 경계가 왜 안 보이는지 진단하고, 각 플랫폼에서 깊이를 확보하는 방법을 알게 됩니다."/><meta data-rh=true property=og:description content="이 문서를 읽으면 2D 림라이트·2D 그림자·내부 2D 경계가 왜 안 보이는지 진단하고, 각 플랫폼에서 깊이를 확보하는 방법을 알게 됩니다."/><link data-rh=true rel=icon href=/mingtoon-docs/img/favicon.svg /><link data-rh=true rel=canonical href=https://studioraming.github.io/mingtoon-docs/guides/depth-effects /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/guides/depth-effects hreflang=ko-KR /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/en/guides/depth-effects hreflang=en-US /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/ja/guides/depth-effects hreflang=ja-JP /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/guides/depth-effects hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://studioraming.github.io/mingtoon-docs/guides/depth-effects","name":"깊이 기반 효과","position":1}]}</script><link rel=stylesheet href=/mingtoon-docs/assets/css/styles.873dfae7.css /><script src=/mingtoon-docs/assets/js/runtime~main.755a4f95.js defer></script><script src=/mingtoon-docs/assets/js/main.9ff96b45.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme-5b9")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}(),document.documentElement.setAttribute("data-announcement-bar-initially-dismissed",function(){try{return"true"===localStorage.getItem("docusaurus.announcement.dismiss-5b9")}catch(t){}return!1}())</script><div id=__docusaurus><div role=region aria-label="본문으로 건너뛰기"><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>본문으로 건너뛰기</a></div><div class="theme-announcement-bar announcementBar_mb4j" style=background-color:#d79aaa;color:#101314 role=banner><div class=announcementBarPlaceholder_vyr4></div><div class="content_knG7 announcementBarContent_xLdY">MingToon 0.1.7 Open Beta.</div><button type=button aria-label=닫기 class="clean-btn close closeButton_CVFx announcementBarClose_gvF7"><svg viewBox="0 0 15 15" width=14 height=14><g stroke=currentColor stroke-width=3.1><path d="M.75.75l13.5 13.5M14.25.75L.75 14.25"/></g></svg></button></div><nav aria-label=메인 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label="사이드바 펼치거나 접기" aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/mingtoon-docs/><b class="navbar__title text--truncate">MingToon</b></a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/mingtoon-docs/>문서</a><a href=https://studioraming.github.io/mingtoon-site/ target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">공식 사이트<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><a href=https://raming.booth.pm/items/8810209 target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">BOOTH<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><a class="navbar__item navbar__link" href=/mingtoon-docs/changelog>패치노트</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>한국어</a><ul class=dropdown__menu><li><a href=/mingtoon-docs/guides/depth-effects target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=ko-KR>한국어</a><li><a href=/mingtoon-docs/en/guides/depth-effects target=_self rel="noopener noreferrer" class=dropdown__link lang=en-US>English</a><li><a href=/mingtoon-docs/ja/guides/depth-effects target=_self rel="noopener noreferrer" class=dropdown__link lang=ja-JP>日本語</a></ul></div><a class="navbar__item navbar__link navbar__version" aria-label="MingToon 0.1.7 patch notes" href=/mingtoon-docs/changelog/0.1.7>v0.1.7</a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="어두운 모드와 밝은 모드 전환하기 (현재 system mode)"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class="navbar__search searchBarContainer_NW3z" dir=ltr><svg aria-hidden=true class=searchIcon_T3tP focusable=false viewBox="0 0 16 16"><path fill=currentColor d="M6.02945 10.20327a4.17382 4.17382 0 1 1 4.17382-4.17382 4.15609 4.15609 0 0 1-4.17382 4.17382Zm9.69195 4.2199-4.8225-4.82338A5.88021 5.88021 0 0 0 12.058 6.02856 6.00467 6.00467 0 1 0 9.59979 10.8989l4.82338 4.82338a.89729.89729 0 0 0 1.29912 0 .89749.89749 0 0 0-.00087-1.29909Z"/></svg><input placeholder=검색 aria-label=Search class="navbar__search-input searchInput_YFbd" value="" /><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label="맨 위로 스크롤하기" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label="문서 사이드바" class="menu thin-scrollbar menu_SIkG menuWithAnnouncementBar_GW3s"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/mingtoon-docs/><span class=linkLabel_WmDU>소개</span></a><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/mingtoon-docs/getting-started/installation><span class=categoryLinkLabel_W154>시작하기</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/getting-started/installation><span class=linkLabel_WmDU>설치</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/getting-started/first-material><span class=linkLabel_WmDU>첫 재질 만들기</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role=button aria-expanded=true href=/mingtoon-docs/guides/inspector><span class=categoryLinkLabel_W154>룩 만들기</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/inspector><span class=linkLabel_WmDU>인스펙터 사용법</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/basics><span class=linkLabel_WmDU>기본 설정</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/light-and-shadow><span class=linkLabel_WmDU>조명과 그림자</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/shadow-pattern><span class=linkLabel_WmDU>그림자 패턴 (스크린톤)</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/rim><span class=linkLabel_WmDU>림</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current=page tabindex=0 href=/mingtoon-docs/guides/depth-effects><span class=linkLabel_WmDU>깊이 기반 효과</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/detail-maps><span class=linkLabel_WmDU>디테일 맵</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/character><span class=linkLabel_WmDU>캐릭터 표현</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/outline><span class=linkLabel_WmDU>아웃라인</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/mesh-bakes><span class=linkLabel_WmDU>메시 UV 베이크</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/texture-modules><span class=linkLabel_WmDU>텍스처 슬롯 공통 UI</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/bulk-editing><span class=linkLabel_WmDU>여러 재질 한 번에</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/face-sdf><span class=linkLabel_WmDU>얼굴 SDF와 Face SDF Studio</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/add-ons><span class=linkLabel_WmDU>별매 애드온</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/mask-maker><span class=linkLabel_WmDU>Mask Maker 연동</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/ming-light-controller><span class=linkLabel_WmDU>Ming Light Controller 사용하기</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/guides/tiled-materials><span class=linkLabel_WmDU>타일드 머티리얼 컴포저</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/mingtoon-docs/workflow/character-manager><span class=categoryLinkLabel_W154>내보내기</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/workflow/character-manager><span class=linkLabel_WmDU>밍툰 매니저</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/workflow/liltoon-conversion><span class=linkLabel_WmDU>lilToon 재질 변환</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/workflow/build-optimization><span class=linkLabel_WmDU>빌드 시 자동 최적화</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/workflow/bake-and-restore><span class=linkLabel_WmDU>수동 Bake와 복원</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/mingtoon-docs/platforms/vrchat><span class=categoryLinkLabel_W154>플랫폼</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/platforms/vrchat><span class=linkLabel_WmDU>VRChat</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/platforms/compatibility><span class=linkLabel_WmDU>지원 환경</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/platforms/warudo><span class=linkLabel_WmDU>Warudo</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/mingtoon-docs/reference/basics><span class=categoryLinkLabel_W154>항목 레퍼런스</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/mingtoon-docs/internals/shader-structure><span class=categoryLinkLabel_W154>내부 동작</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist" href=/mingtoon-docs/changelog><span class=categoryLinkLabel_W154>패치노트</span></a><button aria-label="사이드바 분류 '패치노트' 펼치기" aria-expanded=false type=button class="clean-btn menu__caret"></button></div><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/mingtoon-docs/troubleshooting><span class=linkLabel_WmDU>문제 해결</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/mingtoon-docs/limitations><span class=linkLabel_WmDU>현재 제한과 릴리스</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/mingtoon-docs/legal/beta-license><span class=linkLabel_WmDU>라이선스 및 상업 사용 안내</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="탐색 경로"><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label=홈 class=breadcrumbs__link href=/mingtoon-docs/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class=breadcrumbs__item><span class=breadcrumbs__link>룩 만들기</span><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>깊이 기반 효과</span></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">이 페이지에서</button></div><div class="theme-doc-markdown markdown"><header><h1>깊이 기반 효과</h1></header>
+<p><strong>이 문서를 읽으면</strong> 2D 림라이트·2D 그림자·내부 2D 경계가 왜 안 보이는지 진단하고, 각 플랫폼에서 깊이를 확보하는 방법을 알게 됩니다.</p>
+<p>인스펙터의 <strong>깊이 기반 효과</strong> 그룹 — <code>깊이</code> · <code>2D 림라이트</code> · <code>2D 그림자</code> · <code>내부 2D 경계</code> 를 다룹니다. 전체 항목 목록은 <a class="" href=/mingtoon-docs/reference/depth-effects>깊이 기반 효과 레퍼런스</a>에 있습니다.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=무엇이-깊이를-쓰나>무엇이 깊이를 쓰나<a href=#무엇이-깊이를-쓰나 class=hash-link aria-label="무엇이 깊이를 쓰나에 대한 직접 링크" title="무엇이 깊이를 쓰나에 대한 직접 링크" translate=no>​</a></h2>
+<p>이 그룹의 네 섹션은 전부 <strong>카메라 깊이 텍스처</strong>를 읽습니다. 깊이가 없으면 값을 아무리 만져도 화면에 나타나지 않습니다.</p>
+<div class="theme-admonition theme-admonition-danger admonition_xJq3 alert alert--danger"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"/></svg></span>값을 만지기 전에 깊이부터 확인하세요</div><div class=admonitionContent_BuS1><p>인스펙터가 상태를 직접 알려 줍니다.<ul>
+<li class=""><code>깊이 효과가 꺼져 있어 이 모듈은 그려지지 않습니다.</code> → <code>깊이 효과 켜기</code></li>
+<li class=""><code>이 효과는 Depth가 켜진 카메라에서만 보입니다.</code></li>
+<li class=""><code>2D 림라이트와 2D 그림자는 깊이를 기록하는 불투명 또는 컷아웃 재질이 필요합니다. 투명 큐에서는 깊이 효과가 비활성화됩니다.</code></li>
+<li class=""><code>활성 Scene/Game 카메라의 깊이 텍스처가 준비되지 않았습니다.</code></li>
+</ul><p>이 메시지가 떠 있는 동안 폭이나 강도를 만지는 것은 의미가 없습니다.</div></div>
+<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 14 16"><path fill-rule=evenodd d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"/></svg></span>내부 2D 경계가 여기 있는 이유</div><div class=admonitionContent_BuS1><p>아웃라인처럼 보이지만 화면 깊이를 읽기 때문에 <strong>아웃라인 그룹이 아니라 이 그룹</strong>에 있습니다. 아웃라인에서 찾다가 못 찾는 일이 흔합니다.</div></div>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=플랫폼별-깊이-확보>플랫폼별 깊이 확보<a href=#플랫폼별-깊이-확보 class=hash-link aria-label="플랫폼별 깊이 확보에 대한 직접 링크" title="플랫폼별 깊이 확보에 대한 직접 링크" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=vrchat-주-대상>VRChat (주 대상)<a href=#vrchat-주-대상 class=hash-link aria-label="VRChat (주 대상)에 대한 직접 링크" title="VRChat (주 대상)에 대한 직접 링크" translate=no>​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>상황<th>깊이<tbody><tr><td><strong><a class=ming-term href=/mingtoon-docs/platforms/vrchat#%EA%B9%8A%EC%9D%B4-%ED%9A%A8%EA%B3%BC%EA%B0%80-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%EB%B3%B4%EC%9E%A5%EB%90%98%EB%82%98>Photo Camera</a> 활성 중</strong><td>✅ 공식 계약으로 호스트 깊이가 켜집니다<tr><td><strong>월드가 Screen Camera depth를 켠 경우</strong><td>✅<tr><td><strong>일반 플레이어 화면 (기본)</strong><td>❌ 아바타가 강제할 수 없습니다<tr><td><strong>미러 · 스트림 내부 경로</strong><td>⚠️ 보장되지 않습니다</table>
+<p>Screen Camera 설정은 <strong>월드/Udon 측 권한</strong>입니다. 임의 Camera나 Light를 아바타에 추가하는 것은 지원되는 해결책이 아닙니다. 예외는 <a class=ming-term href=/mingtoon-docs/workflow/character-manager>밍툰 매니저</a>의 <code>업로드 시 깊이 라이트 싣기</code>입니다. 이 기본 꺼짐 옵트인은 업로드 복사본에 그림자를 켠 Directional Light를 추가하지만, 다른 사용자의 depth pass·아바타 랭크·월드 조명에 비용을 더합니다. → <a class="" href=/mingtoon-docs/platforms/vrchat#vrchat-%EA%B9%8A%EC%9D%B4-%EB%9D%BC%EC%9D%B4%ED%8A%B8>VRChat 깊이 라이트</a></p>
+<p>업로드는 <code>Depth Availability</code>를 바꾸지 않습니다. <code>Auto</code>는 카메라마다 실제로 바인딩된 깊이를 판정하고, <code>Force On</code>은 작성자가 직접 고른 경우에만 유지됩니다. 자세한 내용은 <a class="" href=/mingtoon-docs/platforms/vrchat>VRChat</a>을 보세요.</p>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>깊이가 없는 화면을 위한 대비</div><div class=admonitionContent_BuS1><p><a class="" href=/mingtoon-docs/guides/rim>림</a>의 <a class=ming-term href=/mingtoon-docs/guides/rim#%EB%A6%BC-%EB%9D%BC%EC%9D%B4%ED%8A%B8>림 라이트</a>·<a class=ming-term href=/mingtoon-docs/guides/rim#%EB%A6%BC-%EC%85%B0%EC%9D%B4%EB%93%9C>림 셰이드</a>와 <a class="" href=/mingtoon-docs/guides/outline>아웃라인</a>의 <a class=ming-term href=/mingtoon-docs/guides/outline#%EB%85%B8%EB%A9%80-%EC%95%84%EC%9B%83%EB%9D%BC%EC%9D%B8>노멀 아웃라인</a>은 <strong>깊이가 필요 없습니다.</strong> 깊이 기반 효과에만 의존하지 말고 이 둘로 실루엣의 바닥을 깔아 두세요.</div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=일반-unity-brp>일반 Unity (BRP)<a href=#일반-unity-brp class=hash-link aria-label="일반 Unity (BRP)에 대한 직접 링크" title="일반 Unity (BRP)에 대한 직접 링크" translate=no>​</a></h3>
+<p>씬에 <code>Studio Raming/MingToon/Depth Texture Provider</code> 컴포넌트를 두면 됩니다. 활성 Game Camera가 렌더하기 직전에 필요한 depth flag와 카메라 행렬을 제공하고, 기존 카메라 플래그는 보존합니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=urp-12>URP 12<a href=#urp-12 class=hash-link aria-label="URP 12에 대한 직접 링크" title="URP 12에 대한 직접 링크" translate=no>​</a></h3>
+<ol>
+<li class=""><code>Tools > Studio Raming > MingToon > URP > Install Depth Effects Renderer Feature</code>를 실행합니다.</li>
+<li class="">아웃라인도 쓴다면 <code>Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature</code>도 실행합니다.</li>
+<li class="">사용 중인 URP Renderer Data에서 <strong>Depth Texture</strong>를 활성화합니다.</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=warudo>Warudo<a href=#warudo class=hash-link aria-label="Warudo에 대한 직접 링크" title="Warudo에 대한 직접 링크" translate=no>​</a></h3>
+<p>Depth를 켠 Warudo 카메라가 필요합니다. 아바타 번들만으로는 호스트 카메라를 바꿀 수 없는 경우가 있습니다. → <a class="" href=/mingtoon-docs/platforms/warudo>Warudo</a></p>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=깊이-가용성>깊이 가용성<a href=#깊이-가용성 class=hash-link aria-label="깊이 가용성에 대한 직접 링크" title="깊이 가용성에 대한 직접 링크" translate=no>​</a></h2>
+<p>깊이 텍스처가 <strong>있는지 없는지를 어떻게 판정할지</strong> 정하는 값입니다. 네 가지 중에서 고릅니다.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>값<th>뜻<tbody><tr><td><code>Auto</code> (기본값)<td>셰이더가 스스로 찾습니다. <strong>이대로 두세요</strong><tr><td><code>Force On</code><td>자동 판정이 닿지 않는 호스트에서 작성자가 깊이 버퍼를 보증합니다. <strong>미러는 제외됩니다</strong><tr><td><code>Force Off</code><td>깊이 효과를 완전히 차단합니다<tr><td><code>Diagnostic</code><td>판정 상태를 화면에 색으로 칠합니다. <strong>버그 신고용</strong></table>
+<div class="theme-admonition theme-admonition-caution admonition_xJq3 alert alert--warning"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 16 16"><path fill-rule=evenodd d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"/></svg></span>주의</div><div class=admonitionContent_BuS1><mdxadmonitiontitle><code>Force On</code>은 미러를 켜지 않습니다</mdxadmonitiontitle><p>미러 카메라는 자기 깊이 텍스처를 그리지 않는데, 플레이어 카메라의 깊이 버퍼는 그대로 바인드되어 있습니다. 그대로 읽으면 캐릭터가 <strong>남의 실루엣</strong>을 자기 그림자로 씁니다 — 고개를 돌릴 때마다 2D 그림자와 2D 림라이트가 몸을 따라오지 않고 미끄러지던 현상이 이것입니다.<p>그래서 <code>Force On</code>은 "호스트가 보고하지 못하는 경우까지 켠다, <strong>단 미러는 제외</strong>"를 뜻합니다. 미러 안에서는 어떤 값을 골라도 깊이 모듈이 내려갑니다.</div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=diagnostic>Diagnostic — 신고할 때만<a href=#diagnostic class=hash-link aria-label="Diagnostic — 신고할 때만에 대한 직접 링크" title="Diagnostic — 신고할 때만에 대한 직접 링크" translate=no>​</a></h3>
+<p>깊이 효과가 아바타 전체에 번지는 것처럼 보일 때, 셰이더가 <strong>실제로 어떤 깊이 텍스처를 보고 있었는지</strong> 단색으로 칠해 알려 줍니다. 룩이 통째로 바뀌므로 일반 작업에는 쓰지 마세요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>색<th>뜻<tbody><tr><td>검정<td>깊이 텍스처가 아예 없음<tr><td>빨강<td>텍스처는 있으나 이 화면의 버퍼가 아님 (크기가 다르거나 미러)<tr><td>노랑<td>있고 크기도 맞음<tr><td>파랑 채널이 섞임<td>호스트가 깊이 가용을 직접 보고함</table>
+<p>렌더링 자체는 바꾸지 않습니다. 진단 색 아래에서 도는 깊이 판정은 <code>Auto</code>와 완전히 같습니다.</p>
+<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 14 16"><path fill-rule=evenodd d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"/></svg></span>VRChat에서 확인하려면 재업로드가 필요합니다</div><div class=admonitionContent_BuS1><p>셰이더는 아바타 에셋번들에 동봉되므로, 이미 올라간 아바타는 예전 셰이더를 계속 씁니다. → <a class="" href=/mingtoon-docs/platforms/vrchat>VRChat</a></div></div>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=안-보일-때-진단-순서>안 보일 때 진단 순서<a href=#안-보일-때-진단-순서 class=hash-link aria-label="안 보일 때 진단 순서에 대한 직접 링크" title="안 보일 때 진단 순서에 대한 직접 링크" translate=no>​</a></h2>
+<p>위에서부터 차례로 확인하세요.</p>
+<ol>
+<li class=""><strong><a class=ming-term href=/mingtoon-docs/guides/inspector#%EC%A0%84%EC%B2%B4-%ED%9A%A8%EA%B3%BC--%EA%B0%80%EC%9E%A5-%EC%9C%84%EC%9D%98-%EB%A7%88%EC%8A%A4%ED%84%B0-%EC%8A%A4%EC%9C%84%EC%B9%98>전체 효과</a></strong> — 마스터가 꺼져 있지 않은가 (<a class="" href=/mingtoon-docs/guides/inspector#%EC%A0%84%EC%B2%B4-%ED%9A%A8%EA%B3%BC--%EA%B0%80%EC%9E%A5-%EC%9C%84%EC%9D%98-%EB%A7%88%EC%8A%A4%ED%84%B0-%EC%8A%A4%EC%9C%84%EC%B9%98>인스펙터 사용법</a>)</li>
+<li class=""><strong>깊이 효과</strong> 섹션의 마스터 토글</li>
+<li class=""><strong><a class=ming-term href=/mingtoon-docs/guides/basics#1-%ED%91%9C%EB%A9%B4-%EB%AA%A8%EB%93%9C%EB%B6%80%ED%84%B0-%EC%A0%95%ED%95%A9%EB%8B%88%EB%8B%A4>표면 모드</a></strong> — 투명(깊이 미기록)이면 전부 꺼집니다. <code>투명 · 아웃라인용 깊이 기록</code>으로 바꾸세요</li>
+<li class=""><strong>마스터 폭</strong> — 0이면 각 모듈의 폭을 아무리 올려도 아무것도 나오지 않습니다</li>
+<li class=""><strong>각 모듈의 강도</strong> — <code>림 강도</code>가 0이면 림 계산을 건너뜁니다</li>
+<li class=""><strong>카메라 깊이</strong> — 위의 플랫폼별 항목</li>
+<li class="">계속되면 <code>Tools > Studio Raming > MingToon > Validate Project</code></li>
+</ol>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=깊이--공통-값>깊이 효과 마스터<a href=#깊이--공통-값 class=hash-link aria-label="깊이 효과 마스터에 대한 직접 링크" title="깊이 효과 마스터에 대한 직접 링크" translate=no>​</a></h2>
+<p><code>2D 림라이트</code>와 <code>2D 그림자</code>가 공유하는 값이며, 마스터를 끄면 SSAO·2D 투과광·이너 아웃라인까지 깊이 그룹 전체가 꺼집니다. 여기를 먼저 잡고 각 모듈로 내려가세요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>마스터 폭</code><td>두 모듈의 화면 오프셋에 공통으로 곱해지는 배수. <strong>0이면 전부 안 나옵니다</strong><tr><td><code>폭 모드</code><td><code>Screen Pixels</code>는 화면 픽셀 기준 · <code>Distance Stable</code>은 거리·FOV가 변해도 두께 일정<tr><td><code>거리 스케일</code><td><code>Distance Stable</code>일 때 기준 거리. <code>Screen Pixels</code>면 무시됩니다<tr><td><code>마스터 바이어스</code><td>이 값을 넘는 깊이 차이만 경계로 인정. <strong>낮추면</strong> 얕은 굴곡에도 선이 붙어 지저분해지고, <strong>올리면</strong> 얇은 부위의 선이 사라집니다<tr><td><code>마스터 부드러움</code><td>낮으면 딱딱한 잉크선, 높으면 부드럽게 번진 경계</table>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>아바타에는 Distance Stable</div><div class=admonitionContent_BuS1><p>카메라 거리가 계속 변하는 환경에서는 <code>Distance Stable</code>이 두께를 일정하게 유지합니다.</div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=런타임-전환>런타임 전환<a href=#런타임-전환 class=hash-link aria-label="런타임 전환에 대한 직접 링크" title="런타임 전환에 대한 직접 링크" translate=no>​</a></h3>
+<ul>
+<li class=""><code>FX 애니메이터로 깊이 효과 전환</code> — VRChat FX 같은 애니메이터가 깊이 효과 마스터를 켜고 끌 수 있게 베이크 상수 접기를 보류합니다.</li>
+<li class=""><code>FX 메뉴로 그림자 투영 전환</code> — 밍툰 매니저의 VRC Quality 메뉴에 <code>Shadow Projection</code>을 추가합니다. 끄면 페더 샘플·캐스트 합성·관련 투과광 계산을 건너뜁니다.</li>
+</ul>
+<p>두 옵션 모두 기본 꺼짐입니다. 런타임에서 실제로 전환할 재질에만 켜세요. 옵트인하면 해당 코드를 베이크에서 제거할 수 없으므로 High/ON 상태에도 소폭의 유지 비용이 있습니다.</p>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=깊이-림-2d-림>2D 림라이트<a href=#깊이-림-2d-림 class=hash-link aria-label="2D 림라이트에 대한 직접 링크" title="2D 림라이트에 대한 직접 링크" translate=no>​</a></h2>
+<p>최종 두께 = <code>마스터 폭</code> × <code>림 폭 배수</code> 입니다.</p>
+<ul>
+<li class=""><code>림 강도</code> — <strong>0이면 계산을 건너뜁니다.</strong> 색과 폭을 바꿔도 아무것도 안 보입니다.</li>
+<li class=""><code>베이스 색 혼합</code> — 0이면 단색 림, 1이면 베이스 맵 색을 곱해 부위마다 다른 림 색.</li>
+<li class=""><code>색 순도</code> — 범위 0~10, 기본값 1. 베이스 색과 림 색을 합친 뒤의 채도. 0은 무채색, 1은 기존 색, 1보다 크면 과채도입니다.</li>
+<li class=""><code>360도 림</code> — 0이면 광원 방향 쪽에만, 1이면 실루엣 전체를 감쌉니다.</li>
+<li class=""><code>2D 림 방향</code> — 림이 밀려나는 방향.</li>
+<li class=""><code>림 샘플 품질</code> — Low 1탭 / Standard 2탭 / High 4탭. 폭은 같고 내부선 억제와 비용만 달라집니다. 1탭은 눈·코·옷 경계가 림으로 새거나 카메라 이동 때 한 텍셀 흔들릴 수 있고, 4탭은 좁은 내부선까지 더 잘 거릅니다.</li>
+</ul>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>조명이 없거나 방향이 자주 바뀌는 환경</div><div class=admonitionContent_BuS1><p><code>360도 림</code>을 올려 두면 안정적입니다.</div></div>
+<p><code>실루엣 시작점</code>과 <code>실루엣 전환 부드러움</code>은 <strong>같은 그룹의 외곽 실루엣 제한이 0이면 전혀 반영되지 않습니다.</strong></p>
+<p><code>빠른 설정</code>의 <code>2D 림 폭</code>·<code>2D 림 강도</code>가 이 섹션의 값입니다.</p>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=2d-그림자>2D 그림자<a href=#2d-그림자 class=hash-link aria-label="2D 그림자에 대한 직접 링크" title="2D 그림자에 대한 직접 링크" translate=no>​</a></h2>
+<p>캐릭터의 실루엣을 화면 공간에서 밀어 그림자를 만듭니다. 앞머리가 이마에 드리우는 그림자를 실시간 섀도우 없이 그릴 때 주로 씁니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=기본>기본<a href=#기본 class=hash-link aria-label="기본에 대한 직접 링크" title="기본에 대한 직접 링크" translate=no>​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>그림자 밝기</code><td>낮출수록 어두워집니다. <a class="" href=/mingtoon-docs/guides/light-and-shadow#2d-%EA%B7%B8%EB%A6%BC%EC%9E%90%EC%99%80-%EC%83%89%EC%9D%B4-%EB%94%B0%EB%A1%9C-%EB%86%80-%EB%95%8C>캐스트 그림자와 통합</a>해 두면 이 값이 통합된 층의 밝기로 쓰입니다<tr><td><code>추가 깊이 바이어스</code><td>마스터 바이어스에 더해지는 이 모듈 전용 값</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=방향>방향<a href=#방향 class=hash-link aria-label="방향에 대한 직접 링크" title="방향에 대한 직접 링크" translate=no>​</a></h3>
+<p><code>실루엣 이동 방향</code> — 실루엣을 어느 쪽으로 밀지 정합니다.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>값<th>결과<tbody><tr><td><code>조명 투영 방향</code><td>광원이 미는 방향 그대로. 물리적으로 자연스러움<tr><td><code>조명 투영 반대</code><td>반대쪽. 연출 의도로 뒤집을 때</table>
+<p><code>2D 그림자 조명 방향 추적</code>을 켜면 씬 광원을 따라가고, 끄면 고정됩니다.</p>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>조명이 예측 불가능한 월드라면</div><div class=admonitionContent_BuS1><p>방향 추적을 끄고 고정하는 편이 안정적입니다. 월드마다 앞머리 그림자가 엉뚱한 쪽으로 붙는 것을 막습니다.</div></div>
+<p><code>위·아래 오프셋</code>과 <code>앞·뒤 오프셋</code>으로 그림자 위치를 미세 조정합니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=얼굴-전용-보조>얼굴 전용 보조<a href=#얼굴-전용-보조 class=hash-link aria-label="얼굴 전용 보조에 대한 직접 링크" title="얼굴 전용 보조에 대한 직접 링크" translate=no>​</a></h3>
+<p>얼굴은 별도 항목이 있습니다.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>얼굴 2D 그림자 보조</code><td>얼굴 영역에서 2D 그림자를 보강<tr><td><code>얼굴 고정 방향</code><td>얼굴이 기준으로 삼을 방향을 고정<tr><td><code>얼굴 자기면 억제</code><td>얼굴 자체 면에 그림자가 눌어붙는 것을 억제</table>
+<p>→ <a class="" href=/mingtoon-docs/guides/character#4%EB%8B%A8%EA%B3%84-%EC%95%9E%EB%A8%B8%EB%A6%AC-%EA%B7%B8%EB%A6%BC%EC%9E%90>캐릭터 표현</a></p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=눌어붙음과-감쇠>눌어붙음과 감쇠<a href=#눌어붙음과-감쇠 class=hash-link aria-label="눌어붙음과 감쇠에 대한 직접 링크" title="눌어붙음과 감쇠에 대한 직접 링크" translate=no>​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>몸체 표면 가드</code><td>몸 표면 자체에 그림자가 들러붙는 것을 막습니다<tr><td><code>2D 그림자 소멸 거리</code><td>효과가 완전히 사라지는 거리. 기본 12m이며 9m부터 옅어집니다. 0이면 거리 제한과 비용 절감을 끕니다<tr><td><code>거리 감쇠 범위</code> (<code>거리 감쇠와 경계</code> 그룹)<td>멀어질수록 효과를 줄입니다</table>
+<div class="theme-admonition theme-admonition-caution admonition_xJq3 alert alert--warning"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 16 16"><path fill-rule=evenodd d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"/></svg></span>그림자가 몸에 얼룩처럼 들러붙으면</div><div class=admonitionContent_BuS1><p><code>몸체 표면 가드</code>를 먼저 올리세요. 그래도 남으면 <code>마스터 바이어스</code>나 <code>추가 깊이 바이어스</code>를 올립니다.</div></div>
+<p>0.1.7은 수신자 거리와 표면 기울기에 따라 깊이 허용오차를 안정화하고, 화면 가장자리에서 화면 밖 탭을 감쇠합니다. 먼 거리에서는 소멸 구간과 함께 샘플 수가 줄어 군중 씬 비용도 낮아집니다.</p>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=ssao-화면-공간-차폐>SSAO (화면 공간 차폐)<a href=#ssao-화면-공간-차폐 class=hash-link aria-label="SSAO (화면 공간 차폐)에 대한 직접 링크" title="SSAO (화면 공간 차폐)에 대한 직접 링크" translate=no>​</a></h2>
+<p>접히는 곳과 물체가 맞닿는 자리를 어둡게 합니다. 목·턱 아래, 겨드랑이, 옷 주름, 발이 바닥에 닿는 부분입니다.</p>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>그림자가 아니라 차폐입니다</div><div class=admonitionContent_BuS1><p><code>형태 그림자</code>를 꺼 둔 재질에도 그대로 들어갑니다. 툰 밴드와 <a class=ming-term href=/mingtoon-docs/guides/shadow-pattern>스크린톤</a>을 <strong>통과한 뒤에</strong> 합류하므로 <a class=ming-term href=/mingtoon-docs/guides/light-and-shadow#6-%EA%B2%BD%EA%B3%84-%EC%9E%A5%EC%8B%9D--%EB%A7%88%EC%A7%80%EB%A7%89%EC%97%90>그림자 경계</a>를 계단지게 만들거나 망점으로 다시 찍히지 않습니다.</div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=오클루전-맵과-어떻게-합쳐지나>오클루전 맵과 어떻게 합쳐지나<a href=#오클루전-맵과-어떻게-합쳐지나 class=hash-link aria-label="오클루전 맵과 어떻게 합쳐지나에 대한 직접 링크" title="오클루전 맵과 어떻게 합쳐지나에 대한 직접 링크" translate=no>​</a></h3>
+<p>곱하지 않습니다. 둘을 각각 계산한 뒤 <strong>더 어두운 쪽을 취합니다.</strong> 맵으로 미리 칠해 둔 차폐가 이미 어두운 곳은 SSAO가 더 어둡게 만들지 않고, SSAO는 맵이 다루지 못하는 실제 자세와 주변 물체에 따른 차폐만 얹습니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=값-잡는-순서>값 잡는 순서<a href=#값-잡는-순서 class=hash-link aria-label="값 잡는 순서에 대한 직접 링크" title="값 잡는 순서에 대한 직접 링크" translate=no>​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>SSAO 반경</code><td>차폐를 찾는 월드 거리입니다. 범위 0.001~0.01m, 기본 0.005m입니다<tr><td><code>SSAO 강도</code><td>세기. 0이면 끈 것과 같은 그림이지만 계산은 그대로 도므로, 안 쓸 때는 <code>SSAO 사용</code>을 끄세요<tr><td><code>SSAO 대비</code><td>어두워지는 곡선을 조입니다<tr><td><code>SSAO 품질</code><td>픽셀당 깊이 샘플 수(4/8/12/16). 키워드 변형이 아니라 균일 루프라 변형 수는 늘지 않습니다</table>
+<p>0.1.7의 SSAO는 뷰 공간 접평면으로 기울어진 면의 자기 차폐를 줄이고, 이진 탭 게이트를 부드러운 램프로 바꿨습니다. 바이어스 0에서도 깊이 양자화 자국을 막는 작은 내부 바닥값이 적용됩니다.</p>
+<p>캐릭터 크기 대상에서는 Standard 품질과 기본 반경 0.005m에서 시작하고, 넓은 얼룩을 만들기보다 필요한 접촉부만 남기세요.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=거리와-화각이-바뀌어도-같게>거리와 화각이 바뀌어도 같게<a href=#거리와-화각이-바뀌어도-같게 class=hash-link aria-label="거리와 화각이 바뀌어도 같게에 대한 직접 링크" title="거리와 화각이 바뀌어도 같게에 대한 직접 링크" translate=no>​</a></h3>
+<p><code>SSAO 거리 보정</code>이 1(기본값)이면 카메라가 다가가거나 멀어져도, 화각을 바꿔도 같은 주름에 같은 두께의 음영이 들어갑니다. 화각은 별도 컨트롤 없이 저절로 상쇄됩니다. 0으로 내리면 카메라가 1m 안으로 들어왔을 때 반경이 짧아지는 예전 동작으로 돌아갑니다.</p>
+<p><code>SSAO 소멸 거리</code>는 효과가 완전히 사라지는 거리입니다. 페이드는 <strong>이 값의 75% 지점부터</strong> 시작하므로, 12로 두면 9m에서 옅어지기 시작해 12m에서 사라집니다. 0이면 사용하지 않습니다.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=빛-방향마스크색>빛 방향·마스크·색<a href=#빛-방향마스크색 class=hash-link aria-label="빛 방향·마스크·색에 대한 직접 링크" title="빛 방향·마스크·색에 대한 직접 링크" translate=no>​</a></h3>
+<ul>
+<li class=""><code>SSAO 빛 방향 반응</code> — 차폐를 찾는 원을 주광원 쪽으로 기울입니다. 0이면 빛과 무관한 균일한 차폐이고, 올릴수록 빛이 닿지 않는 반대편에 차폐가 모입니다. 빛이 카메라 정면에 가까워질수록 기울기가 저절로 줄어듭니다.</li>
+<li class=""><code>SSAO 마스크 세기</code> — 전용 텍스처를 새로 만들지 않고 <code>2D 그림자 마스크 (공용)</code>를 그대로 빌립니다. 채널·반전·<a class=ming-term href=/mingtoon-docs/guides/texture-modules#hsvg>HSVG</a>는 2D 그림자 마스크에 설정한 값을 함께 쓰며, <strong>어느 쪽 화면에서 고쳐도 같은 텍스처 하나를 고치는 것입니다.</strong></li>
+<li class=""><code>SSAO 틴트</code> · <code>SSAO 명도</code> · <code>SSAO 순도</code> — SSAO 전체 커버리지에 적용됩니다. <a class=ming-term href=/mingtoon-docs/guides/light-and-shadow#1-%ED%98%95%ED%83%9C-%EA%B7%B8%EB%A6%BC%EC%9E%90-%EA%B2%BD%EA%B3%84--%EA%B0%80%EC%9E%A5-%EB%A8%BC%EC%A0%80>형태 그림자</a>와 역광 안에서도 보이며 기본 흰색·명도 1에서는 결과가 같습니다.</li>
+</ul>
+<div class="theme-admonition theme-admonition-caution admonition_xJq3 alert alert--warning"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 16 16"><path fill-rule=evenodd d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"/></svg></span>깊이가 없으면 조용히 사라집니다</div><div class=admonitionContent_BuS1><p>효과마다 필요한 깊이 샘플을 카메라 깊이 텍스처에서 읽습니다. 포스트 프로세스 패스나 별도 카메라는 쓰지 않지만, 일부 환경에서는 깊이를 확보하는 보조 광원이 필요할 수 있습니다. 설정은 <a class=ming-term href=/mingtoon-docs/workflow/character-manager>MingToon Manager</a>와 이 문서 위쪽의 플랫폼별 깊이 확보를 확인하세요. 이 페이지 위쪽의 <a href=#%ED%94%8C%EB%9E%AB%ED%8F%BC%EB%B3%84-%EA%B9%8A%EC%9D%B4-%ED%99%95%EB%B3%B4 class="">플랫폼별 깊이 확보</a>가 적용되며, 깊이가 없으면 차폐는 1(차폐 없음)으로 고정됩니다. VRChat 클라이언트 동작은 아직 검증 중입니다.<p>호환성 재검증 후보의 보조광은 <code>Important</code>(ForcePixel)입니다. 카메라 깊이 패스 외에 라이트별 그림자 맵·픽셀 라이트 슬롯 비용이 추가될 수 있으며, 영향을 받은 실제 VRChat 월드에서 재검증이 필요합니다. 설정 복원만으로 해결이 확인된 것은 아닙니다.</div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=깊이-투과광>2D 투과광<a href=#깊이-투과광 class=hash-link aria-label="2D 투과광에 대한 직접 링크" title="2D 투과광에 대한 직접 링크" translate=no>​</a></h2>
+<p>머리끝이나 옷자락처럼 <strong>얇은 부위가 빛을 머금은 것처럼</strong> 보이게 합니다.</p>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>이 모듈만 마스터 폭에 묶여 있지 않습니다</div><div class=admonitionContent_BuS1><p>광원 방향으로 깊이를 <strong>두 번 읽어</strong> 빛이 캐릭터를 얼마나 통과했는지 직접 잽니다. 그래서 2D 림라이트·2D 그림자와 무관하게 <strong>단독으로 동작</strong>합니다. <code>마스터 폭</code>이 0이어도 나옵니다.</div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=1-얇음을-어떻게-잴지>1. 얇음을 어떻게 잴지<a href=#1-얇음을-어떻게-잴지 class=hash-link aria-label="1. 얇음을 어떻게 잴지에 대한 직접 링크" title="1. 얇음을 어떻게 잴지에 대한 직접 링크" translate=no>​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>투과 강도</code><td>전체 밝기 배수. <strong>0이면 계산을 건너뜁니다</strong><tr><td><code>측정 폭</code><td>광원 방향으로 얼마나 멀리 살펴볼지. 크게 잡으면 굵은 부위까지 얇다고 판정되고, 작게 잡으면 아주 얇은 끝부분만 빛납니다<tr><td><code>깊이 범위</code><td>이만큼(m) 뒤가 비어 있으면 완전히 뚫린 것으로 봅니다<tr><td><code>껍데기 최소 두께</code><td>아래 참고</table>
+<div class="theme-admonition theme-admonition-caution admonition_xJq3 alert alert--warning"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 16 16"><path fill-rule=evenodd d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"/></svg></span>머리카락 뒤의 옷이 배경으로 오인되어 밝아지면</div><div class=admonitionContent_BuS1><p><code>깊이 범위</code>를 올리세요. 조금만 뒤에 있는 표면이 "뚫린 것"으로 읽히고 있는 것입니다.</div></div>
+<div class="theme-admonition theme-admonition-danger admonition_xJq3 alert alert--danger"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"/></svg></span>속이 빈 옷은 반드시 껍데기 최소 두께를 주세요</div><div class=admonitionContent_BuS1><p>치마나 망토는 화면에서 폭이 넓어 <strong>두껍다고 측정되지만 실제 천은 아주 얇습니다.</strong><ul>
+<li class="">치마·망토 같은 껍데기 → <strong>0.8 정도</strong>. 측정과 무관하게 항상 얇게 취급합니다</li>
+<li class="">피부·손처럼 속이 찬 부위 → <strong>0</strong>. 측정에 맡깁니다</li>
+</ul></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=2-빛이-퍼지는-성질>2. 빛이 퍼지는 성질<a href=#2-빛이-퍼지는-성질 class=hash-link aria-label="2. 빛이 퍼지는 성질에 대한 직접 링크" title="2. 빛이 퍼지는 성질에 대한 직접 링크" translate=no>​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>밀도</code><td>클수록 아주 얇은 곳에만 빛이 남아 밀도 높은 재질처럼 보이고, 낮추면 넓게 퍼집니다<tr><td><code>노출 부드러움</code><td>응답 곡선만 바꿉니다. <strong>경계 위치는 옮기지 않습니다</strong><tr><td><code>색 분리</code><td>빨강이 파랑보다 깊이 스며드는 산란을 재현. 채널마다 감쇠가 달라져 <strong>틴트로는 만들 수 없는</strong> 피부·머리카락 특유의 번짐이 생깁니다. 0이면 세 채널이 동일</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=3-어느-각도에서-빛날지>3. 어느 각도에서 빛날지<a href=#3-어느-각도에서-빛날지 class=hash-link aria-label="3. 어느 각도에서 빛날지에 대한 직접 링크" title="3. 어느 각도에서 빛날지에 대한 직접 링크" translate=no>​</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>항목<th>하는 일<tbody><tr><td><code>역광 감쇠</code><td>클수록 정확한 역광에서만 좁게 강해집니다<tr><td><code>정면광 바닥값</code><td>정면광에서 남는 비율<tr><td><code>노말 방향 휨</code><td>빛 방향을 표면 노말 쪽으로 휘어, 정확한 역광이 아니어도 곡면을 따라 새어 나오게 합니다<tr><td><code>시선 방향 휨</code><td>빛 방향을 카메라 쪽으로 휩니다<tr><td><code>씬 라이트 영향</code><td>0이면 지정한 색만, 1이면 씬 조명 색을 그대로 받습니다</table>
+<div class="theme-admonition theme-admonition-danger admonition_xJq3 alert alert--danger"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"/></svg></span>위험</div><div class=admonitionContent_BuS1><mdxadmonitiontitle><code>정면광 바닥값</code>을 0으로 두지 마세요</mdxadmonitiontitle><p>산란은 역광에서 강해질 뿐 <strong>정면광에서 사라지지 않습니다.</strong> 0으로 두면 피부가 피부처럼 보이지 않습니다.</div></div>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>머리카락 카드가 깜빡이면</div><div class=admonitionContent_BuS1><p>평면 카드는 노말을 믿을 수 없어서 <code>노말 방향 휨</code>만으로는 빛이 켜졌다 꺼졌다 합니다. <strong><code>시선 방향 휨</code>이 그것을 막습니다.</strong></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=4-두-층으로-색을-만든다>4. 두 층으로 색을 만든다<a href=#4-두-층으로-색을-만든다 class=hash-link aria-label="4. 두 층으로 색을 만든다에 대한 직접 링크" title="4. 두 층으로 색을 만든다에 대한 직접 링크" translate=no>​</a></h3>
+<p>가장자리 층과 안쪽 층이 따로 있습니다. <strong>한쪽 세기를 0으로 두면 나머지 한 층만 있는 단일 층과 완전히 같아집니다.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><th>가장자리 층<th>안쪽 층<tbody><tr><td>밝히는 곳<td>실루엣 바깥쪽<td>실루엣 안쪽<tr><td>세기<td><code>가장자리 세기</code><td><code>안쪽 세기</code><tr><td>감쇠<td><code>가장자리 감쇠</code><td><code>안쪽 감쇠</code><tr><td>색<td><code>가장자리 색 보정</code> → <code>가장자리 틴트</code><td><code>안쪽 색 보정</code> → <code>안쪽 틴트</code></table>
+<p>두 층에는 <code>색 순도</code>도 각각 있습니다. HSVG 색 보정, 틴트와 두께별 채도차까지 합성한 뒤 0은 무채색, 1은 기존 합성색, 1보다 큰 값은 해당 층만 과채도로 만듭니다.</p>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"/></svg></span>색 보정이 베이스 색에서 파생됩니다</div><div class=admonitionContent_BuS1><p>절대 색이 아니라 <strong>베이스 맵 색에서 만들어 냅니다.</strong> 그래서 금발은 노랗게, 검은 머리는 어둡게 — <strong>캐릭터 전체가 설정 하나로 맞습니다.</strong><p>기본값은 안쪽 층의 색조를 붉은 쪽으로 돌리고 채도를 올려, 가장자리는 흰빛에 가깝고 안쪽은 따뜻하게 빛나는 머리카락 느낌을 만듭니다.<p>중립값 <code>(0,1,1,1)</code>이면 보정을 건너뜁니다.</div></div>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=내부-2d-경계>이너 아웃라인<a href=#내부-2d-경계 class=hash-link aria-label="이너 아웃라인에 대한 직접 링크" title="이너 아웃라인에 대한 직접 링크" translate=no>​</a></h2>
+<p>화면 깊이 차이로 <strong>표면 안쪽</strong> 경계선을 그립니다. 추가 지오메트리가 없어서 노멀 아웃라인이 깨지는 메시에도 쓸 수 있습니다.</p>
+<div class="theme-admonition theme-admonition-danger admonition_xJq3 alert alert--danger"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"/></svg></span>표면 모드가 투명이면 동작하지 않습니다</div><div class=admonitionContent_BuS1><p>반투명이 필요하면 <code>투명 · 아웃라인용 깊이 기록</code>을 쓰세요.</div></div>
+<p>조정 항목:</p>
+<ul>
+<li class=""><code>깊이 바이어스</code> — 이 값보다 큰 깊이 차이만 경계로 인정합니다. <strong>낮추면</strong> 완만한 굴곡에도 선이 붙어 노이즈가 되고, <strong>올리면</strong> 얇은 부위의 선이 사라집니다.</li>
+<li class=""><code>부드러움</code> — 0은 단단한 선, 1은 선 폭 전체가 경계에서 안쪽 끝까지 완전히 흐려집니다.</li>
+<li class=""><code>카메라 거리·화각 안정화</code> — 카메라가 움직여도 선 두께가 일정하게 유지됩니다.</li>
+</ul>
+<div class="theme-admonition theme-admonition-caution admonition_xJq3 alert alert--warning"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 16 16"><path fill-rule=evenodd d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"/></svg></span>내부 2D 경계가 통째로 사라졌다면</div><div class=admonitionContent_BuS1><p><code>Inner Edge 외곽선에 적용</code> 토글을 확인하세요. 이 토글은 노멀 아웃라인 그룹 안에 있지만 <strong>노멀 아웃라인을 꺼도 내부 2D 경계에 계속 작용합니다.</strong> 버텍스 컬러가 검은 메시에서 켜져 있으면 내부 2D 경계가 전부 사라집니다.</div></div>
+<hr/>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=반투명-표면과-깊이>반투명 표면과 깊이<a href=#반투명-표면과-깊이 class=hash-link aria-label="반투명 표면과 깊이에 대한 직접 링크" title="반투명 표면과 깊이에 대한 직접 링크" translate=no>​</a></h2>
+<p>표면 모드가 두 갈래로 갈리고, 차이는 <strong>깊이를 기록하느냐</strong>입니다.</p>
+<ul>
+<li class=""><strong>투명 · 아웃라인용 깊이 기록</strong> — 깊이 텍스처를 만드는 범위 <strong>안</strong>입니다. 2D 그림자·2D 림라이트·내부 2D 경계가 전부 동작합니다. <strong>반투명이 필요하면 이쪽을 먼저 검토하세요.</strong></li>
+<li class=""><strong>투명</strong> — 그 범위 <strong>밖</strong>입니다. 깊이 기반 모듈은 꺼진 채로 둡니다. 켜면 캐릭터 뒤에 있는 것과 비교하게 됩니다.</li>
+</ul>
+<p>불투명과 컷아웃은 영향을 받지 않고 항상 완전한 깊이를 갖습니다.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=다음>다음<a href=#다음 class=hash-link aria-label="다음에 대한 직접 링크" title="다음에 대한 직접 링크" translate=no>​</a></h2>
+<p><a class="" href=/mingtoon-docs/guides/detail-maps>디테일 맵</a></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="문서 페이지"><a class="pagination-nav__link pagination-nav__link--prev" href=/mingtoon-docs/guides/rim><div class=pagination-nav__sublabel>이전</div><div class=pagination-nav__label>림</div></a><a class="pagination-nav__link pagination-nav__link--next" href=/mingtoon-docs/guides/detail-maps><div class=pagination-nav__sublabel>다음</div><div class=pagination-nav__label>디테일 맵</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#무엇이-깊이를-쓰나 class="table-of-contents__link toc-highlight">무엇이 깊이를 쓰나</a><li><a href=#플랫폼별-깊이-확보 class="table-of-contents__link toc-highlight">플랫폼별 깊이 확보</a><ul><li><a href=#vrchat-주-대상 class="table-of-contents__link toc-highlight">VRChat (주 대상)</a><li><a href=#일반-unity-brp class="table-of-contents__link toc-highlight">일반 Unity (BRP)</a><li><a href=#urp-12 class="table-of-contents__link toc-highlight">URP 12</a><li><a href=#warudo class="table-of-contents__link toc-highlight">Warudo</a></ul><li><a href=#깊이-가용성 class="table-of-contents__link toc-highlight">깊이 가용성</a><ul><li><a href=#diagnostic class="table-of-contents__link toc-highlight">Diagnostic — 신고할 때만</a></ul><li><a href=#안-보일-때-진단-순서 class="table-of-contents__link toc-highlight">안 보일 때 진단 순서</a><li><a href=#깊이--공통-값 class="table-of-contents__link toc-highlight">깊이 효과 마스터</a><ul><li><a href=#런타임-전환 class="table-of-contents__link toc-highlight">런타임 전환</a></ul><li><a href=#깊이-림-2d-림 class="table-of-contents__link toc-highlight">2D 림라이트</a><li><a href=#2d-그림자 class="table-of-contents__link toc-highlight">2D 그림자</a><ul><li><a href=#기본 class="table-of-contents__link toc-highlight">기본</a><li><a href=#방향 class="table-of-contents__link toc-highlight">방향</a><li><a href=#얼굴-전용-보조 class="table-of-contents__link toc-highlight">얼굴 전용 보조</a><li><a href=#눌어붙음과-감쇠 class="table-of-contents__link toc-highlight">눌어붙음과 감쇠</a></ul><li><a href=#ssao-화면-공간-차폐 class="table-of-contents__link toc-highlight">SSAO (화면 공간 차폐)</a><ul><li><a href=#오클루전-맵과-어떻게-합쳐지나 class="table-of-contents__link toc-highlight">오클루전 맵과 어떻게 합쳐지나</a><li><a href=#값-잡는-순서 class="table-of-contents__link toc-highlight">값 잡는 순서</a><li><a href=#거리와-화각이-바뀌어도-같게 class="table-of-contents__link toc-highlight">거리와 화각이 바뀌어도 같게</a><li><a href=#빛-방향마스크색 class="table-of-contents__link toc-highlight">빛 방향·마스크·색</a></ul><li><a href=#깊이-투과광 class="table-of-contents__link toc-highlight">2D 투과광</a><ul><li><a href=#1-얇음을-어떻게-잴지 class="table-of-contents__link toc-highlight">1. 얇음을 어떻게 잴지</a><li><a href=#2-빛이-퍼지는-성질 class="table-of-contents__link toc-highlight">2. 빛이 퍼지는 성질</a><li><a href=#3-어느-각도에서-빛날지 class="table-of-contents__link toc-highlight">3. 어느 각도에서 빛날지</a><li><a href=#4-두-층으로-색을-만든다 class="table-of-contents__link toc-highlight">4. 두 층으로 색을 만든다</a></ul><li><a href=#내부-2d-경계 class="table-of-contents__link toc-highlight">이너 아웃라인</a><li><a href=#반투명-표면과-깊이 class="table-of-contents__link toc-highlight">반투명 표면과 깊이</a><li><a href=#다음 class="table-of-contents__link toc-highlight">다음</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>문서</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/>소개</a><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/getting-started/installation>설치</a><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/platforms/compatibility>지원 환경</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>지원</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/legal/third-party-credits>서드파티 차용 및 라이선스</a><li class=footer__item><a href=mailto:studioraming@gmail.com target=_blank rel="noopener noreferrer" class=footer__link-item>기업 문의 · 이메일<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://discord.gg/Zsj6pkWKKs target=_blank rel="noopener noreferrer" class=footer__link-item>버그 제보 채널 · Discord<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=footer__copyright>© 2026 StudioRaming. MingToon 0.1.7.</div></div></div></footer></div></body>

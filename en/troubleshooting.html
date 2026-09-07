@@ -1,0 +1,491 @@
+<!doctype html><html lang=en-US dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-troubleshooting" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.2"><title data-rh=true>Troubleshooting | MingToon Docs</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true property=og:url content=https://studioraming.github.io/mingtoon-docs/en/troubleshooting /><meta data-rh=true property=og:locale content=en_US /><meta data-rh=true property=og:locale:alternate content=ko_KR /><meta data-rh=true property=og:locale:alternate content=ja_JP /><meta data-rh=true name=docusaurus_locale content=en /><meta data-rh=true name=docsearch:language content=en /><meta data-rh=true name=docusaurus_version content=current /><meta data-rh=true name=docusaurus_tag content=docs-default-current /><meta data-rh=true name=docsearch:version content=current /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-current /><meta data-rh=true property=og:title content="Troubleshooting | MingToon Docs"/><meta data-rh=true name=description content='Search by symptom. Most issues stem from "if a parent value is 0 or off, all children are ignored" structure.'/><meta data-rh=true property=og:description content='Search by symptom. Most issues stem from "if a parent value is 0 or off, all children are ignored" structure.'/><link data-rh=true rel=icon href=/mingtoon-docs/en/img/favicon.svg /><link data-rh=true rel=canonical href=https://studioraming.github.io/mingtoon-docs/en/troubleshooting /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/troubleshooting hreflang=ko-KR /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/en/troubleshooting hreflang=en-US /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/ja/troubleshooting hreflang=ja-JP /><link data-rh=true rel=alternate href=https://studioraming.github.io/mingtoon-docs/troubleshooting hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://studioraming.github.io/mingtoon-docs/en/troubleshooting","name":"Troubleshooting","position":1}]}</script><link rel=stylesheet href=/mingtoon-docs/en/assets/css/styles.873dfae7.css /><script src=/mingtoon-docs/en/assets/js/runtime~main.5a2c8821.js defer></script><script src=/mingtoon-docs/en/assets/js/main.2dcbbf27.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme-8c5")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}(),document.documentElement.setAttribute("data-announcement-bar-initially-dismissed",function(){try{return"true"===localStorage.getItem("docusaurus.announcement.dismiss-8c5")}catch(t){}return!1}())</script><div id=__docusaurus><div role=region aria-label="Skip to main content"><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>Skip to main content</a></div><div class="theme-announcement-bar announcementBar_mb4j" style=background-color:#d79aaa;color:#101314 role=banner><div class=announcementBarPlaceholder_vyr4></div><div class="content_knG7 announcementBarContent_xLdY">MingToon 0.1.7 Open Beta.</div><button type=button aria-label=Close class="clean-btn close closeButton_CVFx announcementBarClose_gvF7"><svg viewBox="0 0 15 15" width=14 height=14><g stroke=currentColor stroke-width=3.1><path d="M.75.75l13.5 13.5M14.25.75L.75 14.25"/></g></svg></button></div><nav aria-label=Main class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/mingtoon-docs/en/><b class="navbar__title text--truncate">MingToon</b></a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/mingtoon-docs/en/>Docs</a><a href=https://studioraming.github.io/mingtoon-site/ target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">Official website<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><a href=https://raming.booth.pm/items/8810209 target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">BOOTH<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><a class="navbar__item navbar__link" href=/mingtoon-docs/en/changelog>Patch notes</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>English</a><ul class=dropdown__menu><li><a href=/mingtoon-docs/troubleshooting target=_self rel="noopener noreferrer" class=dropdown__link lang=ko-KR>한국어</a><li><a href=/mingtoon-docs/en/troubleshooting target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=en-US>English</a><li><a href=/mingtoon-docs/ja/troubleshooting target=_self rel="noopener noreferrer" class=dropdown__link lang=ja-JP>日本語</a></ul></div><a class="navbar__item navbar__link navbar__version" aria-label="MingToon 0.1.7 patch notes" href=/mingtoon-docs/en/changelog/0.1.7>v0.1.7</a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class="navbar__search searchBarContainer_NW3z" dir=ltr><svg aria-hidden=true class=searchIcon_T3tP focusable=false viewBox="0 0 16 16"><path fill=currentColor d="M6.02945 10.20327a4.17382 4.17382 0 1 1 4.17382-4.17382 4.15609 4.15609 0 0 1-4.17382 4.17382Zm9.69195 4.2199-4.8225-4.82338A5.88021 5.88021 0 0 0 12.058 6.02856 6.00467 6.00467 0 1 0 9.59979 10.8989l4.82338 4.82338a.89729.89729 0 0 0 1.29912 0 .89749.89749 0 0 0-.00087-1.29909Z"/></svg><input placeholder=Search aria-label=Search class="navbar__search-input searchInput_YFbd" value="" /><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG menuWithAnnouncementBar_GW3s"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/mingtoon-docs/en/><span class=linkLabel_WmDU>About</span></a><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/mingtoon-docs/en/getting-started/installation><span class=categoryLinkLabel_W154>Getting started</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/getting-started/installation><span class=linkLabel_WmDU>Installation</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/getting-started/first-material><span class=linkLabel_WmDU>Creating Your First Material</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/mingtoon-docs/en/guides/inspector><span class=categoryLinkLabel_W154>Authoring the look</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/inspector><span class=linkLabel_WmDU>Inspector Guide</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/basics><span class=linkLabel_WmDU>Basic Settings</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/light-and-shadow><span class=linkLabel_WmDU>Light and Shadow</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/shadow-pattern><span class=linkLabel_WmDU>Shadow Pattern (Screentone)</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/rim><span class=linkLabel_WmDU>Rim</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/depth-effects><span class=linkLabel_WmDU>Depth Effects</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/detail-maps><span class=linkLabel_WmDU>Detail Maps</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/character><span class=linkLabel_WmDU>Character Expression</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/outline><span class=linkLabel_WmDU>Outline</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/mesh-bakes><span class=linkLabel_WmDU>Mesh UV Bakes</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/texture-modules><span class=linkLabel_WmDU>Common Texture Slot UI</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/bulk-editing><span class=linkLabel_WmDU>Multiple Materials at Once</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/face-sdf><span class=linkLabel_WmDU>Face SDF and Face SDF Studio</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/add-ons><span class=linkLabel_WmDU>Separately Sold Add-ons</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/mask-maker><span class=linkLabel_WmDU>Mask Maker Integration</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/ming-light-controller><span class=linkLabel_WmDU>Using Ming Light Controller</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/guides/tiled-materials><span class=linkLabel_WmDU>Tiled Material Composer</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/mingtoon-docs/en/workflow/character-manager><span class=categoryLinkLabel_W154>Exporting</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/workflow/character-manager><span class=linkLabel_WmDU>MingToon Manager</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/workflow/liltoon-conversion><span class=linkLabel_WmDU>lilToon Material Conversion</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/workflow/build-optimization><span class=linkLabel_WmDU>Automatic Build Optimization</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/workflow/bake-and-restore><span class=linkLabel_WmDU>Manual Bake and Restore</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=true href=/mingtoon-docs/en/platforms/vrchat><span class=categoryLinkLabel_W154>Platforms</span></a></div><ul class=menu__list><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/platforms/vrchat><span class=linkLabel_WmDU>VRChat</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/platforms/compatibility><span class=linkLabel_WmDU>Supported Environments</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class=menu__link tabindex=0 href=/mingtoon-docs/en/platforms/warudo><span class=linkLabel_WmDU>Warudo</span></a></ul><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/mingtoon-docs/en/reference/basics><span class=categoryLinkLabel_W154>Control reference</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role=button aria-expanded=false href=/mingtoon-docs/en/internals/shader-structure><span class=categoryLinkLabel_W154>Internal architecture</span></a></div><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class=menu__list-item-collapsible><a class="categoryLink_byQd menu__link menu__link--sublist" href=/mingtoon-docs/en/changelog><span class=categoryLinkLabel_W154>Patch notes</span></a><button aria-label="Expand sidebar category 'Patch notes'" aria-expanded=false type=button class="clean-btn menu__caret"></button></div><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/mingtoon-docs/en/troubleshooting><span class=linkLabel_WmDU>Troubleshooting</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/mingtoon-docs/en/limitations><span class=linkLabel_WmDU>Current Limitations and Release</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/mingtoon-docs/en/legal/beta-license><span class=linkLabel_WmDU>Licensing and commercial use</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=Breadcrumbs><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label="Home page" class=breadcrumbs__link href=/mingtoon-docs/en/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Troubleshooting</span></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Troubleshooting</h1></header>
+<p>Search by symptom. Most issues stem from <strong>"if a parent value is 0 or off, all children are ignored"</strong> structure.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=아무-값도-안-먹힌다>Nothing applies at all<a href=#아무-값도-안-먹힌다 class=hash-link aria-label="Direct link to Nothing applies at all" title="Direct link to Nothing applies at all" translate=no>​</a></h2>
+<p>Check from top to bottom.</p>
+<ol>
+<li class=""><strong>All Effects</strong> — master switch at the top of the inspector. If off, the entire section below is inactive and shows <code>This section is inactive because All Effects is off.</code></li>
+<li class=""><strong>Section master toggle</strong> — each section has its own toggle. If off, <code>Quick Look</code> shows <code>(Module Off)</code>.</li>
+<li class=""><strong>Parent values</strong> — see table below.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Not showing<th>Check parent value first<tbody><tr><td>Base tint<td><code>Tint Opacity</code><tr><td>2D rim light / 2D shadow<td><code>Master Width</code> → each module's <code>Intensity</code><tr><td>PBR highlight · environment reflection<td><code>Specular Strength</code><tr><td>Texture/normal/matcap layer<td><code>Layer Count</code> → each layer's <code>Opacity</code>/<code>Intensity</code><tr><td>Rim light<td><code>Intensity</code> → <code>Width</code><tr><td>Rim shade<td><code>Shadow Contribution Strength</code> → <code>Rim Shadow Width</code><tr><td>Shadow boundary band<td><code>Boundary Width</code> → <code>Boundary Strength</code><tr><td>Shadow pattern<td><code>Pattern Strength</code><tr><td>Face normal correction<td><code>Normal Press Amount</code><tr><td>Face area mask<td><code>Mask Strength</code> (0 = entire surface treated as face)<tr><td>PBR packed mask channel setup<td><code>Use Packed Mask</code><tr><td>Cast shadow brightness · blend<td><code>Receive Strength</code><tr><td>Alpha mask<td>Shows nothing if surface mode is opaque<tr><td><code>1st Shadow Brightness</code>·<code>Cast Shadow Brightness</code><td>Check <code>Shadow Color</code> section is on</table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=material-appears-pink-magenta>Material appears pink (magenta)<a href=#material-appears-pink-magenta class=hash-link aria-label="Direct link to Material appears pink (magenta)" title="Direct link to Material appears pink (magenta)" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cause<th>Check<th>Action<tbody><tr><td>Render pipeline mismatch<td>Using URP shader in BRP project or vice versa<td>Replace with shader from correct backend<tr><td><strong>Shader Model 4.5 not met</strong><td><code>Tools > Studio Raming > MingToon > Validate Project</code><td>Support is PC only (DX11+/Vulkan/Metal). Android·Quest·iOS·WebGL not supported<tr><td>URP version out of range<td>Is it URP 12.x?<td>Match to Unity 2021.3 + URP 12.x</table>
+<div class="theme-admonition theme-admonition-danger admonition_xJq3 alert alert--danger"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 12 16"><path fill-rule=evenodd d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"/></svg></span>Other error messages do not appear in this case</div><div class=admonitionContent_BuS1><p>SubShader is entirely rejected, so the log is silent. Pink is the only signal.</div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=validate-project-points-out-a-unity-version>Validate Project points out a Unity version<a href=#validate-project-points-out-a-unity-version class=hash-link aria-label="Direct link to Validate Project points out a Unity version" title="Direct link to Validate Project points out a Unity version" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Code<th>When<th>Meaning<tbody><tr><td><code>MING-ENV-UNITY-VERSION</code> (error)<td>Editor is <strong>neither 2021.3 nor 2022.3</strong><td>Unsupported stream. Switch to one from Unity Hub<tr><td><code>MING-VRC-UNITY-VERSION</code> (warning)<td>VRC SDK present but editor is <strong>not 2022.3 stream</strong><td>VRChat integration compiles only on 2022.3, so <strong>this project has no avatar upload support.</strong> Other targets unaffected</table>
+<p>2022.3.22f1 is a validated support version so no warnings appear. → <a class="" href=/mingtoon-docs/en/reference/validator>Full Validator code</a></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=2d-rim-light--2d-shadow--inner-2d-edge-not-showing>2D rim light / 2D shadow / inner 2D edge not showing<a href=#2d-rim-light--2d-shadow--inner-2d-edge-not-showing class=hash-link aria-label="Direct link to 2D rim light / 2D shadow / inner 2D edge not showing" title="Direct link to 2D rim light / 2D shadow / inner 2D edge not showing" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cause<th>Action<tbody><tr><td><code>All Effects</code> or <code>Depth Effects</code> is off<td>Inspector shows <code>Turn Depth Effects On</code> button<tr><td><code>Master Width</code> is 0<td>Raise it<tr><td>Each module's intensity is 0<td>Raise it<tr><td>Surface mode is <strong>transparent</strong><td>Change to <code>Transparent · Outline Depth Ready</code>. Inspector tells you <code>Needs the depth-recorded mode</code><tr><td><strong>No camera depth</strong><td><a class="" href=/mingtoon-docs/en/guides/depth-effects>Depth Effects</a> platform-specific setup<tr><td>VRChat regular screen<td>Avatar cannot force it. Check separately in <a class=ming-term href=/mingtoon-docs/en/platforms/vrchat#%EA%B9%8A%EC%9D%B4-%ED%9A%A8%EA%B3%BC%EA%B0%80-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%EB%B3%B4%EC%9E%A5%EB%90%98%EB%82%98>Photo Camera</a>·mirror<tr><td>URP<td>Install Renderer Feature + enable Depth Texture<tr><td>Warudo<td>Depth-enabled camera or host depth bridge needed</table>
+<p>If the inspector shows <code>The host Scene/Game camera does not have a depth texture prepared.</code>, reopen the Scene view, and if it persists, run <code>Validate Project</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=only-inner-2d-edge-disappeared>Only inner 2D edge disappeared<a href=#only-inner-2d-edge-disappeared class=hash-link aria-label="Direct link to Only inner 2D edge disappeared" title="Direct link to Only inner 2D edge disappeared" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cause<th>Action<tbody><tr><td><code>Inner Edge Outline Apply</code> is on and vertex color is black<td>Toggle off or change pressure source<tr><td>Surface mode is transparent<td>Change to depth-recorded mode<tr><td>No camera depth<td>See item above</table>
+<p>Normal outline works without camera depth. <strong>If normal outline is visible but only inner 2D edge is missing, it's a depth problem.</strong></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=cannot-find-outline>Cannot find outline<a href=#cannot-find-outline class=hash-link aria-label="Direct link to Cannot find outline" title="Direct link to Cannot find outline" translate=no>​</a></h2>
+<p><code>Inner 2D Edge</code> is <strong>in Depth Effects group, not Outline</strong>, because it reads screen depth.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=normal-outline-completely-disappeared>Normal outline completely disappeared<a href=#normal-outline-completely-disappeared class=hash-link aria-label="Direct link to Normal outline completely disappeared" title="Direct link to Normal outline completely disappeared" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cause<th>Action<tbody><tr><td><strong>On a mesh with black-imported vertex color, <code>Pressure Source</code> is <code>VertexRed</code></strong><td>Change pressure source or check vertex color<tr><td><code>Hull Pressure Contrast</code> is 0<td>Pressure is completely ignored<tr><td><code>Color Mask</code> is 0<td>Set to 15 (full RGBA)</table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=outline-breaks-at-sharp-edges>Outline breaks at sharp edges<a href=#outline-breaks-at-sharp-edges class=hash-link aria-label="Direct link to Outline breaks at sharp edges" title="Direct link to Outline breaks at sharp edges" translate=no>​</a></h2>
+<p><code>Normal Source</code> is <code>VertexColorTS</code> or <code>UV8TS</code> but the mesh has <strong>sharp outline normals that were not smoothed</strong>. Change to <code>MeshNormal</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=씬-뷰에서-아웃라인-두께를-칠할-수-없다>Cannot paint outline width in Scene view<a href=#씬-뷰에서-아웃라인-두께를-칠할-수-없다 class=hash-link aria-label="Direct link to Cannot paint outline width in Scene view" title="Direct link to Cannot paint outline width in Scene view" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Inspector says<th>Action<tbody><tr><td><code>Pressure Source must be Vertex Alpha or Vertex Red.</code><td>Use <code>Switch to Vertex Alpha</code> button<tr><td><code>No renderer using this material exists below the current selection.</code><td>Select <a class=ming-term href=/mingtoon-docs/en/workflow/character-manager>MingToon Manager</a> (or an object below it)<tr><td><code>Vertex painting is available when a single material is selected.</code><td>Select only one<tr><td><code>...Play mode end does not restore the painted data. Unity does not undo it after exiting Play.</code><td>Exit Play mode and restart<tr><td><code>There is no paintable mesh.</code><td>Check if renderer has a mesh, and if that mesh includes the submesh this material draws<tr><td><code>Renderer has no mesh.</code><td>Assign mesh to Mesh Filter or Skinned Mesh Renderer's Mesh slot<tr><td><code>Renderer has no Mesh Filter...</code><td>Add Mesh Filter to the same object, or select object with Skinned Mesh Renderer<tr><td><code>Cannot read vertices from mesh '{...}'...</code><td>Reimport the model<tr><td><code>Mesh '{...}' was generated at runtime...</code><td>Save as mesh asset, then assign that asset to renderer<tr><td><code>...still cannot read even after reimport...</code><td>Check if model file is read-only<tr><td><code>Could not write editable mesh copy to '{...}'...</code><td>Check folder write permission and disk space<tr><td><code>Could not create '{...}' folder for editable mesh copy...</code><td>Check project folder write permission<tr><td><code>Cannot open model importer for '{...}'...</code><td>Verify model file is in project and import succeeded</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=painted-outline-direction-broke>Painted outline direction broke<a href=#painted-outline-direction-broke class=hash-link aria-label="Direct link to Painted outline direction broke" title="Direct link to Painted outline direction broke" translate=no>​</a></h3>
+<p><code>Pressure Source</code> is <strong>Vertex Red</strong> and <code>Normal Source</code> is <strong>VertexColorTS</strong>, overwriting the same vertex color. Inspector warns before painting.</p>
+<p>Action: Change <code>Pressure Source</code> to <strong>Vertex Alpha</strong>, or <a class="" href=/mingtoon-docs/en/guides/mesh-bakes#%EC%95%84%EC%9B%83%EB%9D%BC%EC%9D%B8-%EC%8A%A4%EB%AC%B4%EC%8A%A4-%EB%85%B8%EB%A9%80-uv8>move outline normal to UV8</a>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=outline-of-other-objects-changed-too>Outline of other objects changed too<a href=#outline-of-other-objects-changed-too class=hash-link aria-label="Direct link to Outline of other objects changed too" title="Direct link to Outline of other objects changed too" translate=no>​</a></h3>
+<p>Multiple renderers are <strong>sharing the same mesh asset</strong>. Vertex painting modifies the mesh asset directly.</p>
+<p>Action: Duplicate the mesh and assign it only to that renderer, then paint again.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=changed-render-pipeline-and-all-materials-broke>Changed render pipeline and all materials broke<a href=#changed-render-pipeline-and-all-materials-broke class=hash-link aria-label="Direct link to Changed render pipeline and all materials broke" title="Direct link to Changed render pipeline and all materials broke" translate=no>​</a></h2>
+<p>When pipeline changes, <code>MingToon Render Pipeline Mismatch</code> dialog appears and asks whether to batch-convert MingToon materials in the project to the matching backend. Scenes loaded in editor are also inspected.</p>
+<div class="theme-admonition theme-admonition-caution admonition_xJq3 alert alert--warning"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 16 16"><path fill-rule=evenodd d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"/></svg></span>Cannot inspect unloaded scenes and AssetBundles</div><div class=admonitionContent_BuS1><p>You must open those separately and convert them.</div></div>
+<p>If you missed the dialog, a warning remains in the material inspector where you can run it again anytime.</p>
+<p>Conversion is <strong>blocked</strong> in these cases:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Reason<th>Action<tbody><tr><td><code>Material is embedded in another asset.</code><td>Extract from subasset<tr><td><code>Material is in a read-only package.</code><td>Copy outside package<tr><td><code>Material is read-only or not checked out.</code><td>Clear read-only flag or check out from version control</table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=conversionbake-failed>Conversion/bake failed<a href=#conversionbake-failed class=hash-link aria-label="Direct link to Conversion/bake failed" title="Direct link to Conversion/bake failed" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Message<th>Action<tbody><tr><td><code>Could not find a convertible material slot under this root.</code><td>Check MingToon Manager is attached correctly, <code>Refresh Child Renderers</code> pressed<tr><td><code>Cannot find original MingToon shader '{...}', cannot bake.</code><td>Installation incomplete. Re-import package<tr><td><code>Failed to import generated MingToon shader '{...}'.</code><td>Check project folder write permission, retry<tr><td><code>Generated MingToon shader '{...}' has a compile error.</code><td>Verify MingToon include folder is at original path. This result is not cached, so fix the path and rebake to regenerate<tr><td><code>Multiple MingToon Managers selected.</code><td>Select one at a time</table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=cast-shadow-is-blotchy>Cast shadow is blotchy<a href=#cast-shadow-is-blotchy class=hash-link aria-label="Direct link to Cast shadow is blotchy" title="Direct link to Cast shadow is blotchy" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Location<th>Action<tbody><tr><td>Cloth wrinkles·overall body<td><code>Suppress Self Cast Shadow</code> on, <code>Self Shadow Caster Bias</code> 0.01~0.03<tr><td>Face<td>Adjust the bangs/hair caster <code>Shadow Mode</code>, <code>Real Shadow Caster Offset</code>, Face SDF, and <code>Face 2D Shadow Assist</code>. The nonfunctional face-cast stabilization controls were removed in 0.1.7<tr><td>Vertical direction<td><code>Vertical Correction Strength</code>·<code>Vertical Threshold (Lower = Wider)</code><tr><td>Boundary looks stepped<td><code>Enable Projection Feather</code> + <code>Projection Feather Radius</code>·<code>Strength</code><tr><td>Overall jitter<td>Light's shadow map resolution · bias/normal bias · cascade in that order</table>
+<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class=admonitionHeading_Gvgb><span class=admonitionIcon_Rf37><svg viewBox="0 0 14 16"><path fill-rule=evenodd d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"/></svg></span>Feather cannot recover missing information</div><div class=admonitionContent_BuS1><p>Fuzzing low-resolution shadow map details that were never there won't bring them back.</div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=shadow-is-pitch-black-where-it-overlaps>Shadow is pitch black where it overlaps<a href=#shadow-is-pitch-black-where-it-overlaps class=hash-link aria-label="Direct link to Shadow is pitch black where it overlaps" title="Direct link to Shadow is pitch black where it overlaps" translate=no>​</a></h2>
+<p>Turn on <code>Use Unified Shadow</code> in the <code>Shadow Color</code> section. Form·cast·2D shadow converge to the same color and tone. → <a class="" href=/mingtoon-docs/en/guides/light-and-shadow#%ED%86%B5%ED%95%A9-%EA%B7%B8%EB%A6%BC%EC%9E%90--%EA%B2%B9%EC%B9%A0-%EB%95%8C-%EC%83%88%EA%B9%8C%EB%A7%A4%EC%A7%80%EB%8A%94-%EB%AC%B8%EC%A0%9C>Light & Shadow</a></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=turned-on-unified-shadow-and-individual-shadow-colors-no-longer-work>Turned on unified shadow and individual shadow colors no longer work<a href=#turned-on-unified-shadow-and-individual-shadow-colors-no-longer-work class=hash-link aria-label="Direct link to Turned on unified shadow and individual shadow colors no longer work" title="Direct link to Turned on unified shadow and individual shadow colors no longer work" translate=no>​</a></h2>
+<p>This is normal. In unified mode, individual shadow color·blend·brightness do not reflect in results. Values are preserved, so turning it off restores them. To align individual values to unified values, use <code>Copy Unified Values To Individual Shadows</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=backlit-body-silhouette-overlaps-character>Backlit body silhouette overlaps character<a href=#backlit-body-silhouette-overlaps-character class=hash-link aria-label="Direct link to Backlit body silhouette overlaps character" title="Direct link to Backlit body silhouette overlaps character" translate=no>​</a></h2>
+<p>Turn on <code>Suppress Backlit Silhouette</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=character-clumps-black-in-dark-world>Character clumps black in dark world<a href=#character-clumps-black-in-dark-world class=hash-link aria-label="Direct link to Character clumps black in dark world" title="Direct link to Character clumps black in dark world" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Property<th>Action<tbody><tr><td><code>Base Color Preservation</code><td>Raise it<tr><td><code>Minimum Final Brightness</code><td>Raise it<tr><td><code>Indirect Light Lift</code><td>Raise it<tr><td><code>Cast Indirect Lift</code><td>Raise it</table>
+<p>Blown out white in bright world? Lower <code>Maximum Final Brightness</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=shadow-pattern-not-printing-at-all>Shadow pattern not printing at all<a href=#shadow-pattern-not-printing-at-all class=hash-link aria-label="Direct link to Shadow pattern not printing at all" title="Direct link to Shadow pattern not printing at all" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Cause<th>Action<tbody><tr><td><code>Use Shape Tile</code> is on but tile slot is empty<td>Empty slots read as <strong>white</strong>, and white exceeds no threshold. Use inspector's built-in tile button<tr><td><code>Pattern Strength</code> is 0<td>Raise it<tr><td>Target doesn't match<td>Check <code>Pattern Target</code></table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=pattern-dots-dont-react-to-tone-and-stay-same-size>Pattern dots don't react to tone and stay same size<a href=#pattern-dots-dont-react-to-tone-and-stay-same-size class=hash-link aria-label="Direct link to Pattern dots don't react to tone and stay same size" title="Direct link to Pattern dots don't react to tone and stay same size" translate=no>​</a></h2>
+<p>You loaded an <strong>already-binarized dot pattern</strong> as tile. Tile must be a threshold map, not a picture. → <a class="" href=/mingtoon-docs/en/guides/shadow-pattern#%ED%83%80%EC%9D%BC%EC%9D%80-%EA%B7%B8%EB%A6%BC%EC%9D%B4-%EC%95%84%EB%8B%88%EB%9D%BC-%EC%9E%84%EA%B3%84%EA%B0%92-%EB%A7%B5%EC%9E%85%EB%8B%88%EB%8B%A4>Shadow Pattern</a></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=hair-pokes-through-cheek>Hair pokes through cheek<a href=#hair-pokes-through-cheek class=hash-link aria-label="Direct link to Hair pokes through cheek" title="Direct link to Hair pokes through cheek" translate=no>​</a></h2>
+<p>Set surface mode to <code>Transparent · Outline Depth Ready</code> and turn on <code>Transparent Depth Prepass</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=look-changed-after-conversion>Look changed after conversion<a href=#look-changed-after-conversion class=hash-link aria-label="Direct link to Look changed after conversion" title="Direct link to Look changed after conversion" translate=no>​</a></h2>
+<p>Read <code>lossy</code> / <code>unsupported</code> items in conversion log first, then compare these with the original:</p>
+<ul>
+<li class="">Mask channel selection and inversion</li>
+<li class="">Texture ST (Tiling / Offset)</li>
+<li class="">AO</li>
+<li class="">Surface mode</li>
+<li class="">Face slot detection</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=baked-material-restore-button-is-grayed-out>Baked material restore button is grayed out<a href=#baked-material-restore-button-is-grayed-out class=hash-link aria-label="Direct link to Baked material restore button is grayed out" title="Direct link to Baked material restore button is grayed out" translate=no>​</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Check<tbody><tr><td>Bake manifest still present?<tr><td>Source editable material GUID still valid?<tr><td>Renderer hierarchy / material slots unchanged since bake?</table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=uploaded-but-optimization-doesnt-seem-to-have-applied>Uploaded but optimization doesn't seem to have applied<a href=#uploaded-but-optimization-doesnt-seem-to-have-applied class=hash-link aria-label="Direct link to Uploaded but optimization doesn't seem to have applied" title="Direct link to Uploaded but optimization doesn't seem to have applied" translate=no>​</a></h2>
+<ol>
+<li class="">Is Unity version <strong>2022.3.22f1</strong>? On 2021.3, VRChat hook does not compile.</li>
+<li class="">Does Console have <code>[MingToon] VRChat build hook compiled and registered.</code>?</li>
+<li class="">Is <code>Tools > Studio Raming > MingToon > Optimize Shaders On Build</code> checked?</li>
+<li class="">Check <code>StudioRaming/MingToonOptimizeReport.txt</code> next to project folder.</li>
+</ol>
+<p>→ <a class="" href=/mingtoon-docs/en/workflow/build-optimization#%EC%A0%9C%EB%8C%80%EB%A1%9C-%EA%B1%B8%EB%A0%B8%EB%8A%94%EC%A7%80-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0>Automatic Optimization On Build</a></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=작업-중-인스펙터가-무겁다>Inspector feels heavy while authoring<a href=#작업-중-인스펙터가-무겁다 class=hash-link aria-label="Direct link to Inspector feels heavy while authoring" title="Direct link to Inspector feels heavy while authoring" translate=no>​</a></h2>
+<p>This is normal. The editable shader compiles all features and maximum layer count upfront and maintains them, so toggling features doesn't cause recompilation waits or blue placeholder colors. Lightweighting applies only <a class="" href=/mingtoon-docs/en/workflow/build-optimization>at build time</a>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=still-not-resolved>Still not resolved<a href=#still-not-resolved class=hash-link aria-label="Direct link to Still not resolved" title="Direct link to Still not resolved" translate=no>​</a></h2>
+<p>Post the following in the <strong>bug-report channel</strong> of the <a href=https://discord.gg/Zsj6pkWKKs target=_blank rel="noopener noreferrer" class="">official Discord server</a>:</p>
+<ol>
+<li class="">Unity version and target platform (VRChat PC / Warudo / general Unity)</li>
+<li class="">Render pipeline (BRP / URP 12.x)</li>
+<li class="">MingToon version</li>
+<li class="">Full Console log</li>
+<li class="">Steps to reproduce</li>
+</ol></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href=/mingtoon-docs/en/changelog/0.1.3><div class=pagination-nav__sublabel>Previous</div><div class=pagination-nav__label>0.1.3</div></a><a class="pagination-nav__link pagination-nav__link--next" href=/mingtoon-docs/en/limitations><div class=pagination-nav__sublabel>Next</div><div class=pagination-nav__label>Current Limitations and Release</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#아무-값도-안-먹힌다 class="table-of-contents__link toc-highlight">Nothing applies at all</a><li><a href=#material-appears-pink-magenta class="table-of-contents__link toc-highlight">Material appears pink (magenta)</a><li><a href=#validate-project-points-out-a-unity-version class="table-of-contents__link toc-highlight">Validate Project points out a Unity version</a><li><a href=#2d-rim-light--2d-shadow--inner-2d-edge-not-showing class="table-of-contents__link toc-highlight">2D rim light / 2D shadow / inner 2D edge not showing</a><li><a href=#only-inner-2d-edge-disappeared class="table-of-contents__link toc-highlight">Only inner 2D edge disappeared</a><li><a href=#cannot-find-outline class="table-of-contents__link toc-highlight">Cannot find outline</a><li><a href=#normal-outline-completely-disappeared class="table-of-contents__link toc-highlight">Normal outline completely disappeared</a><li><a href=#outline-breaks-at-sharp-edges class="table-of-contents__link toc-highlight">Outline breaks at sharp edges</a><li><a href=#씬-뷰에서-아웃라인-두께를-칠할-수-없다 class="table-of-contents__link toc-highlight">Cannot paint outline width in Scene view</a><ul><li><a href=#painted-outline-direction-broke class="table-of-contents__link toc-highlight">Painted outline direction broke</a><li><a href=#outline-of-other-objects-changed-too class="table-of-contents__link toc-highlight">Outline of other objects changed too</a></ul><li><a href=#changed-render-pipeline-and-all-materials-broke class="table-of-contents__link toc-highlight">Changed render pipeline and all materials broke</a><li><a href=#conversionbake-failed class="table-of-contents__link toc-highlight">Conversion/bake failed</a><li><a href=#cast-shadow-is-blotchy class="table-of-contents__link toc-highlight">Cast shadow is blotchy</a><li><a href=#shadow-is-pitch-black-where-it-overlaps class="table-of-contents__link toc-highlight">Shadow is pitch black where it overlaps</a><li><a href=#turned-on-unified-shadow-and-individual-shadow-colors-no-longer-work class="table-of-contents__link toc-highlight">Turned on unified shadow and individual shadow colors no longer work</a><li><a href=#backlit-body-silhouette-overlaps-character class="table-of-contents__link toc-highlight">Backlit body silhouette overlaps character</a><li><a href=#character-clumps-black-in-dark-world class="table-of-contents__link toc-highlight">Character clumps black in dark world</a><li><a href=#shadow-pattern-not-printing-at-all class="table-of-contents__link toc-highlight">Shadow pattern not printing at all</a><li><a href=#pattern-dots-dont-react-to-tone-and-stay-same-size class="table-of-contents__link toc-highlight">Pattern dots don't react to tone and stay same size</a><li><a href=#hair-pokes-through-cheek class="table-of-contents__link toc-highlight">Hair pokes through cheek</a><li><a href=#look-changed-after-conversion class="table-of-contents__link toc-highlight">Look changed after conversion</a><li><a href=#baked-material-restore-button-is-grayed-out class="table-of-contents__link toc-highlight">Baked material restore button is grayed out</a><li><a href=#uploaded-but-optimization-doesnt-seem-to-have-applied class="table-of-contents__link toc-highlight">Uploaded but optimization doesn't seem to have applied</a><li><a href=#작업-중-인스펙터가-무겁다 class="table-of-contents__link toc-highlight">Inspector feels heavy while authoring</a><li><a href=#still-not-resolved class="table-of-contents__link toc-highlight">Still not resolved</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Docs</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/en/>Introduction</a><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/en/getting-started/installation>Installation</a><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/en/platforms/compatibility>Compatibility</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Support</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/mingtoon-docs/en/legal/third-party-credits>Third-party credits</a><li class=footer__item><a href=mailto:studioraming@gmail.com target=_blank rel="noopener noreferrer" class=footer__link-item>Business enquiries · Email<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://discord.gg/Zsj6pkWKKs target=_blank rel="noopener noreferrer" class=footer__link-item>Bug-report channel · Discord<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=footer__copyright>© 2026 StudioRaming. MingToon 0.1.7.</div></div></div></footer></div></body>
