@@ -14,7 +14,7 @@ slug: /
 
 # MingToon
 
-MingToon 0.1.7 は **BRP本体のオープンベータ**です。URPは現在のBRPオープンベータには含まれず、すべての商用ライセンスに含まれます。Ming Light Controller（MLC）は別途インストールするアドオンで、Personal Streaming・Personal CreatorのEarly Access Founders Editionに含まれます。
+MingToon 0.1.8 は **BRP本体のオープンベータ**です。URPは現在のBRPオープンベータには含まれず、すべての商用ライセンスに含まれます。Ming Light Controller（MLC）は別途インストールするアドオンで、Personal Streaming・Personal CreatorのEarly Access Founders Editionに含まれます。
 
 **VRChat アバターのためのキャラクター向けトゥーンシェーダー**です。
 

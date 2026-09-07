@@ -5,7 +5,7 @@ sidebar_position: 1
 ---
 
 :::note[오픈 베타 참여 안내]
-[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) — 아직 BOOTH 상품이 게시되지 않았습니다. 게시 후 이 페이지에 공식 상품 링크를 연결합니다. 다운로드 전에 현재 베타의 이용 조건과 지원 범위를 확인해 주세요.
+[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/)
 :::
 
 
@@ -13,7 +13,7 @@ sidebar_position: 1
 
 # 설치
 
-MingToon 0.1.7 베타 릴리스 후보 본체는 BRP 대상입니다. URP는 현재 BRP 오픈 베타에 포함되지 않으며, 모든 상업 라이선스에 포함됩니다.
+MingToon 0.1.8 오픈 베타 본체는 BRP 대상입니다. URP는 현재 BRP 오픈 베타에 포함되지 않으며, 모든 상업 라이선스에 포함됩니다.
 
 **이 문서를 마치면** MingToon이 오류 없이 임포트된 Unity 프로젝트를 갖게 됩니다.
 
@@ -31,29 +31,33 @@ MingToon 0.1.7 베타 릴리스 후보 본체는 BRP 대상입니다. URP는 현
 
 한 프로젝트로 VRChat과 Warudo를 동시에 대응할 수는 없습니다. 대상별로 프로젝트를 나누세요.
 
-## 2. 준비물
+## 2. 설치 방법 선택
 
-- 위 표에 맞는 Unity 에디터
-- MingToon `.unitypackage`
-- VRChat 대상이면 현행 **VRChat SDK3 (Avatars)**
-- 가능하면 **새 프로젝트** — 아래 주의 참고
+[공식 다운로드 안내](https://studioraming.github.io/mingtoon-site/ko/download/)에서 VCC 또는 BOOTH를 선택하세요. VRChat 대상 프로젝트에는 VRChat SDK3 (Avatars)를 먼저 준비합니다.
 
-:::caution[개발 프로젝트에 덮어쓰지 마세요]
-이 배포물은 UPM 패키지가 아니라 **소스 `.unitypackage`** 입니다. 기존 MingToon 소스가 있는 프로젝트에 다시 임포트하면 클래스와 셰이더가 중복되어 컴파일이 깨집니다. 최종 패키지는 항상 빈 검증 프로젝트에서 시험하세요.
+:::caution[기존 Assets 설치본에서 이전하기]
+프로젝트를 백업하고 Play 모드를 종료하세요. `Assets/StudioRaming/MingToon` 안에 직접 저장한 재질·텍스처·프리셋을 다른 폴더로 옮긴 뒤, **기존 MingToon 폴더만 삭제**하고 새 패키지를 설치합니다. `Assets/StudioRaming` 전체나 `MingLightController` 폴더는 삭제하지 마세요. 이 정리는 이전 Assets 설치본에서 옮길 때만 필요합니다.
 :::
 
-## 3. 임포트
+### VCC로 설치
 
-1. 대상에 맞는 Unity 버전으로 프로젝트를 엽니다.
-2. VRChat 대상이면 **VRChat SDK를 먼저 임포트**합니다. SDK가 먼저 있어야 MingToon의 VRChat 연동 코드가 컴파일됩니다.
-3. MingToon `.unitypackage`를 프로젝트 창에 드래그하거나 `Assets > Import Package > Custom Package`로 임포트합니다.
-4. 임포트 대화상자에서 **모든 항목을 선택한 채로** Import를 누릅니다.
-5. Unity가 컴파일을 마칠 때까지 기다립니다.
-6. **Console을 열어 오류가 0건인지 확인합니다.** C# 오류든 셰이더 오류든, 하나라도 남아 있으면 다음 단계로 넘어가지 마세요.
+1. 공식 다운로드 안내에서 **VCC에 추가**를 누릅니다.
+2. VCC에서 저장소 추가를 확인하고 대상 프로젝트의 **Manage Project**를 엽니다.
+3. MingToon을 추가한 뒤 Unity를 열고 패키지 임포트와 컴파일이 끝날 때까지 기다립니다.
+4. 이후 업데이트는 VCC의 Manage Project에서 진행합니다.
 
-<!-- SCREENSHOT: Import Package 대화상자 -->
+### BOOTH 설치기로 설치
 
-**이렇게 되면 정상입니다.** Project 창에 `Assets/StudioRaming/MingToon/`이 생기고, Console에 빨간 오류가 없습니다.
+1. [공식 BOOTH 상품](https://raming.booth.pm/items/8810209)에서 설치기 `.unitypackage`를 받습니다.
+2. Unity에서 `Assets > Import Package > Custom Package`로 설치기를 임포트합니다.
+3. 인터넷에 연결된 상태에서 기다리면 DLL 설치기가 필요한 MingToon 패키지를 자동 설치합니다. 첫 설치에는 별도의 설치 버튼이 필요하지 않습니다.
+4. 이후 Unity 시작 시 새 버전을 확인합니다. 안내창에서 **업데이트**를 눌렀을 때 설치하며, **건너뛰기**는 해당 버전에만 적용됩니다. Unity 재시작만으로 업데이트를 자동 설치하지 않습니다.
+
+## 3. 설치 확인
+
+Project 창의 **Packages > MingToon**과 `Packages/com.studioraming.mingtoon` 설치 경로를 확인하세요. Unity가 임포트와 컴파일을 마친 뒤 Console의 오류를 확인하고, 사용하는 재질에 MingToon 셰이더가 정상 표시되는지 확인합니다.
+
+Ming Light Controller는 별도 패키지입니다. 사용하는 경우 MLC도 별도로 설치·업데이트하세요. 이번 MingToon 배포는 BRP 본체이며 URP 애드온을 포함하지 않습니다.
 
 ## 이전 버전에서 올라왔다면 {#이전-버전에서-올라왔다면}
 

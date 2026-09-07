@@ -5,7 +5,7 @@ sidebar_position: 1
 ---
 
 :::note[Join the Open Beta]
-[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) — The BOOTH product has not been published yet. Its official product link will be added here after publication. Review the current beta terms and supported environments before downloading.
+[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/)
 :::
 
 
@@ -29,29 +29,33 @@ Every commercial license includes the URP version. MLC is included in the Early 
 
 You cannot target both VRChat and Warudo with one project. Split projects by target.
 
-## 2. Requirements
+## 2. Choose an installation method
 
-- Unity editor matching the table above
-- MingToon `.unitypackage`
-- VRChat SDK3 (Avatars) if targeting VRChat
-- **Fresh project preferred** — see caution below
+Choose VCC or BOOTH on the [official download page](https://studioraming.github.io/mingtoon-site/en/download/). Prepare VRChat SDK3 (Avatars) first for a VRChat project.
 
-:::caution[Do not overwrite a dev project]
-This distribution is **source `.unitypackage`**, not a UPM package. Reimporting into a project with existing MingToon source duplicates classes and shaders, breaking compilation. Always test the final package in a clean validation project.
+:::caution[Migrating from the older Assets installation]
+Back up your project and exit Play mode. Move any materials, textures or presets you saved inside `Assets/StudioRaming/MingToon` to another folder, then **delete only the old MingToon folder** before installing the new package. Do not delete all of `Assets/StudioRaming` or the `MingLightController` folder. This cleanup is needed only when moving from the older Assets installation.
 :::
 
-## 3. Import
+### Install with VCC
 
-1. Open your project with the matching Unity version for your target.
-2. If targeting VRChat, **import VRChat SDK first**. SDK must exist before MingToon's VRChat integration code compiles.
-3. Drag MingToon `.unitypackage` into the project window or use `Assets > Import Package > Custom Package`.
-4. In the import dialog, **keep all items selected** and click Import.
-5. Wait for Unity to finish compiling.
-6. **Open the Console and verify 0 errors.** If any C# or shader errors remain, do not proceed.
+1. Select **Add to VCC** on the official download page.
+2. Confirm the repository in VCC and open **Manage Project** for your project.
+3. Add MingToon, open Unity, and wait for package import and compilation to finish.
+4. Use VCC's Manage Project for subsequent updates.
 
-<!-- SCREENSHOT: Import Package dialog -->
+### Install with the BOOTH installer
 
-**This is correct.** Project window shows `Assets/StudioRaming/MingToon/`, and Console has no red errors.
+1. Download the installer `.unitypackage` from the [official BOOTH product](https://raming.booth.pm/items/8810209).
+2. Import it in Unity using `Assets > Import Package > Custom Package`.
+3. Stay connected to the internet while the DLL installer automatically installs the required MingToon package. No separate install button is needed for the first installation.
+4. On later Unity launches, the updater checks for a new version. Installation starts only when you select **Update** in the prompt. **Skip** applies to that version only. Restarting Unity does not automatically install an update.
+
+## 3. Verify installation
+
+Check **Packages > MingToon** in the Project window and the installation path `Packages/com.studioraming.mingtoon`. After Unity finishes importing and compiling, check the Console for errors and confirm that your materials display their MingToon shaders correctly.
+
+Ming Light Controller is a separate package. Install or update MLC separately if you use it. This MingToon release contains the BRP core and does not include the URP add-on.
 
 ## Upgrading from an earlier version {#이전-버전에서-올라왔다면}
 

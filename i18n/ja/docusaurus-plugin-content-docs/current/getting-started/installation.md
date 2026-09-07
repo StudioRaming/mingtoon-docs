@@ -5,7 +5,7 @@ sidebar_position: 1
 ---
 
 :::note[オープンベータ参加案内]
-[オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/) — BOOTH商品はまだ公開されていません。公開後、このページに公式商品リンクを追加します。 ダウンロード前に、現在のベータ版の利用条件と対応範囲をご確認ください。
+[オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/)
 :::
 
 
@@ -29,29 +29,33 @@ sidebar_position: 1
 
 1つのプロジェクトでVRChatとWarudoを同時に対応させることはできません。対象ごとにプロジェクトを分けてください。
 
-## 2. 準備物
+## 2. インストール方法を選ぶ
 
-- 上の表に合ったUnityエディタ
-- MingToon `.unitypackage`
-- VRChat対象の場合、現在の**VRChat SDK3 (Avatars)**
-- 可能であれば**新しいプロジェクト** — 下の注意参照
+[公式ダウンロード案内](https://studioraming.github.io/mingtoon-site/ja/download/)からVCCまたはBOOTHを選択してください。VRChat用プロジェクトには、先にVRChat SDK3 (Avatars)を用意します。
 
-:::caution[開発プロジェクトに上書きしないでください]
-このディストリビューションはUPMパッケージではなく、**ソース`.unitypackage`** です。既存のMingToonソースがあるプロジェクトに再度インポートすると、クラスとシェーダーが重複してコンパイルが破損します。最終パッケージは常に空の検証プロジェクトでテストしてください。
+:::caution[旧Assets版から移行する場合]
+プロジェクトをバックアップし、Playモードを終了してください。`Assets/StudioRaming/MingToon`内に自分で保存したマテリアル・テクスチャ・プリセットを別のフォルダーへ移してから、**古いMingToonフォルダーだけを削除**し、新しいパッケージを導入します。`Assets/StudioRaming`全体や`MingLightController`フォルダーは削除しないでください。この整理は旧Assets版から移行するときだけ必要です。
 :::
 
-## 3. インポート
+### VCCでインストール
 
-1. 対象に合ったUnityバージョンでプロジェクトを開きます。
-2. VRChat対象の場合は、**まずVRChat SDKをインポート**します。MingToonのVRChat連携コードがコンパイルされるには、SDKが先に存在する必要があります。
-3. MingToon `.unitypackage`をプロジェクトウィンドウにドラッグするか、`Assets > Import Package > Custom Package`でインポートします。
-4. インポートダイアログで**すべてのアイテムを選択したまま**Importをクリックします。
-5. Unityがコンパイルを完了するまで待ちます。
-6. **Consoleを開いてエラーが0件であることを確認します。** C#エラーでもシェーダーエラーでも、何か残っていれば次のステップに進まないでください。
+1. 公式ダウンロード案内で**VCCに追加**を選択します。
+2. VCCでリポジトリの追加を確認し、対象プロジェクトの**Manage Project**を開きます。
+3. MingToonを追加してUnityを開き、パッケージのインポートとコンパイルが終わるまで待ちます。
+4. 以降の更新はVCCのManage Projectから行います。
 
-<!-- SCREENSHOT: Import Package ダイアログ -->
+### BOOTHのインストーラーで導入
 
-**このようになれば正常です。** Projectウィンドウに`Assets/StudioRaming/MingToon/`が生成され、Consoleに赤いエラーがありません。
+1. [公式BOOTH商品](https://raming.booth.pm/items/8810209)からインストーラーの`.unitypackage`をダウンロードします。
+2. Unityの`Assets > Import Package > Custom Package`からインポートします。
+3. インターネットに接続したまま待つと、DLLインストーラーが必要なMingToonパッケージを自動で導入します。初回は追加のインストールボタンを押す必要はありません。
+4. 以降はUnity起動時に新しいバージョンを確認します。案内画面の**更新**を押した場合のみインストールし、**スキップ**はそのバージョンだけに適用されます。Unityを再起動するだけでは更新を自動インストールしません。
+
+## 3. インストールの確認
+
+Projectウィンドウの**Packages > MingToon**と、導入先の`Packages/com.studioraming.mingtoon`を確認してください。インポートとコンパイルの完了後、Consoleのエラーと、マテリアルのMingToonシェーダーが正常に表示されることを確認します。
+
+Ming Light Controllerは別パッケージです。使用する場合はMLCも別途導入・更新してください。今回のMingToon配布はBRP本体であり、URPアドオンは含まれません。
 
 ## 以前のバージョンからアップグレードした場合 {#이전-버전에서-올라왔다면}
 
