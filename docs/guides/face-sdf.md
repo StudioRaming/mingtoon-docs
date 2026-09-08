@@ -37,6 +37,12 @@ MingToon 0.1.7 패키지에는 Studio가 동봉되지 않습니다. 별도로 �
 
 Single Channel은 세로광 영향을 사용하지 않습니다. 상하 방향 변화까지 필요하면 Packed RGBA를 사용하세요.
 
+### 베이크 결과 확인
+
+Packed RGBA는 **R=왼쪽 · G=오른쪽 · B=위 · A=아래**의 네 방향을 한 장에 보관합니다. `Single Channel Mirrored U`는 R만 읽고 반대쪽 수평광에서 U를 반전하므로 상하 채널은 사용하지 않습니다.
+
+`Baked Front UV7`을 선택하면 얼굴 정면 투영 결과가 메시의 UV7(TEXCOORD6)에 기록됩니다. 이 UV7은 해당 Renderer에서 얼굴 SDF가 소유하므로, 같은 UV7에 얼굴 노멀을 베이크하는 작업과 함께 사용하지 마세요. 베이크 뒤에는 Inspector의 형식·좌표 선택이 Studio에서 사용한 값과 같은지 확인하고, 좌우와 상하 조명을 각각 움직여 네 방향이 뒤바뀌지 않았는지 확인하세요.
+
 ### 좌표 선택
 
 - `Base Texture UV (Legacy)` — 기존 UV0를 그대로 읽습니다.

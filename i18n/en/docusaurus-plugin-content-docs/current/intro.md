@@ -31,11 +31,11 @@ that keeps the required features. Removed feature operations are omitted, but
 actual cost still depends on the features left, the avatar, and the world.
 → [Automatic Optimization On Build](/workflow/build-optimization)
 
-**Three kinds of shadow — and the third is the one others do not have.**
+**Combine three kinds of shadow.**
 The **form shadow** curvature makes and real-time **shadow projection** exist
 elsewhere. MingToon adds the **2D shadow**: it reads camera depth so bangs,
-hands, and sleeves fall across the body as a toon shape that a real-time shadow
-will not give you. A unified shadow gathers all three into one colour so overlaps
+hands, and sleeves cast shapes across the body that you can adjust for a toon look.
+A unified shadow gathers all three into one colour so overlaps
 do not go black.
 → [Light and Shadow](/guides/light-and-shadow) · [Depth Effects](/guides/depth-effects)
 
@@ -48,8 +48,10 @@ VRChat client behaviour is still unverified.
 → [Depth Effects](/guides/depth-effects)
 
 **The face is a subsystem, not a slot.**
-It does not stop at one face mask. Alongside normal compression, the face region mask, and a directional SDF,
-the core supports authored SDF and vertex data. Face SDF Studio and scene-view
+Normal compression, a face region mask, and a directional SDF work together.
+Packed RGBA face SDF stores left, right, up, and down in one texture to adjust
+facial shading under horizontal and vertical lighting. A compatibility mode
+also accepts an existing single-channel SDF. Face SDF Studio and scene-view
 vertex paint are supplied as separate add-ons; existing SDF and vertex data can
 be assigned to core materials. → [Face SDF and add-ons](/guides/face-sdf) ·
 [Add-ons](/guides/add-ons)

@@ -33,6 +33,10 @@ MingToon의 lilToon 재질 변환기와 선택형 UV 라우터는 lilToon의 프
 UV0~UV3 선택, ST, 스크롤·회전, 데칼 위치·복제·반전, 스프라이트 시트 프레임 선택,
 메인·2nd·3rd 표면 레이어와 두 발광 레이어의 독립 마스크 변환입니다.
 
+글리터(Glitter)의 반짝임 위상, 대비·감쇠, 입자 커버리지, 법선·조명 방향에 따른 반응과
+무작위 색상 처리 일부도 lilToon의 `lilCalcGlitter` 구현을 수정·차용합니다.
+해당 계산은 MingToon의 레이어·마스크 및 BRP·URP 처리에 맞게 연결한 변경판입니다.
+
 이 구현은 밍툰의 BRP·URP 공용 모듈과 변환 데이터 모델에 맞춰 다시 구성한 변경판입니다.
 원본 lilToon이라고 표시하지 않으며, 사용하지 않는 재질은 해당 선택형 경로를 켜지 않습니다.
 AnimationClip 커브 재작성, Fur, Gem, 굴절은 이 차용 범위에 포함되지 않습니다.
@@ -45,6 +49,11 @@ The covered behaviour includes HSVG correction; UV0-UV3 selection; ST,
 scrolling and rotation; decal placement, copy and flip modes; sprite-sheet
 frame selection; and independent-mask conversion for the main, 2nd and 3rd
 surface layers and both emission layers.
+
+Parts of Glitter's sparkle phase, contrast and attenuation, particle coverage,
+normal/light-direction response, and random-colour processing are also adapted
+from lilToon's `lilCalcGlitter`. These calculations are integrated with
+MingToon's layer, mask, and BRP/URP processing.
 
 This is a modified implementation rebuilt around MingToon's shared BRP/URP
 modules and conversion data model. It is not represented as the original
@@ -59,6 +68,11 @@ MingToon の lilToon マテリアル変換と任意の UV ルーターは、lilT
 改変・採用しています。対象は HSVG 色補正、UV0〜UV3 選択、ST、スクロール・回転、
 デカールの配置・複製・反転、スプライトシートのフレーム選択、メイン・2nd・3rd
 表面レイヤーと2つの発光レイヤーに対する独立マスク変換です。
+
+グリッター（Glitter）のきらめきの位相、コントラスト・減衰、粒子のカバレッジ、
+法線・ライト方向に応じた反応、ランダムカラー処理の一部も、lilToon の
+`lilCalcGlitter` を改変・採用しています。これらの計算は MingToon のレイヤー、
+マスクおよび BRP・URP の処理に合わせて組み込んだ変更版です。
 
 これは MingToon の BRP・URP 共通モジュールと変換データモデルに合わせて再構成した
 変更版です。元の lilToon 実装として表示せず、この任意経路を有効にしないマテリアルは

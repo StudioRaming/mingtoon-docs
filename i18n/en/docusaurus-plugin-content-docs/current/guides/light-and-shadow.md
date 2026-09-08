@@ -26,6 +26,12 @@ What MingToon calls "shadows" actually refers to three distinct types. If you do
 
 1. Form Shadow boundary → 2. Shadow Color → 3. 2nd Shadow stage → 4. Shadow Projection → 5. Face exceptions → 6. Boundary decoration
 
+## Checking Overlapping Shadows {#reading-the-composite-order}
+
+Set up Form Shadow and Cast Shadow first, then enable 2D Shadow and SSAO one at a time to inspect the overlap. Adjust the unified shadow colour and boundary appearance last to make each effect's contribution easier to identify. This is a look-adjustment workflow, not a list of the shader's internal calculation order. 2D Shadow and SSAO require camera depth.
+
+To isolate a problem, temporarily disable each added effect and compare. If contact areas are too dark, compare with SSAO disabled. If a band follows a projected silhouette, disable Cast Shadow and 2D Shadow separately to identify which effect produces it.
+
 ---
 
 ## 1. Form Shadow Boundary — Adjust First {#1-형태-그림자-경계--가장-먼저}

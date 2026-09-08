@@ -37,6 +37,12 @@ Choose one of two formats in `SDF Map Format`.
 
 Single Channel does not use vertical-light influence. Use Packed RGBA when you need changes from up/down lighting.
 
+### Verify the bake output
+
+Packed RGBA stores four directions in one texture: **R=left · G=right · B=up · A=down**. `Single Channel Mirrored U` reads only R and mirrors U for the opposite horizontal light, so it does not use vertical channels.
+
+With `Baked Front UV7`, the front-view projection is written to the mesh's UV7 (TEXCOORD6). That UV7 is owned by Face SDF on the Renderer, so do not use the same UV7 for a face-normal bake at the same time. After baking, confirm that the Inspector's format and coordinate selections match Studio, then move the horizontal and vertical lighting controls separately to check that the four directions are not swapped.
+
 ### Choose Coordinates
 
 - `Base Texture UV (Legacy)` — Reads the existing UV0 as-is.
