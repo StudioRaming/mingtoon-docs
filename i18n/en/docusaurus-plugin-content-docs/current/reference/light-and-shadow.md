@@ -8,8 +8,10 @@ sidebar_position: 2
 
 The single biggest lever on a toon look. Form Shadow (light-direction shading) and Shadow Projection (real-time cast shadow) are separate sections - keep them apart.
 
+Start with the guide: [Light & Shadow](/guides/light-and-shadow)
+
 :::note
-The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
+This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
 :::
 
 ## Master Adjust
@@ -31,6 +33,7 @@ One multiply and tint each over everything that adds light, over every shadow, a
 | **Color Pad Y** | Pairs with Color Pad X to pick a spot on the color wheel. Both at 0 leaves the color unchanged. | `_ShadowMasterColorY` |
 | **Brightness** | Brightness of the color-pad tint. Lowering it darkens only the shadowed part. 1 is neutral. | `_ShadowMasterColorValue` |
 | **Overall Intensity** | Brightness multiplier on the finished character after every effect. The last handle to reach for when the whole character reads too dark or too bright. Applied before fog, so distance never changes it. | `_OutputMasterIntensity` |
+| **Overall Saturation** | Saturation of the finished character after every effect. 0 is grayscale, 1 is neutral, and above 1 deepens color while keeping brightness. Same math as each module's Color Purity, applied once at the final output. | `_OutputMasterSaturation` |
 | **Overall Tint** | Color multiplied into the final output. Use it as the last lean of the whole character's color toward the scene. White is neutral. | `_OutputMasterTint` |
 | **Palette Tint Amount** | How much Shared Palette color reaches the finished character. 0 keeps only Overall Tint; 1 applies the palette fully. | `_OutputMasterTintAmount` |
 | **Color Pad X** | Color-wheel coordinate laid over the output Base Color. With both X and Y at 0 nothing changes; the further from center, the stronger the tint toward that hue. | `_OutputMasterColorX` |
@@ -47,6 +50,7 @@ Configure direct and indirect lighting response.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Scene Light Color Influence** | How much the scene light's hue tints the character. At 0 every light reads as white; at 1 a red light turns the character red. This controls hue only, not brightness. | `_LightColorInfluence` |
 | **Yaw** | Horizontal angle of the virtual key light. Set it while watching where the shading falls on the face. In-game nudges belong to Yaw Offset, not here. In a world with no light and flat ambient, this angle sets the shadow direction even with the virtual light off. | `_MingVirtualLightYaw` |
 | **Pitch** | Vertical angle of the virtual key light. Lighting from above reads natural; from below reads like horror lighting. In-game nudges belong to Pitch Offset. In a world with no light and flat ambient, this angle sets the shadow direction even with the virtual light off. | `_MingVirtualLightPitch` |
 | **Light Color** | Color of the virtual key light. It lights the character in place of - or on top of - the world light, so start white and lean it only slightly toward the scene's mood. | `_MingVirtualLightColor` |
@@ -58,7 +62,6 @@ Configure direct and indirect lighting response.
 | **Environment Color Influence** | Controls how strongly light-probe and ambient color washes over the surface. At 0 it adds no environment hue; at 1 it uses as much environment color as possible without raising brightness. Indirect-light brightness is controlled separately below. | `_EnvironmentColorInfluence` |
 | **Indirect Light Lift** | Controls the brightness lift supplied by light-probe and ambient indirect light. At 0 it adds no indirect brightness; at 1 it uses the environment at its authored strength. How much its color tints the surface is controlled separately by Environment Color Influence. | `_IndirectStrength` |
 | **Preserve Base Map Color** | Controls only how much the scene-light hue tints the completed base color. At 0 the light hue is fully applied; at 1 the base color is preferred. It never preserves or changes lighting energy. | `_BaseColorPreservation` |
-| **Scene Light Color Influence** | How much the scene light's hue tints the character. At 0 every light reads as white; at 1 a red light turns the character red. This controls hue only, not brightness. | `_LightColorInfluence` |
 | **Main Light Response** | Remaps the main-light brightness ratio through the four-point curve below. Off preserves the original light calculation. | `_LightResponseApplyMain` |
 | **Additional Light Final Attenuation Response** | Remaps the final distance-and-shadow attenuation response of point, spot, and other additional lights with the same curve. A physically zero attenuation outside the light range never comes back. Vertex additional-light variants receive distance attenuation only because URP does not provide per-light shadow attenuation in that path. | `_LightResponseApplyAdditional` |
 | **Response Point 0 (Dark)** | Output at input 0. The value is safely constrained to 0~1. | `_LightResponseCurvePoint0` |
@@ -71,7 +74,7 @@ Configure direct and indirect lighting response.
 | **Additional Light Energy Cap** | Caps the energy that point, spot and other additional lights add to the final surface brightness. The default 0.35 is a safe starting point that keeps strong colored lights from pushing highlights to white. It limits brightness contribution only; Additional Light Color Influence still preserves the light's hue. | `_AdditionalLightBrightnessMaximum` |
 | **VRC Light Volumes (Test)** | An in-editor test toggle. A VRChat upload turns the module on automatically regardless of this value, reading the VRC Light Volumes the world placed instead of Unity light probes. In a world without volumes it falls back to probes and the picture is unchanged. Turning it on in the editor compiles one more variant and adds a Texture3D read, so enable it only to preview the look in a volume world. Built-in only; the row does not appear on a URP material. | `_LightVolumesEnabled` |
 | **Volume Intensity** | Scales all of the indirect light read from the world's volumes. 1 is exactly what the world baked; raising it reads as that room's ambient getting stronger. In a world without volumes the shader falls back to probes, so no value here changes the picture. | `_LightVolumesIntensity` |
-| **Darkening Response** | Controls how much darkening is retained when the volume energy is below neutral 1. At 0 darkening is ignored; at 1 the world's baked darkness is used unchanged. The default 0.5 keeps half of the departure from neutral. | `_LightVolumesDarkening` |
+| **Darkening Response** | Controls how much darkening is retained when the volume energy is below neutral 1. At 0 darkening is ignored; at 1 the world's baked darkness is used unchanged. The default 0.5 keeps half of the departure from neutral. The same control also protects the light multiplier of backlight, Fresnel Rim and 2D Rim Light: lower values keep these rims visible in dark volumes. | `_LightVolumesDarkening` |
 | **Brightening Response** | Controls how much brightening is retained when the volume energy is above neutral 1. At 0 extra brightness is ignored; at 1 the world's baked brightness is used unchanged. This is independent of Darkening Response. | `_LightVolumesBrightening` |
 | **Normal Bias** | Pushes the point where the volume is sampled along the surface normal. Raise it when a face pressed against a wall or floor picks up a dark grid cell and blotches. Too much makes the shading look detached from the surface, so stop at the smallest value that clears the blotching. | `_LightVolumesNormalBias` |
 | **Point Light Shadows** | Sets how much of the world's baked occlusion the volume point lights obey. 1 is the default behavior; 0 lets the point lights through with no shadowing at all. In a world that baked no occlusion this makes no difference at any value. | `_LightVolumesPointShadows` |
@@ -86,6 +89,8 @@ Configure shape-based shade thresholds and softness.
 | Control | What it does | Shader property |
 |---|---|---|
 | **Form Shadow** | Toggles the form shadow - the toon shading that follows light direction. Off, the character loses its shading bands and only cast and 2D shadows remain. | `_FormShadowEnabled` |
+| **Boundary Color** | Color laid along the 1st shadow boundary - typically a faint warm red on skin terminators. Set its Blend Opacity to 0 to turn it off. | `_ShadowBorderColor` |
+| **Use Shadow Boundary** | Enables the colored boundary effect between lit and shadowed regions. Off also skips its boundary work. | `_ShadowBorderEnabled` |
 | **1st Shadow Border** | Where the 1st shadow boundary sits. Raising it spreads the shadow toward the lit side; lowering it pulls it back. The first value to touch when the shadow covers too much or too little. | `_FormShadowMidPoint` |
 | **1st Shadow Blur** | Width of the terminator blur. Near 0.001 gives the hard cel edge; above 0.3 becomes a soft gradient. This is the most frequently adjusted control in the product. | `_FormShadowSoftness` |
 | **1st Shadow Color** | Color of the 1st form shadow. A calm color slightly darker than the base reads softer than plain black. While Unified Shadow mode is on, the unified color is used instead. | `_FormShadowColor` |
@@ -98,8 +103,6 @@ Configure shape-based shade thresholds and softness.
 | **2nd Shadow Blur** | Width of the second shadow's edge blur. Keeping it tighter than the 1st shadow makes the inner band read crisply. Ignored while Enable 2nd Shadow is off. | `_FormShadow2ndSoftness` |
 | **Front Light Shadow Shift** | Shifts the form-shadow boundary toward the lit side when view and light face the same way (V·L > 0). Range 0-1, default 0; the gap between both bands is preserved. | `_FormShadowFrontLightShift` |
 | **Back Light Shadow Shift** | Shifts the form-shadow boundary on the back-lit side when view and light oppose (V·L &lt; 0). Range 0-1, default 0; the gap between both bands is preserved. | `_FormShadowBackLightShift` |
-| **Use Shadow Boundary** | Enables the colored boundary effect between lit and shadowed regions. Off also skips its boundary work. | `_ShadowBorderEnabled` |
-| **Boundary Color** | Color laid along the 1st shadow boundary - typically a faint warm red on skin terminators. Set its Blend Opacity to 0 to turn it off. | `_ShadowBorderColor` |
 | **Boundary Overlay Mode** | Whether the boundary color band straddles the terminator or stays inside the shadow side only. On, it crosses into the lit side for a thick colored terminator; off, it stays inside the shadow and reads cleaner. | `_ShadowBorderOverlay` |
 | **Boundary Width** | Width of the colored band laid on the terminator. At 0 nothing is drawn, so the boundary color, blur and strength rows are all ignored. It also needs the Shadow Color module on and either Form Shadow or Cast Shadow active. On the 2D shadow the band lands only where the silhouette itself is soft - a blurred edge, the depth ramp - so a fully covered area keeps exactly the form shadow's core colour. | `_ShadowBorderWidth` |
 | **Boundary Blur** | Blur width at the edge of the boundary band. Ignored while Boundary Width is 0. | `_ShadowBorderBlur` |

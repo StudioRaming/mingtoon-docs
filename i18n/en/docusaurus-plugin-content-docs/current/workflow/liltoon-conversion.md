@@ -24,7 +24,7 @@ The two shaders use different formulas and feature semantics. Conversion is an i
 
 ## Recover and Convert Missing Shader Materials {#missing-shader}
 
-0.1.7 can convert pink materials whose shader file is missing by reading serialized property names and values. It recognizes stored patterns from NiloToon, lilToon, and Unity Standard families and shows the evidence for that classification in the preview.
+0.1.8 can convert pink materials whose shader file is missing by reading serialized property names and values. It recognizes stored patterns from NiloToon, lilToon, and Unity Standard families and shows the evidence for that classification in the preview.
 
 When a shader is missing, its hidden defaults and full keyword semantics cannot all be recovered. After conversion, inspect these items in particular:
 
@@ -35,7 +35,7 @@ When a shader is missing, its hidden defaults and full keyword semantics cannot 
 
 ## Procedure
 
-1. Add MingToon Manager to the avatar or clothing root.
+1. Add MingToon Manager to the Avatar Root, including when you are editing clothing or an outfit.
 2. Check source schemas and excluded slots in the conversion preview.
 3. Explicitly assign Face / Skin / Common roles per slot. Auto trusts only direct flags stored in the source.
 4. Choose the conversion look preset and output path.
@@ -54,7 +54,7 @@ Slots with no one-to-one equivalent—such as particles, refraction, fur/shell, 
 - Modules are enabled on materials that need PBR, Emission, Outline, or Alpha Mask.
 - Face / Skin roles and face proxies are correct.
 
-Even after reapplying a look preset, 0.1.7 preserves character-specific values such as Surface identity and the face proxy.
+Even after reapplying a look preset, 0.1.8 preserves character-specific values such as Surface identity and the face proxy.
 
 ## Restore Sources
 
@@ -62,4 +62,4 @@ Even after reapplying a look preset, 0.1.7 preserves character-specific values s
 
 ## Next
 
-[MingToon Manager](/workflow/character-manager) · [Automatic Build Optimization](/workflow/build-optimization)
+[MingToon Manager](/workflow/character-manager) · [Automatic Build Optimization](/workflow/build-optimization) · [Troubleshooting](/troubleshooting) · [Troubleshooting](/troubleshooting)

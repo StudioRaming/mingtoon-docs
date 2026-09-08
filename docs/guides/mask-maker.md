@@ -10,7 +10,7 @@ sidebar_position: 14
 
 ## 방금 누른 버튼은 별매 제품이 필요합니다
 
-Mask Maker는 별도로 판매되는 Editor 도구입니다. MingToon 0.1.7 오픈베타 패키지에는 동봉되지 않습니다.
+Mask Maker는 별도로 판매되는 Editor 도구입니다. MingToon 오픈베타 패키지에는 동봉되지 않습니다.
 
 MingToon 자체는 Mask Maker가 없어도 설치되고, 컴파일되고, 동작합니다. 마스크를 **읽는** 쪽은 MingToon 셰이더이고, Mask Maker는 그 마스크를 **만드는** 쪽만 담당합니다.
 
@@ -76,25 +76,11 @@ MingToon은 Mask Maker, Face SDF Studio, Ming Light Controller를 어셈블리 �
 
 ### Ming Light Controller {#ming-light-controller}
 
-MingToon 아바타 표현 메뉴(VRChat Expression Menu)를 만드는 Editor 전용 애드온입니다.
+MLC는 MingToon의 조절 항목을 VRChat 표현 메뉴로 만드는 별도 애드온입니다. [공식 BOOTH 상품 페이지](https://raming.booth.pm/items/8810346)에서 배포 안내를 확인하고 MingToon 본체와 따로 설치합니다. Mask Maker는 MLC 메뉴 생성의 필수품이 아닙니다.
 
-**출시 예정입니다.** 판매가 시작되면 이 자리에 구매 링크가 올라갑니다.
+설치하면 MingToon의 마스터 조정·가상 광원 편집과 Manager의 MLC 설정 진입점을 사용할 수 있습니다. 아바타 루트에 MLC를 설정한 뒤 메뉴 항목을 고르고, 현재 Inspector의 예산·검증 결과를 확인하세요. Smooth/Compact/Auto 비용은 활성 기능과 Saved/Synced 설정에 따라 달라지므로 고정 숫자로 판단하지 않습니다. Auto 선택도 미확인 외부 비용까지 보장하지 않습니다.
 
-| 위치 | 잠긴 기능 |
-|---|---|
-| 인스펙터 · 최상단 | `마스터 조정` 섹션 |
-| 인스펙터 · 조명 | `가상 광원` 오소링 행 |
-| MingToon Manager | MLC 설치·부착 액션 |
-
-파라미터 프로필은 아바타의 남은 VRChat 예산에 맞춰 고릅니다.
-
-| 프로필 | 동기화 비트 | 항목 수 |
-|---|---|---|
-| Smooth | 84 | 22 |
-| Compact | 41 | 51 |
-| Auto | 남은 예산에 맞춰 위 둘 중 하나를 고름 | — |
-
-루트 메뉴는 7칸입니다: `Reset`, `Final Output`, `Hue/Saturation`, `Photo Looks`, `Virtual Light`, `Master Adjust`, `Performance`.
+Reset, Final Output, Hue/Saturation, Photo Looks, Virtual Light, Master Adjust, Performance는 추천 구성의 출발점이며 최종 메뉴는 설정에 따라 달라집니다. Edit Mode에는 설정만 보관하고 생성 결과는 Play Mode/업로드 처리에서 확인합니다. 자세한 설치 조건과 조작 순서는 [MLC 사용하기](/guides/ming-light-controller)를 따르세요.
 
 #### MLC 없이도 되는 것
 

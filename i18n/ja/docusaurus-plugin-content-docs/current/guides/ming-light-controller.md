@@ -55,6 +55,12 @@ Direct Descriptor は FX・表現メニュー・パラメーターが空のア�
 
 プリセットは編集の出発点です。適用後も項目を編集でき、変更した構成がユーザー設定になります。適用は Undo で戻せます。プリセットの選択と **適用**を押すことは別の操作です。
 
+### 連携方式とWrite Defaults
+
+連携方式Autoは、利用可能なModular Avatar → 対応VRCFury provider → Direct Descriptor → Standaloneの順で選択します。パラメータープロファイルのAutoとは別です。VRCFuryを明示的に選んで対応providerがない場合、別方式へ自動変更せずエラーを表示します。
+
+生成するAnimator状態はWrite Defaultsをオフにして作成します。Modular Avatar連携ではアバターのWrite Defaults方式に合わせるよう要求するため、選んだ連携方式で最終マージ結果も確認してください。元のFX全体のWrite Defaultsを一括変更する指示ではありません。
+
 ### インストールで開放される MingToon 機能 {#설치하면-열리는-mingtoon-기능}
 
 MLC に接続されたマスター調整・バーチャルライトのオーサリングと、Manager の MLC 設定入口が MingToon で利用できるようになります。ボタンがロックされたままなら、Console のコンパイルエラーとアドオンのインストール状態を確認してください。

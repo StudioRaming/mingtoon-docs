@@ -59,7 +59,7 @@ Ming Light Controllerは別パッケージです。使用する場合はMLCも�
 
 ## 以前のバージョンからアップグレードした場合 {#이전-버전에서-올라왔다면}
 
-0.1.6で作業していたプロジェクトを0.1.7へアップグレードした場合、以下の2つを**それぞれ1回ずつ**実行する必要があります。
+以前のバージョンからアップグレードしたプロジェクトでは、以下の2つを**それぞれ1回ずつ**実行する必要があります。
 
 :::danger[1. スキーマ マイグレーションを1回実行してください]
 `Tools > Studio Raming > MingToon > Advanced > Migrate Project To Current Schema`
@@ -136,4 +136,4 @@ VRChatアバターはワールドのポストプロセッシングに従うた�
 
 ## 次へ
 
-[最初のマテリアルを作成する](/getting-started/first-material)
+[最初のマテリアルを作成する](/getting-started/first-material) · [トラブルシューティング](/troubleshooting)

@@ -8,7 +8,7 @@ sidebar_position: 91
 
 # 現在の制限とリリース
 
-MingToon `0.1.7` 時点の内容です。
+MingToon `0.1.8` 時点の内容です。
 
 ## 配布前に知っておくこと
 
@@ -56,6 +56,12 @@ SHA-256 manifestが一緒に記録されます。
 
 1. Unityバージョンと対象プラットフォーム (VRChat PC / Warudo / 一般Unity)
 2. レンダーパイプライン (BRP / URP 12.x)
-3. MingToonバージョン (`0.1.7`)
+3. MingToonバージョン (`0.1.8`)
 4. Consoleログ全文
 5. 再現手順
+
+問題が続く場合は、[トラブルシューティング](/troubleshooting)で症状を先に確認してください。
+
+問題が続く場合は、[トラブルシューティング](/troubleshooting)で症状を先に確認してください。
+
+問題が続く場合は、[トラブルシューティング](/troubleshooting)で症状を先に確認してください。

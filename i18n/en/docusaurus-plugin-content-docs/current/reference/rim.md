@@ -8,8 +8,10 @@ sidebar_position: 3
 
 This group lifts the silhouette and separates the character from the background. They stack fast, so raise one at a time.
 
+Start with the guide: [Rim](/guides/rim)
+
 :::note
-The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
+This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
 :::
 
 ## Rim Shade
@@ -19,6 +21,10 @@ Configure the shaded band along silhouettes.
 | Control | What it does | Shader property |
 |---|---|---|
 | **Enable Rim Shade** | Off by default. Adds a shaded band just inside the silhouette to the form-shadow mask. It does not add color; off skips the evaluation. | `_RimShadeEnabled` |
+| **Rim Shade Color** | Color painted only where Rim Shade covers. At Blend Opacity 0 the layer keeps inheriting the 1st Shadow color as it always has; raising it separates the rim into this color. Edited in the Shadow Color tab beside the other shadow layers. | `_RimShadeColor` |
+| **Blend Opacity** | How much of the Rim Shade color is applied. The default 0 renders exactly as before; the color, HSVG and brightness below only reach the screen once this is raised. | `_RimShadeColorBlendOpacity` |
+| **Color Adjustment** | Adjusts the base color before the Rim Shade color is blended over it. Same role as the HSVG on the other shadow layers. | `_RimShadeColorHSVG` |
+| **Brightness** | Brightness of the Rim Shade color. Lowering it darkens only the rim-shade area. | `_RimShadeColorBrightness` |
 | **Shadow Contribution Intensity** | Range 0-1; default 1. Strength of the shaded band just inside the silhouette. At 0 the whole rim-shade evaluation is skipped, so width and softness change nothing. | `_RimShadeIntensity` |
 | **Width** | Range 0-1; default 0.2. 0 leaves no area and 1 uses the whole area. Softness never spreads the result outside this width. | `_RimShadeWidth` |
 | **Softness** | Range 0-1; default 0.4. 0 is a hard boundary; 1 is a soft gradient inside the selected width. The width does not change. | `_RimShadeSoftness` |
@@ -105,7 +111,7 @@ Configure an independent front-facing accent light.
 | **Color Purity** | Saturation after the base color and front-light tint are composed. 0 Range 0-10; default 1. 0 is grayscale, 1 preserves the composed color, and values above 1 oversaturate it. | `_FrontLightColorPurity` |
 | **Front Light Intensity** | Range 0-10; default 0.2. Multiplies the front-light accent; at 0 the remaining area and color controls have no visible contribution. | `_FrontLightStrength` |
 | **Area Size** | Range 0-1; default 0.25. 0 is off and 1 makes the full front-facing area available to the accent. On rounded forms it closely tracks the projected radius of the circular accent. | `_FrontLightSize` |
-| **Softness** | Range 0-1; default 0.35. 0 gives a hard outer edge; 1 fades across the selected area. The outer Area Size boundary never moves. | `_FrontLightSoftness` |
+| **Softness** | Range 0-1; default 0.6. 0 gives a hard outer edge; 1 fades across the selected area. The outer Area Size boundary never moves. | `_FrontLightSoftness` |
 | **Highlight Core Size** | Range 0-1; default 0.4. Relative size of the brighter core inside the outer area. 0 removes the core region. | `_FrontLightCoreSize` |
 | **Highlight Core Intensity** | Range 0-2; default 0.25. Extra brightness in the core. 0 disables only the core boost while preserving the outer area. | `_FrontLightCoreIntensity` |
 | **Light Direction Influence** | Range 0-1; default 0.5. Weight of the main light direction in the cap axis. It is independent of View Direction Influence; raising it moves the cap toward the Directional Light at the same view weight. | `_FrontLightLightDirectionInfluence` |

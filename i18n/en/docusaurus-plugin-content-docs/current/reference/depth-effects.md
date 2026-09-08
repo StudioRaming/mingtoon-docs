@@ -8,8 +8,10 @@ sidebar_position: 4
 
 Screen-space effects that read the camera depth texture. Without depth they vanish entirely, so confirm depth before touching any value here. Inner 2D Edge lives in this group too.
 
+Start with the guide: [Depth Effects](/guides/depth-effects)
+
 :::note
-The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
+This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
 :::
 
 ## Depth Effects Master
@@ -69,7 +71,6 @@ A lightweight character shadow drawn by shifting the screen-depth silhouette of 
 | Control | What it does | Shader property |
 |---|---|---|
 | **2D Shadow** | Toggles the depth-based 2D shadow. Its signature use is the bangs shadow hair drops on the face. Needs the camera depth texture. Its identity is one hard sheet that even distant blockers drop like a projected shadow; soft contact shading belongs to SSAO - used together, SSAO re-darkens the contact areas on top. | `_DepthShadowEnabled` |
-| **Cast MingToon 2D Projected Shadow** | Controls whether this material writes to MingToon's camera-depth field. Turn it off on glasses or accessories to exclude Opaque, Cutout, and Transparent surfaces from the 2D projected-shadow caster. Normal color rendering, transparent depth priming, and Unity real-time ShadowCaster shadows all stay enabled, so self-sorting and outlines look exactly as they did with the switch on. A disabled material is absent from the depth it reads, so its own 2D Rim Light, Inner 2D Edge, 2D Shadow, and translucency cannot see behind it. If the glasses themselves need a rim, use Fresnel Rim, which reads no depth. | `_2DShadowCasterEnabled` |
 | **2D Shadow Mask** | Enables a mask that limits the 2D shadow to chosen areas - use it to erase the shadow where it is not wanted. | `_DepthShadowMaskEnabled` |
 | **Channel** | Which channel of the 2D shadow mask to read. Split channels when several masks share one packed texture. | `_DepthShadowMaskChannel` |
 | **Invert** | Flips the 2D shadow mask black-for-white so the shadow applies to the opposite area. | `_DepthShadowMaskInvert` |

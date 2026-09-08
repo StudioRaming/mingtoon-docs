@@ -20,7 +20,7 @@ Face SDF Studio is not yet released and is not required for this onboarding.
 
 ## Material Roles {#머티리얼-역할}
 
-`Face`, `Skin`, and `Common` roles determine which slot values a look preset applies. In release builds, assign them per renderer and material slot in `1 · Convert` of MingToon Manager. Only development builds show the maintainer role-override row at the top of the inspector.
+**Face, Skin, and Common** roles determine which role values a look preset applies. **Release builds also let you assign the role directly at the top of the material inspector.** The row is shared by Simple, Full Setup, and Bulk Setup. During initial avatar conversion, assign renderers and material slots in [MingToon Manager](/workflow/character-manager); after conversion, you can also edit the role in the material inspector.
 
 When selected materials have different roles, the field shows a mixed state. Changing the role applies it to every selected material.
 
@@ -66,7 +66,7 @@ The colored navigation bar below the toolbar represents the position of each wor
 
 ## Overall Effect and Section Masters {#전체-효과--가장-위의-마스터-스위치}
 
-When `Overall Effect` is off, child effects are inactive and changing their values does not change the result. The inspector explains the cause and shows a `Turn On Overall Effect` button.
+All Effects is a shared switch for multiple additional effects. Affected controls are shown as disabled when it is off. Do not assume that the basic surface and every independently gated feature are disabled in the same way.
 
 Each section also has its own master. A disabled section shows `(Module Off)`, and when search finds a child row you can use `Turn On This Module`.
 
@@ -90,14 +90,14 @@ Use the face-proxy SceneView editor only with compatible Face materials under th
 
 `Material Presets` save and apply look values. When multiple materials are selected, the preset is applied to all of them.
 
-0.1.7 presets preserve character-specific identity including:
+When applying a preset, check preservation of character-specific settings such as the following.
 
-- Surface Mode, Cutout/Fade/Premultiply state, and render queue
+- Surface mode (Opaque, Cutout, Semi-Transparent, Transparent) and render queue
 - Alpha mask and cutoff
 - Face proxy center, radius, shape, axis, and height
 - Already assigned character-specific textures and their tiling/offset
 
-Values deferred before application and the reason for each deferral are shown in the panel. Face / Skin / Common values in role-aware presets are selected from the material roles recorded in MingToon Manager.
+Role-specific Face / Skin / Common values follow the role stored on the material. Check it in the Manager or material inspector.
 
 ## Copy / Paste {#복사--붙여넣기}
 

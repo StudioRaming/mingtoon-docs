@@ -114,15 +114,15 @@ Splotches disappear, but contact shadows lift and shadows on thin areas break. A
 
 ### Grazing shadows on the face {#얼굴의-스치는-그림자}
 
-The nonfunctional `Uniform Face Cast` and `Face Cast Stabilization` controls were removed in 0.1.7. Adjust face shadows in this order:
+The `Shadow Mode` selector offers `Real Shadows (Same as Body)`, `2D Shadow (Face Corrected)`, and `Custom`. Adjust face shadows in this order:
 
-1. Under Face Shading, choose real-time shadow or `Soft 2D Shadow (Face Corrected)` for `Shadow Mode`.
+1. Under Face Shading, choose `Real Shadows (Same as Body)` or `2D Shadow (Face Corrected)` for `Shadow Mode`.
 2. Adjust `Real Shadow Caster Offset` only when the 2D assist is not in use. Otherwise, the row appears disabled.
 3. Align the face proxy center, normal alignment, and Face SDF transition first.
 
 ### When shadow boundaries are jagged like steps {#그림자-경계가-계단처럼-각질-때}
 
-Enable `Enable Projection Feather` in the `Projection Feather` group and adjust `Projection Feather Radius` and `Projection Feather Strength`. Its range is 0–48 px, matching the real quality caps. Fast and Smooth are effective up to 8 px, Premium up to 20 px, and Soft Bilinear up to 48 px, so check `Cast Edge Feather Quality` as well.
+Enable `Enable Projection Feather` in the `Projection Feather` group and adjust `Projection Feather Radius` and `Projection Feather Strength`. Its range is 0–20 px. `Light3Tap`, `Standard5Tap`, and `High9Tap` are available across that full range; higher quality uses more boundary samples. Check `Cast Edge Feather Quality` as well.
 
 :::note[Feathering can't recover missing information]
 Details that don't exist in the low-resolution shadow map won't come back by softening. First check the light's shadow map resolution, bias/normal bias, and cascade.
@@ -171,10 +171,10 @@ VRChat worlds don't let avatar creators control lighting. Items in the `Lighting
 
 | Item | What It Does |
 |---|---|
-| `Preserve Base Map Color` <br />(Quick Mode: Preserve Base Color) | How much the base map color is kept close to original despite dark lighting. **Keep high in environments where lighting is unpredictable** |
+| `Preserve Base Map Color` <br />(Quick Mode: Preserve Base Color) | How much the scene-light hue is mixed into the completed base color. At 0 the light hue is fully applied; at 1 the base color is preferred. It never preserves lighting brightness or energy |
 | `Scene Light Color Influence` <br />(Quick Mode: Light Color Influence) | At 0, any colored light looks white. Handles **color only, not brightness** |
 | `Indirect Light Lift` | Lifts form shadows by the amount of ambient light. Only calculated when form shadow is enabled |
-| `VRC Light Volumes` | On Built-in VRChat avatars, uses volume indirect light and specular, point-light shadows, bias, and strength. It is enabled automatically during upload and falls back to Unity probes in environments without volumes |
+| `VRC Light Volumes` | Built-in-only editor test toggle. On the VRChat avatar upload path it is enabled automatically regardless of the value, reads the world's volumes, falls back to Unity probes without volumes, and is hidden on URP materials |
 | `Minimum Final Brightness` | Never goes below this, no matter how dark |
 | `Maximum Final Brightness` | Never exceeds this, no matter how bright. Guards against overexposed worlds |
 
@@ -195,6 +195,8 @@ To maintain the same tone as the key light, adjust the toon threshold for additi
 ### Master Adjustment and Edge Rim {#마스터-조정과-가장자리-림}
 
 `Master Adjustment` corrects the color, brightness, and saturation of the lit side, shadow, and final output in one place. The `Edge Rim` master controls the combined strength, dedicated color, and HDR cap for silhouette effects such as 2D Rim, Fresnel Rim, and Backlight. See [Rim](/guides/rim) for individual rim controls.
+
+The master intensity and color rows in this group appear only when the Ming Light Controller authoring UI is available. `Performance Distance` remains a core MingToon setting and appears without MLC.
 
 ## Next
 

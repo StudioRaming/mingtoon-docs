@@ -16,7 +16,11 @@ sidebar_position: 9
 
 ## 노멀 아웃라인 {#노멀-아웃라인}
 
-메시를 뒤집어 확장하는 방식입니다. 추가 패스 한 번으로 그려지고 **깊이 텍스처 없이 동작**하므로 어떤 환경에서도 안전합니다. VRChat 일반 화면처럼 깊이를 못 쓰는 곳에서 실루엣을 잡는 유일한 수단입니다.
+메시를 뒤집어 확장하는 방식입니다. Built-in에서는 추가 패스 한 번으로 그려져 **카메라 깊이 텍스처를 읽지 않습니다.** URP에서는 활성 Renderer Data에 `MingToon Outline Renderer Feature`를 설치해야 합니다. 따라서 VRChat 일반 화면처럼 깊이를 못 쓰는 곳에서도 선택할 수 있지만, 파이프라인 설정과 머티리얼 게이트가 갖춰져야 합니다.
+
+:::note[URP Renderer Feature와 레거시 게이트]
+URP 프로젝트에서는 사용하는 모든 Renderer Data에 `MingToon Outline Renderer Feature`를 설치하고 켜 두세요: `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`. 기존 재질에 남은 `_OutlineEnabled` (`Outline Master`)도 호환성 게이트라서, 이 값이 꺼져 있으면 `Classic Hull`을 켜도 선이 그려지지 않습니다.
+:::
 
 ### 기본 설정 {#기본-설정}
 

@@ -102,4 +102,4 @@ General mask repacking can merge several masks into one shared texture asset, bu
 
 ## Next
 
-[Automatic Build Optimization](/workflow/build-optimization) · [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)
+[Automatic Build Optimization](/workflow/build-optimization) · [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo) · [Troubleshooting](/troubleshooting) · [Troubleshooting](/troubleshooting)

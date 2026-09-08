@@ -24,7 +24,7 @@ This guide covers the **Rim** group in the Inspector: `Rim Shade` · `Rim Light`
 Enable one at a time and check as you adjust. Especially if you raise Rim Light and Backlight together, the silhouette will blow out to white.
 :::
 
-All five of these **require no camera depth.** Since they work in any environment, you can use them to maintain silhouette in VRChat's standard view where depth isn't available. The depth-reading `2D Rim Light` is covered in [Depth-Based Effects](/guides/depth-effects).
+All five of these **do not read camera depth**. You can use them to preserve silhouette in VRChat's standard view where depth is unavailable, but scene lighting, light direction, and host shader conditions still affect the result. The depth-reading `2D Rim Light` is covered in [Depth-Based Effects](/guides/depth-effects).
 
 ### Color Purity by Rim Type {#종류별-색-순도}
 
@@ -41,6 +41,10 @@ Purity is applied **after Base Color + the relevant rim color/tint + Master Tint
 - `Edge Rim Maximum Multiplier` — HDR cap after adding all four layers. 0 means no cap.
 
 It does not affect Front Light, Shadow Interior Reflection, or the inner layer of Translucency.
+
+:::note[MLC authoring UI]
+The intensity and tint rows under `Master Adjust` appear only when the MLC authoring UI is available. `Performance Distance (m)` and `Performance Distance Scale` remain core MingToon controls and are always available.
+:::
 
 ---
 

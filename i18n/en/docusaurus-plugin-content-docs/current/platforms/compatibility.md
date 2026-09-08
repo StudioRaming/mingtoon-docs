@@ -77,4 +77,4 @@ This is an intentional URP pass-structure constraint. If each layer texture had 
 
 ## Post Processing Stack v2 (Optional)
 
-BRP PPv2 is optional and MingToon works completely without it. VRChat avatars follow the world's post-processing, so PPv2 is mainly for scene preview and photography. See [Installation](/getting-started/installation#선택-사항-post-processing-stack-v2) for setup.
+BRP PPv2 is optional and MingToon works completely without it. VRChat avatars follow the world's post-processing, so PPv2 is mainly for scene preview and photography. See [Installation](/getting-started/installation#선택-사항-post-processing-stack-v2) for setup. If something fails, go to [Troubleshooting](/troubleshooting).

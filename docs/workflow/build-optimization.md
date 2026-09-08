@@ -29,11 +29,11 @@ sidebar_position: 2
 
 ### VRChat 아바타에서 추가되는 처리 {#vrchat-추가-처리}
 
-- `Depth Availability = Auto`를 그대로 보존합니다. Force On / Force Off도 작성자 지정값을 유지하며, `업로드 시 깊이 라이트 싣기`는 재질 값을 바꾸지 않는 별도 옵트인입니다.
+- `Depth Availability = Auto`를 그대로 보존합니다. Force On / Force Off도 작성자 지정값을 유지합니다. `업로드 시 깊이 라이트 싣기`가 켜져 있을 때만 업로드 복사본에 깊이 라이트를 추가하며 재질 값은 바꾸지 않습니다. 실행 전 Manager의 옵션 상태를 확인하세요.
 - 얼굴 노멀을 **업로드 복사본 Mesh**의 UV7에 굽습니다. Face SDF가 UV7을 소유하거나 텍스처 Face Area Mask가 필요한 Renderer는 동일한 결과를 위해 Live 경로를 유지합니다.
 - 프로젝트에서 설정한 베이스·노멀·마스크 등 슬롯 종류별 텍스처 해상도 상한을 업로드 복사본에 적용합니다.
 - VRC Light Volumes 변형을 아바타 업로드에 자동 포함합니다.
-- MingToon 런타임 컴포넌트는 `IEditorOnly`로 표시합니다. exporter 처리 뒤 실제 build clone에서 `RuntimeComponentCount = 0`인지 별도로 검증해야 합니다.
+- MingToon 런타임 컴포넌트는 `IEditorOnly`로 표시합니다. exporter 처리 뒤 실제 build clone에서 `RuntimeComponentCount = 0`인지 별도로 검증해야 합니다. 이 값은 저작용 MingToon 컴포넌트 수이며 SDK·런타임 컴포넌트 전체 수가 아닙니다.
 
 얼굴 노멀 업로드 산출물은 편집용 메시 베이크와 다른 전용 경로를 사용합니다. 같은 캐릭터·같은 UV 채널이어도 편집용 Mesh 에셋을 재사용하거나 덮어쓰지 않습니다.
 
@@ -71,7 +71,7 @@ VRChat 훅은 Modular Avatar·VRCFury 같은 도구가 재질을 처리한 뒤 �
 
 `Auto`는 바인딩된 카메라 깊이 텍스처와 VRChat Photo Camera 상태를 카메라마다 직접 읽습니다. 업로드 훅은 이 값을 다시 쓰지 않으므로 Auto는 Auto로, Force On / Force Off는 작성자가 고른 값 그대로 출하됩니다. Force On은 자동 판정이 못 보는 호스트 깊이를 작성자가 보증할 때만 사용하세요.
 
-`업로드 시 깊이 라이트 싣기`는 별도 옵트인입니다. 업로드 복사본에 그림자를 켠 Directional Light를 추가해 카메라가 실제 depth buffer를 만들게 하며, 재질은 Auto로 남습니다. 기본 꺼짐이고 성능·월드 조명 비용이 있습니다. → [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)
+`업로드 시 깊이 라이트 싣기`가 켜져 있으면 업로드 복사본에 그림자를 켠 Directional Light를 추가해 카메라가 실제 depth buffer를 만들게 하며, 재질은 Auto로 남습니다. 이 옵션의 현재 상태를 Manager에서 확인하고, 켜져 있으면 성능·월드 조명 비용을 고려하세요. → [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)
 
 미러 안전 차단은 별도입니다. Force On이어도 미러가 다른 카메라의 깊이를 읽지 않도록 깊이 모듈을 끕니다. → [VRChat 깊이](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 
@@ -117,3 +117,4 @@ VRChat 훅은 Modular Avatar·VRCFury 같은 도구가 재질을 처리한 뒤 �
 
 - 고정 배포 에셋: [수동 Bake와 복원](/workflow/bake-and-restore)
 - 플랫폼 체크리스트: [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)
+- 오류가 있으면: [문제 해결](/troubleshooting)

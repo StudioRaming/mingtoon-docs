@@ -4,212 +4,102 @@ title: Validate Project コード
 sidebar_position: 8
 ---
 
-# Validate Project コード
+# Validate Project
 
-`Tools > Studio Raming > MingToon > Validate Project` が報告するコード全体です。コードで検索してください。
+Tools > Studio Raming > MingToon > Validate Projectのコードから探してください。検査は結果を報告し、自動修正しません。**以下の重要度は現在のValidatorソースに対応します。** 警告も見た目やビルドに影響する場合があります。
 
-:::note[この検査は読み取り専用です]
-何も修正や削除をしません。報告のみで対応は人が行います。
-:::
+## MING-ENV-UNITY-VERSION {#ming-env-unity-version}
 
-<!-- SCREENSHOT: Validate Project 結果ウィンドウ -->
+**エラー.** Unityが対応する2021.3・2022.3ストリーム外です。対象に合う対応エディターを使用してください。
 
----
+## MING-VRC-UNITY-VERSION {#ming-vrc-unity-version}
 
-## 環境
+**警告.** VRC SDKが検出されましたが、UnityストリームがMingToonのVRChat連携と一致しません。パッケージ規則は2022.3.22f1を記録しています。移行前にVCCと現在のSDK案内を確認してください。
 
-### MING-ENV-UNITY-VERSION
+## MING-ENV-BUILD-TARGET {#ming-env-build-target}
 
-**エラー。** エディタストリームがサポート範囲外です。
+**エラー.** ビルド対象が対応範囲外です。Windows・macOS・Linuxのデスクトップ対象とGraphics APIを確認してください。Android/Quest・iOS・WebGLはMingToonの直接出力対象ではありません。
 
-サポートストリームは **2021.3** と **2022.3** の両方です。その他のストリームではシェーダコンパイル結果が異なり、ルックが変わるまたは破損する可能性があります。
+## MING-PIPELINE-UNSUPPORTED {#ming-pipeline-unsupported}
 
-**対応** — Unity Hub から 2021.3 または 2022.3 エディタでプロジェクトを開いてください。ターゲット別の推奨は[サポート環境](/platforms/compatibility#unity-버전)にあります。
+**エラー.** 有効なパイプラインがBuilt-inまたは対応URPではありません。Graphicsと現在のQualityのRender Pipeline Assetを確認してください。
 
-### MING-VRC-UNITY-VERSION {#ming-vrc-unity-version}
+## MING-URP-VERSION-UNSUPPORTED {#ming-urp-version-unsupported}
 
-**警告。** VRC SDK が含まれているのにエディタが VRChat SDK 検証済みバージョン(2022.3.22f1)のストリームではありません。
+**エラー.** URPのバージョンがバックエンドの対応範囲外です。インストール済みバックエンドの要件と対応環境ガイドを合わせてください。
 
-> MingToon の VRChat 連携は**2022.3 ストリームでのみコンパイル**されるため、このプロジェクトには**アバタアップロードサポートがありません。** その他のターゲットは影響を受けません。
+## MING-SHADER-MISSING {#ming-shader-missing}
 
-**対応** — VRChat アバタを作成するプロジェクトなら 2022.3.22f1 に移してください。VRChat が対象でなければ無視してかまいません。
+**エラー.** 必要なシェーダーが見つかりません。インストール先、バックエンド、Consoleのコンパイルエラーを確認し、使用した導入方法で修復してください。
 
-参照: [VRChat 現在の Unity バージョン](https://creators.vrchat.com/sdk/upgrade/current-unity-version/)
+## MING-SHADER-UNSUPPORTED {#ming-shader-unsupported}
 
-### MING-ENV-BUILD-TARGET
+**エラー.** 現在の環境でシェーダーがサポートされていません。コンパイルエラー、GPU・Graphics API、パイプラインの一致を確認してください。
 
-**エラー。** 現在のビルドターゲットがシェーダモデル 4.5 を保証していません。
+## MING-SHADER-PASS-MISSING {#ming-shader-pass-missing}
 
-MingToon の全パスは `#pragma target 4.5` を宣言します。このようなターゲットでは **SubShader が完全に脱落し、ビルドで全 MingToon マテリアルがマゼンタで描画されます。**
+**エラー.** バックエンドが要求するパスがありません。報告されたパスを確認し、シェーダーとエディターファイルを同じリリースに復旧してください。
 
-**対応** — `File > Build Settings` でプラットフォームを Windows / macOS / Linux に戻してください。Android/Quest・iOS・WebGL はサポートされていません。
+## MING-SHADER-PROPERTY-MISSING {#ming-shader-property-missing}
 
----
+**エラー.** エディターが期待するプロパティがありません。部分更新や異なるリリースの混在を確認してください。
 
-## レンダーパイプライン
+## MING-SHADER-FRESNEL-AREA-RANGE {#ming-shader-fresnel-area-range}
 
-### MING-PIPELINE-UNSUPPORTED
+**エラー.** 領域調整が期待されるRange(0, 1)と異なります。報告されたプロパティをリリース版と比較して修復してください。
 
-**エラー。** サポートされていないレンダーパイプラインアセットです。MingToon は Built-in RP とバージョンが固定された URP バックエンドのみをサポートするため、**ここでは MingToon マテリアルは描画されません。**
+## MING-SHADER-PERF-DISTANCE-RANGE {#ming-shader-perf-distance-range}
 
-**対応** — `Project Settings > Graphics` と活性 Quality レベルに URP アセットを指定するか、その項目を空にして Built-in を使用してください。
+**エラー.** 性能距離の範囲が不正です。_PerfDistanceMaxはRange(1, 50)、_PerfDistanceScaleはRange(0, 2)です。同じリリースのファイルで修復してください。
 
-### MING-URP-VERSION-UNSUPPORTED
+## MING-MAT-NON-FINITE {#ming-mat-non-finite}
 
-**エラー。** インストールされた Universal RP パッケージがサポート範囲外です。URP バックエンドがその範囲に合わせてコンパイルされるため、範囲外ではマテリアルがコンパイルに失敗するか、アウトラインなしで描画される可能性があります。
+**警告.** マテリアル値がNaNまたはInfinityです。報告されたプロパティを有限値に戻してから描画とベイクを確認してください。
 
-**対応** — `Window > Package Manager > Universal RP` で範囲内のバージョンをインストールするか、プロジェクトを Built-in に戻してください。
+## MING-MAT-COLOR-MASK-ZERO {#ming-mat-color-mask-zero}
 
----
+**警告.** Color Maskが0で色チャンネルを書きません。意図した特殊設定でなければ高度なカラーバッファー設定でRGBA(15)に戻してください。
 
-## シェーダ
+## MING-MAT-OPAQUE-ZWRITE-OFF {#ming-mat-opaque-zwrite-off}
 
-### MING-SHADER-MISSING
+**警告.** 不透明キューでZWriteがオフです。遮蔽関係が崩れる場合があるため、モードを再適用するか意図した深度設定か確認してください。
 
-**エラー。** MingToon シェーダがプロジェクトで見つかりません。どのマテリアルもこのシェーダで描画できません。
+## MING-MAT-TRANSPARENT-DEPTH-EFFECTS {#ming-mat-transparent-depth-effects}
 
-**対応** — `Assets/StudioRaming/MingToon/Shaders` を再度インポートし、Console のシェーダコンパイルエラーを読んでください。URP プロジェクトなら URP バックエンドフォルダがインポートされているかも確認します。
+**警告.** 透明キューで深度効果が有効です。実際のカメラで自己深度とソートを確認してください。必要なら効果を無効にするか半透明・カットアウトなどへ変更し、奥のレイヤーが隠れないかも確認します。
 
-### MING-SHADER-UNSUPPORTED
+## MING-MAT-CUTOUT-CUTOFF-ZERO {#ming-mat-cutout-cutoff-zero}
 
-**エラー。** このエディタまたは GPU がシェーダをサポートしていないため、**そのシェーダを使用するすべてのマテリアルがマゼンタで描画されます。**
+**警告.** カットアウト閾値が0で透明テクセルが残る場合があります。アルファを確認して閾値を上げます。0.5は比較の開始値です。
 
-**対応** — シェーダアセットを選択してインスペクタ上部のコンパイルエラーを読み、`Project Settings > Player > Other Settings > Graphics APIs` がシェーダモデル 4.5 をサポートしているか確認してください(Direct3D11 以上)。
+## MING-MAT-PERF-DISTANCE-ZERO {#ming-mat-perf-distance-zero}
 
-### MING-SHADER-PASS-MISSING
+**警告.** 性能距離×倍率が0で、全距離で最軽量段階になります。複数の効果が表示されない場合があります。MLCで制御する意図があるか確認し、そうでなければ倍率を上げてください。
 
-**エラー。** シェーダにこのバックエンドが要求するレンダーパスがありません。
+## MING-URP-DEPTH-FEATURE-MISSING {#ming-urp-depth-feature-missing}
 
-:::danger[静かに消えます]
-**アウトライン・キャスト影・深度プリパスの描画が止まるのに、その項目のコントロールは編集可能なままです。** 値を変更しても何も起こらない原因になります。
-:::
+**エラー.** URP深度Renderer Featureがないか無効です。対応バックエンドを導入し、有効なURP AssetのRenderer Dataを確認してInstall Depth Effects Renderer Featureを使用してください。
 
-**対応** — リリースパッケージから `Assets/StudioRaming/MingToon/Shaders` を復旧し、マテリアルがプロジェクトレンダーパイプラインに合ったシェーダを使用しているか確認してください。
+## MING-URP-OUTLINE-FEATURE-MISSING {#ming-urp-outline-feature-missing}
 
-### MING-SHADER-PROPERTY-MISSING
+**エラー.** URPアウトラインRenderer Featureがないか無効です。カメラが使うRenderer DataとInstall Outline Renderer Featureを確認してください。
 
-**エラー。** シェーダがこのバージョンのエディタが要求するプロパティを宣言していません。色ブレンドプロパティがないと、**色隣のブレンドモードと不透明度が何もしません。**
+## MING-BAKE-GENERATOR-OUTDATED {#ming-bake-generator-outdated}
 
-**対応** — リリースパッケージから Shaders フォルダを復旧してから再検証してください。
+**警告.** Manifestの生成器が古い版です。描画できても新しい修正は未反映の場合があります。対象アバターのベイク状態と復元情報を確認して再ベイクしてください。
 
-### MING-SHADER-FRESNEL-AREA-RANGE {#ming-shader-fresnel-area-range}
+## MING-RUNTIME-PROVIDER-MISSING {#ming-runtime-provider-missing}
 
-**エラー。** シェーダが正規化された領域調整コントロールをすべて `Range(0, 1)` で宣言していません。該当するプロパティ名はレポートに出ます。
+**エラー.** 深度プロバイダーの型や必須メソッドがないか構造が異なります。導入ファイルとコンパイルエラーを確認します。このコードは型の検査で、全カメラの深度欠如を証明するものではありません。
 
-Fresnel Width / Softness、Front Light Size / Softness / 方向比率 / コアサイズ などの領域調整プロパティは 0〜1 スライダの規約です。Range 型でない、または範囲が 0〜1 でない場合、**領域 UI が 0 = なし、1 = 最大、および正規化されたソフトネス・方向比率をもはや保証できません。**
+## MING-SCENE-NO-CAMERA {#ming-scene-no-camera}
 
-**対応** — リリースパッケージから `Assets/StudioRaming/MingToon/Shaders` を復旧してから再検証してください。
+**警告.** 検査対象の読み込み済みGameカメラがありません。対象シーンを開いて再確認してください。
 
----
+## MING-SCENE-CAMERA-DEPTH-OFF {#ming-scene-camera-depth-off}
 
-## マテリアル
+**警告.** 検査したGameカメラが深度を要求していません。一般Unity/WARUDOでは深度プロバイダーを確認し、VRChatではプラットフォームガイドのホストカメラ条件に従ってください。
 
-### MING-MAT-NON-FINITE
+検査通過は実際の画面やアップロード成功を保証しません。修正後は対象の検査と実際の作業結果を確認してください。
 
-**エラー。** マテリアルに有限でない数値(NaN / Infinity)が含まれています。照明と画面空間計算全体を汚染する可能性があります。
-
-**対応** — 描画またはベイク前にそのプロパティを正常値に戻してください。レポートにプロパティ名が出ます。
-
-### MING-MAT-COLOR-MASK-ZERO
-
-**エラー。** `_ColorMask` が 0 なので**メッシュが描画され遮蔽されますが、画面には何も描画されません。**
-
-**対応** — `サーフェス描画 > 고급 컬러 버퍼`で`カラーマスク`を RGBA(15)に戻してください。
-
-### MING-MAT-OPAQUE-ZWRITE-OFF
-
-**エラー。** 不透明レンダキューなのに深度を記録していません(`_ZWrite` が 0)。他の不透明メッシュと**ソートがランダムになり、すべてのカメラ深度エフェクトがこのメッシュを通して読みます。**
-
-**対応** — `サーフェス描画 > 고급 컬러 버퍼`で`深度書き込み`を On にするか、実際に望む透明サーフェスモードを選択してください。
-
-### MING-MAT-TRANSPARENT-DEPTH-EFFECTS
-
-**エラー。** 透明キューでカメラ深度エフェクトを使用しています。ソート順と自己深度が不安定なため**2Dリムライトと 2D シャドウがちらついたり背後のサーフェスを読みます。**
-
-**対応** — このマテリアルで 2 つのモジュールをオフにするか、サーフェスモードを不透明 / カットアウトに変更してください。半透明が必要なら `透明・アウトライン用深度記録` が使えます。 → [基本設定](/guides/basics#1-표면-모드부터-정합니다)
-
-### MING-MAT-CUTOUT-CUTOFF-ZERO
-
-**エラー。** カットアウトなのに`アルファカットオフ`が 0 なので**何もカットされません。** 完全に透明なテクセルまで影深度が記録され**メッシュが矩形の単一影を落とします。**
-
-**対応** — `アルファカットオフ` を 0 より上げてください(0.5 が一般的な開始点)。または別のサーフェスモードを選択します。
-
----
-
-## URP レンダラ機能
-
-### MING-URP-DEPTH-FEATURE-MISSING
-
-**エラー。** URP マテリアルが2Dリムライトまたは 2D シャドウを使用しているのに必要な Renderer Feature がなく、**2 つのエフェクトが何も描画されません。** 3 つのケースがあります。
-
-| 状況 | 対応 |
-|---|---|
-| MingToon URP バックエンドアセンブリがロードされていない | サポート範囲内の URP バージョンをインストールしてください |
-| 活性 URP アセットに renderer data がない | URP アセットの Renderer List に Universal Renderer Data を追加してから以下のメニューを実行 |
-| renderer data で機能が非活性 | `Tools > Studio Raming > MingToon > URP > Install Depth Effects Renderer Feature` |
-
-:::caution[活性 URP アセットの**すべて**のレンダラに機能が必要です]
-1 つのレンダラにのみインストールすると他のレンダラではエフェクトが描画されず、コントロールは編集可能なままです。
-:::
-
-### MING-URP-OUTLINE-FEATURE-MISSING
-
-**エラー。** 上記と同じ構造ですが対象はアウトラインパスです。**アウトラインが描画されません。**
-
-**対応** — `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`.
-
----
-
-## ベイク
-
-### MING-BAKE-GENERATOR-OUTDATED {#ming-bake-generator-outdated}
-
-**警告。** Bake Manifest が作成されたシェーダジェネレータのバージョンが、現在の MingToon パッケージが生成するバージョンより古いです。レポートに Manifest のパスと両方のバージョンが出ます。
-
-Manifest に記録された baked マテリアルは**引き続き描画されますが、古いジェネレータが書いたシェーダで描画されます。** 今ベイクし直せば入る修正が一つも反映されておらず、**ビルド準備チェックがこれらのマテリアルを拒否します。**
-
-**対応** — MingToon マネージャからベイクを再実行して再生成してください。 → [手動 Bake と復元](/workflow/bake-and-restore)
-
----
-
-## ランタイム
-
-### MING-RUNTIME-PROVIDER-MISSING
-
-**エラー。** Built-in RP 深度提供者が見つからないか形状が変わっています。どのカメラも深度テクスチャをリクエストされないため、**2Dリムライト・2D シャドウ・深度ベースアウトラインが設定に無関係に空です。**
-
-| 詳細 | 意味 |
-|---|---|
-| タイプなし | MingToon ランタイムスクリプトがないか、コンパイルに失敗 |
-| Component 派生でない | ランタイムが修正されている |
-| 必須メソッドなし | ランタイムが修正されている |
-
-**対応** — `Assets/StudioRaming/MingToon/Runtime` を再度インポートしてコンパイルエラーをクリアしてください。修正した場合、リリースパッケージから復旧してください。
-
----
-
-## シーン / カメラ
-
-### MING-SCENE-NO-CAMERA
-
-ロードされた Game カメラがなく、2D エフェクトが依存するカメラ深度状態を確認できませんでした。
-
-**対応** — 実際に作業しているシーンを開くか LookDev シーンを作成してから再検証してください。
-
-### MING-SCENE-CAMERA-DEPTH-OFF
-
-Game カメラで深度テクスチャがオフになっています。
-
-**対応** — シーンに `Studio Raming/MingToon/Depth Texture Provider` を配置してください。 → [深度ベースエフェクト](/guides/depth-effects#플랫폼별-깊이-확보)
-
----
-
-## コードが出ないのに画面がおかしいとき
-
-Validator は**静的に確認できるもののみ**を見ます。以下は検証を通過しても発生する可能性があります。
-
-| 症状 | ドキュメント |
-|---|---|
-| 値を変更しても反応がない | [トラブルシューティング — 値が効かない](/troubleshooting#아무-값도-안-먹힌다) |
-| VRChat 通常画面で深度エフェクトがない | [VRChat](/platforms/vrchat#깊이-효과가-어디까지-보장되나) |
-| アウトラインが角ばった部分で切れる | [メッシュ UV ベイク](/guides/mesh-bakes#아웃라인-스무스-노멀-uv8) |
+[VRChat](/platforms/vrchat) · [URP / Compatibility](/platforms/compatibility) · [Basic](/guides/basics)

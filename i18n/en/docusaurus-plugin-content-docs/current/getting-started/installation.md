@@ -59,7 +59,7 @@ Ming Light Controller is a separate package. Install or update MLC separately if
 
 ## Upgrading from an earlier version {#이전-버전에서-올라왔다면}
 
-If you upgrade a project from MingToon 0.1.6 to 0.1.7, perform the following two steps **once each**.
+If you upgraded a project from an earlier version, perform the following two steps **once each**.
 
 :::danger[1. Run schema migration once]
 `Tools > Studio Raming > MingToon > Advanced > Migrate Project To Current Schema`
@@ -136,4 +136,4 @@ VRChat avatars inherit world post-processing, so PPv2 is mainly for scene previe
 
 ## Next
 
-[First Material](/getting-started/first-material)
+[First Material](/getting-started/first-material) · [Troubleshooting](/troubleshooting)

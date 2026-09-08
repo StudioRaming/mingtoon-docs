@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # VRChat
 
-**After reading this guide,** you can upload MingToon to a VRChat PC avatar and verify 0.1.7 automatic baking, Expressions menus, depth effects, and Light Volumes behavior.
+**After reading this guide,** you can upload MingToon to a VRChat PC avatar and verify automatic baking, depth effects, and Light Volumes behavior.
 
 VRChat PC is MingToon's primary target.
 
@@ -25,7 +25,7 @@ This is the currently verified VRChat SDK project version. The VRChat build hook
 1. Reduce C# and shader errors in the Console to zero.
 2. Run `Rediscover Child Renderers` in MingToon Manager.
 3. Run `Readiness Check` and `VRChat Preflight Check`. → [MingToon Manager](/workflow/character-manager#내보내기--검증)
-4. If using the Expressions menu, verify `MingToon Controls` in Gesture Manager.
+4. If you need Expressions content, verify the configuration authored by you or added by another tool on the final build clone.
 5. Upload through VRChat SDK Builder. A manual bake is not required.
 6. In game, check your own view, mirrors, and Photo Camera separately.
 
@@ -34,61 +34,22 @@ This is the currently verified VRChat SDK project version. The VRChat build hook
 :::danger[Removing Them Manually Loses Optimization Scope]
 MingToon runtime components implement `IEditorOnly` for VRC SDK processing, but that marker alone does not guarantee automatic deletion. Manually deleting MingToon Manager from the authoring Scene removes its cached Renderer scope and can leave some materials unoptimized.
 
-Keep the authoring Scene intact, then verify `RuntimeComponentCount = 0` on the actual build clone after SDK processing. If any remain, remove them explicitly from the clone before upload.
+Keep the authoring Scene intact, then verify `RuntimeComponentCount = 0` on the actual build clone after SDK processing. This diagnostic counts authoring MingToon components under the build root; it does not count SDK or runtime components. If any remain, remove them explicitly from the clone before upload.
 :::
 
 Warudo uses the opposite policy and retains scripts. → [Warudo](/platforms/warudo)
 
-## Expressions Menu {#expressions-메뉴}
+## VRChat Upload Preparation {#expressions-메뉴}
 
-MingToon Manager can install menus, parameters, and FX non-destructively into the build clone through Modular Avatar. A direct-merge path is also available when Modular Avatar is absent. This is an Avatar SDK/upload feature; world/Udon installation is not provided.
+MingToon Manager does not automatically install VRChat Expressions menus, parameters, or FX. Keep the Manager on the Avatar Root and check conversion, look, optimization, and upload-copy state. Verify Expressions content authored by you or added by other tools on the final build clone created by the VRChat SDK.
 
-Choose one of two profiles before upload with the Manager's `Use Full Control Menu` option. It is enabled by default.
+1. Under the Avatar Root, run `Rediscover Child Renderers` from `MingToon Manager`.
+2. Run `Readiness Check` and `VRChat Preflight Check`, then resolve their errors. → [MingToon Manager](/workflow/character-manager#내보내기--검증)
+3. Upload through VRChat SDK Builder. A manual bake is not required for the normal upload path.
+4. After SDK processing, verify `RuntimeComponentCount = 0` on the actual build clone. This value counts authoring MingToon components; it is not a count of all SDK or runtime components.
+5. After upload, check depth effects and lighting separately in your own view, mirrors, and Photo Camera.
 
-| Profile | Retained features | Additional features | Synchronization cost |
-|---|---|---|---:|
-| Full (default) | Core Virtual Light · High/Mid/Low · Shadow Projection · Reset | Palette · Master Adjust · Photo Looks | 21 · 77 bits |
-| Lightweight | Core Virtual Light · High/Mid/Low · Shadow Projection · Reset | None | 10 · 31 bits |
-
-Full contains 28 total controls: 21 synchronized parameters and seven local commands.
-Lightweight contains 12: 10 synchronized parameters and two local commands. Local
-commands use 0 bits. Full synchronization is Bool 13 + Int 2 + Float 6; Lightweight is
-Bool 7 + Float 3. Before installation, MingToon checks existing parameter types, the
-256-bit budget, and the eight-control-per-menu limit, and rolls back on failure.
-
-Shared menus:
-
-- **Virtual Light** — Enabled, Direction, Intensity, Follow Character, and
-  Auto/Replace/Add Mode
-- **Quality** — explicit High / Mid / Low buttons plus an independent
-  `Shadow Projection` toggle
-- **Reset All** — restores the selected profile's 12 or 28 values to their installed
-  defaults, not a pre-install authored snapshot
-
-Added only in Full:
-
-- **Palette** — eight colors, Warm / Gold / Mint / Cyan / Blue / Violet / Rose / Red, ×
-  four saturation levels, Neutral / Soft / Medium / Full. All 32 combinations are
-  compressed into one Int.
-- **Master Adjust** — Highlight / Shadow / Final Output each have independent Intensity
-  and Tint Off / Low / Mid / Full controls. They share the palette, but each group
-  controls its color influence and intensity separately.
-- **Photo Looks** — Neutral, Dark World Rescue, Flat Studio, Unlit Reference,
-  Warm Portrait, Cool Portrait, No Emission, and No Backlight
-
-With `Place Directly In Expressions Root` off, both profiles spend one root slot on the
-`MingToon Controls` folder. Full has eight folder controls; Lightweight has seven. With
-root placement on, Full places `Virtual Light`, `Master Adjust`, and `Reset All` at the
-root, while Lightweight places `Virtual Light`, `Quality`, and `Reset All`. Both need
-three free slots and fall back to folder placement when they do not fit. Switching the
-profile and reinstalling removes stale MingToon parameters, FX layers, and generated
-menus.
-
-In Full mode, Photo Looks synchronizes the selected user's own avatar, including its
-brightness range, light-color influence, Unlit blend, emission, backlight, and color
-temperature. Other users see the result applied to that avatar. One user's local menu
-cannot control every other avatar in view; that requires world/Udon authority and is
-excluded from this avatar feature.
+If Expressions content or upload fails, start with the Console and readiness entries in [Troubleshooting](/troubleshooting).
 
 ### Quality Tiers and Runtime Switching {#품질-티어와-런타임-전환}
 
@@ -105,7 +66,7 @@ The upload hook modifies only the copy created by the SDK, not original scene as
 - Bakes face-normal pressing into UV7 of the upload Mesh, then restores the original Renderer and material.
 - Keeps a Renderer on the Live path when Face SDF owns UV7 or a texture Face Area Mask is required, preserving the same result.
 - Applies the project's texture-resolution caps by slot type to the upload copy.
-- Preserves `Depth Availability = Auto`. Author-selected Force On and Force Off values are also preserved; use the separate `Include Depth Light on Upload` opt-in when the main view needs depth.
+- Preserves `Depth Availability = Auto`. Author-selected Force On and Force Off values are also preserved; when the main view needs depth, check the current `Include Depth Light on Upload` option state in Manager before using it.
 - Automatically enables VRC Light Volumes variants for avatar upload.
 - Marks MingToon runtime components as `IEditorOnly` for exporter processing. Verify separately that the final build clone contains zero of them.
 
@@ -126,9 +87,9 @@ Even under `Force On`, depth modules are disabled for mirror cameras so they can
 
 World creators can request depth through the Screen Camera settings in the [official VRC Camera Settings documentation](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/). An avatar cannot change this setting.
 
-### VRChat Depth Light (Off by Default) {#vrchat-깊이-라이트}
+### VRChat Depth Light {#vrchat-깊이-라이트}
 
-`Include Depth Light on Upload` is an opt-in workaround that adds one shadow-casting Directional Light to the upload copy to encourage a depth pass in the main view.
+When `Include Depth Light on Upload` is enabled, it adds one shadow-casting Directional Light to the upload copy to encourage a depth pass in the main view. Check its current option state in Manager before upload.
 
 The light is carried as **Important (Render Mode = Important / ForcePixel)**. The Not Important optimisation introduced on 2026-09-05 passed Unity editor probes only. After reports of depth-shadow regressions in specific VRChat worlds, the 2026-09-04 configuration was restored on 2026-09-06. Important can incur a per-light shadow map and a pixel-light slot in addition to the camera depth pass. **Restoring this setting does not establish that the regressions are fixed; the affected worlds still require testing in the actual VRChat client.** The Everything culling mask, remaining light settings, and build-clone-only policy are retained.
 
@@ -161,7 +122,7 @@ The MingToon hook runs late so it can analyze the final state after tools such a
 
 ## Assume You Cannot Control Lighting
 
-Lighting differs between worlds. Tune `Preserve Base Color`, final minimum and maximum brightness, scene-light color influence, and the rim's scene-light influence across real world conditions. In 0.1.7, the additional-light cap is an absolute HDR peak rather than a base-color multiplier. → [Light and Shadow](/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때)
+Lighting differs between worlds. Tune `Preserve Base Color`, final minimum and maximum brightness, scene-light color influence, and the rim's scene-light influence across real world conditions. In the current version, the additional-light cap is an absolute HDR peak rather than a base-color multiplier. → [Light and Shadow](/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때)
 
 ## VRChat + URP
 

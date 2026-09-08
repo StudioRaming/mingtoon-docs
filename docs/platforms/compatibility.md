@@ -77,4 +77,4 @@ BRP와 URP를 함께 쓸 계획일 때만 해당합니다. VRChat만 대상이�
 
 ## Post Processing Stack v2 (선택)
 
-BRP PPv2는 선택 사항이고 MingToon은 PPv2 없이도 완전히 동작합니다. VRChat 아바타는 월드의 후처리를 따르므로 PPv2는 주로 씬 확인·촬영용입니다. 설정은 [설치](/getting-started/installation#선택-사항-post-processing-stack-v2)를 보세요.
+BRP PPv2는 선택 사항이고 MingToon은 PPv2 없이도 완전히 동작합니다. VRChat 아바타는 월드의 후처리를 따르므로 PPv2는 주로 씬 확인·촬영용입니다. 설정은 [설치](/getting-started/installation#선택-사항-post-processing-stack-v2)를 보세요. 문제가 있으면 [문제 해결](/troubleshooting)으로 이동하세요.

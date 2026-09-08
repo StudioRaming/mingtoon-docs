@@ -61,7 +61,7 @@ Ming Light Controller는 별도 패키지입니다. 사용하는 경우 MLC도 �
 
 ## 이전 버전에서 올라왔다면 {#이전-버전에서-올라왔다면}
 
-0.1.6으로 작업하던 프로젝트를 0.1.7로 올렸다면, 아래 두 가지를 **한 번씩** 해 두어야 합니다.
+이전 버전에서 업데이트한 프로젝트라면, 아래 두 가지를 **한 번씩** 해 두어야 합니다.
 
 :::danger[1. 스키마 마이그레이션을 한 번 실행하세요]
 `Tools > Studio Raming > MingToon > Advanced > Migrate Project To Current Schema`
@@ -138,4 +138,4 @@ VRChat 아바타는 월드의 후처리를 따르므로, PPv2는 주로 씬 확�
 
 ## 다음
 
-[첫 재질 만들기](/getting-started/first-material)
+[첫 재질 만들기](/getting-started/first-material) · [문제 해결](/troubleshooting)

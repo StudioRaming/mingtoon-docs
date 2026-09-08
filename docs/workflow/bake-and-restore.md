@@ -102,4 +102,4 @@ Animation dependency와 `베이크 제외` 조건은 계속 검사하지만, bak
 
 ## 다음
 
-[빌드 시 자동 최적화](/workflow/build-optimization) · [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)
+[빌드 시 자동 최적화](/workflow/build-optimization) · [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo) · [문제 해결](/troubleshooting)

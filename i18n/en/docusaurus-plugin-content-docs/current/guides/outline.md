@@ -16,7 +16,11 @@ This covers the **Outline** group in the inspector — `Normal Outline`. For a c
 
 ## Normal Outline {#노멀-아웃라인}
 
-This method expands the mesh by flipping it inside-out. It draws in a single additional pass and **works without depth texture**, so it's safe in any environment. It's the only way to hold the silhouette in places like VRChat desktop where depth is unavailable.
+This method expands the mesh by flipping it inside-out. In Built-in it draws in a single additional pass and **does not read the camera depth texture**. In URP, the active Renderer Data must have the `MingToon Outline Renderer Feature` installed. You can therefore choose it for screens such as VRChat desktop where depth is unavailable, but the pipeline setup and material gates still need to be in place.
+
+:::note[URP Renderer Feature and legacy gate]
+In a URP project, install and enable `MingToon Outline Renderer Feature` on every Renderer Data you use: `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`. Legacy materials also retain `_OutlineEnabled` (`Outline Master`) as a compatibility gate. If it is off, enabling `Classic Hull` cannot draw a line.
+:::
 
 ### Basic setup {#기본-설정}
 

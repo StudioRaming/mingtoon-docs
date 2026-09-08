@@ -75,7 +75,7 @@ The baker creates a duplicate Mesh with the rest pose stored in an available UV2
 - On `Screen` they **add** camera stability. At 1, the default, the mark size and density you set up close are what you get from across the room and at any field of view. At 0 the lattice is welded to the pixel grid and nothing the camera does moves it at all.
 
 :::tip[Author up close, check from far away]
-`Screen` with `Distance Compensation` at 1 is exactly that combination. Before 0.1.5 these two sliders were locked out on `Screen` and could not be used.
+`Screen` with `Distance Compensation` at 1 is exactly that combination. Set density and size up close, then check that the pattern stays consistent from farther away.
 :::
 
 ## Shape Tile {#패턴-모양-타일}
@@ -87,7 +87,7 @@ The baker creates a duplicate Mesh with the rest pose stored in an available UV2
 
 ### Included Tiles
 
-There are 5 types in the `Assets/StudioRaming/MingToon/Textures/Patterns` folder, and you can load them directly with the inspector buttons.
+Five built-in tiles can be loaded directly with the Inspector buttons.
 
 | Button | Shape |
 |---|---|

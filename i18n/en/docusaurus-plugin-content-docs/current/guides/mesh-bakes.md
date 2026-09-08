@@ -6,7 +6,7 @@ sidebar_position: 10
 
 # Mesh UV Bakes
 
-**After reading this guide,** you can distinguish UV4, UV7, and UV8 ownership and understand the difference between 0.1.7 Live face normals and upload-only baking.
+**After reading this guide,** you can distinguish UV4, UV7, and UV8 ownership and understand the difference between Live face normals and upload-only baking.
 
 | Channel | User Data |
 |---|---|
@@ -40,13 +40,11 @@ Enable `Calculate for Models with Edited Normals` to rebuild the outline directi
 
 ## Live Face Normals and UV7 {#얼굴-프론트뷰-노멀-uv7}
 
-Starting in 0.1.7, the shader calculates proxy face normals live while editing. Changes to proxy center, radius, Sphere/Cylinder/Capsule shape, axis, height, or strength appear immediately without a separate Mesh bake. The radius changes the target-normal curvature, not only the displayed size.
+The shader calculates proxy face normals live while editing. Changes to proxy center, radius, Sphere/Cylinder/Capsule shape, axis, height, or strength appear immediately without a separate Mesh bake. The radius changes the target-normal curvature, not only the displayed size.
 
 ### During VRChat Upload
 
-For every face-normal optimization build root, the VRChat upload hook first **journals the original Mesh and material slots of every Renderer that has a Mesh**. A later upload conversion can replace Meshes even on non-Face Renderers, so recording only Face slots would not fully restore the original arrangement.
-
-Face slots are isolated with transaction-owned temporary materials, and the UV7 face-normal payload is created only on those copies. The scene's original Meshes and materials, and materials shared by another avatar, remain untouched. After upload the complete journal restores the original arrangement, and recovery continues across script reloads or editor restarts. If the user changed a target after the upload mutation, recovery preserves that newer state and leaves the entry pending for a later retry.
+During a VRChat upload, MingToon processes face-normal optimization on temporary upload copies of the affected Renderers. The UV7 face-normal payload is written only to those copies; the scene's original Meshes and materials stay unchanged, including materials shared by another avatar.
 
 The following Renderers skip upload baking and remain on the Live shader path to preserve their result:
 
@@ -57,12 +55,12 @@ The following Renderers skip upload baking and remain on the Live shader path to
 
 ### Return a Legacy Face-Normal Bake
 
-If `_FaceNormalBaked` remains from an older version and moving the proxy no longer changes the result, run `Return Face Normals to Live` in MingToon Manager.
+If an old face-normal bake state remains and moving the proxy no longer changes the result, run `Return Face Normals to Live` in MingToon Manager.
 
 This operation:
 
 - disables the baked float and keyword
-- returns `Face Map Coordinates` to Base UV so a tangent-normal payload is not misread as Face SDF coordinates
+- returns `SDF Coordinates` to `Base Texture UV (Legacy)` so a tangent-normal payload is not misread as Face SDF coordinates
 - does not alter Mesh bytes
 - records all materials as one Undo operation and saves only changed assets
 
@@ -70,14 +68,9 @@ The next normal conversion rebuilds from the source Mesh, naturally removing the
 
 ### Baked Front UV7 for Face SDF
 
-For Face SDF, UV7 stores **front-projected coordinates**, not normals. When the separate Face SDF Studio product is installed, it can bake SceneView's front view into TEXCOORD6 of a duplicate Mesh.
+For Face SDF, UV7 stores **front-projected coordinates**, not normals. Face SDF Studio is a separate unreleased add-on and is not required for this guide. Select `Baked Front UV7` in the material's `SDF Coordinates` only when the target Mesh already has the matching front-projection UV7 payload prepared with that map. Otherwise use `Base Texture UV (Legacy)` and assign the prepared SDF map directly to the material.
 
-1. Align the face to the front.
-2. Select `Baked Front UV7` in Studio.
-3. Bake the duplicate Mesh and apply it to the target Renderer.
-4. Confirm that `Face Map Coordinates` on the MingToon material uses the same mode.
-
-An SDF authored for Base UV does not require UV7. → [Face SDF](/guides/face-sdf)
+This guide does not depend on a Studio bake workflow. An SDF authored for Base UV does not require UV7. → [Face SDF](/guides/face-sdf)
 
 ## Character Height (UV4) {#캐릭터-높이-uv4}
 

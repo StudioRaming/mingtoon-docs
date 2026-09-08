@@ -29,11 +29,11 @@ Generated shaders retain the same ShaderLab Properties contract as the authoring
 
 ### Additional VRChat Avatar Processing {#vrchat-추가-처리}
 
-- Preserves `Depth Availability = Auto`. Author-selected Force On and Force Off values are also preserved, and `Include Depth Light on Upload` is a separate opt-in that does not rewrite the material value.
+- Preserves `Depth Availability = Auto`. Author-selected Force On and Force Off values are also preserved. When `Include Depth Light on Upload` is enabled, it adds a depth light to the upload copy without rewriting the material value. Check the option state in Manager before running the upload.
 - Bakes face normals into UV7 of the **upload-copy Mesh**. Renderers remain on the Live path when Face SDF owns UV7 or a texture Face Area Mask is required, preserving the same result.
 - Applies project-configured texture resolution caps by slot type—such as base, normal, and mask—to the upload copy.
 - Automatically includes VRC Light Volumes variants in avatar uploads.
-- Marks MingToon runtime components as `IEditorOnly`. After exporter processing, verify separately that `RuntimeComponentCount = 0` on the actual build clone.
+- Marks MingToon runtime components as `IEditorOnly`. After exporter processing, verify separately that `RuntimeComponentCount = 0` on the actual build clone. This value counts authoring MingToon components; it is not a count of all SDK or runtime components.
 
 Face-normal upload output uses a dedicated path separate from authoring mesh bakes. Even for the same character and UV channel, it neither reuses nor overwrites authoring Mesh assets.
 
@@ -71,7 +71,7 @@ The VRChat hook runs late so it analyzes the actual final state after tools such
 
 `Auto` directly reads the bound camera depth texture and VRChat Photo Camera state for each camera. The upload hook does not rewrite this value: Auto ships as Auto, while Force On and Force Off remain exactly as authored. Use Force On only when the author guarantees host depth that automatic detection cannot see.
 
-`Include Depth Light on Upload` is a separate opt-in. It adds a shadow-casting Directional Light to the upload copy so the camera creates a real depth buffer, while the material remains Auto. It is off by default and carries performance and world-lighting cost. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
+When `Include Depth Light on Upload` is enabled, it adds a shadow-casting Directional Light to the upload copy so the camera creates a real depth buffer, while the material remains Auto. Check its current state in Manager and account for performance and world-lighting cost when it is enabled. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
 
 Mirror safety blocking is separate. Even under Force On, depth modules are disabled in mirrors so they cannot read another camera's depth. → [VRChat Depth](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 
@@ -117,3 +117,5 @@ If Manager status continues to show `Restore Required`, run `Restore After Inter
 
 - Fixed distribution assets: [Manual Bake and Restore](/workflow/bake-and-restore)
 - Platform checklists: [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)
+- For errors: [Troubleshooting](/troubleshooting)
+- For errors: [Troubleshooting](/troubleshooting)

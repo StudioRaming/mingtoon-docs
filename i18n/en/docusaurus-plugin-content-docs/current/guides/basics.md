@@ -6,105 +6,107 @@ sidebar_position: 2
 
 # Basic Settings
 
-**After reading this guide,** you can choose the correct Surface Mode and establish the base color and transparency behavior.
+After [starting with Manager](/getting-started/first-material), select the converted material you want to refine. **Keep MingToon Manager on the avatar root.** This guide follows the current inspector's surface, colour, and lighting controls. Check your installed version if names differ. **Update VCC installations through VCC.**
 
-This guide focuses on the Inspector's **Basic Settings** group: `Master Adjustment`, `Surface Rendering`, and `Lighting`. Map layers are covered in [Detail Maps](/guides/detail-maps), and the complete property list is in the [Basic Settings Reference](/reference/basics).
+## Find the control for your change
 
-## 1. Choose Surface Mode First {#1-표면-모드부터-정합니다}
-
-Choose **Surface Mode** before assigning the base map. Changing it later moves the render queue and can disable all depth-based effects at once.
-
-| Surface Mode | Use Case | Notes |
+| Desired change | Open first | Main controls |
 |---|---|---|
-| **Opaque** | Body, clothing, and most parts | Fully writes depth, so all effects work |
-| **Cutout** | Hair, eyelashes, and clipped parts | `Alpha Cutoff` around 0.3–0.6 is usually safe. Near 0, untidy translucent edges remain |
-| **Transparent · Outline Depth Ready** | Translucent parts that also need depth effects | Writes depth, so 2D Shadow, 2D Rim Light, and Inner 2D Boundary all work. **Try this first when you need translucency** |
-| **Transparent** | Fully translucent surfaces | Does not write depth, so **all depth-based modules are disabled** |
+| Darker or brighter appearance | Lighting → Core Light Response / Lighting Brightness Limits | Lit Brightness · Indirect Light Lift · Minimum/Maximum Final Brightness |
+| Excessive world-light colour | Lighting → Core Light Response | Environment Color Influence · Preserve Base Map Color |
+| Texture colour | Detail Maps → Surface Maps | Base HSVG · Hue Rotation Space · Base Tint |
+| Cutout or transparency | Surface Rendering / Alpha & Cutout | Surface Mode · Base Map Opacity · Alpha Cutoff |
+| Backfaces and overlapping cloth | Surface Rendering | Visible Faces · Two-Sided Dual Pass |
+| Contribute as a depth occluder | Surface Rendering | Camera Depth Contribution |
 
-:::note[What Surface Mode changes]
-It updates the render state, default render queue, and internal outline-buffer state together. **Alpha Cutoff, outline on/off, and appearance values are preserved**, so changing the mode does not erase your work.
-:::
+Start with Quick Settings, then search or open **Full Setup** for individual controls. **Face, Skin, and Common can be assigned at the top of the material inspector in release builds too.** Editing a role or value with multiple materials selected applies it to all selected targets.
 
-### Render Disabled
+## Separate brightness from lighting colour
 
-`Render Disabled (Do Not Draw This Material)` removes every pass and eliminates the draw call itself. It differs from turning off `Overall Effect`, which leaves the base rendering intact.
+Start with the four controls in **Core Light Response**.
 
-This value is a Material pass state, so it cannot be switched at runtime through an AnimationClip or VRC FX. For an in-game toggle, enable or disable the Renderer or GameObject instead. An enabled Render Disabled state is preserved in bakes and upload copies.
+| Control | Changes | Starting point |
+|---|---|---|
+| Lit Brightness | Brightness multiplier on the lit side | 1 is neutral; watch for highlights losing colour as it increases |
+| Environment Color Influence | Light-probe and ambient hue | Lower it when environment colour overwhelms skin or clothing; independent of brightness |
+| Indirect Light Lift | How indirect light lifts dark areas | 0 adds no indirect brightness; 1 uses its authored strength |
+| Preserve Base Map Color | Lighting hue mixed into the completed base colour | Higher favours base colour; **does not preserve or increase brightness** |
 
-:::danger[If a depth module is enabled in Transparent mode]
-The Inspector shows `Depth Recording Mode is required` beside Surface Mode. Switch to `Transparent · Outline Depth Ready`.
-:::
+For overly dark areas, check **Indirect Light Lift** and **Lighting Brightness Limits → Minimum Final Brightness**. For washed-out bright areas, adjust **Lit Brightness** and **Maximum Final Brightness**. Preserve Base Map Color alone does not solve insufficient brightness.
 
-### Hair Showing Through Cheeks {#머리카락이-볼을-뚫고-보일-때}
+Use **Additional Light Reception** for point and spot light influence. Advanced settings expose more colour and response-curve controls. → [Light and Shadow](/guides/light-and-shadow)
 
-Enable **`Transparent Depth Prepass`** under `Surface Rendering`. It writes surface depth before drawing color, preventing hair strands behind the cheek from appearing on top of it. Use `Prepass Alpha Cutoff` to choose the alpha threshold that writes depth.
+## Base colour and textures {#2-베이스-색}
 
-### Visible Faces {#표시할-면}
+Use **Surface Maps** for the base texture and colour adjustments. For a converted material, check existing assignments before replacing textures.
 
-| Value | Result |
+| Control | Purpose |
 |---|---|
-| **Front Faces Only (Standard)** | Default |
-| **Back Faces Only** | |
-| **Off (Double-Sided)** | Skirts and cloth |
-| **Flip (Double-Sided + Reversed Outline)** | Double-sided materials whose outline direction also needs to be reversed |
+| Base Map | Original surface texture |
+| Base HSVG | Hue, saturation, value, and gamma adjustment |
+| Hue Rotation Space | HSV or OKLab. Keep HSV when preserving a look authored with it |
+| Base Tint · Tint Blend Mode | Multiply keeps texture shading; Normal replaces it with the selected colour |
+| Base Map Opacity | Multiplies final base alpha; **surface opacity independent of tint strength** |
 
-If backfaces on a double-sided material look unnaturally dark, try enabling `Flip Backface Lighting Normal`.
+The older description of tint opacity does not describe the current **Base Map Opacity** control. Tint Blend Strength is an advanced compatibility setting for colour blending; it does not change final surface alpha. To show transparency, also choose the appropriate surface mode below.
 
-## 2. Base Color {#2-베이스-색}
+### Gradation LUT
 
-1. Assign the character texture to **Base Map**.
-2. Adjust color with **Base Map HSVG**. This is faster than rebaking the texture and makes it easy to compare the converted result with the original.
-3. When adding a tint through **Base Color**, these three properties work as a set.
+Enable **Gradation LUT** and assign a horizontal ramp to remap the base colour per channel. Import the LUT as sRGB and use **Gradation Strength** for its contribution. Begin with HSVG and tint, adding a LUT when needed.
 
-| Property | Role |
-|---|---|
-| Base Color | Color to apply |
-| Tint Blend Mode | `Multiply` keeps the map's light and dark values while tinting; `Normal` covers the map with a flat color |
-| Tint Opacity | **At 0, both properties above are ignored entirely** |
+### Limit colour adjustment to a region {#색조보정-범위-마스크}
 
-:::note[If changing the color has no effect]
-Check whether Tint Opacity is 0 first. MingToon uses this “a zero parent value disables all children” structure in several places. The reference tables identify which values are parents.
-:::
+Enable **Color Adjust Mask → Use Color Adjust Mask** and assign the mask. White applies adjustment, black retains the original colour, and gray blends between them. Select a channel for a packed texture and invert when needed.
 
-### Apply Color Adjustment Only to Selected Areas {#색조보정-범위-마스크}
+The mask has **its own tiling and offset**. Do not assume changing Base Map tiling also aligns the mask; check the intended regions, such as eyes or skin.
 
-`Base Map HSVG` applies to the entire material by default. To limit it to a region—such as **changing only the eyes while leaving the face untouched**—use the `Color Adjustment Area Mask` group directly below it.
+## Choose Surface Mode {#1-표면-모드부터-정합니다}
 
-1. Enable `Use Area Mask`. **It is off by default**; while off, adjustment applies to the whole material as before.
-2. Assign a grayscale image to `Area Mask`. **White applies adjustment, black preserves the original**, and gray blends by that proportion.
-3. If several masks are packed into one texture, choose the channel with `Mask Channel`.
-4. If the area to adjust is painted black, enable `Invert Mask`.
+If the converted appearance already behaves as intended, there is no need to change its mode first. Choose by opacity, cutout, and overlapping-layer needs. **Surface Rendering** and **Alpha & Cutout** edit the same mode value.
 
-The mask uses the same UV and tiling as the base map. If the base map is tiled, the mask follows it.
+| Current label | Use | Depth and overlap |
+|---|---|---|
+| Opaque (2000) | Ordinary skin and clothing | Writes depth without alpha blending |
+| Cutout (2450) | Cut edges in hair or eyelashes | Discards pixels below Alpha Cutoff; the rest write depth |
+| Semi-Transparent (2499) | Alpha blending where the nearest surface should win | Writes depth in a camera-depth eligible queue; different from showing every overlapping layer through the others |
+| Transparent (3000) | Layered cloth or glass that should show surfaces behind it | The default colour pass writes no depth and uses transparent ordering; not a normal camera-depth-effect target |
 
-:::note[For a material converted from lilToon]
-lilToon's color-adjustment mask is placed here. Because it is grayscale, the channel is fixed to R. If the original had no mask, this row remains disabled. → [lilToon Material Conversion](/workflow/liltoon-conversion)
-:::
+The old transparent-with-outline-depth label is now **Semi-Transparent (2499)**. Both transparent modes can retain outlines. Mode changes align render state, default queue, and outline-buffer state while preserving Alpha Cutoff and outline enable/appearance settings.
 
-## 3. Control Transparency with a Separate Texture {#3-투명도를-텍스처로-따로-지정하기}
+**Choosing Semi-Transparent does not guarantee every depth effect.** Check camera-depth availability, Camera Depth Contribution, enabled modules, and the actual render queue. → [Depth Effects](/guides/depth-effects)
 
-Use **Alpha Mask** when transparency should come from a separate image instead of the base map alpha.
+### Camera Depth Contribution
 
-1. Enable `Use Alpha Mask`.
-2. Assign a grayscale image to `Mask Image`.
-3. Choose the read channel under `Mask Channel`. For several masks packed into one texture, select R/G/B/A; choose `Luma` to use RGB brightness.
-4. If areas to remove are painted white, enable `Invert Mask`.
+This decides whether **other materials' 2D shadows, SSAO, and 2D rim read this material as an occluder**. Turning it off excludes that contribution; normal colour rendering and real-time light shadows remain separate. The checkbox does not itself prepare the camera's depth texture.
 
-`Remap Start`, `Remap End`, and `Feather` redistribute the mask's gray range. Use `Gradient` properties to create a directional fade.
+### Visible faces and two-sided rendering {#표시할-면}
 
-:::caution[It is invisible in Opaque Surface Mode]
-Alpha Mask produces a result only in Cutout or Transparent modes.
-:::
+Choose front faces, backfaces, two-sided rendering, or the two-sided/outline-flip combination under **Visible Faces**. Use two-sided rendering for cloth that must show both sides. Check **Flip Backface Lighting Normal** when its backface lighting looks wrong.
 
-## 4. Common Maps {#4-공통-맵}
+**Advanced Color Buffer → Two-Sided Dual Pass** draws a two-sided surface's backfaces separately first. Consider it for folded-cloth overlap issues; it adds a pass, so apply it where needed.
 
-These frequently used maps also appear in Simple mode.
+### Troubleshoot transparent overlap {#머리카락이-볼을-뚫고-보일-때}
 
-- **Normal Map** — surface relief. At `Normal Strength` 0, the map stays flat; 1 is its original strength. It corresponds to Normal Layer 01, so it is ignored when the [Normal Layer](/guides/detail-maps#노멀-레이어) module is off.
-- **Occlusion Map** — darkens areas that indirect light has difficulty reaching. It **does not affect direct light**, so its effect is barely visible under strong frontal light. At `Occlusion Strength` 0, assigning the map changes nothing.
+First choose between the depth priority of **Semi-Transparent (2499)** and layer blending of **Transparent (3000)**. The latter exposes **Transparent Depth Prepass** under **Advanced Color Buffer**. This relates to transparent sorting and outlines; it is distinct from Camera Depth Contribution and real-time light shadows. Do not enable it indiscriminately for every overlap problem.
 
-Emission, PBR, and MatCap are covered in [Detail Maps](/guides/detail-maps).
+## Alpha masks and cutout {#3-투명도를-텍스처로-따로-지정하기}
+
+Check the **Alpha & Cutout** section master. For a separate transparency texture, enable **Alpha Mask**, set its texture, channel, inversion, and strength, then adjust **Alpha Cutoff**. Lower alpha does not turn Opaque mode into alpha blending.
+
+**Alpha To Coverage** depends on MSAA. If MSAA is disabled, repeatedly increasing its sharpness will not produce the expected edge smoothing. **Camera Depth Alpha Cutoff**, shown for semi-transparent/transparent modes, adjusts the depth silhouette separately from colour alpha.
+
+Open the distance, Fresnel, or directional alpha groups only when needed. Establish mask, surface opacity, and cutoff first.
+
+## Master Adjust and Performance Distance
+
+Brightness/tint authoring rows in **Master Adjust** appear when MLC is installed; they are absent without it. **Performance Distance** works without an add-on and reduces sample limits and selected effects at distance. If an effect disappears far away, check its distance and scale settings. → [Ming Light Controller](/guides/ming-light-controller)
+
+## Common maps {#4-공통-맵}
+
+Normal maps control surface detail; occlusion maps affect indirect-light occlusion. Check module toggles and strength as well as texture assignments. Continue with normal layers, Matcap, emission, and PBR in [Detail Maps](/guides/detail-maps).
+
+**Render Disabled** stops drawing the material. **All Effects** is the parent switch for stylized effects. Distinguish a missing material from an individual unresponsive effect.
 
 ## Next
 
-[Light and Shadow](/guides/light-and-shadow) — most of the toon look's character is decided there.
+[Light and Shadow](/guides/light-and-shadow) · [Using the Inspector](/guides/inspector) · [Basic Settings Reference](/reference/basics). After editing, keep Manager on the avatar root and continue with VRC SDK upload or WARUDO mod build.

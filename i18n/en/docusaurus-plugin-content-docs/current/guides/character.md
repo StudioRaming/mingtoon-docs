@@ -85,7 +85,7 @@ Replace the face normals with proxy curvature to clean up untidy nose and brow s
 4. Align the front and up axes with Face Normal Alignment and the fixed direction.
 5. If the normal map creates a broad shadow boundary that does not match the SceneView normal lines, lower Shadow Normal Map Influence.
 
-In 0.1.7, this calculation is **live while editing**. Changes to the proxy or strength appear immediately without a separate mesh bake. The upper-left SceneView panel can toggle normal lines and the proxy volume independently; line length and density affect display only, not lighting. On VRChat upload, MingToon creates the UV7 payload only in the upload copy, then restores the scene's original Mesh and material to Live state.
+This calculation is **live while editing**. Changes to the proxy or strength appear immediately without a separate mesh bake. The upper-left SceneView panel can toggle normal lines and the proxy volume independently; line length and density affect display only, not lighting. On VRChat upload, MingToon creates the UV7 payload only in the upload copy, then restores the scene's original Mesh and material to Live state.
 
 When a texture face-region mask is active, the SceneView normal lines also follow UV0, Tiling/Offset, HSVG, channel selection, inversion, and remapping. If the GPU sample or UV data cannot be read, MingToon hides the lines and reports the reason in the panel instead of drawing a misleading preview.
 
@@ -110,7 +110,7 @@ Choose **how to draw shadows made by bangs and accessories on the face**. At the
 | Value | Result | Use Case |
 |---|---|---|
 | **Real Shadow, Same as Body** | Receives the scene's real-time shadows directly | When the face does not need separate handling |
-| **Soft 2D Shadow (Face Corrected)** | Also enables an auxiliary face push so [2D Shadow](/guides/depth-effects#2d-그림자) fades softly on the face | Anime looks. The bangs-shadow shape stays stable as lighting changes |
+| **2D Shadow (Face Corrected)** | Also enables an auxiliary face push so [2D Shadow](/guides/depth-effects#2d-그림자) fades softly on the face | Anime looks. The bangs-shadow shape stays stable as lighting changes |
 | **Custom** | Related values have been adjusted manually | Appears automatically when values leave the two combinations above |
 
 :::note[One row controls several values]
@@ -119,23 +119,25 @@ The values needed for this choice were previously split across two tabs. Selecti
 Editing those values directly changes the selector to `Custom`. This does not mean the state is invalid; it only means the values are not one of the preset combinations.
 :::
 
-`Soft 2D Shadow (Face Corrected)` requires [camera depth](/guides/depth-effects#플랫폼별-깊이-확보). On screens without depth, no shadow remains on the face. If VRChat's standard screen is your target, prepare a face shadow texture as well.
+`2D Shadow (Face Corrected)` requires [camera depth](/guides/depth-effects#플랫폼별-깊이-확보). On screens without depth, no shadow remains on the face. If VRChat's standard screen is your target, prepare a face shadow texture as well.
 
 If the real-time shadow is misaligned with the face, use `Real Shadow Caster Offset` to make a fine adjustment by pushing the face-region shadow caster along the normal.
 
 ### Face Cast Adjustment
 
-The nonfunctional `Uniform Face Cast` and `Face Cast Stabilization` controls were removed in 0.1.7. Adjust bangs shadows with `Shadow Mode`, `Real Shadow Caster Offset`, the 2D Shadow face assist, and Face SDF. → [Light and Shadow](/guides/light-and-shadow#얼굴의-스치는-그림자)
+The current Inspector does not provide `Uniform Face Cast` or `Face Cast Stabilization`. Adjust bangs shadows with `Shadow Mode`, `Real Shadow Caster Offset`, the 2D Shadow face assist, and Face SDF. → [Light and Shadow](/guides/light-and-shadow#얼굴의-스치는-그림자)
 
 ### Face SDF — Use It Without Scripts
 
-When the separate Face SDF Studio product is installed, it can create four-direction Packed RGBA or Single Channel face SDF maps. Base UV works on its own; selecting `Baked Front UV7` fixes the projected front coordinates. → [Face SDF and Face SDF Studio](/guides/face-sdf)
+Assign a prepared map directly to `Four-Direction SDF Map (RG Left/Right, BA Up/Down)` or `Single-Channel SDF Map (R/Grayscale, Mirrored Left/Right)`. Select `Base Texture UV (Legacy)` or the matching `Baked Front UV7` coordinates prepared with that map. Face SDF Studio is a separate unreleased add-on and is not required for this Inspector path. → [Face SDF and Face SDF Studio](/guides/face-sdf)
 
 :::tip[Set up Face Shading first]
 SDF changes the order in which shadow covers the face. It cannot replace correct face-region selection, proxy normals, or `Face Boundary` setup.
 :::
 
-<!-- SCREENSHOT: Face SDF Studio -->
+:::note[Face SDF Studio status]
+Face SDF Studio is a separate unreleased add-on. This guide's face-SDF path assigns a prepared map directly in the Inspector and does not depend on installing Studio or following a Studio workflow.
+:::
 
 ---
 

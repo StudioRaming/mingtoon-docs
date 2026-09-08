@@ -28,7 +28,7 @@ VRChatはUnity **2022.3.22f1**、Warudoは**2021.3.45f2**を使用します。�
 
 ## カメラ深度の導入 — WARUDO Depth Bridge {#warudo-depth-bridge}
 
-2Dリムライト・2Dシャドウ・インナー2Dエッジ・SSAOなどの画面深度エフェクトには、Warudoカメラの深度テクスチャが必要です。0.1.7パッケージには、これを供給する独立したWarudoプラグインソースが含まれます。
+2Dリムライト・2Dシャドウ・インナー2Dエッジ・SSAOなどの画面深度エフェクトには、Warudoカメラの深度テクスチャが必要です。0.1.8パッケージには、これを供給する独立したWarudoプラグインソースが含まれます。
 
 ### インストール
 
@@ -38,7 +38,7 @@ VRChatはUnity **2022.3.22f1**、Warudoは**2021.3.45f2**を使用します。�
 4. WarudoのPlaygroundプラグインが再読み込みされたら、Consoleで`[MingToon Warudo Depth Bridge] installed`ログを確認します。
 
 :::important[キャラクタープレハブへ付けるコンポーネントではありません]
-このファイルはWarudoアプリケーションのPlaygroundで実行されるグローバルプラグインです。キャラクターModフォルダーへ入れたり、プレハブへコンポーネントを追加したりしないでください。以前の`MingToonWarudoRoot`方式の案内は0.1.7ドキュメントで廃止されました。
+このファイルはWarudoアプリケーションのPlaygroundで実行されるグローバルプラグインです。キャラクターModフォルダーへ入れたり、プレハブへコンポーネントを追加したりしないでください。以前の`MingToonWarudoRoot`方式の案内は現在のドキュメントで廃止されました。
 :::
 
 ### 供給するもの
@@ -98,4 +98,4 @@ Warudo書き出しもビルド時の自動最適化を使います。bakedマテ
 
 ## 次へ
 
-[ビルド時の自動最適化](/workflow/build-optimization)・[深度ベースエフェクト](/guides/depth-effects)・[ライティングとシャドウ](/guides/light-and-shadow)
+[ビルド時の自動最適化](/workflow/build-optimization)・[深度ベースエフェクト](/guides/depth-effects)・[ライティングとシャドウ](/guides/light-and-shadow)・[トラブルシューティング](/troubleshooting)

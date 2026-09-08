@@ -59,8 +59,8 @@ Different shaders have different formula and feature semantics. Conversion is an
 | `SecondEmissionRequiresBake` | 2nd emission pass | Merge and bake into emission map |
 | `EmissionMaskRequiresBake` | Emission mask | Merge and bake into emission map |
 
-:::tip[All five mean "pre-bake the texture, and it works"]
-What was computed at runtime becomes static texture. Most look visually identical when reproduced this way. If animation is needed, move to AnimationClip.
+:::note[What a static texture can replace]
+These codes report features that conversion could not transfer directly. Static patterns or colors may be flattened into a texture, but animated UVs, dissolve or emission are not preserved by a single static image. Rebuild required animation separately and compare the result.
 :::
 
 ### Unsupported — cannot move
@@ -78,17 +78,14 @@ What was computed at runtime becomes static texture. Most look visually identica
 | `MissingTextureSkipped` | Texture referenced by source is not in project | Recover texture and reconvert |
 | `FaceClassification` | Face judgment result report | See below |
 | `ConversionFailed` | Material conversion failed | Check message |
+| `SourceExcluded` | Source matched a conversion exclusion rule | Check the reported reason and selected material |
 
 ---
 
 ## Face Classification — Auto does not infer
 
-:::danger[Auto reads only the source material's face flag]
-The inspector says it plainly.
-
-> Auto reads **only the face flag the source material carries directly**. **It does not infer from names**, so shaders without flags remain Regular, and slots meant for face must be **manually designated as Face.**
-
-In other words, **Auto only finds faces when converting from shaders with face flags, like lilToon**. Converting from Standard or URP Lit yields all `Regular`.
+:::note[Scope of Auto classification]
+Auto checks a **source-material face flag that a supported adapter can read**. A name or shader brand alone does not establish that a material is a face. Without a flag or explicit assignment it can remain general-purpose. Assign Face Mesh and Skin Mesh in the Manager first, then inspect the classification evidence.
 :::
 
 This is intentional. A slot named `Face` is not always a face, and body meshes can contain faces — when approximation is wrong, the cost is much higher. If face shading lands on the wrong mesh, the cause is hard to find.
@@ -112,6 +109,8 @@ This is intentional. A slot named `Face` is not always a face, and body meshes c
 | `Regular` | General shading | General use |
 
 → [MingToon Manager](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계)
+
+The Common UI role can appear as `Regular` in internal reports. The general release also allows direct Face, Skin and Common role changes in the material inspector. Keep avatar-wide assignments in the Manager.
 
 ---
 
@@ -150,8 +149,7 @@ source  converted  resolution  face  surfaceMode  renderQueue  cull
 | `resolution` | How source was located |
 | `face` | Face classification result |
 | `surfaceMode` · `renderQueue` · `cull` | Whether render state matches source |
-| `surfaceLayers` ·
-ormalLayers` · `matcapLayers` | How many layers came over |
+| `surfaceLayers` · `normalLayers` · `matcapLayers` | How many layers came over |
 | `passes` · `keywords` | Code shape that compiles |
 | `mismatches` | Items differing from source |
 | `losses` | Loss entries |

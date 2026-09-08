@@ -8,8 +8,10 @@ sidebar_position: 1
 
 Base colour, surface mode and the everyday maps - the first things you touch on a new material.
 
+Start with the guide: [Basic](/guides/basics)
+
 :::note
-The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
+This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
 :::
 
 ## Base Surface
@@ -21,7 +23,6 @@ Configure the base texture, color, and UV transform.
 | **Base Map** | The main color texture. Its alpha channel is only used when Surface Mode is Cutout or Transparent. | `_MainTex` |
 | **Base Tint** | A color laid over the Base Map. Tint Blend Mode decides how it combines; Base Map Opacity independently controls the final surface alpha. | `_Color` |
 | **Tint Blend Mode** | How Base Tint combines with the Base Map. The default Multiply keeps the map's shading and only recolors it; Normal replaces the map with a flat color. | `_ColorBlendMode` |
-| **Alpha Cutoff** | Only has an effect when Surface Mode is Cutout. Pixels whose alpha is below this value are discarded. 0.3-0.6 works for hair and lashes; near 0 leaves ragged semi-transparent fringes. | `_Cutoff` |
 | **Tint Blend Strength** | Advanced compatibility setting. It affects only the selected Base Tint/Map blend result; it does not control final surface alpha. | `_ColorBlendOpacity` |
 
 ## Surface Rendering
@@ -30,15 +31,22 @@ Configure surface type, culling, and alpha handling.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Camera Depth Contribution** | Controls whether this material is written to the camera-depth texture. When off, Opaque, Cutout, and Transparent surfaces are excluded from 2D shadows, SSAO, and 2D Rim Light while normal color rendering and real-time light shadows remain. | `_2DShadowCasterEnabled` |
+| **Soft Cutout** | Uses MSAA sample coverage for alpha edges. Current surface-state code supports non-Opaque modes and adjusts blending when enabled to avoid applying alpha blending twice. Do not expect the same smoothing in views without MSAA. | `_AlphaToCoverage` |
+| **Edge Sharpness** | How wide the softened band is. 1 is one screen pixel; raising it narrows the band and sharpens the edge, lowering it widens and blurs. Raise it if hair tips look washed out. | `_AlphaToCoverageSharpness` |
 | **Enable Alpha Mask** | Combines a separate image with the Base Map alpha using the selected blend mode. While off, all mask settings below are ignored, and an Opaque Surface Mode hides the result even when it is on. | `_AlphaMaskEnabled` |
 | **Mask Image** | Grayscale image used as the alpha source. It is ignored while Enable Alpha Mask is off. | `_AlphaMask` |
 | **Alpha Blend Mode** | How the mask combines with the Base alpha. Multiply is MingToon's legacy default; Replace, Add, and Subtract support lilToon-compatible alpha results. | `_AlphaMaskBlendMode` |
 | **Mask Value Scale** | Multiplies the mask after channel, invert, remap, feather, and gradient processing. The default 1 preserves the existing look. | `_AlphaMaskScale` |
 | **Mask Value Offset** | Added after Mask Value Scale. The final mask is clamped to 0-1; the default 0 preserves the existing look. | `_AlphaMaskOffset` |
 | **Alpha Mask Strength** | How strongly the mask changes final transparency. 0 preserves the Base Map alpha; 1 applies the mask fully with the selected blend mode. | `_AlphaMaskStrength` |
+| **Alpha Cutoff** | Only has an effect when Surface Mode is Cutout. Pixels whose alpha is below this value are discarded. 0.3-0.6 works for hair and lashes; near 0 leaves ragged semi-transparent fringes. | `_Cutoff` |
+| **Camera Depth Cutoff** | Where the transparent surface's silhouette in the camera depth texture is cut. The 2D shadow, depth rim and inner edge all read that silhouette, so a low value lets barely-visible pixels cast shadow while a high one drops parts you can actually see out of depth. Separate from Alpha Cutoff, which cuts the visible alpha. | `_TransparentDepthPrepassCutoff` |
 | **Color Mask** | Which color channels the outline pass writes. 15 is full RGBA; 0 means the outline is never written to the screen at all. | `_OutlineColorMask` |
 | **Mask Channel** | Which channel of the mask image to read. Pick R/G/B/A when several masks are packed into one texture; Luma uses the RGB brightness. | `_AlphaMaskChannel` |
 | **Invert Mask** | Flips the mask black-for-white. Use it when the mask was painted white where the surface should disappear. | `_AlphaMaskInvert` |
+| **Transparent Depth Prepass** | Writes depth without color for Transparent (3000). It can reduce overlap or outline problems but may hide translucent surfaces behind it; compare on the actual model. | `_TransparentDepthPrepass` |
+| **Two-Sided Dual Pass** | Draws the far side of a two-sided surface in a separate pass before the near side. It adds vertex-pass and draw-setup work. Check the combination with your surface mode. | `_TwoSidedDualPass` |
 
 ## Alpha Fades
 
@@ -73,15 +81,16 @@ Configure surface type, culling, and alpha handling.
 | Control | What it does | Shader property |
 |---|---|---|
 | **Base Map Opacity** | Multiplies the Base Map alpha at the final surface step. It controls overall surface opacity independently from Tint Blend Strength. | `_BaseMapOpacity` |
-| **Soft Cutout** | Smooths the stair-stepped edge of a cutout using the screen's own anti-aliasing. It shows most on meshes that cut a lot away - hair cards, lace, eyelash planes. Only available while the Surface Mode is Cutout, and switched off automatically when you leave it. | `_AlphaToCoverage` |
-| **Edge Sharpness** | How wide the softened band is. 1 is one screen pixel; raising it narrows the band and sharpens the edge, lowering it widens and blurs. Raise it if hair tips look washed out. | `_AlphaToCoverageSharpness` |
 | **Hue Rotation Space** | Which space the Hue (H) of the HSVG above rotates in. OKLab turns the hue while holding lightness and chroma steady, so moving a skin or hair colour stays predictable. HSV is the legacy behaviour; a material already dialled in under HSV keeps its colour by staying there. | `_BaseHueColorSpace` |
 | **Gradation LUT** | Re-maps the Base Map's colours through per-channel R/G/B ramps. Off reads no ramp texture at all. | `_BaseGradationEnabled` |
 | **Gradation LUT** | A horizontal ramp texture. Each channel's source level is the horizontal coordinate the new colour is read from. Import it as sRGB. | `_BaseGradationTex` |
 | **Gradation Strength** | How far the ramp result is mixed over the source colour. At 0 the result matches the source even with a ramp assigned. | `_BaseGradationStrength` |
 | **Mask Channel** | Which channel of the adjust mask to read. Split channels when several masks share one packed texture. | `_BaseAdjustMaskChannel` |
 | **Invert Mask** | Flips the adjust mask black-for-white so the HSVG adjustment applies to the opposite area. | `_BaseAdjustMaskInvert` |
-| **Camera Depth Cutoff** | Where the transparent surface's silhouette in the camera depth texture is cut. The 2D shadow, depth rim and inner edge all read that silhouette, so a low value lets barely-visible pixels cast shadow while a high one drops parts you can actually see out of depth. Separate from Alpha Cutoff, which cuts the visible alpha. | `_TransparentDepthPrepassCutoff` |
+| **Hue** | Rotates the color around the hue wheel. Use it to recolor clothing or hair without re-exporting the texture. Neutral is 0. |  |
+| **Saturation** | Color intensity. 0 is grayscale, 1 is the source, above 1 oversaturates. |  |
+| **Value** | Overall brightness. 1 is the source; raising it clips the brightest areas to white first. |  |
+| **Gamma** | Adjusts the mid-tones. Below 1 raises contrast; above 1 lifts the mid-tones and flattens the image. |  |
 
 ## View Clip Guard
 

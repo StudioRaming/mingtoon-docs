@@ -29,11 +29,11 @@ sidebar_position: 2
 
 ### VRChatアバターで追加される処理 {#vrchat-추가-처리}
 
-- `Depth Availability = Auto`をそのまま保持します。Force On / Force Offも作成者の指定値を維持し、`アップロード時に深度ライトを含める`はマテリアル値を変更しない別オプトインです。
+- `Depth Availability = Auto`をそのまま保持します。Force On / Force Offも作成者の指定値を維持します。`アップロード時に深度ライトを含める`が有効な場合だけアップロード用コピーへ深度ライトを追加し、マテリアル値は変更しません。実行前にManagerでオプションの状態を確認してください。
 - 顔ノーマルを**アップロード用コピーMesh**のUV7へベイクします。Face SDFがUV7を所有するか、テクスチャFace Area Maskが必要なRendererは、同じ結果を保つためLive経路を維持します。
 - プロジェクトで設定したベース・ノーマル・マスクなどスロット種別ごとのテクスチャ解像度上限をアップロード用コピーへ適用します。
 - VRC Light Volumesバリアントをアバターアップロードへ自動で含めます。
-- MingToonランタイムコンポーネントは`IEditorOnly`としてマークされます。exporter処理後の実際のbuild cloneで`RuntimeComponentCount = 0`か、別途検証する必要があります。
+- MingToonランタイムコンポーネントは`IEditorOnly`としてマークされます。exporter処理後の実際のbuild cloneで`RuntimeComponentCount = 0`か、別途検証する必要があります。この値はオーサリング用MingToonコンポーネント数であり、SDKやランタイムの全コンポーネント数ではありません。
 
 顔ノーマルのアップロード出力は、編集用メッシュベイクとは別の専用パスを使います。同じキャラクター・同じUVチャンネルでも、編集用Meshアセットを再利用または上書きしません。
 
@@ -71,7 +71,7 @@ VRChatフックはModular Avatar・VRCFuryなどのツールがマテリアル�
 
 `Auto`はバインドされたカメラ深度テクスチャとVRChat Photo Camera状態をカメラごとに直接読み取ります。アップロードフックはこの値を書き換えないため、AutoはAutoのまま、Force On / Force Offは作成者が選んだ値のまま出荷されます。Force Onは、自動判定では検出できないホスト深度を作成者が保証する場合だけ使用してください。
 
-`アップロード時に深度ライトを含める`は別オプトインです。アップロード用コピーへシャドウを有効にしたDirectional Lightを追加し、カメラに実際のdepth bufferを生成させますが、マテリアルはAutoのままです。デフォルトはOFFで、パフォーマンスとワールド照明のコストがあります。→ [VRChat深度ライト](/platforms/vrchat#vrchat-깊이-라이트)
+`アップロード時に深度ライトを含める`が有効な場合、アップロード用コピーへシャドウを有効にしたDirectional Lightを追加し、カメラに実際のdepth bufferを生成させますが、マテリアルはAutoのままです。Managerで現在の状態を確認し、有効な場合はパフォーマンスとワールド照明のコストを考慮してください。→ [VRChat深度ライト](/platforms/vrchat#vrchat-깊이-라이트)
 
 ミラー安全遮断は別です。Force Onでもミラーが別カメラの深度を読まないよう深度モジュールを無効にします。→ [VRChat深度](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 
@@ -117,3 +117,5 @@ Managerの状態が`復元が必要`のままなら`Restore After Interrupted Bu
 
 - 固定配布アセット：[手動Bakeと復元](/workflow/bake-and-restore)
 - プラットフォームチェックリスト：[VRChat](/platforms/vrchat)・[Warudo](/platforms/warudo)
+- エラーがある場合：[トラブルシューティング](/troubleshooting)
+- エラーがある場合：[トラブルシューティング](/troubleshooting)

@@ -6,13 +6,13 @@ sidebar_position: 6
 
 # Depth Effects
 
-**After reading this document** you will be able to diagnose why 2D Rim Light, 2D Shadow, and Inner 2D Edge are not visible, and learn how to ensure depth is available on each platform.
+**After reading this document** you will be able to diagnose why the five depth modules — 2D Rim Light, 2D Translucency, 2D Shadow, SSAO, and Inner Outline — are not visible, and learn how to ensure depth is available on each platform.
 
-This document covers the **Depth Effects** group in the inspector — `Depth`, `2D Rim Light`, `2D Shadow`, and `Inner 2D Edge`. For a complete list of all parameters, see [Depth Effects Reference](/reference/depth-effects).
+This document covers the six entries in the **Depth Effects** group in the inspector — `Depth Effects Master`, `2D Rim Light`, `2D Translucency`, `2D Shadow`, `SSAO`, and `Inner Outline`. For a complete list of all parameters, see [Depth Effects Reference](/reference/depth-effects).
 
 ## What Uses Depth
 
-All four sections in this group read **camera depth texture**. Without depth, no amount of adjustment will make anything appear on screen.
+`Depth Effects Master` controls the five modules, and the other five read the same **camera depth texture**. Without depth, no amount of adjustment will make anything appear on screen.
 
 :::danger[Check depth before adjusting values]
 The inspector tells you the status directly.
@@ -43,12 +43,12 @@ The material does not create a post-process pass or an extra camera for depth ef
 
 | Situation | Depth |
 |---|---|
-| **Photo Camera active** | ✅ Official contract enables host depth |
+| **Photo Camera active** | ⚠️ Host may provide depth; verify |
 | **World has Screen Camera depth enabled** | ✅ |
 | **Normal player screen (default)** | ❌ Avatar cannot force it |
 | **Inside mirror · stream paths** | ⚠️ Not guaranteed |
 
-Screen Camera settings are **controlled by the world/Udon side**. Adding an arbitrary Camera or Light to an avatar is not a supported solution. The exception is `Include Depth Light on Upload` in MingToon Manager. This opt-in is off by default and adds a shadow-casting Directional Light to the upload copy, but it increases other users' depth-pass cost, avatar rank cost, and world-lighting impact. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
+Screen Camera settings are **controlled by the world/Udon side**. Adding an arbitrary Camera or Light to an avatar is not a supported solution. Check the current state of the shared `Carry Depth Light in Builds` preference in MingToon Manager. When it is enabled, it adds one `MingToon Depth Light` only to VRChat and WARUDO build clones, and only when the Depth Effects Master and at least one of the five depth modules is actually active. If the master is off or all five modules are off, both builds omit it even when the preference remains checked. Turn it off manually for a world or host that reliably supplies depth; the user's opt-out takes precedence over automatic inclusion. The build light adds an extra depth pass and can also incur per-light shadow-map and pixel-light cost, so keep it only when needed. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
 
 Upload does not change `Depth Availability`. `Auto` detects depth actually bound to each camera, and `Force On` remains only when the author selected it explicitly. See [VRChat](/platforms/vrchat) for details.
 
@@ -220,7 +220,7 @@ Face has separate parameters.
 Raise `Body Surface Guard` first. If still present, raise `Master Bias` or `Additional Depth Bias`.
 :::
 
-0.1.7 stabilizes depth tolerance using receiver distance and surface slope, and fades taps that would fall beyond the screen edge. At long range, the sample count also falls through the fade interval, reducing cost in crowd scenes.
+Depth tolerance is stabilized using receiver distance and surface slope, and taps that would fall beyond the screen edge are faded. At long range, the sample count also falls through the fade interval, reducing cost in crowd scenes.
 
 ---
 
@@ -245,7 +245,7 @@ It is not multiplied. The two are computed separately and **whichever is darker 
 | `SSAO Power` | Tightens the darkening curve |
 | `SSAO Quality` | Depth samples per pixel (4/8/12/16). A uniform loop rather than four keyword variants, so it adds no variants |
 
-0.1.7 uses a view-space tangent plane to reduce self-occlusion on sloped surfaces and replaces the binary tap gate with a smooth ramp. A small internal floor also prevents depth-quantization marks even when bias is 0.
+SSAO uses a view-space tangent plane to reduce self-occlusion on sloped surfaces and replaces the binary tap gate with a smooth ramp. A small internal floor also prevents depth-quantization marks even when bias is 0.
 
 For character-scale subjects, start with Standard quality and the default 0.005 m radius, keeping only the contact areas you need instead of creating broad stains.
 

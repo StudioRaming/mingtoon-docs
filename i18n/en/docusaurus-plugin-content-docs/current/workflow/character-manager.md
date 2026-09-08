@@ -34,11 +34,9 @@ You can also find `MingToon Manager` in Add Component. **Attach it to the root b
 
 | Tab | Next action |
 |---|---|
-| **Overview** | Read current state and the next button |
-| **Setup** | Set conversion inputs and scope |
-| **Look & Bake** | Reapply after conversion and bake the selected scope |
-| **Upload** | Check the normal automatic path, current avatar, and advanced manual bake when needed |
-| **Optimize** | Check automatic hooks and avoid duplicate processing |
+| **Start** | Current state, conversion target, conversion, and upload flow |
+| **Look & Bake** | Reapply looks after conversion; bake or rebake a selected scope and mesh channels |
+| **Optimize** | Build-time automatic optimization and texture-resolution caps |
 
 The status panel at the top recommends the next step for the current material composition. `Texture Optimization` is a separate, project-wide setting rather than a character setting.
 
@@ -142,7 +140,7 @@ Bakes only the static channels needed immediately after conversion.
 | `Character Height Gradient (UV4)` | Height gradient relative to the character root |
 | `Overwrite Occupied UV Channels` | Use only during reconversion after confirming ownership |
 
-Face normals in 0.1.7 are calculated Live while editing, so **conversion no longer bakes UV7 by default.** During VRChat upload, they are baked only into the upload copy. When a texture face-region mask is required or Face SDF owns UV7, the Live path is kept to preserve the result.
+Face normals in 0.1.8 are calculated Live while editing, so **conversion no longer bakes UV7 by default.** During VRChat upload, they are baked only into the upload copy. When a texture face-region mask is required or Face SDF owns UV7, the Live path is kept to preserve the result.
 
 Check ownership of UV4, UV7, and UV8 under `UV Channel Usage` first. → [Mesh UV Bakes](/guides/mesh-bakes)
 
@@ -234,52 +232,20 @@ Upload resolution caps by slot type—including base, normal, and mask—and `Re
 
 ---
 
-### VRChat Expression Menu {#vrchat-표현식-메뉴}
+### VRChat Upload Preparation {#vrchat-표현식-메뉴}
 
-In a Unity 2022.3 VCC project, `MingToon Manager` prepares Virtual Light and Quality
-menus for Avatar SDK/upload builds. The default Full profile also includes Palette,
-Master Adjust, and Photo Looks.
+MingToon Manager does not install VRChat Expressions menus, parameters, or FX. Keep the Manager on the Avatar Root so it can check conversion, look, and optimization state; automatic optimization is applied only to the build clone created by the VRChat SDK. Existing Expressions content and menus from other tools remain your responsibility to verify.
 
 1. Select `MingToon Manager` under the Avatar Root.
-2. Enable `Non-Destructive Modular Avatar Install`. It is enabled by default.
-3. Choose `Use Full Control Menu`. On installs the Full 77-bit profile; off installs the
-   Lightweight 31-bit profile.
-4. Choose `Place Directly In Expressions Root`, save the Scene or Prefab, and reopen the
-   Manager Inspector.
-5. Confirm the selected `MingToon Controls` configuration in Gesture Manager.
-6. Upload with VRChat SDK Builder. Menus, parameters, and FX are merged into the build
-   clone.
+2. Click `Rediscover Child Renderers` to refresh the current clothing and Renderer scope.
+3. Run `Readiness Check` and `VRChat Preflight Check`, then resolve their errors.
+4. Upload through VRChat SDK Builder. The normal path does not require a manual bake first.
+5. On the SDK-created build clone, verify `RuntimeComponentCount = 0`. This diagnostic counts authoring MingToon components under the build root; it does not count SDK or runtime components. Check the final Expressions menus, parameters, and FX authored by you or installed by other tools separately.
+6. After upload, check your own view, mirrors, and Photo Camera separately.
 
-MingToon compiles without Modular Avatar. To merge directly, turn off
-`Non-Destructive Modular Avatar Install` and use `Install VRC Controls`.
+If something fails, start with the Console error and upload readiness steps in [Troubleshooting](/troubleshooting).
 
-:::caution[Expression Parameters budget]
-- **Full (default):** 28 total / 21 synchronized · 77 bits / 7 local commands · 0 bits
-- **Lightweight:** 12 total / 10 synchronized · 31 bits / 2 local commands · 0 bits
-
-Full synchronization is Bool 13 + Int 2 + Float 6. Lightweight is Bool 7 + Float 3.
-Before making changes, MingToon checks type conflicts against the existing avatar, the
-combined 256-bit budget, and the eight-slot-per-menu limit, and rolls changes back on
-failure.
-:::
-
-Both profiles retain core Virtual Light—Enabled, Direction, Intensity, Follow Character,
-and Auto/Replace/Add—plus explicit High/Mid/Low Quality, independent Shadow Projection,
-and Reset All. Full alone adds the eight-color × four-saturation Palette, independent
-Intensity and Tint amounts for Highlight / Shadow / Final Output, and eight Photo Looks.
-Lightweight omits those controls and their parameters and FX layers. Switching profiles
-and reinstalling removes stale MingToon parameters, FX layers, and generated menus.
-Reset All restores the selected profile's installed defaults, not a pre-install authored
-snapshot. Full uses Reset, Quality, Palette, Photo, and the three Tint selectors as its
-seven local commands; Lightweight uses Reset and Quality.
-
-Folder placement spends one root slot. Full has eight controls under `MingToon Controls`;
-Lightweight has seven. With `Place Directly In Expressions Root` enabled, Full places
-`Virtual Light`, `Master Adjust`, and `Reset All` at the root; Lightweight places
-`Virtual Light`, `Quality`, and `Reset All`. Both require three free root slots and fall
-back to folder placement when they do not fit. Photo Looks synchronizes only the user's
-own avatar. Controlling every other avatar in one user's view requires world/Udon
-authority and is excluded from this avatar installation.
+---
 
 ### Export / Validate {#내보내기--검증}
 
@@ -324,7 +290,7 @@ You can also run [Validate Project](/reference/validator) here with `Run Project
 #### Script Removal Check
 
 :::danger[Do Not Delete MingToon Components Manually]
-Do not remove MingToon components from the authoring Scene. Deleting Manager removes the cached Renderer list and makes upload optimization lose its scope. These components are marked `IEditorOnly`, but automatic deletion is not guaranteed, so verify `RuntimeComponentCount = 0` on the actual build clone after SDK processing.
+Do not remove MingToon components from the authoring Scene. Deleting Manager removes the cached Renderer list and makes upload optimization lose its scope. These components are marked `IEditorOnly`, but automatic deletion is not guaranteed, so verify `RuntimeComponentCount = 0` on the actual build clone after SDK processing. This value counts authoring MingToon components; it is not a count of all SDK or runtime components.
 
 Warudo mode follows **a separate script-retaining** rule. This panel only checks.
 :::
@@ -342,7 +308,7 @@ Attach MingToon Manager to the root
         ↓
 3 · Details      Reapply look → connect SDF → bake UV4/UV8 only when needed
         ↓
-5 · Ship         Texture caps → VRC menu → automatic/manual bake → readiness check → upload
+5 · Ship         Texture caps → upload preparation → automatic/manual bake → readiness check → upload
 ```
 
 No separate Runtime Root is required for Warudo export. If you use depth effects, install [Warudo Depth Bridge](/platforms/warudo#warudo-depth-bridge) in Playground.

@@ -1,137 +1,73 @@
 ---
 id: bulk-editing
-title: Multiple Materials at Once
+title: Edit Several Materials at Once
 sidebar_position: 12
 ---
 
-# Multiple Materials at Once
+# Edit Several Materials at Once
 
-**After reading this document** you can match the whole avatar's look in one action and avoid accidentally destroying values.
+**Purpose:** Apply one value to several MingToon materials, or save and reuse a look preset. The first action is to open **Bulk Settings**, choose a scope and filters, and check **Preview Material Count**.
 
-Three approaches:
+There are three tools:
 
-| Approach | Use for |
+| Tool | Best for |
 |---|---|
-| **Bulk Settings Panel** | Common values across the whole avatar at once. Undo in one step too |
-| **Material Presets** | Save and reuse an entire look |
-| **Copy / Paste** | Move at the section, layer, or value level |
+| **Bulk Settings panel** | Applying common values across a selected, Manager, or scene scope |
+| **Material preset** | Saving and reusing a values-focused look |
+| **Copy / Paste** | Moving one property, layer, or tab to compatible targets |
 
----
+## Bulk Settings panel {#일괄-설정-패널}
 
-## Bulk Settings Panel {#일괄-설정-패널}
+Switch the inspector **View** to **Bulk Settings**. The panel first finds unique MingToon materials in the current scope, then shows common properties.
 
-Change the inspector **View** to `Bulk` to bring it up.
+### Scope and filters
 
-> Preview deduplicated MingToon materials and apply presets and common appearance values as **a single Undo unit**.
-
-<!-- SCREENSHOT: Bulk settings panel -->
-
-### 1. Set scope
-
-| Scope | Target |
+| Control | Choices and meaning |
 |---|---|
-| `Selected Objects` | Below current selection |
-| `MingToon Manager` | Under MingToon Manager's management |
-| `Active Scene` | Entire current scene |
-| `Loaded Scenes` | All open scenes |
+| **Scope** | Selected Objects, MingToon Manager, Active Scene, Loaded Scenes |
+| **Include Inactive Objects** | Includes disabled clothing and objects; default is on |
+| **Material Kind** | All, Standard, Face |
+| **Surface Kind** | All, Opaque, Cutout, Transparent |
 
-Enable `Include Inactive` to include disabled costume parts. **Turn this on for avatars with clothing toggles.** Otherwise, clothes that are currently off will have a different look.
+For the **MingToon Manager** scope, **Character Root** is the Manager assigned to the avatar root; its child renderers are searched. For avatar or outfit editing, choose the Manager on the avatar root. The Face filter uses the material tag **MingToonSurfaceKind=Face**; Standard is the inverse. Surface filtering reads _MingSurfaceMode: 0=Opaque, 1=Cutout, and 2 or higher=Transparent.
 
-### 2. Filters
+### Preview and apply {#적용}
 
-| Filter | Value |
-|---|---|
-| `Material Kind` | All / Standard / **Face** |
-| `Surface Kind` | All / Opaque / Cutout / Transparent |
+1. Set the scope, inactive-object option, and filters.
+2. Read **Preview Material Count**.
+3. Press **Refresh** after changing clothing or scenes.
+4. Optionally press **Select** to put the result into the Unity selection.
+5. Open a **Common Look** group and edit a value.
 
-:::tip[Adjust face separately]
-Set `Material Kind` to `Face` to grab only face materials. Faces need different values than the body, so this filter is often needed.
-:::
+Only MingToon materials remain, and duplicates are included once. A multi-material edit is one Undo unit. Each row writes only to selected materials that declare that property, so a row can apply to part of the selection.
 
-### 3. Preview
+### Common Look groups
 
-See how many matched with `Preview Material Count`, and check which ones actually matched using `Select Preview Materials` in the Project panel.
+The panel currently has **Base Lighting**, **Shadows**, **Stylization**, and **Outline / Emission** groups. Base Lighting can include all effects, base tint, **Base Map Opacity**, output intensity/tint/saturation, color preservation, light color influence, brightness limits, normal strength, and smoothness. Shadow, style, outline, and emission properties appear only when the target shader declares them.
 
-If you've changed clothes, click `Refresh Preview` first.
+**Property Search** matches the property name, displayed label, or registered aliases. Groups expand while searching. If there are no matches, clear the search or inspect the selected materials.
 
-If `No MingToon materials match the current scope and filters.` appears, widen the scope or filters.
+## Material presets {#머티리얼-프리셋}
 
-### 4. Apply common appearance
+**Save User Preset** stores the current MingToon look as an asset. To apply one, choose a **Factory** or **User** preset from the dropdown and press **Apply**. For multiple targets, read the target count and scope before confirming an overwrite.
 
-`Common Look` exposes only items you can **safely** apply to multiple materials. Four groups:
+The default capture and apply are values-focused. They store floats, colors, and vectors classified as look values by the current shader. Material render queue and other material-identity state are not written by a look preset. The panel's default preset keeps each target's textures. Only an explicitly requested texture capture stores and applies non-empty textures with their Tiling / Offset.
 
-| Group | Items |
-|---|---|
-| **Base & Lighting** | All Effects · Base Tint · Base Color Preservation · Light Color Influence · Minimum Brightness · Maximum Brightness |
-| **Shadows** | Shadow Border · Shadow Softness · Shadow Strength · Use Unified Shadow · Unified Shadow Color · Unified Shadow HSVG · Use Shadow Boundary · Boundary Width / Blur / Strength · Cast Shadow Receive |
-| **Stylization** | 2D Rim Width · 2D Rim Intensity · 2D Shadow Width / Strength · 2D Shadow Maximum Distance · Face 2D Shadow Assist · 2D Shadow Light Follow · Face Self-Surface Suppression · 2D Shadow Vertical / Depth Offset · Distance Fade Range · Face Shading |
-| **Outline & Emission** | Outline Color · Outline Width · Emission Intensity |
-
-Filter with `Search Properties`; if nothing matches, `No safe bulk properties match the search and selected materials.` appears.
-
-:::tip[Fastest way to unify avatar tone]
-1. Scope = `MingToon Manager`, enable `Include Inactive`
-2. `Material Kind` = `Standard`
-3. Unify `Shadow Softness`, `Base Color Preservation`, `Minimum Brightness`
-4. Switch `Material Kind` to `Face` and adjust face separately
-:::
-
----
-
-## When you just select multiple materials {#여러-재질을-그냥-선택했을-때}
-
-You can edit without the bulk panel by selecting multiple materials in the Project panel. The inspector shows guidance above:
-
-- `Editing N materials together. Changes apply to compatible properties.`
-- `Editing N different MingToon shaders together. Only common properties display.` — when mixing BRP and URP materials, or if some are baked
-
-Items with different values show as **`Mixed Values`**.
-
-:::danger[Touching mixed values is irreversible]
-The instant you touch that field, **the same value overwrites all selected materials**, and the original different values vanish. Only Undo gets them back. Always verify what's mixed before writing.
-:::
-
-In `Quick Look`, items with split values get `(Mixed State)` appended.
-
----
-
-## Material Presets {#머티리얼-프리셋}
-
-Save an entire look and reapply it. The name changes based on selection — `Material Presets` / `Character Material Presets` / `Bulk Material Presets`.
-
-### Apply {#적용}
-
-1. Pick from the `Preset` dropdown. `Factory Preset` is bundled; `User Preset` you saved yourself.
-2. `Apply Selected Preset (N Materials)`.
-
-:::note[What presets change and preserve]
-- **Apply** — All numbers · colors · vectors · render state
-- **Preserve** — If the target material's texture differs from the shader default, **keep that texture and tiling/offset as-is**
-
-So you can unify the look while keeping different textures per character.
-:::
-
-### Save {#저장}
-
-Use `Save User Preset` to bake the current material's values into an asset. `Save Source: {material}` shows what was saved from.
-
-Pick `Advanced / Direct Assignment` to slot an asset directly into the `Preset Asset` field.
-
----
+Expand **Capture Scope** to save the whole material or selected tabs. An empty tab selection means the whole material. **Shadow Color** and **Fresnel** checkboxes decide whether those values are included on apply. Selecting a preset and pressing Apply are separate actions, and Apply can be undone.
 
 ## Copy / Paste
 
-Right-click menu on any item. Details live in [Common Texture Slot UI](/guides/texture-modules#값-복사--붙여넣기).
+Right-click a property or layer header for value, layer, and tab menus. Only compatible properties are written; a layer from another module or an incompatible value type is skipped. Check applied/skipped counts in the Console log. See [Common Texture Slot UI](/guides/texture-modules#값-복사--붙여넣기) for the menu list.
 
-| Menu | Scope |
-|---|---|
-| `Copy Value` / `Paste Value` | One item |
-| `Copy Layer Values` / `Paste Layer Values` | One whole layer |
-| `Copy Tab Values` / `Paste Tab Values` | One whole section |
-| `Copy Property Name` | Shader property name |
+## When nothing is found or visible
 
----
+- If the preview count is zero, check scope, the avatar-root Manager, Include Inactive, and the Face/Surface filters in that order.
+- If a row is absent, check whether at least one selected material declares that property.
+- If a change is not visible, check the mixed-value state, the module enable toggle, layer count, and strength.
+- If a preset does not apply, check the selected preset, target count, and any schema error dialog.
 
-## Find all scene materials
+## Related docs
 
-Use `Select All MingToon Materials in Scene` to grab every MingToon material in the current scene at once. Useful in scenes without a MingToon Manager.
+- [Character Manager](/workflow/character-manager)
+- [Common Texture Slot UI](/guides/texture-modules)
+- [Detail Maps](/guides/detail-maps)

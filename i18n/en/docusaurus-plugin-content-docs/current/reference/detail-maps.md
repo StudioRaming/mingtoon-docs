@@ -8,8 +8,10 @@ sidebar_position: 5
 
 The layers and material response stacked on the base. Every layered section shares one trap: a slot past the layer count is skipped entirely.
 
+Start with the guide: [Detail Maps](/guides/detail-maps)
+
 :::note
-The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
+This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
 :::
 
 ## Texture Layers
@@ -74,10 +76,6 @@ Configure metallic, smoothness, and direct-light specular.
 | **Normal Map Influence** | Range 0-1; default 1. 0 uses the mesh normal only, 1 uses the stacked normal maps in full. With no normal map assigned the value makes no difference. | `_PbrNormalInfluence` |
 | **Highlight Toon Amount** | Range 0-1; default 0. Steps the GGX highlight falloff into a toon shape. 0 keeps the physical lobe; higher values add an edge and make Threshold relevant. | `_PbrDirectToonAmount` |
 | **Highlight Toon Threshold** | Range 0-1; default 0.5. Chooses where the lobe becomes the highlight shape. Lower is wider, higher is tighter; ignored when Toon Amount is 0. | `_PbrDirectToonThreshold` |
-| **Environment Reflection Intensity** | Range 0-4; default 0. How much the reflection probe or skybox shows up. With no probe in the scene, raising this changes almost nothing. | `_PbrReflectionStrength` |
-| **Reflection Blur Bias** | Range -1-1; default 0. Blurs or sharpens environment reflection beyond physical smoothness. Negative sharpens it for eyes or wet surfaces. | `_PbrReflectionSmoothnessBias` |
-| **Reflection Desaturation** | Range 0-1; default 0. Drains color from environment reflection. 1 keeps brightness with little hue, which protects the material's authored color. | `_PbrReflectionDesaturation` |
-| **Reflection Tint** | HDR tint for environment reflection; default is (1, 1, 1). It combines with Desaturation, and high values can clip the reflection to white. | `_PbrReflectionTint` |
 | **PBR Fresnel Power** | Range 1-8; default 5. Falloff of grazing-angle reflection. Lower spreads edge brightness inward; higher keeps it near the silhouette. | `_PbrFresnelPower` |
 
 ## Reflection
@@ -90,6 +88,10 @@ Configure main-light, additional-light, and environment reflection plus its colo
 | **Main Light Specular** | Applies the reflection color and mask to the main light's direct highlight, matching lilToon's Apply Specular. When PBR Surface is also enabled, the shared PBR lobe owns the result and this switch is inactive. | `_ReflectionApplySpecular` |
 | **Additional Light Specular** | Applies reflection to direct highlights from point, spot, and other additional lights, matching lilToon's Apply Specular FA. When PBR Surface is also enabled, the shared PBR lobe owns the result and this switch is inactive. | `_ReflectionApplySpecularAdditional` |
 | **Environment Reflection** | Applies reflection probes, skybox reflection, and the material cubemap, matching lilToon's Apply Reflection. When PBR Surface is also enabled, the shared PBR environment lobe owns the result and this switch is inactive. | `_ReflectionApplyEnvironment` |
+| **Environment Reflection Intensity** | Range 0-4; default 0. How much the reflection probe or skybox shows up. With no probe in the scene, raising this changes almost nothing. | `_PbrReflectionStrength` |
+| **Reflection Blur Bias** | Range -1-1; default 0. Blurs or sharpens environment reflection beyond physical smoothness. Negative sharpens it for eyes or wet surfaces. | `_PbrReflectionSmoothnessBias` |
+| **Reflection Desaturation** | Range 0-1; default 0. Drains color from environment reflection. 1 keeps brightness with little hue, which protects the material's authored color. | `_PbrReflectionDesaturation` |
+| **Reflection Tint** | HDR tint for environment reflection; default is (1, 1, 1). It combines with Desaturation, and high values can clip the reflection to white. | `_PbrReflectionTint` |
 | **Dielectric Reflectance** | Range 0-1; default 0.04. Dielectric reflectance (F0) used by Reflection-only materials and the dielectric portion of the Metallic workflow. Areas near Metallic 1 transition to the surface color. | `_ReflectionReflectance` |
 | **Use Reflection Color Map** | Multiplies Reflection Color by the texture's RGB and alpha. When off, the texture sample and its Tiling/Offset are unused. | `_ReflectionColorTexEnabled` |
 | **Reflection Color / Mask** | RGB tint and A mask corresponding to lilToon's Reflection Color Tex. Its Tiling/Offset is independent and is not shared with the surface maps. | `_ReflectionColorTex` |
@@ -130,10 +132,11 @@ Configure self-illumination color, texture, and intensity.
 
 | Control | What it does | Shader property |
 |---|---|---|
+| **Overall Emission Intensity** | Multiplies the final combined contribution of both emission layers and MatCap emission once. 0 removes emission; 1 keeps its original strength. Layer settings and MLC photo controls remain independent. | `_EmissionMasterIntensity` |
 | **Enable Emission** | Off by default. Adds self-emission from the map and HDR color after lighting. It can bloom or clip highlights; when off, the map and intensity are ignored. | `_EmissionEnabled` |
-| **Emission Intensity** | Multiplier on the glow brightness. Without a bloom post-process in the scene, raising it only clips to white instead of blooming. | `_EmissionIntensity` |
 | **Emission Map** | Texture that marks the self-illuminated areas. It is multiplied by the Emission Color, so a black color means nothing glows even with a texture assigned. | `_EmissionMap` |
 | **Emission Color** | The glow color. It is HDR, so values above 1 can drive bloom; black is equivalent to no emission. | `_EmissionTint` |
+| **Emission Intensity** | Multiplier on the glow brightness. Without a bloom post-process in the scene, raising it only clips to white instead of blooming. | `_EmissionIntensity` |
 | **Emission Blend Mode** | How the glow is composited onto the surface beneath it. Add is the ordinary light-adding glow; Multiply, Screen and the rest reproduce a converted material's compositing. | `_EmissionBlendMode` |
 | **Emission Blend Strength** | How much of the blend above is applied. At 0 the glow does not show; at 1 it applies fully. | `_EmissionBlendOpacity` |
 | **Base Color Influence** | Mixes the base map's colour into the glow. At 0 the glow keeps its own colour; at 1 it follows the surface beneath. Use it so a glow tracks a recoloured outfit. | `_EmissionMainColorInfluence` |
@@ -143,6 +146,7 @@ Configure self-illumination color, texture, and intensity.
 | **Emission Blend Strength (Layer 2)** | How much of layer 2's blend is applied. At 0 it does not show. | `_EmissionBlendOpacity02` |
 | **Base Color Influence (Layer 2)** | Mixes the base map's colour into layer 2's glow. At 0 the glow keeps its own colour. | `_EmissionMainColorInfluence02` |
 | **Emission Scroll Speed (Layer 2)** | Scrolls emission layer 2 over time. X and Y are the horizontal and vertical UV movement per second; Z and W are unused. At 0 the map is still. | `_EmissionScroll02` |
+| **Emission Mask Mode** | RGBA multiplies the emission color by mask RGB and the blend strength by mask alpha. Channel selection and inversion do not apply. | `_EmissionBlendMaskRgba` |
 
 ## Occlusion
 

@@ -24,7 +24,7 @@ Face / Skin / Common 역할, 변환 룩, 출력 경로, 원본 복구와 손실 
 
 ## Missing Shader 재질 복구 변환 {#missing-shader}
 
-0.1.7은 셰이더 파일이 없어 분홍색이 된 재질도 직렬화된 프로퍼티 이름과 값을 읽어 변환합니다. NiloToon·lilToon·Unity Standard 계열의 저장 패턴을 판별하고, 판별 근거를 미리보기에 표시합니다.
+0.1.8은 셰이더 파일이 없어 분홍색이 된 재질도 직렬화된 프로퍼티 이름과 값을 읽어 변환합니다. NiloToon·lilToon·Unity Standard 계열의 저장 패턴을 판별하고, 판별 근거를 미리보기에 표시합니다.
 
 Missing Shader 상태에서는 원래 셰이더의 숨은 기본값과 키워드 의미를 전부 복구할 수 없습니다. 변환 후 특히 아래를 직접 확인하세요.
 
@@ -35,7 +35,7 @@ Missing Shader 상태에서는 원래 셰이더의 숨은 기본값과 키워드
 
 ## 절차
 
-1. 아바타 또는 의상의 루트에 MingToon Manager를 붙입니다.
+1. 의상을 편집할 때도 아바타 루트에 MingToon Manager를 붙입니다. Manager는 항상 아바타 루트에 둡니다.
 2. 변환 미리보기에서 소스 스키마와 제외 슬롯을 확인합니다.
 3. Face / Skin / Common 역할을 슬롯별로 명시합니다. Auto는 원본이 가진 직접 플래그만 신뢰합니다.
 4. 변환 룩 프리셋과 출력 경로를 고릅니다.
@@ -54,7 +54,7 @@ Missing Shader 상태에서는 원래 셰이더의 숨은 기본값과 키워드
 - PBR·이미션·아웃라인·알파 마스크가 필요한 재질에서 모듈이 켜졌는가
 - Face / Skin 역할과 얼굴 프록시가 맞는가
 
-룩 프리셋을 다시 적용해도 0.1.7은 Surface 정체성과 얼굴 프록시처럼 캐릭터별 값을 보존합니다.
+룩 프리셋을 다시 적용해도 0.1.8은 Surface 정체성과 얼굴 프록시처럼 캐릭터별 값을 보존합니다.
 
 ## 원본 복구
 
@@ -62,4 +62,4 @@ Missing Shader 상태에서는 원래 셰이더의 숨은 기본값과 키워드
 
 ## 다음
 
-[밍툰 매니저](/workflow/character-manager) · [빌드 시 자동 최적화](/workflow/build-optimization)
+[밍툰 매니저](/workflow/character-manager) · [빌드 시 자동 최적화](/workflow/build-optimization) · [문제 해결](/troubleshooting)

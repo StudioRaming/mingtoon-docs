@@ -24,7 +24,7 @@ Face / Skin / Commonの役割、変換ルック、出力先、原本復元、損
 
 ## Missing Shaderマテリアルの復旧変換 {#missing-shader}
 
-0.1.7ではシェーダーファイルがなくピンク色になったマテリアルも、シリアライズ済みのプロパティ名と値を読み取って変換します。NiloToon・lilToon・Unity Standard系の保存パターンを判別し、その根拠をプレビューへ表示します。
+0.1.8ではシェーダーファイルがなくピンク色になったマテリアルも、シリアライズ済みのプロパティ名と値を読み取って変換します。NiloToon・lilToon・Unity Standard系の保存パターンを判別し、その根拠をプレビューへ表示します。
 
 Missing Shader状態では、元シェーダーの隠しデフォルト値とキーワードの意味をすべて復元することはできません。変換後は特に次を直接確認してください。
 
@@ -35,7 +35,7 @@ Missing Shader状態では、元シェーダーの隠しデフォルト値とキ
 
 ## 手順
 
-1. アバターまたは衣装のルートへMingToon Managerを追加します。
+1. 衣装やアウトフィットだけを編集する場合も含め、常にアバタールートへMingToon Managerを追加します。
 2. 変換プレビューでソーススキーマと除外スロットを確認します。
 3. Face / Skin / Commonの役割をスロットごとに指定します。Autoはソースが持つ直接フラグだけを信頼します。
 4. 変換ルックプリセットと出力先を選びます。
@@ -54,7 +54,7 @@ Missing Shader状態では、元シェーダーの隠しデフォルト値とキ
 - PBR・エミッション・アウトライン・アルファマスクが必要なマテリアルでモジュールが有効か
 - Face / Skinの役割と顔プロキシが合っているか
 
-ルックプリセットを再適用しても、0.1.7はSurfaceの識別情報と顔プロキシなどキャラクター固有の値を保持します。
+ルックプリセットを再適用しても、0.1.8はSurfaceの識別情報と顔プロキシなどキャラクター固有の値を保持します。
 
 ## 原本復元
 
@@ -62,4 +62,4 @@ MingToon Managerの`元のマテリアルを復元`は、記録された元GUID�
 
 ## 次へ
 
-[MingToon Manager](/workflow/character-manager)・[ビルド時の自動最適化](/workflow/build-optimization)
+[MingToon Manager](/workflow/character-manager)・[ビルド時の自動最適化](/workflow/build-optimization)・[トラブルシューティング](/troubleshooting)・[トラブルシューティング](/troubleshooting)

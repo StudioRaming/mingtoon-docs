@@ -34,11 +34,9 @@ Add Component에서 `MingToon Manager`를 찾아 붙여도 됩니다. **루트�
 
 | 탭 | 실제 다음 작업 |
 |---|---|
-| **Overview** | 현재 상태와 다음에 누를 버튼 확인 |
-| **Setup** | 변환 대상과 입력 범위 설정 |
-| **Look & Bake** | 변환 후 룩 재적용, 선택 범위 베이크·리베이크 |
-| **Upload** | 일반 자동 경로 점검, 현재 아바타 확인, 필요 시 advanced manual bake |
-| **Optimize** | 자동 hook 상태와 중복 실행 여부 점검 |
+| **시작하기** | 현재 상태, 변환 대상, 변환과 업로드 흐름 |
+| **룩·베이크** | 변환 후 룩 재적용, 선택 범위 베이크·리베이크, 메시 채널 |
+| **최적화** | 빌드 자동 최적화와 텍스처 해상도 상한 |
 
 위쪽 상태 패널은 현재 재질 구성에 맞춰 다음 단계를 안내합니다. `텍스처 최적화`는 캐릭터가 아니라 프로젝트 전체에 적용되는 별도 설정입니다.
 
@@ -142,7 +140,7 @@ MingToon이 그대로 옮길 수 없는 표현이기 때문입니다. 상태 패
 | `캐릭터 높이 그라데이션 (UV4)` | 루트 기준 높이 그라데이션 |
 | `이미 사용 중인 UV 채널 덮어쓰기` | 소유권을 확인한 재변환에서만 사용 |
 
-0.1.7의 얼굴 노멀은 편집 중 Live로 계산하므로 **변환 단계에서 UV7을 기본 베이크하지 않습니다.** VRChat 업로드 때 업로드 복사본에만 자동 베이크합니다. 텍스처 얼굴 영역 마스크 또는 Face SDF가 UV7을 소유하면 결과를 보존하기 위해 Live 경로를 유지합니다.
+0.1.8의 얼굴 노멀은 편집 중 Live로 계산하므로 **변환 단계에서 UV7을 기본 베이크하지 않습니다.** VRChat 업로드 때 업로드 복사본에만 자동 베이크합니다. 텍스처 얼굴 영역 마스크 또는 Face SDF가 UV7을 소유하면 결과를 보존하기 위해 Live 경로를 유지합니다.
 
 `UV 채널 사용 현황`에서 UV4·UV7·UV8의 소유권을 먼저 확인하세요. → [메시 UV 베이크](/guides/mesh-bakes)
 
@@ -234,39 +232,21 @@ VRChat 업로드와 Warudo 모드 빌드에서는 [빌드 시 자동 최적화](
 
 ---
 
-### VRChat 표현식 메뉴 {#vrchat-표현식-메뉴}
+### VRChat 업로드 준비 {#vrchat-표현식-메뉴}
 
-Unity 2022.3 VCC 프로젝트에서 `밍툰 매니저`가 Virtual Light와 품질 메뉴를
-준비합니다. 기본 전체 메뉴에는 Palette, Master Adjust, Photo Looks도 포함됩니다.
+밍툰 매니저는 VRChat Expressions 메뉴·파라미터·FX를 설치하지 않습니다. Avatar Root에 Manager를 유지하면 변환·룩·최적화 상태를 점검하고, VRChat SDK가 만든 build clone에만 자동 최적화를 적용합니다. 기존 Expressions 구성이나 다른 툴의 메뉴는 그대로 두고 별도로 확인하세요.
 
 1. Avatar Root 아래의 `MingToon Manager`를 선택합니다.
-2. `Modular Avatar로 비파괴 설치`를 켭니다. 기본값은 켜짐입니다.
-3. `전체 조정 메뉴 사용`을 고릅니다. 켜면 전체 77비트, 끄면 가벼운 31비트입니다.
-4. 메뉴 위치를 고르고 Scene 또는 Prefab을 저장한 뒤 Manager Inspector를 다시 엽니다.
-5. Gesture Manager에서 선택한 `MingToon Controls` 구성을 확인합니다.
-6. VRChat SDK Builder에서 업로드합니다. 메뉴·파라미터·FX는 build clone에 합쳐집니다.
+2. `하위 렌더러 다시 찾기`를 눌러 현재 의상과 Renderer 범위를 갱신합니다.
+3. `준비 상태 검사`와 `VRChat 사전 점검`을 실행하고 오류를 해결합니다.
+4. VRChat SDK Builder로 업로드합니다. 일반 경로에서는 수동 Bake를 먼저 실행할 필요가 없습니다.
+5. SDK가 만든 build clone에서 `RuntimeComponentCount = 0`인지 확인합니다. 이 진단값은 빌드 루트 아래의 저작용 MingToon 컴포넌트만 세며 SDK·런타임 컴포넌트 수는 세지 않습니다. Expressions 메뉴·파라미터·FX는 직접 작성했거나 별도 툴이 설치한 최종 결과를 확인하세요.
+6. 업로드 후 본인 화면·미러·Photo Camera를 각각 확인합니다.
 
-Modular Avatar가 없어도 MingToon은 컴파일됩니다. 직접 병합하려면 토글을 끈 뒤
-`원클릭으로 VRC 메뉴 등록`을 사용합니다.
+문제가 있으면 [문제 해결](/troubleshooting)에서 Console 오류와 업로드 준비 검사를 먼저 확인하세요.
 
-:::caution[Expression Parameters 예산]
-- **전체 메뉴(기본):** 총 28개 / 동기화 21개·77비트 / 로컬 명령 7개·0비트
-- **가벼운 메뉴:** 총 12개 / 동기화 10개·31비트 / 로컬 명령 2개·0비트
+---
 
-기존 아바타와 합친 타입 충돌, 256비트 예산, 메뉴당 8칸을 검사하고 실패하면
-변경을 되돌립니다.
-:::
-
-두 프로필 모두 Virtual Light 핵심, High/Mid/Low, Shadow Projection, Reset을
-유지합니다. 전체 메뉴만 8색×4채도 Palette, Highlight / Shadow / Final Output의
-독립 Intensity·Tint 양, Photo Looks 8종을 추가합니다. 프로필을 바꿔 다시 설치하면
-더 이상 쓰지 않는 MingToon 파라미터·FX 레이어·생성 메뉴를 정리합니다.
-
-`Expressions 루트에 직접 배치`를 켜면 전체 메뉴는
-`Virtual Light`·`Master Adjust`·`Reset All`, 가벼운 메뉴는
-`Virtual Light`·`Quality`·`Reset All`을 루트에 둡니다. Photo Looks는 자기
-아바타 결과만 동기화합니다. 내 화면의 다른 아바타를 일괄 제어하려면 월드/Udon이
-필요해 이번 아바타 설치에는 포함하지 않습니다.
 ### 내보내기 / 검증 {#내보내기--검증}
 
 #### 업로드 준비 점검 {#업로드-준비-점검}
@@ -310,7 +290,7 @@ Modular Avatar가 없어도 MingToon은 컴파일됩니다. 직접 병합하려�
 #### 스크립트 제거 점검
 
 :::danger[MingToon 컴포넌트는 직접 지우지 마세요]
-저작 씬의 MingToon 컴포넌트는 직접 지우지 마세요. 매니저를 지우면 캐시된 렌더러 목록이 사라져 업로드 최적화가 범위를 잃습니다. 이 컴포넌트들은 `IEditorOnly`로 표시되지만 자동 삭제는 보장되지 않으므로, SDK 처리 뒤 실제 build clone에서 `RuntimeComponentCount = 0`인지 검증하세요.
+저작 씬의 MingToon 컴포넌트는 직접 지우지 마세요. 매니저를 지우면 캐시된 렌더러 목록이 사라져 업로드 최적화가 범위를 잃습니다. 이 컴포넌트들은 `IEditorOnly`로 표시되지만 자동 삭제는 보장되지 않으므로, SDK 처리 뒤 실제 build clone에서 `RuntimeComponentCount = 0`인지 검증하세요. 이 값은 저작용 MingToon 컴포넌트 수이며 SDK·런타임 컴포넌트 전체 수가 아닙니다.
 
 Warudo 모드는 **스크립트를 유지하는** 별도 규칙을 따릅니다. 이 패널은 검사만 합니다.
 :::
@@ -328,7 +308,7 @@ Warudo 모드는 **스크립트를 유지하는** 별도 규칙을 따릅니다.
         ↓
 3 · 세부 설정 룩 재적용 → SDF 연결 → 필요할 때 UV4·UV8 베이크
         ↓
-4 · 출하      텍스처 상한 → VRC 메뉴 → 자동/수동 베이크 → 준비 상태 검사 → 업로드
+4 · 출하      텍스처 상한 → 업로드 준비 → 자동/수동 베이크 → 준비 상태 검사 → 업로드
 ```
 
 Warudo로 내보낼 때 별도 Runtime Root는 필요하지 않습니다. 깊이 효과를 쓴다면 [Warudo Depth Bridge](/platforms/warudo#warudo-depth-bridge)를 Playground에 설치하세요.

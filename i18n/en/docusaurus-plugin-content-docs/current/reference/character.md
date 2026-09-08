@@ -6,10 +6,12 @@ sidebar_position: 6
 
 # Character
 
-Controls that treat the face and the whole character as their own thing. A face almost never survives the body settings - the nose and brow throw shadows that read as dirt.
+Controls that treat the face and the whole character as their own thing. Assign face and skin roles before adjusting their effects.
+
+Start with the guide: [Character](/guides/character)
 
 :::note
-The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
+This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
 :::
 
 ## Face / Hair Shading
@@ -71,11 +73,11 @@ Grade the lower character color from one root-space height baked into UV4.
 | **Character Height Gradient** | Enables the gradient that tints the character differently by height - typically sinking the feet into a slightly darker tone. Accurate placement needs the UV4 height bake. | `_CharacterHeightGradientEnabled` |
 | **Low Color** | Color tinting the lower part of the character. White leaves it unchanged; use a slightly darker color to sink the feet. | `_CharacterHeightLowColor` |
 | **High Color** | Color tinting the upper part of the character. White leaves it unchanged. | `_CharacterHeightHighColor` |
-| **Low Color** |  | |
-| **High Color** |  | |
-| **Gradient Direction** | Switching to top-down swaps where the two colors land. | |
-| **Boundary Height** | The height where the two colors mix evenly. | |
-| **Boundary Softness** | How wide the transition spreads around the boundary. 0 is a hard edge. | |
-| **Curve Exponent** |  | |
-| **Influence** |  | |
-| **Requires whole-character root-space height in UV4.x.** |  | |
+| **Low Color** |  |  |
+| **High Color** |  |  |
+| **Gradient Direction** | Switching to top-down swaps where the two colors land. |  |
+| **Boundary Height** | The height where the two colors mix evenly. |  |
+| **Boundary Softness** | How wide the transition spreads around the boundary. 0 is a hard edge. |  |
+| **Curve Exponent** |  |  |
+| **Influence** |  |  |
+| **Requires whole-character root-space height in UV4.x.** |  |  |

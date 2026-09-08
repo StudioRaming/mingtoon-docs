@@ -16,7 +16,11 @@ sidebar_position: 9
 
 ## ノーマルアウトライン {#노멀-아웃라인}
 
-メッシュを反転して拡張する方式です。追加パス1回で描画され、**深度テクスチャなしで動作**するため、どの環境でも安全です。VRChat通常画面のように深度が使えない場所でシルエットを捉える唯一の方法です。
+メッシュを反転して拡張する方式です。Built-inでは追加パス1回で描画され、**カメラの深度テクスチャを読みません。** URPでは、使用するRenderer Dataへ`MingToon Outline Renderer Feature`をインストールする必要があります。そのためVRChat通常画面のように深度が使えない場所でも選べますが、パイプライン設定とマテリアルのゲートが整っている必要があります。
+
+:::note[URP Renderer Featureとレガシーゲート]
+URPプロジェクトでは、使用するすべてのRenderer Dataへ`MingToon Outline Renderer Feature`をインストールして有効にしてください：`Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`。旧マテリアルに残る`_OutlineEnabled`（`Outline Master`）も互換性ゲートです。これがオフなら`Classic Hull`をオンにしても線は描画されません。
+:::
 
 ### 基本設定 {#기본-설정}
 

@@ -1,32 +1,35 @@
 ---
 id: add-ons
-title: 별매 애드온
-sidebar_label: 별매 애드온
+title: 별매 애드온과 연동
+sidebar_position: 13
 ---
 
-모든 상업 라이선스에는 URP 버전이 포함됩니다. Personal Streaming·Personal Creator의 Early Access Founders Edition에는 MLC가 포함되며, 정식 출시 이후 구성은 변경될 수 있습니다. 현재 오픈 베타의 상업 이용은 금지됩니다. [라이선스 및 포함 구성](/legal/beta-license)을 확인하세요.
+# 별매 애드온과 연동
 
-# 별매 애드온
+**용도:** MingToon 본체와 선택적 제작·런타임 도구의 경계를 확인합니다. 본체의 셰이더와 인스펙터는 애드온 없이도 사용할 수 있으며, 잠긴 버튼은 해당 도구의 연결 지점입니다.
 
-MingToon 본체는 아래 애드온이 하나도 없어도 설치·컴파일·렌더링됩니다. 애드온은 마스크 제작, 얼굴 SDF 제작, VRChat 런타임 메뉴 제작처럼 필요한 저작 기능만 추가합니다. 밍툰은 어셈블리를 직접 참조하지 않고 설치 여부를 확인하므로, 나중에 추가하거나 제거해도 셰이더 본체는 그대로 작동합니다.
+## 기능별 경계
 
-## Mask Maker
+| 도구 | MingToon에서 확인되는 연결 | 애드온 없이 할 수 있는 일 |
+|---|---|---|
+| **Mask Maker** | 지원 마스크 슬롯의 **MM** 버튼, 일부 버텍스 페인트 진입점 | 외부에서 만든 마스크 텍스처와 버텍스 컬러를 직접 사용 |
+| **Face SDF Studio** | Face SDF 제작·프리뷰 연결점 | 이미 있는 Face SDF 텍스처를 슬롯에 넣고 페이스 셰이딩 사용 |
+| **Ming Light Controller** | 마스터 조정·가상 광원 연결 UI와 아바타 메뉴 구성 | MingToon 재질의 룩 조정과 본체의 빌드·베이크 기능 사용 |
 
-재질과 메시를 보며 밍툰용 마스크를 칠하고 정리하는 별도 도구입니다. → [Mask Maker 가이드](/guides/mask-maker)
+이 표는 현재 소스의 연결 구조를 설명합니다. 각 도구의 공개 버전, 가격, 배포 상태는 소스만으로 확정하지 않습니다. 특히 Face SDF Studio는 현재 미발매 상태이므로 구매·설치를 전제로 한 절차로 안내하지 않습니다.
 
-## Face SDF Studio
+## 공통 설치 확인
 
-광원 방향에 따라 바뀌는 얼굴 그림자용 SDF 텍스처를 만드는 별도 도구입니다. 이미 만든 SDF 텍스처는 이 도구 없이도 밍툰 재질에 직접 넣을 수 있습니다. → [얼굴 SDF와 Face SDF Studio](/guides/face-sdf)
+1. 애드온을 설치했다면 Unity의 컴파일이 끝난 뒤 해당 인스펙터를 다시 엽니다.
+2. 연결 버튼이 활성화되는지 확인합니다.
+3. 버튼이 계속 잠겨 있으면 Console 오류, 도구의 브리지 API 로드 여부, 현재 선택 대상과 슬롯을 확인합니다.
+4. 애드온이 없어도 본체 기능을 쓰려면 잠긴 버튼 대신 각 슬롯의 텍스처·값 입력을 사용합니다.
 
-## Ming Light Controller (MLC)
+MingToon은 선택적 연결을 직접 어셈블리 참조로 고정하지 않고 브리지 존재 여부를 확인하는 경로를 사용합니다. 따라서 연결 실패가 본체 셰이더의 설치·컴파일 실패를 뜻하지는 않습니다.
 
-VRChat 아바타의 조명·룩 제어 메뉴, 파라미터와 FX 구성을 비파괴적으로 만드는 별도 애드온입니다. MLC가 없어도 밍툰 셰이더와 VRChat·WARUDO 빌드 깊이 라이트 선택 기능은 작동합니다. → [Ming Light Controller 가이드](/guides/ming-light-controller)
+## 관련 문서
 
-**구매:** <https://raming.booth.pm/items/8810346> (BOOTH)
-
-## 설치 확인
-
-1. 애드온을 임포트한 뒤 Unity의 컴파일이 끝날 때까지 기다립니다.
-2. 밍툰 인스펙터나 Manager의 해당 버튼을 다시 엽니다.
-3. 버튼이 계속 안내 상태라면 Console의 컴파일 오류부터 해결합니다.
-
+- [Mask Maker 연동](/guides/mask-maker)
+- [얼굴 SDF](/guides/face-sdf)
+- [Ming Light Controller](/guides/ming-light-controller)
+- [캐릭터 Manager](/workflow/character-manager)

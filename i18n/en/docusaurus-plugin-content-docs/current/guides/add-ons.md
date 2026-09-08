@@ -1,31 +1,35 @@
 ---
 id: add-ons
-title: Separately Sold Add-ons
-sidebar_label: Separately Sold Add-ons
+title: Optional Add-ons and Integrations
+sidebar_position: 13
 ---
 
-Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
+# Optional Add-ons and Integrations
 
-# Separately Sold Add-ons
+**Purpose:** Understand the boundary between the MingToon core and optional authoring or runtime tools. MingToon shaders and inspector work without an add-on; a locked button is an integration point for the corresponding tool.
 
-MingToon installs, compiles and renders without any of the add-ons below. Each add-on supplies only the authoring job that needs it, such as mask painting, face-SDF creation, or VRChat runtime-menu authoring. MingToon detects them without a hard assembly reference, so adding or removing one later does not disable the shader itself.
+## Feature boundaries
 
-## Mask Maker
+| Tool | Integration visible from MingToon | What still works without it |
+|---|---|---|
+| **Mask Maker** | **MM** buttons on supported mask slots and some vertex-paint launchers | Assign mask textures and vertex colors made elsewhere |
+| **Face SDF Studio** | Face SDF authoring and preview entry points | Assign an existing Face SDF texture and use face shading |
+| **Ming Light Controller** | Master Adjust / virtual-light entry points and avatar menu configuration | Tune MingToon materials and use the core build and bake features |
 
-A separate tool for painting and organizing MingToon masks while viewing the material and mesh. → [Mask Maker guide](/guides/mask-maker)
+This table describes the integration shape in the current source. The source does not establish each tool's public version, price, or distribution status. Face SDF Studio is currently unreleased, so these docs do not make its purchase or installation a prerequisite.
 
-## Face SDF Studio
+## Check an integration
 
-A separate tool for creating face-shadow SDF textures that respond to light direction. An existing SDF texture can be assigned directly to a MingToon material without this tool. → [Face SDF and Face SDF Studio](/guides/face-sdf)
+1. If you installed an add-on, wait for Unity compilation and reopen the inspector.
+2. Check whether the integration button is enabled.
+3. If it remains locked, check Console errors, the bridge API load state, the selected target, and the slot.
+4. Without an add-on, use the slot's texture and value fields instead of the locked button.
 
-## Ming Light Controller (MLC)
+MingToon discovers optional integrations through their bridge surface rather than a fixed compile-time assembly dependency. A missing bridge therefore does not by itself mean that the core shader failed to install or compile.
 
-A separate add-on that non-destructively authors VRChat avatar lighting and look-control menus, parameters and FX configuration. The MingToon shader and the VRChat/WARUDO Build Depth Light choice still work without MLC. → [Ming Light Controller guide](/guides/ming-light-controller)
+## Related docs
 
-**Purchase:** <https://raming.booth.pm/items/8810346> (BOOTH)
-
-## Confirming installation
-
-1. Import the add-on and wait for Unity to finish compiling.
-2. Reopen the matching button in the MingToon inspector or Manager.
-3. If it still shows the installation notice, resolve Console compile errors first.
+- [Mask Maker integration](/guides/mask-maker)
+- [Face SDF](/guides/face-sdf)
+- [Ming Light Controller](/guides/ming-light-controller)
+- [Character Manager](/workflow/character-manager)

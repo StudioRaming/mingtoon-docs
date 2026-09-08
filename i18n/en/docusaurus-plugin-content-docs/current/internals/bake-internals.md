@@ -10,7 +10,7 @@ sidebar_position: 3
 
 ---
 
-## Two Phases
+## Processing flow
 
 ```text
 1) Animation dependency analysis    What must not be touched
@@ -49,7 +49,7 @@ When multiple hierarchies reference one shared material, each report is merged b
 
 ### When analysis fails
 
-**We don't treat it as "no animation."** We create a conservative failure mark, merge it into every material under that root, and skip all destructive and constant-folding operations.
+On analysis failure, the build does not assume that animation is absent; it skips generated-shader replacement and texture baking. Separate work such as shipping-keyword synchronization may still run with recovery records.
 
 This appears in the Console:
 
@@ -105,7 +105,7 @@ This is why **materials with the same code structure share one generated shader.
 
 ### Dynamic state
 
-Flags like `AllEffectsDynamic` mean **that value is animated.** Dynamic items don't fold to constants; they stay as uniforms.
+Flags such as `AllEffectsDynamic` preserve runtime changeability required by animation analysis or preservation settings. Such controls are not folded as static without establishing that it is safe.
 
 ---
 
@@ -118,10 +118,8 @@ Profile A: 3 materials  →  12 shared numeric constants
 Profile B: 5 materials  →  4 shared numeric constants
 ```
 
-:::note[Why Split by Profile]
-If you did lilToon-style constant folding directly, one material with a different value or animation would **block safe constants on its neighboring materials.**
-
-By splitting profiles, a material with a different value stays uniform within its profile, and **a material with different code shape cannot block a neighbor's constant folding.**
+:::note
+Shared constants are found within materials of the same structure. Differing values stay uniform within that group without blocking constant folding in other structural groups.
 :::
 
 `MaterialConstants` is intentionally excluded from profile identification — the constants themselves would split the profile, creating a cycle.
@@ -160,7 +158,7 @@ Enabling `ReviewedHighQuality` (or build menu's `Reviewed Texture Rewrites On Bu
 |---|---|
 | surface flatten | Pixels may change |
 | normal flatten | Pixels may change |
-| generic RGBA mask repack | Merge slots into shared texture. **Doesn't reduce shader sample count** |
+| RGBA mask repack | Packs slots into a shared texture. Fewer textures and fewer shader samples are separate outcomes; UVs and generated-shader shared-read conditions determine the result |
 
 :::danger[Why Pixels Change]
 imported texture readback · color space · mip regeneration · platform compression. You must directly compare captures before and after bake.

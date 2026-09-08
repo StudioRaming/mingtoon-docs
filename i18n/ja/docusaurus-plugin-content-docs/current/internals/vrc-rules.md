@@ -6,6 +6,8 @@ sidebar_position: 5
 
 # VRChat 互換性規則
 
+このページはMingToonパッケージの静的検査規則を説明します。規則バージョンと検証Unityはパッケージ内の基準で、VRChat全体の最新許可リストやアップロード成功の証明ではありません。現在のSDK環境は[VRChat公式Unity案内](https://creators.vrchat.com/sdk/upgrade/current-unity-version/)を確認してください。
+
 **このドキュメントを読むと** MingToon が VRChat アップロードに対して検査するルール全体が分かり、アップロード前に何が引っかかるかを事前に判断できます。
 
 MingToon は VRChat 規則を**バージョンが付けられたルールセット**として持っています。
@@ -26,16 +28,12 @@ MingToon BRP シェーダは SubShader タグにこのように宣言します�
 VRCFallback = toonstandardoutline
 ```
 
-:::tip[相手がシェーダを隠してもルックが残ります]
-VRChat で相手が **Shaders を Hidden** に設定すると、私のアバターは fallback シェーダで見えます。`toonstandardoutline` が指定されているので**トゥーンシェーディングとアウトラインが維持されます。** Standard に落ちるシェーダよりもはるかに元のテイストに近いです。
+:::note[Fallbackの確認]
+`toonstandardoutline`はホストが代替シェーダーを選ぶためのタグです。MingToonの色・影・効果がすべて保持される意味ではありません。透明の代替経路と実際のSafety設定でも確認してください。
 :::
 
-:::danger[透明なマテリアルは fallback でアウトラインが失われます]
-分析器が `TransparentFallbackUsesUnlit` で警告します。
-
-> Toon の Transparent/Fade fallback は **Transparent Unlit に置き換えられてトゥーン照明とアウトラインが維持されません。**
-
-髪の毛のようにシルエットが重要なパーツは**カットアウト**を使う方が fallback 状況では遥かに良いです。 → [基本設定](/guides/basics#1-표면-모드부터-정합니다)
+:::note[透明の警告と実際のタグを区別します]
+`TransparentFallbackUsesUnlit`はMingToonの静的解析による警告です。公式規則では**Toon + Transparent/Fade**がTransparent Unlitへ進みますが、**toonstandardoutlineは組み合わせ不可の別タグ**です。この警告を全透明MingToonマテリアルの確定結果として読まないでください。実際のoverride tagとSafety状態を確認します。[VRChat公式fallback規則](https://creators.vrchat.com/avatars/shader-fallback-system/)
 :::
 
 ### 標準 alias
@@ -65,7 +63,7 @@ VRCAvatarDescriptor    VRCConstraint
 VRCContactReceiver     VRCContactSender
 VRCHeadChop            VRCIKFollower
 VRCPhysBone            VRCPhysBoneCollider
-VRCPipelineManager     VRCRaycast
+PipelineManager     VRCRaycast
 VRCSpatialAudioSource  VRCStation
 ```
 
@@ -75,12 +73,8 @@ VRCSpatialAudioSource  VRCStation
 
 `<Missing Script>` も個数で集計されます。
 
-:::danger[MingToon 自身のコンポーネントは手動で削除しないでください]
-`MingToonManager`と`MingDepthTextureProvider`はVRC SDK処理用の`IEditorOnly`マーカーを実装していますが、このマーカーだけでは自動削除は保証されません。
-
-**MingToon マネージャを手動で削除するとキャッシュされたレンダラリストが一緒に消えて、アップロード最適化が範囲を失います。** 最適化されていないマテリアルがそのままアップロードされます。
-
-`VRChat事前チェック`はオーサリングSceneの許可されていないスクリプトを検出します。SDK処理後は実際のbuild cloneを別途検査し、`RuntimeComponentCount = 0`を必須としてください。→ [MingToon Manager — 書き出し / 検証](/workflow/character-manager#내보내기--검증)
+:::note[Managerをアバタールートに残します]
+編集中はアバタールートのMingToonManagerを維持し、通常のSDKアップロードを使います。静的な事前検査とSDK処理後の複製検査は別です。複製からMingToon編集用ランタイムコンポーネントが除去されたかを確認します。SDKが許可するコンポーネントまで削除する意味ではありません。
 :::
 
 ---
@@ -94,7 +88,7 @@ VRCSpatialAudioSource  VRCStation
 | `PcRequiresBakedShader` | エラー | PC アップロード用 MingToon マテリアルは Baked 版である必要があります |
 | `CustomMonoBehaviourNotUploadable` | エラー | ホワイトリスト外のコンポーネント |
 | `MissingStandardAlias` | 警告 | 標準 fallback alias 不足 |
-| `TransparentFallbackUsesUnlit` | 警告 | 透明 fallback が Unlit になる |
+| `TransparentFallbackUsesUnlit` | 警告 | 透明表面の静的警告。実際のfallbackタグの挙動は上記参照 |
 | `CameraDependentFeatureNotPortable` | 警告 | 画面/カメラ依存エフェクトは VRChat カメラ構成に依存する |
 | `UnityVersionNotValidated` | 警告 | エディタが検証済みバージョンと異なる |
 | `UnsupportedRenderBackend` | エラー | **URP バックエンド/マテリアルは VRChat 出力に使用できません。** Built-in エディション版または Built-in Baked を使用してください |
@@ -119,37 +113,20 @@ MingToon はモバイルシェーダターゲットではなく、自動変換�
 
 ---
 
-## 深度エフェクトに対する公式声明
+## 深度効果の条件
 
-MingToon はこの点をコードに明示的に記述しています。
+`CanAvatarForceMainCameraDepth = false`は、アバターがホストカメラの深度を一律に保証できないという基準です。Photo Camera、ワールド設定、その他の深度供給条件を分けて確認します。深度があっても、キュー、深度への参加、品質、距離設定で結果が変わります。
 
-```text
-CanAvatarForceMainCameraDepth = false
-```
-
-> 深度エフェクトは **VRChat Photo Camera** と **Screen Camera depth texture がオンの世界**で保証されます。
-> アバタは世界制御なしにプレイヤーメインカメラの深度を強制できません。
-> 任意のCameraやLightを追加することは、サポートされる解決策ではありません。
-> 例外はMingToon Managerの`アップロード時に深度ライトを含める`です。このデフォルトOFFのオプトインはbuild cloneへシャドウを有効にしたDirectional Lightを追加しますが、パフォーマンス・アバターランク・ワールド照明のコストがあり、Avatar Safetyによって無効化される場合があります。→ [VRChat深度ライト](/platforms/vrchat#vrchat-깊이-라이트)
-
-参照: [VRC Camera Settings](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)
-
-インスペクタにも同じ案内が出ます。
-
-> VRC アップロードビルドには任意ユーザースクリプトが残ってはならないため、SDK build clone で MingToon コンポーネントが 0 個か確認してください。2D シャドウと 2Dリムライトは**カメラ深度テクスチャが提供される環境でのみ**同じように見え、アバタ単独で保証されていません。
-
-> VRC では **Classic Hull はマテリアルだけで動作します。** 内部 2D エッジはカメラ深度テクスチャが提供されるときのみ同じように見えます。
-
----
+Managerのアップロード時に深度ライトを含める設定を有効にすると、アップロード複製へ補助Directional Lightを追加します。導入版や既存アバターの設定によって状態が異なる場合があるため、実際の値を確認してください。Avatar Safety、ワールド、ライト設定の影響を受け、全ユーザーの深度を保証しません。[VRChat深度ライト](/platforms/vrchat#vrchat-깊이-라이트)を読んでから、自分の画面、ミラー、Photo Cameraを比較してください。
 
 ## 実務的な結論
 
 VRChat アバタを作成するときルックを設計する順序:
 
 1. **深度なしで成立するルックを先に作ります** — フォームシャドウ・シャドウプロジェクション・ノーマルアウトライン・リムライト / リムシェード
-2. **深度ベースエフェクトはボーナスとして追加します** — Photo Camera と深度がオンの世界でのみ見えます
-3. **髪の毛はカットアウトを優先考慮します** — fallback でアウトラインが生き残ります
-4. **アップロード前にランタイムコンポーネント 0 個を確認します**
+2. **深度の供給条件を確認して効果を追加します** — 画面ごとの差を比較します
+3. **髪のアルファと輪郭を確認します** — 適切なモードを選び、実際のfallbackでも比較します
+4. **SDK処理後の複製にMingToon編集用コンポーネントが残っていないか確認します**
 5. **自分の画面・ミラー・Photo Camera をそれぞれ確認します**
 
 ## 関連ドキュメント

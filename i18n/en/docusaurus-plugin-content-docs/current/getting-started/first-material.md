@@ -50,7 +50,7 @@ Work through **colour and brightness → shadow edges → outline → rim, gloss
 | Desired change | Controls to find first | What to watch |
 |---|---|---|
 | Overall colour | Base Map HSVG | Adjust hue, saturation, value, and gamma gradually; check skin and clothing |
-| Brightness in dark areas | Base Colour Preservation · Final Minimum Brightness | Check lost colour in dim light and overly faint shadows |
+| Brightness in dark areas | Indirect Light Lift · Minimum Final Brightness | Check dark-area brightness and shading; use Preserve Base Map Color separately for lighting hue |
 | Shadow edges | 1st Shadow Softness | Lower for a sharper edge, higher for a softer transition |
 | Shadow colour | Shadow Colour | Tune skin, hair, and clothing separately |
 | Outline | Outline Width · Outline Colour | Check both close-up and full-body views |

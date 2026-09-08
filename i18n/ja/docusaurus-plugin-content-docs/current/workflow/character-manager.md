@@ -34,11 +34,9 @@ Add Componentから `MingToon Manager` を探して装着することもでき�
 
 | タブ | 次に行う操作 |
 |---|---|
-| **Overview** | 現在の状態と次に押すボタンを確認 |
-| **Setup** | 変換対象と入力範囲を設定 |
-| **Look & Bake** | 変換後のルック再適用と選択範囲のベイク |
-| **Upload** | 通常の自動経路、現在のアバター、必要時の advanced manual bake を確認 |
-| **Optimize** | 自動 hook と重複処理を確認 |
+| **開始** | 現在の状態、変換対象、変換とアップロードの流れ |
+| **ルック・ベイク** | 変換後のルック再適用、選択範囲とメッシュチャンネルのベイク・再ベイク |
+| **最適化** | ビルド時の自動最適化とテクスチャ解像度上限 |
 
 上部の状態パネルは、現在のマテリアル構成に合わせて次の段階を案内します。`テクスチャ最適化`はキャラクター単位ではなく、プロジェクト全体へ適用される別設定です。
 
@@ -142,7 +140,7 @@ MingToonがそのまま移行できない表現だからです。ステータス
 | `キャラクター高さグラデーション (UV4)` | ルート基準の高さグラデーション |
 | `使用中のUVチャンネルを上書き` | 所有権を確認した再変換でのみ使用 |
 
-0.1.7の顔ノーマルは編集中にLive計算するため、**変換段階ではUV7をデフォルトでベイクしません。** VRChatアップロード時にアップロード用コピーだけへ自動ベイクします。テクスチャ顔領域マスクが必要な場合、またはFace SDFがUV7を所有する場合は、結果を保つためLive経路を維持します。
+0.1.8の顔ノーマルは編集中にLive計算するため、**変換段階ではUV7をデフォルトでベイクしません。** VRChatアップロード時にアップロード用コピーだけへ自動ベイクします。テクスチャ顔領域マスクが必要な場合、またはFace SDFがUV7を所有する場合は、結果を保つためLive経路を維持します。
 
 `UVチャンネルの使用状況`でUV4・UV7・UV8の所有権を先に確認してください。→ [メッシュUVベイク](/guides/mesh-bakes)
 
@@ -234,51 +232,18 @@ VRChat アップロード と Warudoモードビルドでは、[ビルド時の�
 
 ---
 
-### VRChat Expression Menu {#vrchat-표현식-메뉴}
+### VRChatアップロード準備 {#vrchat-표현식-메뉴}
 
-Unity 2022.3 VCCプロジェクトでは、`MingToon Manager` がAvatar SDK / アップロード用の
-Virtual LightとQualityメニューを準備します。既定のフルプロファイルにはPalette、
-Master Adjust、Photo Looksも含まれます。
+MingToon ManagerはVRChatのExpressionsメニュー・パラメーター・FXをインストールしません。ManagerはAvatar Rootに残し、変換・ルック・最適化の状態を確認してください。自動最適化が適用されるのは、VRChat SDKが作成したbuild cloneだけです。既存のExpressions構成や他のツールが追加したメニューは、別途最終状態を確認します。
 
-1. Avatar Rootの下にある `MingToon Manager` を選択します。
-2. `Modular Avatarで非破壊インストール` をオンにします。既定はオンです。
-3. `フル調整メニューを使用` を選びます。オンならフル77ビット、オフなら軽量31ビットです。
-4. `Expressionsルートに直接配置` を選び、SceneまたはPrefabを保存してManager Inspectorを
-   開き直します。
-5. Gesture Managerで選択した `MingToon Controls` の構成を確認します。
-6. VRChat SDK Builderでアップロードします。メニュー・パラメーター・FXはbuild cloneへ
-   統合されます。
+1. Avatar Rootの下にある`MingToon Manager`を選択します。
+2. `子Rendererを再検索`を押して、現在の衣装とRenderer範囲を更新します。
+3. `準備状態を検査`と`VRChat事前チェック`を実行し、エラーを解消します。
+4. VRChat SDK Builderからアップロードします。通常の手順では、先に手動Bakeを実行する必要はありません。
+5. SDKが作成したbuild cloneで`RuntimeComponentCount = 0`を確認します。この診断値はビルドルート配下のオーサリング用MingToonコンポーネントだけを数え、SDKやランタイムのコンポーネントは数えません。自分で作成した、または他のツールが追加したExpressionsメニュー・パラメーター・FXの最終状態は別途確認してください。
+6. アップロード後、自分の画面・ミラー・Photo Cameraをそれぞれ確認します。
 
-Modular AvatarがなくてもMingToonはコンパイルできます。直接統合する場合は
-`Modular Avatarで非破壊インストール` をオフにし、`VRC操作を登録` を使います。
-
-:::caution[Expression Parametersの予算]
-- **フル（既定）：** 合計28個 / 同期21個・77ビット / ローカルコマンド7個・0ビット
-- **軽量：** 合計12個 / 同期10個・31ビット / ローカルコマンド2個・0ビット
-
-同期内訳はフルが Bool 13 + Int 2 + Float 6、軽量が Bool 7 + Float 3 です。
-既存アバターとの型競合、合計256ビット予算、メニューごとの8枠を事前に検査し、
-失敗時は変更をロールバックします。
-:::
-
-どちらのプロファイルもVirtual Lightの基本操作（Enabled、Direction、Intensity、
-Follow Character、Auto/Replace/Add）、明示的なHigh/Mid/Low、独立した
-Shadow Projection、Reset Allを維持します。フルだけに8色×4段階のPalette、
-Highlight / Shadow / Final OutputそれぞれのIntensity・Tint量、8種類のPhoto Looksを
-追加します。軽量ではそれらの操作と専用パラメーター・FXレイヤーを除外します。
-プロファイルを切り替えて再インストールすると、使わなくなったMingToonパラメーター、
-FXレイヤー、生成メニューを削除します。Reset Allは選択中のプロファイルの
-インストール時既定値へ戻し、インストール前のオーサリング値スナップショットは
-復元しません。フルのローカルコマンドはReset、Quality、Palette、Photo、3つのTint選択、
-軽量はResetとQualityです。
-
-フォルダー方式はRootの1枠を使い、`MingToon Controls` の中にフルは8操作、
-軽量は7操作を置きます。`Expressionsルートに直接配置` をオンにすると、フルは
-`Virtual Light`・`Master Adjust`・`Reset All`、軽量は `Virtual Light`・
-`Quality`・`Reset All` をRootへ置きます。どちらも空き3枠が必要で、収まらない場合は
-フォルダー方式へ戻ります。Photo Looksは自分のアバターの結果だけを同期します。
-1人の画面内にいる他アバターをまとめて操作するにはWorld/Udon権限が必要なため、
-このアバター機能には含まれません。
+問題がある場合は、[トラブルシューティング](/troubleshooting)でConsoleエラーとアップロード準備の手順を先に確認してください。
 
 ---
 
@@ -325,7 +290,7 @@ FXレイヤー、生成メニューを削除します。Reset Allは選択中の
 #### スクリプト除去点検
 
 :::danger[MingToonコンポーネントを直接削除しないでください]
-オーサリングSceneのMingToonコンポーネントは直接削除しないでください。Managerを削除するとキャッシュ済みRenderer一覧が失われ、アップロード最適化も対象範囲を失います。これらのコンポーネントは`IEditorOnly`として表示されますが自動削除は保証されないため、SDK処理後の実際のbuild cloneで`RuntimeComponentCount = 0`か検証してください。
+オーサリングSceneのMingToonコンポーネントは直接削除しないでください。Managerを削除するとキャッシュ済みRenderer一覧が失われ、アップロード最適化も対象範囲を失います。これらのコンポーネントは`IEditorOnly`として表示されますが自動削除は保証されないため、SDK処理後の実際のbuild cloneで`RuntimeComponentCount = 0`か検証してください。この値はオーサリング用MingToonコンポーネント数であり、SDKやランタイムの全コンポーネント数ではありません。
 
 Warudoモードはスクリプトを保持 する別のルールに従います。このパネルは検査するだけです。
 :::
@@ -343,7 +308,7 @@ Warudoモードはスクリプトを保持 する別のルールに従います�
         ↓
 3 · 詳細設定  ルック再適用 → SDF接続 → 必要な場合だけUV4・UV8ベイク
         ↓
-5 · 出荷      テクスチャ上限 → VRCメニュー → 自動/手動ベイク → 準備状態検査 → アップロード
+5 · 出荷      テクスチャ上限 → アップロード準備 → 自動/手動ベイク → 準備状態検査 → アップロード
 ```
 
 Warudoへ書き出す場合は、キャラクターへ別のRuntime Rootを追加せず、Warudo Playgroundへグローバル`MingToonWarudoDepthBridge.cs`をインストールします。→ [WARUDO Depth Bridge](/platforms/warudo#warudo-depth-bridge)

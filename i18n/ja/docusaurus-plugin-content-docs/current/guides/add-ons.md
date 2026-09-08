@@ -1,31 +1,35 @@
 ---
 id: add-ons
-title: 別売アドオン
-sidebar_label: 別売アドオン
+title: 別売アドオンと連携
+sidebar_position: 13
 ---
 
-すべての商用ライセンスにURPバージョンが含まれます。Personal Streaming・Personal CreatorのEarly Access Founders EditionにはMLCが含まれ、正式リリース後に構成が変更される場合があります。現在のオープンベータでは商用利用は禁止です。[ライセンスと同梱構成](/legal/beta-license)をご確認ください。
+# 別売アドオンと連携
 
-# 別売アドオン
+**用途:** MingToon本体と、任意の制作・ランタイムツールの境界を確認します。アドオンなしでもMingToonのシェーダーとインスペクターは使え、ロックされたボタンは対応ツールの連携点です。
 
-MingToon 本体は、以下のアドオンがなくてもインストール・コンパイル・描画できます。各アドオンは、マスク制作、顔 SDF 制作、VRChat ランタイムメニュー制作など、必要なオーサリング機能だけを追加します。MingToon はアセンブリを直接参照せずに導入状況を確認するため、あとから追加・削除してもシェーダー本体は動作します。
+## 機能の境界
 
-## Mask Maker
+| ツール | MingToonから見える連携 | なくてもできること |
+|---|---|---|
+| **Mask Maker** | 対応マスクスロットの**MM**ボタンと一部の頂点ペイント起動点 | 外部で作ったマスクテクスチャと頂点カラーを直接指定 |
+| **Face SDF Studio** | Face SDFの制作・プレビュー起動点 | 既存のFace SDFテクスチャを指定してフェイスシェーディングを使う |
+| **Ming Light Controller** | Master Adjust、バーチャルライトへの入口とアバターメニュー設定 | MingToonマテリアルの調整と本体のビルド・ベイク機能 |
 
-マテリアルとメッシュを確認しながら MingToon 用マスクを描画・整理する別ツールです。→ [Mask Maker ガイド](/guides/mask-maker)
+この表は現在のソースにある連携構造を説明しています。各ツールの公開バージョン、価格、配布状況はソースだけでは確定しません。Face SDF Studioは現在未発売のため、購入やインストールを前提にした手順にはしていません。
 
-## Face SDF Studio
+## 連携を確認する
 
-ライト方向に応じて変化する顔シャドウ用 SDF テクスチャを作成する別ツールです。作成済みの SDF テクスチャは、このツールがなくても MingToon マテリアルへ直接設定できます。→ [顔 SDF と Face SDF Studio](/guides/face-sdf)
+1. アドオンをインストールした場合は、Unityのコンパイル完了後にインスペクターを開き直します。
+2. 連携ボタンが有効になるか確認します。
+3. ロックが続く場合は、Consoleエラー、ブリッジAPIのロード状態、選択対象、スロットを確認します。
+4. アドオンがない場合は、ロックされたボタンの代わりに各スロットのテクスチャ・値欄を使います。
 
-## Ming Light Controller (MLC)
+MingToonは任意連携を固定のコンパイル時アセンブリ参照ではなく、ブリッジの有無で検出します。そのためブリッジがないことだけで、本体シェーダーのインストール・コンパイル失敗とは判断できません。
 
-VRChat アバターのライティング・ルック操作メニュー、パラメーター、FX 構成を非破壊で作成する別アドオンです。MLC がなくても MingToon シェーダーと VRChat・WARUDO のビルド深度ライト選択機能は動作します。→ [Ming Light Controller ガイド](/guides/ming-light-controller)
+## 関連文書
 
-**購入:** <https://raming.booth.pm/items/8810346>（BOOTH）
-
-## インストール確認
-
-1. アドオンをインポートし、Unity のコンパイル完了を待ちます。
-2. MingToon Inspector または Manager の該当ボタンを開き直します。
-3. 案内表示のままなら、まず Console のコンパイルエラーを解消してください。
+- [Mask Maker連携](/guides/mask-maker)
+- [Face SDF](/guides/face-sdf)
+- [Ming Light Controller](/guides/ming-light-controller)
+- [キャラクターManager](/workflow/character-manager)

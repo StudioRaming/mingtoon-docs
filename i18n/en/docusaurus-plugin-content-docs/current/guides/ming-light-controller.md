@@ -55,6 +55,12 @@ Direct Descriptor is available only on an avatar clone with empty FX, expression
 
 A preset is a starting point. You can edit entries after applying it, and the changed configuration becomes the user setting. Apply can be undone. Selecting a preset and pressing **Apply** are separate actions.
 
+### Integration mode and Write Defaults
+
+Integration Auto chooses an available Modular Avatar backend, then a supported VRCFury provider, then Direct Descriptor, then Standalone. This is separate from the Auto parameter profile. If you explicitly choose VRCFury and its supported provider is missing, MLC reports an error instead of silently switching backends.
+
+Generated animator states are authored with Write Defaults off. The Modular Avatar attachment requests matching the avatar’s Write Defaults convention, so inspect the final merged result with your chosen backend. This does not instruct you to change Write Defaults across the original FX controller.
+
 ### MingToon features unlocked by installation {#설치하면-열리는-mingtoon-기능}
 
 MLC-connected Master Adjustment and Virtual Light authoring, plus the Manager entry points for MLC settings, become available in MingToon. If a button stays locked, check Console compilation errors and the add-on installation.

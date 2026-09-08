@@ -4,212 +4,102 @@ title: Validate Project Code
 sidebar_position: 8
 ---
 
-# Validate Project Code
+# Validate Project
 
-All codes reported by `Tools > Studio Raming > MingToon > Validate Project`. Search by code.
+Find the code reported by Tools > Studio Raming > MingToon > Validate Project. The check reports findings without automatically repairing them. **Severity below follows the current Validator source.** Warnings can still affect the look or build.
 
-:::note[This check is read-only]
-It doesn't fix or delete anything. Reports only; you take action.
-:::
+## MING-ENV-UNITY-VERSION {#ming-env-unity-version}
 
-<!-- SCREENSHOT: Validate Project results window -->
+**Error.** Unity is outside the supported 2021.3 and 2022.3 streams. Use a supported editor appropriate for the target platform.
 
----
+## MING-VRC-UNITY-VERSION {#ming-vrc-unity-version}
 
-## Environment
+**Warning.** VRC SDK is detected but the Unity stream does not match MingToon's VRChat integration. The package rule records 2022.3.22f1. Check VCC and the current SDK Unity guidance before migrating a project.
 
-### MING-ENV-UNITY-VERSION
+## MING-ENV-BUILD-TARGET {#ming-env-build-target}
 
-**Error.** The editor stream is outside the supported range.
+**Error.** The build target is unsupported. Check the Windows, macOS or Linux desktop target and graphics API. Android/Quest, iOS and WebGL are not direct MingToon output targets.
 
-Supported streams are **2021.3** and **2022.3** both. Outside this range, shader compilation results differ and looks may break or change.
+## MING-PIPELINE-UNSUPPORTED {#ming-pipeline-unsupported}
 
-**Fix** — Open the project in 2021.3 or 2022.3 editor from Unity Hub. Per-target recommendations are in [Supported Platforms](/platforms/compatibility#unity-버전).
+**Error.** The active pipeline is neither Built-in nor supported URP. Check the Render Pipeline Asset in Graphics and the current Quality level.
 
-### MING-VRC-UNITY-VERSION {#ming-vrc-unity-version}
+## MING-URP-VERSION-UNSUPPORTED {#ming-urp-version-unsupported}
 
-**Warning.** VRC SDK is present but the editor isn't the VRChat-validated stream (2022.3.22f1).
+**Error.** The URP version is outside the backend's supported range. Match the installed backend requirements and compatibility guide.
 
-> MingToon's VRChat integration **compiles only in 2022.3 stream**, so this project has **no avatar upload support.** Other targets are unaffected.
+## MING-SHADER-MISSING {#ming-shader-missing}
 
-**Fix** — For a VRChat avatar project, move to 2022.3.22f1. If VRChat isn't your target, ignore this.
+**Error.** A required shader was not found. Check installation, backend and Console compilation errors, then repair through the package's installation method.
 
-Reference: [VRChat Current Unity Version](https://creators.vrchat.com/sdk/upgrade/current-unity-version/)
+## MING-SHADER-UNSUPPORTED {#ming-shader-unsupported}
 
-### MING-ENV-BUILD-TARGET
+**Error.** The shader is unsupported in this environment. Check compilation errors, GPU/graphics API and pipeline compatibility.
 
-**Error.** The current build target doesn't guarantee Shader Model 4.5.
+## MING-SHADER-PASS-MISSING {#ming-shader-pass-missing}
 
-All MingToon passes declare `#pragma target 4.5`. On these targets, **the SubShader is rejected entirely and all MingToon materials render magenta in the build.**
+**Error.** A backend-required pass is missing. Inspect the named pass and repair shader and editor files to the same release.
 
-**Fix** — Go to `File > Build Settings` and change the platform back to Windows / macOS / Linux. Android/Quest, iOS, WebGL are unsupported.
+## MING-SHADER-PROPERTY-MISSING {#ming-shader-property-missing}
 
----
+**Error.** A property expected by the editor is missing. Check for partial updates or mixed release files.
 
-## Render Pipeline
+## MING-SHADER-FRESNEL-AREA-RANGE {#ming-shader-fresnel-area-range}
 
-### MING-PIPELINE-UNSUPPORTED
+**Error.** An area control does not use the expected Range(0, 1). Compare the reported property with the release shader and repair it.
 
-**Error.** Unsupported render pipeline asset. MingToon supports only Built-in RP and version-pinned URP backends, so **no MingToon material renders here.**
+## MING-SHADER-PERF-DISTANCE-RANGE {#ming-shader-perf-distance-range}
 
-**Fix** — Point a URP asset in `Project Settings > Graphics` and the active Quality level, or leave it empty for Built-in.
+**Error.** Performance-distance ranges are invalid. _PerfDistanceMax must be Range(1, 50) and _PerfDistanceScale Range(0, 2). Restore matching release files.
 
-### MING-URP-VERSION-UNSUPPORTED
+## MING-MAT-NON-FINITE {#ming-mat-non-finite}
 
-**Error.** The installed Universal RP package is out of supported range. The URP backend compiles for that range, so outside it, materials fail to compile or render without outlines.
+**Warning.** A material value is NaN or Infinity. Restore the named property to a finite value before checking rendering or baking.
 
-**Fix** — In `Window > Package Manager > Universal RP`, install a supported version, or revert the project to Built-in.
+## MING-MAT-COLOR-MASK-ZERO {#ming-mat-color-mask-zero}
 
----
+**Warning.** Color Mask is zero, so no color channels are written. Unless intentional, restore RGBA (15) in the advanced color-buffer settings.
 
-## Shader
+## MING-MAT-OPAQUE-ZWRITE-OFF {#ming-mat-opaque-zwrite-off}
 
-### MING-SHADER-MISSING
+**Warning.** ZWrite is off in an opaque queue. Occlusion can be incorrect; reapply the surface mode or verify that the depth state is intentional.
 
-**Error.** MingToon shader not found in the project. No material can render with it.
+## MING-MAT-TRANSPARENT-DEPTH-EFFECTS {#ming-mat-transparent-depth-effects}
 
-**Fix** — Reimport `Assets/StudioRaming/MingToon/Shaders` and read shader compile errors in Console. For URP projects, also check that the URP backend folder imported.
+**Warning.** Depth effects are enabled in the transparent queue. Check self-depth and sorting in the actual camera. If needed, disable the effect or use a suitable mode such as Semi-Transparent or Cutout, checking whether rear layers become occluded.
 
-### MING-SHADER-UNSUPPORTED
+## MING-MAT-CUTOUT-CUTOFF-ZERO {#ming-mat-cutout-cutoff-zero}
 
-**Error.** This editor or GPU doesn't support the shader, so **all materials using it render magenta.**
+**Warning.** Cutout threshold is zero and transparent texels can remain. Check texture alpha and increase cutoff; 0.5 is a starting point for comparison.
 
-**Fix** — Select the shader asset and read compile error at the top of the inspector. Check `Project Settings > Player > Other Settings > Graphics APIs` supports Shader Model 4.5 (Direct3D11 or higher).
+## MING-MAT-PERF-DISTANCE-ZERO {#ming-mat-perf-distance-zero}
 
-### MING-SHADER-PASS-MISSING
+**Warning.** Performance Distance times Scale is zero, selecting the lightest tier at every distance. Several effects may disappear. Check whether MLC is intended to drive this value; otherwise raise the scale.
 
-**Error.** The shader lacks a render pass this backend requires.
+## MING-URP-DEPTH-FEATURE-MISSING {#ming-urp-depth-feature-missing}
 
-:::danger[Silently stops]
-**Outline, cast shadow, and depth prepass stop rendering, but controls stay editable.** Changing values does nothing.
-:::
+**Error.** The URP depth Renderer Feature is missing or disabled. Install the supported backend, check Renderer Data in the active URP Asset, and use Install Depth Effects Renderer Feature.
 
-**Fix** — Recover `Assets/StudioRaming/MingToon/Shaders` from the release package and verify materials use shaders matching the project's render pipeline.
+## MING-URP-OUTLINE-FEATURE-MISSING {#ming-urp-outline-feature-missing}
 
-### MING-SHADER-PROPERTY-MISSING
+**Error.** The URP outline Renderer Feature is missing or disabled. Check the camera's Renderer Data and Install Outline Renderer Feature.
 
-**Error.** The shader doesn't declare a property this editor version requires. Missing blend-mode properties mean **the blend mode and opacity dropdowns next to color do nothing.**
+## MING-BAKE-GENERATOR-OUTDATED {#ming-bake-generator-outdated}
 
-**Fix** — Recover the Shaders folder from the release package and validate again.
+**Warning.** The manifest records an older generator. Existing output may still render without newer fixes. Check that avatar's bake state and restore information, then rebake.
 
-### MING-SHADER-FRESNEL-AREA-RANGE {#ming-shader-fresnel-area-range}
+## MING-RUNTIME-PROVIDER-MISSING {#ming-runtime-provider-missing}
 
-**Error.** The shader doesn't declare every normalized area-shaping control as `Range(0, 1)`. The report names the offending properties.
+**Error.** The depth-provider type or required methods are missing or have an unexpected structure. Check installation and compilation errors. This is a type check, not proof that every camera lacks depth.
 
-Area-shaping properties such as Fresnel Width / Softness and Front Light Size / Softness / direction ratios / core size follow a 0–1 slider contract. If one isn't a Range type, or its range isn't 0–1, **the area UI can no longer guarantee 0 = none, 1 = full support, or normalized softness and direction ratios.**
+## MING-SCENE-NO-CAMERA {#ming-scene-no-camera}
 
-**Fix** — Recover `Assets/StudioRaming/MingToon/Shaders` from the release package and validate again.
+**Warning.** No loaded Game camera was available for inspection. Open the target scene and check again.
 
----
+## MING-SCENE-CAMERA-DEPTH-OFF {#ming-scene-camera-depth-off}
 
-## Material
+**Warning.** The inspected Game camera does not request depth. Check the depth provider for general Unity/WARUDO; follow the host-camera conditions in the VRChat guide for avatars.
 
-### MING-MAT-NON-FINITE
+Passing validation does not guarantee the rendered view or a successful upload. Recheck the affected finding and actual workflow after a fix.
 
-**Error.** The material has non-finite numbers (NaN / Infinity). Can corrupt all lighting and screen-space math.
-
-**Fix** — Restore that property to a normal value before rendering or baking. The report names it.
-
-### MING-MAT-COLOR-MASK-ZERO
-
-**Error.** `_ColorMask` is 0, so the **mesh renders and occludes but writes nothing to screen.**
-
-**Fix** — In `Surface Rendering > Advanced Color Buffer`, set `Color Mask` back to RGBA(15).
-
-### MING-MAT-OPAQUE-ZWRITE-OFF
-
-**Error.** Opaque render queue but not recording depth (`_ZWrite` is 0). **Sorting vs other opaques becomes random, and all camera depth effects read through this mesh.**
-
-**Fix** — In `Surface Rendering > Advanced Color Buffer`, turn `Depth Write` On, or pick the transparent surface mode you actually want.
-
-### MING-MAT-TRANSPARENT-DEPTH-EFFECTS
-
-**Error.** Using camera depth effects in transparent queue. Sorting and self-depth become unstable, so **2D rim light and 2D shadow flicker or read surfaces behind.**
-
-**Fix** — Turn off both modules on this material, or switch surface mode to Opaque / Cutout. If transparency is needed, use `Transparent · Outline Depth Ready`. → [Basics](/guides/basics#1-표면-모드부터-정합니다)
-
-### MING-MAT-CUTOUT-CUTOFF-ZERO
-
-**Error.** Cutout but `Alpha Cutoff` is 0, so **nothing cuts.** Fully transparent texels record shadow depth, so the **mesh casts a solid rectangular shadow.**
-
-**Fix** — Raise `Alpha Cutoff` above 0 (0.5 is a common start). Or pick a different surface mode.
-
----
-
-## URP Renderer Features
-
-### MING-URP-DEPTH-FEATURE-MISSING
-
-**Error.** URP material uses 2D rim light or 2D shadow but the Renderer Feature is missing, so **both effects draw nothing.** Three cases:
-
-| Situation | Fix |
-|---|---|
-| MingToon URP backend assembly didn't load | Install URP version in supported range |
-| Active URP asset has no renderer data | Add Universal Renderer Data to Renderer List on URP asset, then run the menu below |
-| Renderer data has the feature disabled | `Tools > Studio Raming > MingToon > URP > Install Depth Effects Renderer Feature` |
-
-:::caution[All renderers in the active URP asset need the feature]
-Install on one renderer only and the effect won't draw on others while controls stay editable.
-:::
-
-### MING-URP-OUTLINE-FEATURE-MISSING
-
-**Error.** Same structure as above, target is the outline pass. **Outline doesn't draw.**
-
-**Fix** — `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`.
-
----
-
-## Bake
-
-### MING-BAKE-GENERATOR-OUTDATED {#ming-bake-generator-outdated}
-
-**Warning.** The bake manifest was created with an older shader generator version than the one this MingToon package generates. The report names the manifest path and both versions.
-
-The baked materials it lists **still render, but with shaders an older generator wrote.** They carry none of the fixes a current bake would give them, and **the build preparation check will refuse them.**
-
-**Fix** — Run the bake again from the MingToon Manager to regenerate them. → [Manual Bake and Restore](/workflow/bake-and-restore)
-
----
-
-## Runtime
-
-### MING-RUNTIME-PROVIDER-MISSING
-
-**Error.** Built-in RP depth provider not found or changed shape. No camera gets depth texture request, so **2D rim light, 2D shadow, depth-based outline stay empty regardless of settings.**
-
-| Detail | Means |
-|---|---|
-| No type | MingToon runtime script missing or compile failed |
-| Not Component-derived | Runtime was modified |
-| Required method missing | Runtime was modified |
-
-**Fix** — Reimport `Assets/StudioRaming/MingToon/Runtime` and clear compile errors. If you edited it, recover from the release package.
-
----
-
-## Scene / Camera
-
-### MING-SCENE-NO-CAMERA
-
-No Game camera loaded, so 2D effects can't verify the camera depth state.
-
-**Fix** — Open the actual working scene or create a LookDev scene, then validate again.
-
-### MING-SCENE-CAMERA-DEPTH-OFF
-
-Game camera has depth texture off.
-
-**Fix** — Place `Studio Raming/MingToon/Depth Texture Provider` in the scene. → [Depth Effects](/guides/depth-effects#플랫폼별-깊이-확보)
-
----
-
-## Screen looks wrong but no code appears
-
-Validator checks only **statically verifiable** things. These can happen even after validation passes.
-
-| Symptom | Doc |
-|---|---|
-| Changing values has no effect | [Troubleshooting — Nothing works](/troubleshooting#아무-값도-안-먹힌다) |
-| Depth effects missing in VRChat desktop | [VRChat](/platforms/vrchat#깊이-효과가-어디까지-보장되나) |
-| Outline breaks at sharp edges | [Mesh UV Bake](/guides/mesh-bakes#아웃라인-스무스-노멀-uv8) |
+[VRChat](/platforms/vrchat) · [URP / Compatibility](/platforms/compatibility) · [Basic](/guides/basics)

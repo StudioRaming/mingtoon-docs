@@ -8,7 +8,7 @@ Every commercial license includes the URP version. MLC is included in the Early 
 
 # Current Limitations and Release
 
-Based on MingToon `0.1.7`.
+Based on MingToon `0.1.8`.
 
 ## What to know before deployment
 
@@ -56,6 +56,10 @@ When reporting, including these speeds up reproduction:
 
 1. Unity version and target platform (VRChat PC / Warudo / general Unity)
 2. Render pipeline (BRP / URP 12.x)
-3. MingToon version (`0.1.7`)
+3. MingToon version (`0.1.8`)
 4. Full Console log
 5. Steps to reproduce
+
+If the problem continues, start with [Troubleshooting](/troubleshooting).
+
+If the problem continues, start with [Troubleshooting](/troubleshooting).

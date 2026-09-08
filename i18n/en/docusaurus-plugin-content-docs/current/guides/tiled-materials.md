@@ -6,114 +6,69 @@ sidebar_position: 16
 
 # Tiled Material Composer
 
-**After reading this document** you can fit four different material feels into one material slot using an RGBA mask, distinguishing cloth, leather, metal, and label on clothing without adding draw calls.
+**Purpose:** Connect up to four logical regions from one RGBA region mask to Texture Stack, Normal, and MatCap layers in one physical material slot. Use it when repeating surface details such as cloth, leather, and metal need separate treatment.
 
-`Tools > Studio Raming > MingToon > Tiled Material Composer`
+Open **StudioRaming > MingToon > Tiled Material Composer**. The tool does not edit meshes, submeshes, or renderers.
 
-## Problem it solves
+## First setup
 
-Say a piece of clothing mixes fabric, leather, and metal trim. Normally you'd split it into three materials. That means **three draw calls**, affecting your avatar's performance tier.
+1. Assign the target to **MingToon Material**.
+2. Assign a Texture2D containing the R/G/B/A regions to **Packed Region Mask**.
+3. In each of the four cards, leave the region **Enabled** and set its channel and maps.
+4. Press **Apply Four Logical Regions**.
 
-The composer instead uses **an RGBA mask to distinguish up to four logical regions** within one slot.
+The Apply button is enabled when the material and packed mask are assigned. The window always creates four region cards, so there is no separate region input to fill.
 
-```text
-Mask R channel  →  Region 1 (e.g., cloth)
-Mask G channel  →  Region 2 (e.g., leather)
-Mask B channel  →  Region 3 (e.g., metal)
-Mask A channel  →  Region 4 (e.g., label)
-```
+The defaults are region 1=R, 2=G, 3=B, and 4=A, named Cloth, Leather, Metal, and Label. Change names and channels per card.
 
-The default region names are `Cloth`, `Leather`, `Metal`, `Label`.
+## Region card controls
 
-<!-- SCREENSHOT: Tiled Material Composer window -->
-
----
-
-## Why texture memory doesn't grow
-
-This is the core of the tool.
-
-> The mask is **low-frequency**, and surface and normal maps stay as **small repeating textures.**
-
-| | Resolution | Why |
-|---|---|---|
-| **Region mask** | Can be low | Only says where fabric is and where leather is. Soft boundaries don't hurt |
-| **Surface · Normal map** | Small tile | Fabric weave, leather grain — **repeating patterns** — use small images on loop |
-
-So instead of painting the whole outfit in 4K, **low-res mask + small repeating textures** carry the same information.
-
-:::danger[These textures don't flatten even in Reviewed High Quality bake]
-Stretching repeating tile across all UVs and baking it flattens the resolution-economy and loses the overhead advantage. The baker knows and skips them. → [What bake removes](/internals/bake-internals#텍스처-최적화)
-:::
-
----
-
-## Procedure
-
-1. Slot the target material into `MingToon Material`.
-2. Put the RGBA mask into `Packed Region Mask`.
-3. Set up each of the four regions.
-4. Click `Apply Four Logical Regions`.
-
-Miss any one of three and it blocks with `material, mask and region are required`.
-
-### Per-region items
-
-| Item | Purpose |
+| Control | Range or effect |
 |---|---|
-| `Mask Channel` | Which channel this region reads (R/G/B/A) |
-| Surface texture · Tint | Goes into texture layers |
-| `Normal Strength` | Goes into normal layers |
-| `MatCap Strength` | Goes into MatCap layers |
+| **Enabled** | When off, clears that region's surface, normal, and MatCap slots on Apply |
+| **Mask Channel** | R, G, B, or A read by this region |
+| **Surface Texture** | Repeating surface map |
+| **Surface Tiling** | UV repeat for that surface map |
+| **Surface Tint** | Color multiplied into the surface layer |
+| **Surface Opacity** | Surface layer amount, 0 to 1 |
+| **Normal Map / Normal Strength** | Normal map and strength, 0 to 2 |
+| **Matcap Map / Matcap Strength** | MatCap map and strength, 0 to 20 |
 
-### What it becomes
+Clearing a map also clears that slot on the next Apply. For example, clearing only Normal Map removes that region's normal slot while surface and MatCap are processed independently.
 
-Clicking `Apply` makes the composer directly configure the material's layer modules.
+## What Apply writes
 
-| Region setting | Becomes |
+Apply visits all four cards. Enabled cards with maps write to their layer slot; empty maps and disabled cards are explicitly cleared.
+
+| Card values | MingToon target |
 |---|---|
-| Surface texture · Tint · Mask | **Texture Layers** (`_MingStack*`) |
-| Normal map · Strength · Mask | **Normal Layers** (`_MingNormal*`) |
-| MatCap · Strength · Mask | **MatCap Layers** (`_MingMatcap*`) |
+| Surface map, Tiling, Tint, Opacity, packed mask, channel | Texture Stack |
+| Normal map, Tiling, strength, packed mask, channel | Normal layer |
+| MatCap map, strength, packed mask, channel | MatCap layer |
+| Highest used slot number | Each module's enable toggle and layer count |
 
-The module's `Enable` toggle and `Layer Count` adjust too.
+The first normal card uses MingToon's base **Bump Map** slot. If that card is disabled, an existing hand-authored Bump Map can survive when the composer did not own a region mask for it; inspect the target slot separately when you need to remove a manual normal. Apply is one Undo unit.
 
-:::note[Afterward it's just normal layered material]
-The composer is a **setup tool** that populates layers, not a special runtime or mode. After apply, edit in [Detail Maps](/guides/detail-maps) and [Common Texture Slot UI](/guides/texture-modules) as usual.
-:::
+## Mask authoring
 
----
+Each mask channel is an area weight. If multiple channels are bright at one pixel, their layer effects overlap and composite. Check that overlaps are intentional and soften hard boundaries in the mask when needed.
 
-## When making the mask
+Surface and normal maps use the card's Tiling. The packed mask is the selector for the composer; it does not automatically split one large illustration into four pieces. Surface Mode and render queue are material-wide, so regions that need different surface modes require separate materials.
 
-| Recommend | Why |
-|---|---|
-| Paint channels **non-overlapping** | One pixel in two regions means two blended layers |
-| Boundaries **slightly soft** | Hard cutoff shows steps. Leverage the low-frequency advantage |
-| **Turn off sRGB** | Mask is weight, not color |
-| Compression is taste | Low-frequency masks rarely show compression artifacts |
+## After Apply
 
-:::tip[Don't need all four regions]
-Leave channels empty. Two regions still cut draw calls.
-:::
+Use [Detail Maps](/guides/detail-maps) to check Stack, Normal, and MatCap layer counts and strengths, and [Common Texture Slot UI](/guides/texture-modules) to adjust each map's Tiling / Offset. The composer records ordinary layer properties; it does not create a separate runtime mode.
 
----
+## If Apply is disabled or a result is missing
 
-## When to use and when not
-
-| Situation | Verdict |
-|---|---|
-| One outfit piece with multiple materials feels | ✅ Exactly this tool's job |
-| Need to lower avatar performance tier | ✅ Material count shrinks |
-| Non-repeating large illustration (art texture) | ❌ Tiling doesn't apply. Keep the base map as-is |
-| Each region needs different surface mode | ❌ One material = one surface mode. Split materials |
-
-:::caution[Can't split surface mode]
-You can't put opaque cloth and transparent lace in one slot. Surface mode, cull mode, render queue are per-material properties. → [Shader structure and passes](/internals/shader-structure#표면-모드가-실제로-바꾸는-값)
-:::
+- If Apply is disabled, assign both the target material and Packed Region Mask.
+- If a region is missing, check Enabled, its map field, and whether Mask Channel matches the painted channel.
+- If an old region remains, disable the card or clear its maps and Apply again.
+- If regions overlap unexpectedly, inspect duplicate mask channels and their boundaries.
+- If a layer is invisible, raise that module's layer count through the last used slot.
 
 ## Related docs
 
-- [Detail Maps](/guides/detail-maps) — Layer modules
-- [Common Texture Slot UI](/guides/texture-modules) — Mask channels · Remap
-- [Modules and cost](/internals/module-cost) — Layer tiers and cost
+- [Detail Maps](/guides/detail-maps)
+- [Common Texture Slot UI](/guides/texture-modules)
+- [Module Cost](/internals/module-cost)

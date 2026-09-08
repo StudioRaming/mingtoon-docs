@@ -59,8 +59,8 @@ MingToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지원 기�
 | `SecondEmissionRequiresBake` | 2번째 이미션 | 이미션 맵에 합쳐 굽기 |
 | `EmissionMaskRequiresBake` | 이미션 마스크 | 이미션 맵에 합쳐 굽기 |
 
-:::tip[이 다섯 개는 전부 "텍스처로 미리 구우면 된다"는 뜻입니다]
-런타임에 계산하던 것을 정적 텍스처로 바꾸면 대부분 시각적으로 동일하게 재현됩니다. 애니메이션이 필요하다면 AnimationClip으로 옮기세요.
+:::note[정적 텍스처로 대체할 수 있는 범위]
+이 코드는 변환 시 해당 기능을 그대로 옮기지 못했다는 보고입니다. 정적인 무늬나 색은 텍스처에 합칠 수 있지만, 시간에 따라 움직이는 UV·디졸브·발광은 한 장의 텍스처만으로 보존되지 않습니다. 필요한 움직임을 별도로 재구성하고 결과를 비교하세요.
 :::
 
 ### 미지원 — 옮길 수 없음
@@ -78,17 +78,14 @@ MingToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지원 기�
 | `MissingTextureSkipped` | 원본이 참조하던 텍스처가 프로젝트에 없음 | 텍스처를 복구하고 재변환 |
 | `FaceClassification` | 얼굴 판정 결과 보고 | 아래 참고 |
 | `ConversionFailed` | 해당 재질 변환 실패 | 메시지 확인 |
+| `SourceExcluded` | 변환 제외 규칙에 해당하는 원본 | 메시지의 제외 근거와 대상으로 선택한 재질을 확인 |
 
 ---
 
 ## 얼굴 판정 — Auto는 추측하지 않습니다
 
-:::danger[Auto는 원본 재질의 얼굴 플래그만 읽습니다]
-인스펙터가 그대로 말합니다.
-
-> Auto는 **원본 재질이 직접 가진 얼굴 플래그만** 읽습니다. **이름으로 추측하지 않으니** 플래그가 없는 셰이더는 계속 Regular로 남고, 얼굴로 쓸 슬롯은 **직접 Face로 지정해야 합니다.**
-
-즉 **lilToon처럼 얼굴 플래그를 가진 셰이더에서 변환할 때만 Auto가 얼굴을 찾아냅니다.** Standard나 URP Lit에서 변환하면 전부 `Regular`로 나옵니다.
+:::note[Auto 판정의 범위]
+Auto는 지원 어댑터가 읽을 수 있는 **원본 재질의 얼굴 플래그**를 확인합니다. 이름이나 셰이더 브랜드만으로 얼굴을 확정하지 않습니다. 플래그가 없고 직접 지정도 없다면 일반 역할로 남을 수 있습니다. Manager의 Face Mesh·Skin Mesh를 먼저 지정하고 판정 근거를 확인하세요.
 :::
 
 이름 기반 추측을 없앤 것은 의도된 변경입니다. 이름이 `Face`라고 반드시 얼굴이 아니고 `Body`에 얼굴이 섞여 있을 수도 있는데, 추측이 맞을 때보다 틀릴 때의 비용이 훨씬 큽니다 — 얼굴 셰이딩이 엉뚱한 메시에 걸리면 원인을 찾기 어렵습니다.
@@ -112,6 +109,8 @@ MingToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지원 기�
 | `Regular` | 일반 셰이딩 | 공용 |
 
 → [밍툰 매니저](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계)
+
+표시상의 공용 역할은 내부 보고서에서 `Regular`로 기록될 수 있습니다. 일반 배포판에서도 재질 인스펙터의 역할 행으로 Face·Skin·Common을 직접 바꿀 수 있습니다. 아바타 전체 지정은 Manager에서 유지하세요.
 
 ---
 
@@ -150,8 +149,7 @@ source  converted  resolution  face  surfaceMode  renderQueue  cull
 | `resolution` | 원본을 어떻게 찾았는지 |
 | `face` | 얼굴 판정 결과 |
 | `surfaceMode` · `renderQueue` · `cull` | 렌더 상태가 원본과 맞는지 |
-| `surfaceLayers` ·
-ormalLayers` · `matcapLayers` | 레이어가 몇 개로 옮겨졌는지 |
+| `surfaceLayers` · `normalLayers` · `matcapLayers` | 레이어가 몇 개로 옮겨졌는지 |
 | `passes` · `keywords` | 컴파일되는 코드 모양 |
 | `mismatches` | 원본과 다른 항목 |
 | `losses` | 손실 항목 |

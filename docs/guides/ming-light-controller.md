@@ -55,6 +55,12 @@ Direct Descriptor 방식은 기존 FX·표현 메뉴·파라미터가 비어 있
 
 프리셋은 편집의 출발점입니다. 적용 후에도 각 항목을 수정할 수 있고, 변경한 구성은 사용자 설정이 됩니다. 적용은 Undo로 되돌릴 수 있습니다. 프리셋을 선택하는 것과 **적용**을 누르는 것을 구분하세요.
 
+### 연결 방식과 Write Defaults
+
+연결 방식 Auto는 사용 가능한 Modular Avatar → 지원되는 VRCFury provider → Direct Descriptor → Standalone 순서로 선택합니다. 이는 파라미터 프로필 Auto와 별개입니다. VRCFury를 명시적으로 선택했는데 지원 provider가 없으면 오류를 표시하며 다른 방식으로 조용히 바꾸지 않습니다.
+
+생성한 애니메이터 상태는 Write Defaults가 꺼진 상태로 작성합니다. Modular Avatar 연결은 아바타의 Write Defaults 방식에 맞추도록 요청하므로, 최종 병합 결과는 선택한 연결 방식에서도 확인해야 합니다. 기존 원본 FX의 Write Defaults를 일괄 변경하는 안내가 아닙니다.
+
 ### 설치하면 열리는 MingToon 기능 {#설치하면-열리는-mingtoon-기능}
 
 MingToon에서 MLC에 연결된 마스터 조정·가상 조명 편집과 Manager의 MLC 설정 진입점을 사용할 수 있습니다. 버튼이 계속 잠겨 있다면 Console의 컴파일 오류와 애드온 설치 상태를 확인하세요.

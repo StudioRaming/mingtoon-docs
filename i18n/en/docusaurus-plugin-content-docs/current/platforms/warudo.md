@@ -28,7 +28,7 @@ VRChat uses Unity **2022.3.22f1**, while Warudo uses **2021.3.45f2**. Keep separ
 
 ## Camera Depth Setup — WARUDO Depth Bridge {#warudo-depth-bridge}
 
-Screen-depth effects such as 2D Rim Light, 2D Shadow, Inner 2D Boundary, and SSAO require a depth texture from the Warudo camera. The 0.1.7 package includes the source for an independent Warudo plugin that provides it.
+Screen-depth effects such as 2D Rim Light, 2D Shadow, Inner 2D Boundary, and SSAO require a depth texture from the Warudo camera. The 0.1.8 package includes the source for an independent Warudo plugin that provides it.
 
 ### Installation
 
@@ -38,7 +38,7 @@ Screen-depth effects such as 2D Rim Light, 2D Shadow, Inner 2D Boundary, and SSA
 4. After Warudo reloads the Playground plugin, confirm `[MingToon Warudo Depth Bridge] installed` in the Console.
 
 :::important[This Is Not a Character-Prefab Component]
-This file is a global plugin that runs from the Warudo application's Playground. Do not place it in the character mod folder or add a component to the prefab. Instructions for the old `MingToonWarudoRoot` approach are retired in the 0.1.7 documentation.
+This file is a global plugin that runs from the Warudo application's Playground. Do not place it in the character mod folder or add a component to the prefab. Instructions for the old `MingToonWarudoRoot` approach are retired in the the current documentation.
 :::
 
 ### What It Provides
@@ -98,4 +98,4 @@ Warudo export also uses automatic build-time optimization. Unless you specifical
 
 ## Next
 
-[Automatic Build Optimization](/workflow/build-optimization) · [Depth-Based Effects](/guides/depth-effects) · [Light and Shadow](/guides/light-and-shadow)
+[Automatic Build Optimization](/workflow/build-optimization) · [Depth-Based Effects](/guides/depth-effects) · [Light and Shadow](/guides/light-and-shadow) · [Troubleshooting](/troubleshooting)

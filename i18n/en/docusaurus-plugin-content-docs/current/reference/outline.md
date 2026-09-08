@@ -6,10 +6,12 @@ sidebar_position: 7
 
 # Outline
 
-Normal Outline expands the mesh, so it works anywhere without camera depth. Inner 2D Edge, which reads screen depth to draw lines inside the surface, lives in the [Depth Effects](/reference/depth-effects) group.
+Normal Outline expands the mesh, so it does not require camera depth. Inner 2D Edge, which reads screen depth to draw lines inside the surface, lives in the [Depth Effects](/reference/depth-effects) group.
+
+Start with the guide: [Outline](/guides/outline)
 
 :::note
-The names and explanations on this page are pulled straight from what the MingToon inspector displays, so they always match the tool.
+This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
 :::
 
 ## Normal Outline

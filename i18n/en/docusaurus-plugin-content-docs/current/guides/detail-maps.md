@@ -10,6 +10,19 @@ sidebar_position: 7
 
 This covers the **Detail Maps** group in the Inspector — `Texture Layers` · `Normal Layers` · `MatCap Layers` · `Occlusion` · `Emission` · `Glitter` · `PBR Surface`. For a complete reference, see [Detail Maps Reference](/reference/detail-maps).
 
+## Base Surface: Tint and Opacity {#베이스-표면-틴트와-불투명도}
+
+Base Map colour and surface alpha are separate controls.
+
+- `Base Tint` combines with the Base Map, and `Tint Blend Mode` chooses Multiply, Normal, or another blend operation.
+- `Base Map Opacity` multiplies the Base Map alpha at the final surface step, including the tint. It ranges from 0–1 and changes overall surface opacity independently from tint blend strength. Base Map alpha is used by Cutout and Transparent surface modes.
+
+## Color Adjust Mask {#색조보정-범위-마스크}
+
+Turn on `Use Color Adjust Mask` to apply the Base HSVG adjustment only where the mask is white. Black keeps the authored colour, and gray blends the two results by that amount. When it is off, the adjustment covers the whole surface as before.
+
+`Mask` has its own `Tiling/Offset`, independent from the Base Map. Choose R, G, B, A, or Luma under `Mask Channel`, and use `Invert Mask` to reverse the black/white direction. This also lets several masks share one packed texture without sharing the Base Map transform.
+
 ## Common Pitfall in All Layer Sections
 
 :::danger[Increase Layer Count First]
@@ -19,6 +32,18 @@ The same result occurs when each layer's `Opacity` (or `Intensity` for MatCap) i
 :::
 
 Texture Layers, Normal Layers, and MatCap Layers all work the same way.
+
+### Layer Display Count and Shader Limits {#레이어-슬롯-표시-수와-실제-상한}
+
+The Inspector's `Layer Count` popup initially shows only 0–2 to keep the page compact. This is a popup display limit; it does not lower the shader's real limit.
+
+- Normal Layers support up to 5 slots.
+- MatCap Layers support up to 5 slots.
+- Surface Stack supports up to 10 slots.
+- Press `Use More Layers (up to N)` beside the popup to expose more choices.
+- A material already saved with three or more layers automatically shows its saved slots. A mixed selection also uses the full limit so it cannot hide a value on another selected material.
+
+Increasing the count accumulates texture, mask, and blend work.
 
 ---
 
@@ -76,6 +101,23 @@ Trim the highlight round with `MatCap Circle Radius`, aim the direction it comes
 
 In toon style, PBR is not "use or don't use" but rather **how much and where to apply it**. It's typically used only for metal accessories, enamel shoes, and wet lips.
 
+PBR Surface is controlled by the `Enable PBR Surface` master, which is off by default. When it is off, the metallic, smoothness, and direct-highlight controls in the PBR path are ignored while toon diffuse remains. `Reflection` is a separate module, so reflection-only materials can work without enabling PBR Surface.
+
+Key PBR ranges and defaults:
+
+| Control | Range / default |
+|---|---|
+| `Enable PBR Surface` | Off by default |
+| `Metallic` | 0–1 / 0 |
+| `Smoothness` | 0–1 / 0.5 |
+| `Specular Intensity` | 0–2 / 1 |
+| `Direct Highlight Intensity` | 0–4 / 1 |
+| `Environment Reflection Intensity` | 0–4 / 0 |
+| `Visible In Shadow` | 0–1 / 0 |
+| `Normal Map Influence` | 0–1 / 1 |
+| `Highlight Toon Amount` | 0–1 / 0 |
+| `Highlight Toon Threshold` | 0–1 / 0.5 |
+
 Adjustment order:
 
 1. **Workflow** — Choose `Metallic` (generates reflection color from metallic value) or `Specular` (specify reflection color directly). When Specular is selected, the metallic slider has no effect.
@@ -98,6 +140,16 @@ The channel and invert settings below **are completely ignored**, and only the m
 :::
 
 ---
+
+## Reflection {#반사}
+
+`Enable Reflection` is an independent master from `Enable PBR Surface`. It enables direct-light, additional-light, and environment reflection together with the reflection colour map and cubemap. When it is off, this module skips its reflection work and texture samples.
+
+- `Main Light Specular` applies reflection colour and mask to the main light's direct highlight.
+- `Additional Light Specular` applies it to point, spot, and other additional-light highlights.
+- `Environment Reflection` applies reflection probes, the skybox, and the material cubemap.
+
+When PBR Surface is also enabled, the shared PBR lobe owns the direct, additional, and environment results, so these three switches do not alter that lobe. With PBR disabled, the switches divide where the independent Reflection module is applied.
 
 ## Toon Specular {#툰-스페큘러}
 
@@ -145,6 +197,16 @@ Divides parts of one material into four RGBA regions and adjusts surface respons
 1. Enable `Use Region Mask`.
 2. Assign an RGBA texture to `Region Mask`.
 3. Adjust metallic, smoothness, environment reflection, and Toon Specular intensity/smoothness offsets for each R/G/B/A region.
+
+Each correction is stored independently for the four regions and defaults to 0.
+
+| Correction | Range / default |
+|---|---|
+| `Region Metallic Delta` | -1–1 / 0 |
+| `Region Smoothness Delta` | -1–1 / 0 |
+| `Region Reflection Delta` | -4–4 / 0 |
+| `Region Toon Specular Intensity Delta` | -8–8 / 0 |
+| `Region Toon Specular Smoothness Delta` | -1–1 / 0 |
 
 :::caution[Use with PBR or Toon Specular]
 Region Mask adjusts surface response. With both PBR and Toon Specular disabled there is nothing to adjust.
@@ -205,6 +267,8 @@ A second emission map, for when **different areas need different glow colours**.
 
 Layer 2 carries the same controls as layer 1 — map and colour adjustments, `Intensity`, `Visibility in Shadow`, `Map Alpha Masks Intensity`. An `Intensity` of 0 skips the layer entirely.
 
+`Enable Emission Layer 2` and its second-map detail rows are shown only in the Inspector's **Full mode**. Turning it on enables the authoring keyword `_MING_EMISSION_2`, so the compiled variant contains the fetch for the second map.
+
 :::caution[It reads one more texture]
 Unlike the alpha mask, layer 2 **reads a new texture.** Enable it only on materials that need it; materials that leave it off compile to the same cost as before.
 :::
@@ -261,6 +325,15 @@ The square of the shape map is laid **inside** the round particle. Fill it to th
 Turn on `Use Color Too` in the `Mask` group and the same mask texture is read as full RGBA: **alpha is where the sparkle appears and RGB tints the particles**. It costs no extra texture sample.
 
 While it is on, the `Channel` selector is fixed to alpha - once RGB leaves as colour, alpha is the only channel left to pick the region with.
+
+## Master Adjust and Performance Distance {#마스터-조정과-성능-거리}
+
+`Master Adjust` has two parts with different owners.
+
+- `Everything That Adds Light`, `Every Shadow`, `Final Output`, and the silhouette adjustment rows are authoring UI supplied by the separately sold **Ming Light Controller (MLC)** add-on. Without MLC, those rows are hidden in the Inspector, but shader rendering still uses values already stored on the material.
+- `Performance Distance (m)` and `Performance Distance Scale` are MingToon shader controls and remain editable without MLC. Their ranges and defaults are 1–50 / 5 m and 0–2 / 1; the actual performance boundary is their product.
+
+Heavy modules run more fully near the camera, stay on with a lower sample ceiling in the middle band, and switch off beyond the boundary so only base shading remains. MLC can drive `Performance Distance Scale` from its in-game menu when installed, but MLC is not required to edit the material value.
 
 ## Next
 

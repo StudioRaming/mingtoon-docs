@@ -10,7 +10,7 @@ sidebar_position: 14
 
 ## The Button You Just Pressed Requires a Separate Product
 
-Mask Maker is an Editor tool sold separately. It is not bundled with the MingToon 0.1.7 open beta package.
+Mask Maker is an Editor tool sold separately. It is not bundled with the MingToon open beta package.
 
 MingToon itself installs, compiles, and runs without Mask Maker. The side that **reads** masks is the MingToon shader; Mask Maker only handles the side that **creates** those masks.
 
@@ -76,25 +76,11 @@ A separately sold tool that creates face shadow maps driven by light direction. 
 
 ### Ming Light Controller {#ming-light-controller}
 
-An Editor-only add-on that builds the MingToon avatar expression menu (VRChat Expression Menu).
+MLC is a separate add-on that turns MingToon controls into VRChat expression menus. Check distribution instructions on the [official BOOTH product page](https://raming.booth.pm/items/8810346) and install it separately from MingToon. Mask Maker is not required to generate MLC menus.
 
-**Coming soon.** A purchase link will be posted here once it goes on sale.
+Installing MLC unlocks the linked Master Adjust and Virtual Light editing controls and the Manager entry point for MLC settings. Configure MLC on the avatar root, choose menu items, and check the current Inspector budget and validation results. Smooth/Compact/Auto costs depend on enabled features and Saved/Synced settings, so do not rely on fixed numbers. Auto does not guarantee unknown external costs.
 
-| Location | Locked feature |
-|---|---|
-| Inspector · topmost | `Master Adjust` section |
-| Inspector · Lighting | `Virtual Light` authoring row |
-| MingToon Manager | MLC install and attach actions |
-
-Choose the parameter profile according to the avatar's remaining VRChat budget.
-
-| Profile | Sync bits | Item count |
-|---|---|---|
-| Smooth | 84 | 22 |
-| Compact | 41 | 51 |
-| Auto | Picks one of the two above to fit the remaining budget | — |
-
-The root menu has 7 slots: `Reset`, `Final Output`, `Hue/Saturation`, `Photo Looks`, `Virtual Light`, `Master Adjust`, `Performance`.
+Reset, Final Output, Hue/Saturation, Photo Looks, Virtual Light, Master Adjust, and Performance are a starting configuration; the final menu depends on your settings. Edit Mode stores configuration; inspect generated results during Play Mode/upload processing. Follow [Using MLC](/guides/ming-light-controller) for dependencies and steps.
 
 #### What Works Without MLC
 

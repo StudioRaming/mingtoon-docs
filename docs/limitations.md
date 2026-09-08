@@ -8,7 +8,7 @@ sidebar_position: 91
 
 # 현재 제한과 릴리스
 
-MingToon `0.1.7` 공개 오픈 베타 기준입니다. BRP 본체의 현재 배포 범위를 설명합니다. URP는 현재 BRP 오픈 베타에 포함되지 않으며, 모든 상업 라이선스에 포함됩니다.
+MingToon `0.1.8` 공개 오픈 베타 기준입니다. BRP 본체의 현재 배포 범위를 설명합니다. URP는 현재 BRP 오픈 베타에 포함되지 않으며, 모든 상업 라이선스에 포함됩니다.
 
 ## 배포 전에 알아야 할 것
 
@@ -56,6 +56,8 @@ SHA-256 manifest가 함께 기록됩니다.
 
 1. Unity 버전과 대상 플랫폼 (VRChat PC / Warudo / 일반 Unity)
 2. 렌더 파이프라인 (BRP / URP 12.x)
-3. MingToon 버전 (`0.1.7`)
+3. MingToon 버전 (`0.1.8`)
 4. Console 로그 전문
 5. 재현 순서
+
+문제가 계속되면 [문제 해결](/troubleshooting)에서 먼저 증상을 찾아보세요.

@@ -10,7 +10,7 @@ sidebar_position: 14
 
 ## 今押したボタンは別売製品が必要です
 
-Mask Maker は別途販売される Editor ツールです。MingToon 0.1.7 オープンベータパッケージには同梱されません。
+Mask Maker は別途販売される Editor ツールです。MingToon オープンベータパッケージには同梱されません。
 
 MingToon 自体は Mask Maker がなくてもインストール・コンパイル・動作します。マスクを**読み取る**側が MingToon シェーダーで、Mask Maker はそのマスクを**作成する**側だけを担当します。
 
@@ -76,25 +76,11 @@ MingToon は Mask Maker、Face SDF Studio、Ming Light Controller をアセン�
 
 ### Ming Light Controller {#ming-light-controller}
 
-MingToon のアバター表現メニュー（VRChat Expression Menu）を作成する Editor 専用アドオンです。
+MLCはMingToonの調整項目をVRChat表情メニューにする別のアドオンです。[公式BOOTH商品ページ](https://raming.booth.pm/items/8810346)で配布案内を確認し、MingToon本体とは別にインストールします。Mask MakerはMLCメニュー生成の必須製品ではありません。
 
-**発売予定です。** 販売が開始されると、この場所に購入リンクが掲載されます。
+インストールすると、対応するマスター調整・仮想光源の編集とManagerのMLC設定入口を使用できます。アバタールートでMLCを設定し、メニュー項目を選んで現在のInspectorの予算・検証結果を確認してください。Smooth/Compact/Autoのコストは有効な機能とSaved/Synced設定で変わるため、固定値で判断しません。Autoも未確認の外部コストを保証しません。
 
-| 位置 | ロックされている機能 |
-|---|---|
-| インスペクター・最上部 | `マスター調整` セクション |
-| インスペクター・ライティング | `仮想キーライト` のオーサリング行 |
-| MingToon Manager | MLC のインストール・アタッチアクション |
-
-パラメータープロファイルは、アバターに残っている VRChat 予算に合わせて選びます。
-
-| プロファイル | 同期ビット | 項目数 |
-|---|---|---|
-| Smooth | 84 | 22 |
-| Compact | 41 | 51 |
-| Auto | 残りの予算に合わせて上の 2 つから 1 つを選択 | — |
-
-ルートメニューは 7 枠です：`Reset`、`Final Output`、`Hue/Saturation`、`Photo Looks`、`Virtual Light`、`Master Adjust`、`Performance`。
+Reset、Final Output、Hue/Saturation、Photo Looks、Virtual Light、Master Adjust、Performanceは推奨構成の出発点であり、最終メニューは設定によって変わります。Edit Modeでは設定を保存し、生成結果はPlay Mode・アップロード処理で確認します。依存関係と手順は[MLCの使い方](/guides/ming-light-controller)を参照してください。
 
 #### MLC なしでもできること
 

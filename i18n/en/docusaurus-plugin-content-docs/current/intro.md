@@ -82,7 +82,7 @@ MingToon connects public graphics techniques and adapted implementations to its 
 
 ## Document structure
 
-**Creating Looks** and **Property Reference** correspond 1:1 with the **All Effects** workflow groups in the MingToon inspector. You can find documentation by the section name you see on screen.
+Guides are organized by task, and references group related inspector controls. Display mode and installed add-ons can change visible groups or control locations; use inspector search as well.
 
 | Inspector Group | Document |
 |---|---|

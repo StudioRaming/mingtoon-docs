@@ -28,7 +28,7 @@ VRChat은 Unity **2022.3.22f1**, Warudo는 **2021.3.45f2**를 사용합니다. �
 
 ## 카메라 깊이 설치 — WARUDO Depth Bridge {#warudo-depth-bridge}
 
-2D 림라이트·2D 그림자·내부 2D 경계·SSAO 같은 화면 깊이 효과에는 Warudo 카메라의 깊이 텍스처가 필요합니다. 0.1.7 패키지는 이를 공급하는 독립 Warudo 플러그인 소스를 포함합니다.
+2D 림라이트·2D 그림자·내부 2D 경계·SSAO 같은 화면 깊이 효과에는 Warudo 카메라의 깊이 텍스처가 필요합니다. 0.1.8 패키지는 이를 공급하는 독립 Warudo 플러그인 소스를 포함합니다.
 
 ### 설치
 
@@ -38,7 +38,7 @@ VRChat은 Unity **2022.3.22f1**, Warudo는 **2021.3.45f2**를 사용합니다. �
 4. Warudo의 Playground 플러그인이 다시 로드된 뒤 Console에서 `[MingToon Warudo Depth Bridge] installed` 로그를 확인합니다.
 
 :::important[캐릭터 프리팹에 붙이는 컴포넌트가 아닙니다]
-이 파일은 Warudo 애플리케이션의 Playground에서 실행되는 전역 플러그인입니다. 캐릭터 모드 폴더에 넣거나 프리팹에 컴포넌트를 추가하지 마세요. 예전 `MingToonWarudoRoot` 방식의 안내는 0.1.7 문서에서 폐기됐습니다.
+이 파일은 Warudo 애플리케이션의 Playground에서 실행되는 전역 플러그인입니다. 캐릭터 모드 폴더에 넣거나 프리팹에 컴포넌트를 추가하지 마세요. 예전 `MingToonWarudoRoot` 방식의 안내는 현재 문서에서 폐기됐습니다.
 :::
 
 ### 무엇을 공급하나
@@ -98,4 +98,4 @@ Warudo 내보내기도 빌드 시 자동 최적화를 사용합니다. baked 재
 
 ## 다음
 
-[빌드 시 자동 최적화](/workflow/build-optimization) · [깊이 기반 효과](/guides/depth-effects) · [조명과 그림자](/guides/light-and-shadow)
+[빌드 시 자동 최적화](/workflow/build-optimization) · [깊이 기반 효과](/guides/depth-effects) · [조명과 그림자](/guides/light-and-shadow) · [문제 해결](/troubleshooting)
