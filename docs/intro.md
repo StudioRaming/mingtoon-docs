@@ -11,7 +11,7 @@ slug: /
 
 MingToon은 얼굴 그림자의 방향, 빛과 그림자가 겹치는 방식, 표면의 색과 질감을 함께 조절합니다. 얼굴·머리카락·의상의 룩을 재질별로 만들고, MingToon Manager에서 아바타 전체의 표현을 맞출 수 있습니다.
 
-[설치부터 시작하기](/getting-started/installation) · [기존 lilToon 아바타 변환하기](/workflow/liltoon-conversion) · [현재 제한 확인하기](/limitations)
+[Manager로 처음 시작하기](/getting-started/first-material) · [설치부터 시작하기](/getting-started/installation) · [기존 lilToon 아바타 변환하기](/workflow/liltoon-conversion) · [현재 제한 확인하기](/limitations)
 
 :::note[현재 공개 버전: 0.1.8 BRP 오픈 베타]
 현재 다운로드는 Built-in Render Pipeline(BRP) 본체 베타입니다. VRChat·Warudo·일반 Unity의 대상별 환경을 [설치 문서](/getting-started/installation)에서 확인하세요. VRChat 클라이언트 동작과 실제 업로드는 검증 중입니다. 현재 오픈 베타의 상업 이용은 금지됩니다.
@@ -19,15 +19,15 @@ MingToon은 얼굴 그림자의 방향, 빛과 그림자가 겹치는 방식, �
 [오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) · [BOOTH 상품](https://raming.booth.pm/items/8810209) · [라이선스와 포함 구성](/legal/beta-license)
 :::
 
+## 아바타 하나를 완성하는 작업 순서
+
+**컴포넌트 추가 → Face Mesh·Skin Mesh 지정 → 룩 프리셋 선택 → 색감 또는 기존값 선택 → 변환 → 빠른 설정.**
+
+Manager는 아바타 루트에 유지합니다. 재질 편집을 마친 뒤 VRC SDK 업로드 또는 WARUDO 모드 빌드를 실행하면 자동 최적화 베이크가 진행됩니다.
+
+[이 순서대로 따라 하기](/getting-started/first-material). MingToon으로 작업할 아바타 루트에 Manager를 항상 두세요. 의상만 편집할 때도 같습니다. Manager에서 업데이트도 확인합니다. **VCC로 설치했다면 MingToon 업데이트는 VCC에서 진행합니다.** Manager의 업데이트 안내를 이용할 때도 설치 경로를 먼저 확인하세요. 얼굴·맨살이 없는 의상은 해당 역할을 비워 두고 진행하세요.
+
 ## MingToon으로 만드는 표현
-
-### 빛의 방향에 맞춰 얼굴 그림자를 설계합니다
-
-얼굴 SDF는 얼굴에 그림자가 드러나는 형태를 정하는 텍스처입니다. MingToon의 Packed RGBA 방식은 **좌·우·상·하 네 방향을 한 장에 담아**, 빛이 옆에서 들어올 때와 위아래에서 들어올 때의 음영을 조절합니다. 얼굴 영역 마스크와 노멀 누름을 함께 사용해 얼굴에 적용할 범위를 정합니다.
-
-기존 단일 채널 SDF를 사용하는 호환 모드도 제공합니다. 이미 만든 SDF와 버텍스 데이터는 본체 재질에 사용할 수 있고, 제작 도구인 Face SDF Studio와 씬 뷰 페인트는 별도 애드온입니다.
-
-→ [얼굴 SDF 설정](/guides/face-sdf) · [애드온 구성](/guides/add-ons)
 
 ### 여러 그림자가 겹칠 때의 색과 경계를 다룹니다
 
@@ -53,16 +53,9 @@ MingToon은 얼굴 그림자의 방향, 빛과 그림자가 겹치는 방식, �
 
 → [빌드 시 자동 최적화](/workflow/build-optimization) · [셰이더 내부 구조](/internals/shader-structure)
 
-## 아바타 하나를 완성하는 작업 순서
-
-| 단계 | 할 일 | 문서 |
-|---|---|---|
-| 1. 준비 | 대상 플랫폼의 Unity 환경을 확인하고 설치합니다. | [설치](/getting-started/installation) |
-| 2. 재질 구성 | 기존 lilToon 재질을 변환하거나 첫 재질을 만듭니다. | [변환](/workflow/liltoon-conversion) · [첫 재질](/getting-started/first-material) |
-| 3. 역할과 룩 | Manager에서 얼굴·맨살 역할을 지정하고 그림자·색·질감을 맞춥니다. | [MingToon Manager](/workflow/character-manager) · [기본 설정](/guides/basics) |
-| 4. 확인과 빌드 | 깊이 효과의 조건, 외관, 애니메이션을 확인하고 대상 플랫폼의 빌드 절차를 따릅니다. | [최적화](/workflow/build-optimization) · [VRChat](/platforms/vrchat) |
-
 ## 본체와 추가 도구
+
+Face SDF Studio는 아직 미발매인 제작 도구이며, 아래 온보딩에 필요하지 않습니다.
 
 BRP 본체는 재질의 표현과 설정을 담당합니다. **URP는 현재 BRP 오픈 베타에 포함되지 않으며 모든 상업 라이선스에 포함됩니다.** Face SDF Studio와 Mask Maker 등의 제작 도구는 [애드온 안내](/guides/add-ons)에서 확인할 수 있습니다.
 

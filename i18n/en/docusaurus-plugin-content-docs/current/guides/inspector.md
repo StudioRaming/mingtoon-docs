@@ -6,6 +6,16 @@ sidebar_position: 1
 
 # Inspector Guide
 
+[Start with MingToon Manager](/getting-started/first-material)
+
+**Add the component → assign Face Mesh and Skin Mesh → choose a look → choose colours or existing values → convert → Quick Settings.**
+
+Keep Manager on the avatar root. After editing, uploading through VRC SDK or building the WARUDO mod automatically runs optimization baking.
+
+[Follow the steps](/getting-started/first-material). Always keep Manager on the avatar root, including when editing its outfit. Use Manager to check updates too. **If installed through VCC, update MingToon in VCC.** Check the installation method before following update guidance in Manager. Leave face and skin roles empty when the outfit has neither.
+
+Face SDF Studio is not yet released and is not required for this onboarding.
+
 **After reading this guide,** you will understand the MingToon inspector's view modes, sticky toolbar, group structure, and multi-material editing rules.
 
 ## Material Roles {#머티리얼-역할}

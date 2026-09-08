@@ -6,6 +6,16 @@ sidebar_position: 1
 
 # 인스펙터 사용법
 
+[Manager로 처음 시작하기](/getting-started/first-material)
+
+**컴포넌트 추가 → Face Mesh·Skin Mesh 지정 → 룩 프리셋 선택 → 색감 또는 기존값 선택 → 변환 → 빠른 설정.**
+
+Manager는 아바타 루트에 유지합니다. 재질 편집을 마친 뒤 VRC SDK 업로드 또는 WARUDO 모드 빌드를 실행하면 자동 최적화 베이크가 진행됩니다.
+
+[이 순서대로 따라 하기](/getting-started/first-material). MingToon으로 작업할 아바타 루트에 Manager를 항상 두세요. 의상만 편집할 때도 같습니다. Manager에서 업데이트도 확인합니다. **VCC로 설치했다면 MingToon 업데이트는 VCC에서 진행합니다.** Manager의 업데이트 안내를 이용할 때도 설치 경로를 먼저 확인하세요. 얼굴·맨살이 없는 의상은 해당 역할을 비워 두고 진행하세요.
+
+Face SDF Studio는 아직 미발매인 제작 도구이며, 아래 온보딩에 필요하지 않습니다.
+
 **이 문서를 읽으면** MingToon 인스펙터의 보기 모드, 고정 툴바, 그룹 구조와 다중 재질 편집 규칙을 이해할 수 있습니다.
 
 ## 머티리얼 역할 {#머티리얼-역할}

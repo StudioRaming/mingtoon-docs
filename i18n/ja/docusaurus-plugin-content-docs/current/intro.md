@@ -11,7 +11,7 @@ slug: /
 
 MingToon は顔の影の方向、光と影の重なり方、表面の色と質感を組み合わせて調整します。顔・髪・衣装をマテリアルごとに作り込み、MingToon Manager でアバター全体の見た目を整えられます。
 
-[インストールから始める](/getting-started/installation) · [lilToon アバターを変換する](/workflow/liltoon-conversion) · [現在の制限を確認する](/limitations)
+[MingToon Manager から始める](/getting-started/first-material) · [インストールから始める](/getting-started/installation) · [lilToon アバターを変換する](/workflow/liltoon-conversion) · [現在の制限を確認する](/limitations)
 
 :::note[現在の公開版：0.1.8 BRP オープンベータ]
 現在のダウンロードは Built-in Render Pipeline（BRP）本体のベータ版です。VRChat・Warudo・一般的な Unity 向けの環境は[インストールガイド](/getting-started/installation)で確認してください。VRChat クライアントでの動作と実際のアップロードは検証中です。現在のオープンベータは商用利用禁止です。
@@ -19,15 +19,15 @@ MingToon は顔の影の方向、光と影の重なり方、表面の色と質�
 [オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/) · [BOOTH 商品](https://raming.booth.pm/items/8810209) · [ライセンスと同梱構成](/legal/beta-license)
 :::
 
+## アバターを仕上げるまでの流れ
+
+**コンポーネント追加 → Face Mesh・Skin Mesh 指定 → ルック選択 → 色調または既存値選択 → 変換 → クイック設定。**
+
+Manager はアバタールートに残します。編集後に VRC SDK でアップロード、または WARUDO のモッドをビルドすると、自動最適化ベイクが実行されます。
+
+[順番に進める](/getting-started/first-material)。衣装だけを編集する場合も、Manager は常にアバタールートに配置してください。更新も Manager で確認します。 **VCC からインストールした場合、MingToon の更新は VCC で行います。** Manager の更新案内を使う前に、インストール方法を確認してください。顔・素肌のない衣装では、その役割を空欄にしてください。
+
 ## MingToon で作る表現
-
-### 光の方向に合わせて顔の影を設計する
-
-フェイス SDF は、顔に現れる影の形を決めるテクスチャです。MingToon の Packed RGBA 方式は**左・右・上・下の4方向を1枚に保存**し、横からの光と上下からの光に応じた陰影を調整します。フェイス領域マスクとノーマルプッシュを組み合わせて、適用する範囲を決めます。
-
-既存の単一チャンネル SDF を使う互換モードもあります。作成済みの SDF とバーテックスデータは本体マテリアルに使用でき、制作ツールの Face SDF Studio とシーンビューのペイントは別売りアドオンです。
-
-→ [フェイス SDF の設定](/guides/face-sdf) · [アドオン構成](/guides/add-ons)
 
 ### 影が重なる場所の色と境界を調整する
 
@@ -53,16 +53,9 @@ MingToon は顔の影の方向、光と影の重なり方、表面の色と質�
 
 → [ビルド時の自動最適化](/workflow/build-optimization) · [シェーダーの内部構造](/internals/shader-structure)
 
-## アバターを仕上げるまでの流れ
-
-| 段階 | 作業 | ガイド |
-|---|---|---|
-| 1. 準備 | 対象プラットフォームの Unity 環境を確認してインストールします。 | [インストール](/getting-started/installation) |
-| 2. マテリアル構成 | 既存の lilToon マテリアルを変換するか、最初のマテリアルを作ります。 | [変換](/workflow/liltoon-conversion) · [最初のマテリアル](/getting-started/first-material) |
-| 3. 役割とルック | Manager で顔・素肌の役割を指定し、影・色・質感を整えます。 | [MingToon Manager](/workflow/character-manager) · [基本設定](/guides/basics) |
-| 4. 確認とビルド | 深度効果の条件、外観、アニメーションを確認し、対象プラットフォームの手順に従います。 | [最適化](/workflow/build-optimization) · [VRChat](/platforms/vrchat) |
-
 ## 本体と追加ツール
+
+Face SDF Studio はまだ未発売で、この導入手順には必要ありません。
 
 BRP 本体はマテリアルの表現と設定を担当します。**URP は現在の BRP オープンベータに含まれず、すべての商用ライセンスに含まれます。** Face SDF Studio や Mask Maker などの制作ツールは[アドオン案内](/guides/add-ons)で確認できます。
 

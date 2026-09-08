@@ -6,6 +6,16 @@ sidebar_position: 1
 
 # 밍툰 매니저
 
+[Manager로 처음 시작하기](/getting-started/first-material)
+
+**컴포넌트 추가 → Face Mesh·Skin Mesh 지정 → 룩 프리셋 선택 → 색감 또는 기존값 선택 → 변환 → 빠른 설정.**
+
+Manager는 아바타 루트에 유지합니다. 재질 편집을 마친 뒤 VRC SDK 업로드 또는 WARUDO 모드 빌드를 실행하면 자동 최적화 베이크가 진행됩니다.
+
+[이 순서대로 따라 하기](/getting-started/first-material). MingToon으로 작업할 아바타 루트에 Manager를 항상 두세요. 의상만 편집할 때도 같습니다. Manager에서 업데이트도 확인합니다. **VCC로 설치했다면 MingToon 업데이트는 VCC에서 진행합니다.** Manager의 업데이트 안내를 이용할 때도 설치 경로를 먼저 확인하세요. 얼굴·맨살이 없는 의상은 해당 역할을 비워 두고 진행하세요.
+
+Face SDF Studio는 아직 미발매인 제작 도구이며, 아래 온보딩에 필요하지 않습니다.
+
 **이 문서를 읽으면** 아바타 하나를 처음부터 끝까지 — 변환 · 룩 · 메시 베이크 · 최적화 · 업로드 점검 — 한 컴포넌트에서 진행할 수 있습니다.
 
 재질 하나씩이 아니라 **아바타 단위 작업**은 전부 여기서 합니다.
@@ -27,7 +37,7 @@ Add Component에서 `MingToon Manager`를 찾아 붙여도 됩니다. **루트�
 | **Overview** | 현재 상태와 다음에 누를 버튼 확인 |
 | **Setup** | 변환 대상과 입력 범위 설정 |
 | **Look & Bake** | 변환 후 룩 재적용, 선택 범위 베이크·리베이크 |
-| **Upload** | 일반 자동 경로 점검, 현재 아바타 확인, 필요 시 advanced manual bake |`r
+| **Upload** | 일반 자동 경로 점검, 현재 아바타 확인, 필요 시 advanced manual bake |
 | **Optimize** | 자동 hook 상태와 중복 실행 여부 점검 |
 
 위쪽 상태 패널은 현재 재질 구성에 맞춰 다음 단계를 안내합니다. `텍스처 최적화`는 캐릭터가 아니라 프로젝트 전체에 적용되는 별도 설정입니다.
