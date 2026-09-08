@@ -5,84 +5,74 @@ sidebar_label: 소개
 slug: /
 ---
 
-:::note[오픈 베타 참여 안내]
-[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) · **BOOTH 상품:** <https://raming.booth.pm/items/8810209> — 다운로드 전에 현재 베타의 이용 조건과 지원 범위를 확인해 주세요.
-:::
-
-
-모든 상업 라이선스에는 URP 버전이 포함됩니다. Personal Streaming·Personal Creator의 Early Access Founders Edition에는 MLC가 포함되며, 정식 출시 이후 구성은 변경될 수 있습니다. 현재 오픈 베타의 상업 이용은 금지됩니다. [라이선스 및 포함 구성](/legal/beta-license)을 확인하세요.
-
 # MingToon
 
-**VRChat 아바타를 위한 캐릭터 툰 셰이더**입니다.
+**얼굴의 음영부터 옷의 질감, 실루엣까지 이어서 만드는 캐릭터 툰 셰이더.**
 
-MingToon 0.1.8은 **BRP 본체 오픈 베타**입니다. URP는 현재 BRP 오픈 베타에 포함되지 않으며, 모든 상업 라이선스에 포함됩니다. Ming Light Controller(MLC)는 별도로 설치하며 Personal Streaming·Personal Creator의 Early Access Founders Edition에 포함됩니다.
+MingToon은 얼굴 그림자의 방향, 빛과 그림자가 겹치는 방식, 표면의 색과 질감을 함께 조절합니다. 얼굴·머리카락·의상의 룩을 재질별로 만들고, MingToon Manager에서 아바타 전체의 표현을 맞출 수 있습니다.
 
-캐릭터를 그릴 때 실제로 손대는 것들 — 그림자가 지는 자리와 색, 얼굴에 코 그림자가 어떻게 놓이는지, 아웃라인 굵기, 역광에서 실루엣이 서는지 — 을 각각 따로 잡을 수 있게 나눠 두었습니다. 룩을 만드는 인스펙터부터 아바타에 실어 업로드하는 단계까지 한 벌로 들어 있습니다.
+[설치부터 시작하기](/getting-started/installation) · [기존 lilToon 아바타 변환하기](/workflow/liltoon-conversion) · [현재 제한 확인하기](/limitations)
 
-Built-in Render Pipeline(BRP) 기반이고, Warudo와 일반 Unity 프로젝트에서도 씁니다.
+:::note[현재 공개 버전: 0.1.8 BRP 오픈 베타]
+현재 다운로드는 Built-in Render Pipeline(BRP) 본체 베타입니다. VRChat·Warudo·일반 Unity의 대상별 환경을 [설치 문서](/getting-started/installation)에서 확인하세요. VRChat 클라이언트 동작과 실제 업로드는 검증 중입니다. 현재 오픈 베타의 상업 이용은 금지됩니다.
 
-## 다른 툰 셰이더와 무엇이 다른가
+[오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) · [BOOTH 상품](https://raming.booth.pm/items/8810209) · [라이선스와 포함 구성](/legal/beta-license)
+:::
 
-**빌드용 셰이더는 실제 사용 기능을 기준으로 만들어집니다.**
-필요한 기능으로 룩을 만든 뒤, 지원되는 빌드 최적화 경로에서 사용 여부와 애니메이션 의존성을
-분석해 필요한 기능을 유지한 전용 셰이더를 생성합니다. 제거된 기능의 연산은 빠지지만 실제
-비용은 남긴 기능과 아바타·월드에 따라 달라집니다.
-→ [빌드 시 자동 최적화](/workflow/build-optimization)
+## MingToon으로 만드는 표현
 
-**세 종류의 그림자를 조합합니다.**
-굴곡이 만드는 **형태 그림자**와 실시간 **그림자 투영**은 다른 셰이더에도 있습니다.
-MingToon에는 **2D 그림자**가 더 있습니다 — 카메라 깊이를 읽어 앞머리·손·소매가 몸 위에
-드리우는 그림자의 형태를 툰 스타일로 조정합니다. 셋이 겹쳐
-새까매지지 않게 한 색으로 모으는 통합 그림자도 함께 있습니다.
-→ [조명과 그림자](/guides/light-and-shadow) · [깊이 기반 효과](/guides/depth-effects)
+### 빛의 방향에 맞춰 얼굴 그림자를 설계합니다
 
-**같은 깊이 한 장으로 네 가지를 더 합니다.**
-2D 림라이트(2D 실루엣 선), 내부 2D 경계, 얇은 부위가 빛을 머금는 깊이 투과광, 접히는 곳을
-어둡게 하는 SSAO. 효과마다 필요한 깊이 샘플을 같은 카메라 깊이 텍스처에서 읽습니다. 새 포스트 프로세스 패스나 별도 카메라는 쓰지 않지만, 일부 환경에서는 깊이를 확보하는 보조 광원이 필요할 수 있습니다. 설정은 MingToon Manager와 깊이 기반 효과 문서에서 확인하세요. VRChat 클라이언트에서의 동작은 아직 검증 중입니다.
-→ [깊이 기반 효과](/guides/depth-effects)
+얼굴 SDF는 얼굴에 그림자가 드러나는 형태를 정하는 텍스처입니다. MingToon의 Packed RGBA 방식은 **좌·우·상·하 네 방향을 한 장에 담아**, 빛이 옆에서 들어올 때와 위아래에서 들어올 때의 음영을 조절합니다. 얼굴 영역 마스크와 노멀 누름을 함께 사용해 얼굴에 적용할 범위를 정합니다.
 
-**얼굴이 부속이 아니라 하나의 시스템입니다.**
-노멀 누름, 얼굴 영역 마스크, 방향성 SDF를 함께 사용합니다. Packed RGBA 얼굴 SDF는
-좌·우·상·하 네 방향을 한 장에 담아 수평·수직 조명에 따른 얼굴 음영을 조정합니다.
-기존 단일 채널 SDF를 사용하는 호환 모드도 있습니다. SDF를 굽는 Face SDF Studio와 씬 뷰 버텍스
-페인트는 별도 애드온에서 제공합니다. 이미 만든 SDF·버텍스 데이터는 본체 재질에 사용할 수 있습니다.
-→ [얼굴 SDF와 애드온](/guides/face-sdf) · [별매 애드온](/guides/add-ons)
+기존 단일 채널 SDF를 사용하는 호환 모드도 제공합니다. 이미 만든 SDF와 버텍스 데이터는 본체 재질에 사용할 수 있고, 제작 도구인 Face SDF Studio와 씬 뷰 페인트는 별도 애드온입니다.
 
-**인쇄물 느낌을 낼 수 있습니다.**
-그림자를 망점·선화로 찍는 스크린톤이 있고, 격자를 표면에 붙일지 화면에 고정할지
-고릅니다. 화면에 고정하면 캐릭터가 그 아래로 지나가는 팝아트 인쇄 느낌이 됩니다.
-→ [그림자 패턴](/guides/shadow-pattern)
+→ [얼굴 SDF 설정](/guides/face-sdf) · [애드온 구성](/guides/add-ons)
 
-**인게임에서 조절합니다 (MLC 별도 애드온).**
-Ming Light Controller를 별도로 설치하고 업로드 복제본에 적용하면 가상 라이트와 밝기·색 조정을 VRChat 표현 메뉴로 뺄 수 있습니다. Modular Avatar 경로는 기존 메뉴·파라미터·FX를 보존하도록 설계되어 있지만, 실제 업로드 성공은 아직 검증 중입니다. → [Ming Light Controller](/guides/ming-light-controller) · [VRChat](/platforms/vrchat)
+### 여러 그림자가 겹칠 때의 색과 경계를 다룹니다
 
-<details>
-<summary>그 밖에 들어 있는 것</summary>
+표면의 굴곡이 만드는 **형태 그림자**, 실시간 라이트의 **투영 그림자**, 카메라 깊이를 읽는 **2D 그림자**를 조합합니다. 앞머리·손·소매 주변의 음영을 만들고, 통합 그림자로 겹치는 부분의 색을 조정할 수 있습니다. 그림자 전체의 밝기와 색을 맞추는 조절도 함께 제공합니다.
 
-- **아웃라인** — 깊이 없이 어디서나 동작합니다. 씬 뷰 붓 페인트는 별도 Mask Maker 애드온이 필요합니다. → [아웃라인](/guides/outline)
-- **림 계열** — 림 라이트 · 림 셰이드 · 백라이트 · 프런트 라이트 · 그림자 내부 반사. → [림](/guides/rim)
-- **디테일** — 텍스처 · 노멀 · 맷캡 레이어, 하이브리드 PBR, 툰 스페큘러, 글리터, 이미션. → [디테일 맵](/guides/detail-maps)
-- **마스터 조정** — 빛을 더하는 것 전부 · 그림자 전부 · 최종 출력에 각각 밝기와 틴트. 씬이 바뀌면 여기서 한 번에 맞춥니다. → [기본 설정](/guides/basics)
-- **lilToon 변환** — 기존 아바타를 텍스처·마스크·아웃라인 폭 마스크째로 옮깁니다. → [lilToon 변환](/workflow/liltoon-conversion)
-- **밍툰 매니저** — 어느 슬롯이 얼굴이고 어디가 맨살인지 지정하고, 아바타 전체의 룩을 한 화면에서 다룹니다. → [밍툰 매니저](/workflow/character-manager)
+같은 카메라 깊이를 이용해 2D 림라이트, 내부 2D 경계, 깊이 투과광, SSAO를 더할 수 있습니다. 각각 실루엣, 내부 경계, 얇은 부위의 빛, 접촉부의 어두움을 다룹니다. **카메라 깊이가 확보되어야 하는 효과**이므로, 보이지 않을 때는 깊이 설정과 대상 환경부터 확인하세요. 환경에 따라 깊이 확보용 보조 광원이 필요할 수 있습니다.
 
-</details>
+→ [조명과 그림자](/guides/light-and-shadow) · [깊이 기반 효과와 설정 조건](/guides/depth-effects)
 
-## 작업 순서
+### 색·질감·반사를 층별로 쌓아 룩을 만듭니다
 
-**변환** → **역할 지정**(얼굴 · 맨살) → **룩** → **업로드**.
-기존 lilToon 아바타는 1단계부터, 새로 만드는 재질은 2단계부터 시작합니다.
+텍스처, 노멀, Matcap 레이어와 마스크로 적용 영역을 나눕니다. 피부의 색, 머리카락의 광택, 의상의 무늬를 따로 구성하고, 하이브리드 PBR·툰 스페큘러·글리터·이미션으로 필요한 표면 표현을 더할 수 있습니다.
 
-## 베타와 상업 사용
+색 보정과 전체 밝기·틴트 조절은 여러 재질의 분위기를 맞추는 데 사용합니다. 그림자 패턴은 망점과 선화 같은 인쇄 표현을 만들며, 패턴을 표면에 붙이거나 화면에 고정할 수 있습니다. 아웃라인과 림 계열을 함께 조절해 실루엣을 마무리합니다.
 
-현재 배포·상업 사용 조건은 [베타 및 상업 사용 안내](/legal/beta-license)에서 먼저 확인하세요.
+→ [디테일 맵](/guides/detail-maps) · [그림자 패턴](/guides/shadow-pattern) · [아웃라인](/guides/outline) · [림](/guides/rim)
 
-## 처음이라면
+### 편집한 재질을 빌드용 구성으로 연결합니다
 
-[설치](/getting-started/installation) → [첫 재질 만들기](/getting-started/first-material) → [인스펙터 사용법](/guides/inspector)
+룩을 만드는 단계에서는 필요한 기능을 조합합니다. 지원되는 빌드 최적화 경로에서는 기능 사용 여부와 애니메이션 의존성을 분석해 필요한 기능을 남긴 셰이더를 생성합니다. 베이크 경로는 텍스처에 담을 수 있는 색 정보와 조명·시점에 따라 계속 반응해야 하는 부분을 구분해 처리합니다.
 
-설치 문서 1절이 Unity 버전을 정합니다. 대상에 따라 다르고, 한 프로젝트로 VRChat과 Warudo를 겸할 수 없습니다.
+남기는 기능과 대상 아바타·월드에 따라 실제 비용과 결과가 달라집니다. **최적화 후에도 외관과 필요한 애니메이션을 확인하는 단계가 필요합니다.** 검증된 GPU 성능 수치는 현재 공개하지 않습니다.
+
+→ [빌드 시 자동 최적화](/workflow/build-optimization) · [셰이더 내부 구조](/internals/shader-structure)
+
+## 아바타 하나를 완성하는 작업 순서
+
+| 단계 | 할 일 | 문서 |
+|---|---|---|
+| 1. 준비 | 대상 플랫폼의 Unity 환경을 확인하고 설치합니다. | [설치](/getting-started/installation) |
+| 2. 재질 구성 | 기존 lilToon 재질을 변환하거나 첫 재질을 만듭니다. | [변환](/workflow/liltoon-conversion) · [첫 재질](/getting-started/first-material) |
+| 3. 역할과 룩 | Manager에서 얼굴·맨살 역할을 지정하고 그림자·색·질감을 맞춥니다. | [MingToon Manager](/workflow/character-manager) · [기본 설정](/guides/basics) |
+| 4. 확인과 빌드 | 깊이 효과의 조건, 외관, 애니메이션을 확인하고 대상 플랫폼의 빌드 절차를 따릅니다. | [최적화](/workflow/build-optimization) · [VRChat](/platforms/vrchat) |
+
+## 본체와 추가 도구
+
+BRP 본체는 재질의 표현과 설정을 담당합니다. **URP는 현재 BRP 오픈 베타에 포함되지 않으며 모든 상업 라이선스에 포함됩니다.** Face SDF Studio와 Mask Maker 등의 제작 도구는 [애드온 안내](/guides/add-ons)에서 확인할 수 있습니다.
+
+Ming Light Controller(MLC)는 별도로 설치하는 도구입니다. 업로드 복제본에 적용해 가상 라이트와 밝기·색 조절을 VRChat 표현 메뉴로 연결합니다. Modular Avatar 경로는 기존 메뉴·파라미터·FX를 보존하도록 설계되어 있으며, 실제 클라이언트 업로드는 검증 중입니다. Personal Streaming·Personal Creator의 Early Access Founders Edition에는 MLC가 포함되고, 정식 출시 이후 구성은 변경될 수 있습니다.
+
+→ [Ming Light Controller](/guides/ming-light-controller) · [라이선스와 포함 구성](/legal/beta-license)
+
+## 구현의 기반과 출처
+
+MingToon은 공개 그래픽 기법과 수정·차용한 구현을 자체 레이어·얼굴·깊이 효과·빌드 구조에 연결합니다. lilToon의 일부 UV·색 보정·글리터 계산과 NonToon의 일부 그림자 처리를 포함한 차용 범위, 원 저작권 및 라이선스는 [서드파티 차용 및 라이선스](/legal/third-party-credits)에서 확인할 수 있습니다.
 
 ## 어디부터 읽을까
 

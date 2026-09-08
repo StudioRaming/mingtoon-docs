@@ -5,97 +5,74 @@ sidebar_label: About
 slug: /
 ---
 
-:::note[Join the Open Beta]
-[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) · **BOOTH product:** <https://raming.booth.pm/items/8810209> — Review the current beta terms and supported environments before downloading.
-:::
-
-
-Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
-
 # MingToon
 
-**A character toon shader for VRChat avatars.**
+**A character toon shader connecting facial shading, clothing detail, and silhouette.**
 
-MingToon 0.1.8 is the **BRP core open beta**. URP is excluded from the current BRP Open Beta and included with every commercial license. Ming Light Controller (MLC) is installed separately and included in the Personal Streaming and Personal Creator Early Access Founders Editions.
+MingToon brings together the direction of facial shadows, the way light and shadow overlap, and the colour and texture of surfaces. Build the face, hair, and clothing material by material, then use MingToon Manager to adjust the look across the avatar.
 
-The things you actually reach for when drawing a character — where the shadows fall and what colour they are, how the nose shadow sits on a face, outline weight, whether the silhouette holds up in backlight — are separated so each can be set on its own. Everything from the inspector you build the look in to the step that puts it on an avatar and uploads it ships in one package.
+[Start with installation](/getting-started/installation) · [Convert a lilToon avatar](/workflow/liltoon-conversion) · [Check current limitations](/limitations)
 
-Built on the Built-in Render Pipeline (BRP); it also runs in Warudo and in general Unity projects.
+:::note[Current public version: 0.1.8 BRP Open Beta]
+The current download is the Built-in Render Pipeline (BRP) core beta. Check the [installation guide](/getting-started/installation) for the environment required by VRChat, Warudo, or general Unity use. VRChat client behaviour and successful upload are still being verified. Commercial use of the current Open Beta is prohibited.
 
-## What sets it apart from other toon shaders
+[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) · [BOOTH product](https://raming.booth.pm/items/8810209) · [Licenses and included tools](/legal/beta-license)
+:::
 
-**The build shader is created from the features actually used.**
-Author the look with the features you need. On a supported build optimization
-path, MingToon analyzes usage and animation dependencies and generates a shader
-that keeps the required features. Removed feature operations are omitted, but
-actual cost still depends on the features left, the avatar, and the world.
-→ [Automatic Optimization On Build](/workflow/build-optimization)
+## Build your character's look
 
-**Combine three kinds of shadow.**
-The **form shadow** curvature makes and real-time **shadow projection** exist
-elsewhere. MingToon adds the **2D shadow**: it reads camera depth so bangs,
-hands, and sleeves cast shapes across the body that you can adjust for a toon look.
-A unified shadow gathers all three into one colour so overlaps
-do not go black.
-→ [Light and Shadow](/guides/light-and-shadow) · [Depth Effects](/guides/depth-effects)
+### Design facial shadows for the light direction
 
-**Four more effects use the same camera depth texture.**
-2D rim light (the 2D silhouette line), inner 2D edge, depth translucency for thin
-parts holding light, and SSAO darkening creases and contact areas sample that
-texture as needed. There is no extra post-process pass or second camera. Some
-environments may need a depth-enabling assist light; check MingToon Manager and the Depth Effects guide. Its
-VRChat client behaviour is still unverified.
-→ [Depth Effects](/guides/depth-effects)
+A face SDF is a texture that defines the shape of shading on a face. MingToon's Packed RGBA format stores **left, right, up, and down in one texture**, letting you adjust shading for light from the sides and from above or below. A face region mask and normal compression help define where the treatment applies.
 
-**The face is a subsystem, not a slot.**
-Normal compression, a face region mask, and a directional SDF work together.
-Packed RGBA face SDF stores left, right, up, and down in one texture to adjust
-facial shading under horizontal and vertical lighting. A compatibility mode
-also accepts an existing single-channel SDF. Face SDF Studio and scene-view
-vertex paint are supplied as separate add-ons; existing SDF and vertex data can
-be assigned to core materials. → [Face SDF and add-ons](/guides/face-sdf) ·
-[Add-ons](/guides/add-ons)
+A compatibility mode supports existing single-channel SDFs. Existing SDF and vertex data can be used on core materials; the authoring tools Face SDF Studio and scene-view painting are separate add-ons.
 
-**It can look printed.**
-The screentone redraws shadow as halftone dots or line work, and you choose
-whether the lattice sticks to the surface or locks to the screen. Locked to the
-screen, the character slides underneath it - the overprinted, pop-art reading.
-→ [Shadow Pattern](/guides/shadow-pattern)
+→ [Face SDF setup](/guides/face-sdf) · [Add-on contents](/guides/add-ons)
 
-**Adjustable in game (MLC is a separate add-on).**
-With Ming Light Controller installed separately and applied to an upload clone,
-virtual light plus brightness and colour controls can be exposed through a VRChat
-expression menu. The Modular Avatar route is designed to preserve existing menu,
-parameter, and FX assets; successful client upload is still unverified. →
-[Ming Light Controller](/guides/ming-light-controller) · [VRChat](/platforms/vrchat)
+### Control colour and edges where shadows overlap
 
-<details>
-<summary>What else is in the box</summary>
+Combine **form shadows** from surface curvature, **cast shadows** from real-time lights, and **2D shadows** that read camera depth. Shape shading around bangs, hands, and sleeves, then use unified shadow controls to adjust the colour of overlapping areas. Overall shadow brightness and colour controls are also available.
 
-- **Outline** — works anywhere without depth. Scene-view brush painting requires the separate Mask Maker add-on. → [Outline](/guides/outline)
-- **The rim family** — rim light, rim shade, backlight, front light, shadow interior reflection. → [Rim](/guides/rim)
-- **Detail** — texture, normal, and matcap layers, hybrid PBR, toon specular, glitter, emission. → [Detail Maps](/guides/detail-maps)
-- **Master adjust** — a brightness and a tint on everything that adds light, on every shadow, and on the final output. A change of scene is one adjustment here. → [Basics](/guides/basics)
-- **lilToon conversion** — moves an existing avatar over, textures, masks, and outline width mask included. → [lilToon Conversion](/workflow/liltoon-conversion)
-- **MingToon Manager** — declare which slots are the face and which are bare skin, and work the whole avatar's look from one screen. → [MingToon Manager](/workflow/character-manager)
+The same camera depth supports 2D rim light, inner 2D edges, depth translucency, and SSAO. These handle silhouettes, internal edges, light through thin areas, and contact darkening respectively. **These effects require available camera depth.** If they are missing, check the depth setup and target environment first. Some environments may require a depth-enabling assist light.
 
-</details>
+→ [Light and Shadow](/guides/light-and-shadow) · [Depth Effects and requirements](/guides/depth-effects)
 
-## The order of work
+### Layer colour, texture, and reflection
 
-**Convert** → **assign roles** (face · bare skin) → **look** → **upload**.
-An existing lilToon avatar starts at step 1; a material you make from scratch
-starts at step 2.
+Texture, normal, and Matcap layers use masks to separate their areas of influence. Set up skin colour, hair highlights, and clothing patterns independently, then add hybrid PBR, toon specular, glitter, or emission where needed.
 
-## Beta and commercial use
+Colour correction and overall brightness and tint controls help bring several materials into the same mood. Shadow patterns create halftone or line-work effects, with patterns attached to the surface or fixed to the screen. Finish the silhouette with outline and rim controls.
 
-Check [Beta and commercial use](/legal/beta-license) for the current distribution and commercial-use conditions first.
+→ [Detail Maps](/guides/detail-maps) · [Shadow Pattern](/guides/shadow-pattern) · [Outline](/guides/outline) · [Rim](/guides/rim)
 
-## If this is your first time
+### Carry edited materials into a build configuration
 
-[Installation](/getting-started/installation) → [First Material](/getting-started/first-material) → [Using the Inspector](/guides/inspector)
+Combine the features needed while authoring the look. Supported build optimization paths analyze feature usage and animation dependencies to generate shaders that retain the required features. Baking separates colour information that can be stored in textures from responses that must continue to react to lighting and the view.
 
-Section 1 of the installation page settles the Unity version. It differs by target, and one project cannot serve both VRChat and Warudo.
+Actual cost and results depend on the retained features, avatar, and world. **Check appearance and required animations after optimization.** Verified GPU performance figures are not currently published.
+
+→ [Automatic Optimization On Build](/workflow/build-optimization) · [Shader Structure](/internals/shader-structure)
+
+## From setup to a finished avatar
+
+| Step | What to do | Guide |
+|---|---|---|
+| 1. Prepare | Check the target platform's Unity environment and install. | [Installation](/getting-started/installation) |
+| 2. Set up materials | Convert existing lilToon materials or create a first material. | [Conversion](/workflow/liltoon-conversion) · [First Material](/getting-started/first-material) |
+| 3. Assign roles and style | Use Manager to assign face and bare-skin roles, then adjust shadows, colour, and texture. | [MingToon Manager](/workflow/character-manager) · [Basics](/guides/basics) |
+| 4. Check and build | Check depth requirements, appearance, and animations, then follow the target platform's build workflow. | [Optimization](/workflow/build-optimization) · [VRChat](/platforms/vrchat) |
+
+## Core and additional tools
+
+The BRP core handles material rendering and settings. **URP is excluded from the current BRP Open Beta and included with every commercial license.** See [Add-ons](/guides/add-ons) for authoring tools such as Face SDF Studio and Mask Maker.
+
+Ming Light Controller (MLC) is installed separately. It applies to an upload clone and connects virtual light, brightness, and colour controls to VRChat expression menus. The Modular Avatar path is designed to preserve existing menus, parameters, and FX; successful client upload is still being verified. MLC is included in the Personal Streaming and Personal Creator Early Access Founders Editions, and contents may change after full release.
+
+→ [Ming Light Controller](/guides/ming-light-controller) · [Licenses and included tools](/legal/beta-license)
+
+## Implementation foundations and credits
+
+MingToon connects public graphics techniques and adapted implementations to its layer, face, depth-effect, and build structures. See [Third-Party Credits and Licenses](/legal/third-party-credits) for the adapted scope, original copyright, and licenses, including selected lilToon UV, colour-correction, and glitter calculations and selected NonToon shadow processing.
 
 ## Where to start
 
