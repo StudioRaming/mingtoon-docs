@@ -32,17 +32,15 @@ You can also find `MingToon Manager` in Add Component. **Attach it to the root b
 
 ## Inspector Layout
 
-| Tab | Next action |
+The three workspaces are **Get Started · Look & Bake · Optimize**.
+
+| Workspace | Task |
 |---|---|
-| **Start** | Current state, conversion target, conversion, and upload flow |
-| **Look & Bake** | Reapply looks after conversion; bake or rebake a selected scope and mesh channels |
-| **Optimize** | Build-time automatic optimization and texture-resolution caps |
+| Get Started | Assign Face/Skin, choose a factory look and color policy, convert or reapply to current materials, access MLC, build/upload and restore |
+| Look & Bake | Choose a conversion look or material settings preset, bake/rebake a scope, and edit mesh channels and details |
+| Optimize | Review automatic optimization and processing options |
 
-The status panel at the top recommends the next step for the current material composition. `Texture Optimization` is a separate, project-wide setting rather than a character setting.
-
-**Quick actions** and the **status panel** always remain at the top.
-
----
+The shared material-selection row above the tabs selects MingToon materials by role and is reachable from every workspace. For reapplication, also check **whole character / selected materials only**. Material settings presets target MingToon materials on this character. Follow the displayed distinction between global and per-character settings.
 
 ## Status Panel {#상태-패널}
 
@@ -70,7 +68,7 @@ After adding or removing clothing, press `Refresh Child Renderers`.
 
 ---
 
-## 1 · Convert {#1--변환}
+## Get Started: conversion {#1--변환}
 
 ### Which shaders can be converted
 
@@ -120,15 +118,15 @@ Per-slot judgment is disabled. **Select one at a time.**
 
 ### Look preset on convert {#변환-시-룩-프리셋}
 
-Fill in look values at the same time as conversion.
+In Get Started, choose the **factory look** first, then the **color preset**. A new selection defaults to **Basic Toon** and **Neutral**; a remembered choice may appear instead. There is no None option to skip the look.
 
-:::danger[The preset overwrites ~500 values]
-`The preset overwrites ~500 numeric and color values in the material immediately after conversion. If you've edited values before converting, choose None.`
-:::
+The application order is **look → color**. Choose **Keep Existing Values** in the color selector to retain source-oriented colors. This still applies the look, then restores colors and the protected source-shadow band strength, boundaries, widths, and blending values. It does not reproduce every source-shader behavior or property exactly.
 
-Materials judged as faces receive face values, those judged as skin receive skin values, and the rest get common values. SDF framing · bake results · texture presence — values that differ per character — are not in the preset.
+For converted materials, use **Apply to Current MingToon Materials** in Get Started. Check the whole-character or selected-material scope first. With no current MingToon materials there is no reapplication target; convert first.
 
-`Last applied by this editor` is shown, so you can check what was applied later.
+The look routes values by Face/Skin/Common role and retains protected character-specific values such as surface identity and face proxies. The displayed last-applied preset is an editor-local record, not permanent material history.
+
+If conversion fails for some materials, their original slots remain while other convertible materials continue. Read failure, exclusion and loss entries and inspect the remaining original slots. If only the look/color stage fails after a valid conversion, the converted values from before that stage are retained and an error is recorded. Some successful materials do not mean the entire operation succeeded.
 
 ### Mesh Channels to Bake Together {#함께-구울-메쉬-채널}
 
@@ -158,7 +156,7 @@ You can check converted pairs with `Audit Converted Pairs`. Finding original rec
 
 ---
 
-## 2 · Setup
+## Shared targets and runtime settings {#2--setup}
 
 | Item | Task |
 |---|---|
@@ -188,7 +186,7 @@ Warudo mode retains the MingToon Manager component. Do not attach a separate Run
 
 ---
 
-## 3 · Details
+## Look & Bake: details {#3--details}
 
 `Standalone Mesh Bakes` are needed only when the stage 1 conversion checkbox was disabled or that bake failed. Already-filled channels are rejected unless `Overwrite` is enabled.
 
@@ -198,9 +196,7 @@ Warudo mode retains the MingToon Manager component. Do not attach a separate Run
 
 ## Look / Face
 
-Apply look presets to converted materials.
-
-If not yet converted, `No MingToon materials yet. Run step 1 conversion first, then apply look presets here.` is shown.
+Use **Apply to Current MingToon Materials** in Get Started to reapply the chosen look and color policy. The **Conversion look** surface in Look & Bake also provides reapplication. **Material settings preset** is a separate type: check its target and included values. Selecting an option and pressing Apply are separate actions.
 
 ### Face SDF
 
@@ -214,7 +210,7 @@ When installed, this button opens Studio. When it is not installed, purchase and
 
 ---
 
-## 5 · Ship {#4--출하}
+## Build and upload preparation {#4--출하}
 
 ### Optimization / Bake
 
@@ -225,7 +221,7 @@ VRChat upload and Warudo mod builds automatically apply [Automatic Build Optimiz
 `Lightweight Shader Bake (Editor Only)` · `Preserve Animatable Passes (Safe)`
 
 :::caution[Texture Optimization Is a Project-Wide Setting]
-Upload resolution caps by slot type—including base, normal, and mask—and `Reviewed Texture Rewrites On Build (Opt-In)` are stored in Editor preferences. They are not stored in a Scene or Prefab and apply to every character shipped from this project. Only upload copies change; source textures are preserved.
+Options marked global apply to every project and character in this Unity Editor environment. Distinguish them from per-character options. Follow the current option descriptions for texture processing and source preservation.
 :::
 
 → [Manual Bake and Restore](/workflow/bake-and-restore)
@@ -299,16 +295,8 @@ Warudo mode follows **a separate script-retaining** rule. This panel only checks
 
 ## Full workflow summary
 
-```text
-Attach MingToon Manager to the root
-        ↓
-1 · Convert      Assign roles → choose conversion look → convert → review loss report
-        ↓
-2 · Setup        Refresh scope → Editor/Warudo preview and face direction
-        ↓
-3 · Details      Reapply look → connect SDF → bake UV4/UV8 only when needed
-        ↓
-5 · Ship         Texture caps → upload preparation → automatic/manual bake → readiness check → upload
-```
+Avatar-root Manager → Face/Skin assignment → factory look → Neutral or Keep Existing Values → convert or Apply to Current MingToon Materials → inspect results and scope → quick settings/mesh baking as needed → SDK upload/WARUDO build
+
+Existing MingToon materials can receive the selection without conversion again. Check failed/excluded slots, the target scope and build settings before upload.
 
 No separate Runtime Root is required for Warudo export. If you use depth effects, install [Warudo Depth Bridge](/platforms/warudo#warudo-depth-bridge) in Playground.

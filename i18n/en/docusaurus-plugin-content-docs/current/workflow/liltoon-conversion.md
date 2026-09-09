@@ -35,15 +35,15 @@ When a shader is missing, its hidden defaults and full keyword semantics cannot 
 
 ## Procedure
 
-1. Add MingToon Manager to the Avatar Root, including when you are editing clothing or an outfit.
-2. Check source schemas and excluded slots in the conversion preview.
-3. Explicitly assign Face / Skin / Common roles per slot. Auto trusts only direct flags stored in the source.
-4. Choose the conversion look preset and output path.
-5. Check existing UV4 and UV8 ownership and overwrite options.
-6. Run conversion and read every item in the loss report.
-7. Compare the actual character with the source in both SceneView and GameView.
+1. Keep the Manager on the avatar root, including outfit-only work.
+2. In Get Started, assign Face/Skin targets and review slot roles and exclusions.
+3. Choose a factory look first; a new selection defaults to Basic Toon.
+4. Choose Neutral or another color preset. Choose Keep Existing Values to retain source colors and protected shadow values.
+5. If needed, open advanced conversion settings and check output paths, UV4/UV8 ownership and overwrite options.
+6. Convert and read success, failure, exclusion and loss results. For already converted materials, use Apply to Current MingToon Materials.
+7. Compare with the source in SceneView/GameView and inspect roles, surface states, textures and shadows.
 
-Slots with no one-to-one equivalent—such as particles, refraction, fur/shell, audio response, flipbook, overlay, and auxiliary passes—intentionally keep their source materials.
+If conversion fails for some materials, their original slots remain while other convertible materials continue. Read failure, exclusion and loss entries and inspect the remaining original slots. If only the look/color stage fails after a valid conversion, the converted values from before that stage are retained and an error is recorded. Some successful materials do not mean the entire operation succeeded.
 
 ## Check After Conversion
 
@@ -54,7 +54,7 @@ Slots with no one-to-one equivalent—such as particles, refraction, fur/shell, 
 - Modules are enabled on materials that need PBR, Emission, Outline, or Alpha Mask.
 - Face / Skin roles and face proxies are correct.
 
-Even after reapplying a look preset, 0.1.8 preserves character-specific values such as Surface identity and the face proxy.
+Reapplication runs **look → color**. Keep Existing Values restores existing colors and protected shadow band strength, boundaries, widths and blending after the look. Protected character-specific values such as surface identity and face proxies are retained; exact source appearance is not guaranteed.
 
 ## Restore Sources
 
