@@ -118,4 +118,3 @@ Managerの状態が`復元が必要`のままなら`Restore After Interrupted Bu
 - 固定配布アセット：[手動Bakeと復元](/workflow/bake-and-restore)
 - プラットフォームチェックリスト：[VRChat](/platforms/vrchat)・[Warudo](/platforms/warudo)
 - エラーがある場合：[トラブルシューティング](/troubleshooting)
-- エラーがある場合：[トラブルシューティング](/troubleshooting)

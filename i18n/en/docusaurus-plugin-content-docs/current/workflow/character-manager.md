@@ -156,7 +156,7 @@ You can check converted pairs with `Audit Converted Pairs`. Finding original rec
 
 ---
 
-## Shared targets and runtime settings {#2--setup}
+## Shared targets and runtime settings {#2--설정}
 
 | Item | Task |
 |---|---|
@@ -186,7 +186,7 @@ Warudo mode retains the MingToon Manager component. Do not attach a separate Run
 
 ---
 
-## Look & Bake: details {#3--details}
+## Look & Bake: details {#3--세부-설정}
 
 `Standalone Mesh Bakes` are needed only when the stage 1 conversion checkbox was disabled or that bake failed. Already-filled channels are rejected unless `Overwrite` is enabled.
 

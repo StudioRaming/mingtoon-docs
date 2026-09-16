@@ -20,7 +20,7 @@ In Manager's Setup, assign the face mesh as **Face** and bare-skin meshes as **S
 
 When converting only an outfit without a face or bare skin, leave those assignments empty. If one Renderer combines skin and clothing, separate their slot roles and keep clothing as **Regular**. Roles determine which materials receive the preset's face, skin, or common values.
 
-→ [Role assignment details](/workflow/character-manager)
+→ [Role assignment details](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계)
 
 ## 3. Choose a look preset
 
@@ -68,4 +68,4 @@ See [Automatic Optimization On Build](/workflow/build-optimization) and your tar
 
 ## Continue from here
 
-[Quick Settings and search](/guides/inspector) · [Light and Shadow](/guides/light-and-shadow) · [Detail Maps](/guides/detail-maps) · [Manager details](/workflow/character-manager)
+[Quick Settings and search](/guides/inspector#빠른-설정) · [Light and Shadow](/guides/light-and-shadow) · [Detail Maps](/guides/detail-maps) · [Manager details](/workflow/character-manager)

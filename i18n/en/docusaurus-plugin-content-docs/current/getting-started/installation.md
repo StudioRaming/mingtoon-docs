@@ -13,6 +13,8 @@ Every commercial license includes the URP version. MLC is included in the Early 
 
 # Installation
 
+MingToon 0.1.10 Open Beta core targets BRP. URP is excluded from this BRP Open Beta and included with every commercial license.
+
 **After this guide**, you will have a Unity project with MingToon imported without errors.
 
 ## 1. Match Unity version first

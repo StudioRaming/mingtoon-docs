@@ -13,7 +13,7 @@ MingToon は顔の影の方向、光と影の重なり方、表面の色と質�
 
 [MingToon Manager から始める](/getting-started/first-material) · [インストールから始める](/getting-started/installation) · [lilToon アバターを変換する](/workflow/liltoon-conversion) · [現在の制限を確認する](/limitations)
 
-:::note[現在の公開版：0.1.8 BRP オープンベータ]
+:::note[現在の公開版：0.1.10 BRP オープンベータ]
 現在のダウンロードは Built-in Render Pipeline（BRP）本体のベータ版です。VRChat・Warudo・一般的な Unity 向けの環境は[インストールガイド](/getting-started/installation)で確認してください。VRChat クライアントでの動作と実際のアップロードは検証中です。現在のオープンベータは商用利用禁止です。
 
 [オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/) · [BOOTH 商品](https://raming.booth.pm/items/8810209) · [ライセンスと同梱構成](/legal/beta-license)

@@ -10,8 +10,8 @@ sidebar_position: 9
 
 인스펙터의 **아웃라인** 그룹 — `노멀 아웃라인` 을 다룹니다. 전체 항목 목록은 [아웃라인 레퍼런스](/reference/outline)에 있습니다.
 
-:::note[내부 2D 경계는 여기 없습니다]
-표면 안쪽 선을 그리는 `내부 2D 경계`는 화면 깊이를 읽기 때문에 **깊이 기반 효과** 그룹에 있습니다. → [깊이 기반 효과](/guides/depth-effects#내부-2d-경계)
+:::note[이너 아웃라인은 여기 없습니다]
+표면 안쪽 선을 그리는 `이너 아웃라인`은 화면 깊이를 읽기 때문에 **깊이 기반 효과** 그룹에 있습니다. → [깊이 기반 효과](/guides/depth-effects#내부-2d-경계)
 :::
 
 ## 노멀 아웃라인 {#노멀-아웃라인}
@@ -19,12 +19,12 @@ sidebar_position: 9
 메시를 뒤집어 확장하는 방식입니다. Built-in에서는 추가 패스 한 번으로 그려져 **카메라 깊이 텍스처를 읽지 않습니다.** URP에서는 활성 Renderer Data에 `MingToon Outline Renderer Feature`를 설치해야 합니다. 따라서 VRChat 일반 화면처럼 깊이를 못 쓰는 곳에서도 선택할 수 있지만, 파이프라인 설정과 머티리얼 게이트가 갖춰져야 합니다.
 
 :::note[URP Renderer Feature와 레거시 게이트]
-URP 프로젝트에서는 사용하는 모든 Renderer Data에 `MingToon Outline Renderer Feature`를 설치하고 켜 두세요: `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`. 기존 재질에 남은 `_OutlineEnabled` (`Outline Master`)도 호환성 게이트라서, 이 값이 꺼져 있으면 `Classic Hull`을 켜도 선이 그려지지 않습니다.
+URP 프로젝트에서는 사용하는 모든 Renderer Data에 `MingToon Outline Renderer Feature`를 설치하고 켜 두세요: `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`. 기존 재질에 남은 `_OutlineEnabled` (`Outline Master`)도 호환성 게이트라서, 이 값이 꺼져 있으면 `노멀 아웃라인 사용`을 켜도 선이 그려지지 않습니다.
 :::
 
 ### 기본 설정 {#기본-설정}
 
-1. `클래식 헐 사용`을 켭니다.
+1. `노멀 아웃라인 사용`을 켭니다.
 2. `폭 모드`를 고릅니다.
 
 | 폭 모드 | 동작 | 권장 |
@@ -57,12 +57,12 @@ URP 프로젝트에서는 사용하는 모든 Renderer Data에 `MingToon Outline
 **버텍스 컬러가 검게 임포트된 메시**에서 `VertexRed`를 고른 경우입니다. 압력이 0이면 폭도 0이 됩니다. 압력 소스를 바꾸거나 버텍스 컬러를 확인하세요.
 :::
 
-`헐 압력 대비`는 굵기 차이를 키웁니다. **0이면 압력이 완전히 무시**되고, 1이 원본, 높일수록 얇은 곳이 더 얇아집니다.
+`압력 대비`는 굵기 차이를 키웁니다. **0이면 압력이 완전히 무시**되고, 1이 원본, 높일수록 얇은 곳이 더 얇아집니다.
 
-`Hull 외곽선에 적용` / `Inner Edge 외곽선에 적용`으로 압력을 어느 쪽에 반영할지 정합니다.
+`노멀 아웃라인에 적용` / `이너 아웃라인에 적용`으로 압력을 어느 쪽에 반영할지 정합니다.
 
-:::caution[`Inner Edge 외곽선에 적용`은 노멀 아웃라인을 꺼도 작동합니다]
-이 토글은 노멀 아웃라인 그룹 안에 있지만 [내부 2D 경계](/guides/depth-effects#내부-2d-경계)에 계속 작용합니다. 버텍스 컬러가 검은 메시에서 켜져 있으면 내부 2D 경계가 통째로 사라집니다.
+:::caution[`이너 아웃라인에 적용`은 노멀 아웃라인을 꺼도 작동합니다]
+이 토글은 노멀 아웃라인 그룹 안에 있지만 [이너 아웃라인](/guides/depth-effects#내부-2d-경계)에 계속 작용합니다. 버텍스 컬러가 검은 메시에서 켜져 있으면 이너 아웃라인이 통째로 사라집니다.
 :::
 
 ### 씬 뷰에서 직접 칠하기 {#씬-뷰에서-직접-칠하기}

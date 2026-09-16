@@ -20,7 +20,7 @@ Manager の Setup で、顔メッシュを **Face**、素肌メッシュを **Sk
 
 顔や素肌のない衣装だけを変換する場合は、指定を空欄にできます。1つの Renderer に素肌と衣装が混在する場合はスロットで分け、衣装を **Regular** にします。役割はプリセットの顔用・肌用・共通の値を適用する対象を決めます。
 
-→ [役割指定の詳細](/workflow/character-manager)
+→ [役割指定の詳細](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계)
 
 ## 3. ルックプリセットを選択
 
@@ -68,4 +68,4 @@ Manager の Setup で、顔メッシュを **Face**、素肌メッシュを **Sk
 
 ## 次に読むガイド
 
-[クイック設定と検索](/guides/inspector) · [ライトとシャドウ](/guides/light-and-shadow) · [ディテールマップ](/guides/detail-maps) · [Manager の詳細](/workflow/character-manager)
+[クイック設定と検索](/guides/inspector#빠른-설정) · [ライトとシャドウ](/guides/light-and-shadow) · [ディテールマップ](/guides/detail-maps) · [Manager の詳細](/workflow/character-manager)

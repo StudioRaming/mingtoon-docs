@@ -11,10 +11,10 @@ sidebar_position: 4
 변환 직후 이런 줄이 나옵니다.
 
 ```text
-MingToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지원 기능 5건. 원본은 그대로 보존했습니다.
+MingToon 변환 완료: 슬롯 12개, 머티리얼 8개, 명시적 손실 5건. 원본은 그대로 보존했습니다.
 ```
 
-**`손실·미지원 기능` 건수가 0이 아니면 아래를 보세요.**
+**`명시적 손실` 건수가 0이 아니면 아래를 보세요.**
 
 ---
 
@@ -54,7 +54,7 @@ MingToon 변환 완료: 슬롯 12개, 머티리얼 8개, 손실·미지원 기�
 | 코드 | 원본 기능 | 대안 |
 |---|---|---|
 | `AnimatedUvRequiresBake` | UV 스크롤/회전 애니메이션 | 텍스처를 미리 굽거나 애니메이션으로 재현 |
-| `DecalRequiresBake` | 데칼 | 텍스처 레이어로 다시 배치 |
+| `DecalRequiresBake` | 데칼 | 추가 텍스처로 다시 배치 |
 | `DissolveRequiresBake` | 디졸브 | 알파 마스크 + 애니메이션으로 재현 |
 | `SecondEmissionRequiresBake` | 2번째 이미션 | 이미션 맵에 합쳐 굽기 |
 | `EmissionMaskRequiresBake` | 이미션 마스크 | 이미션 맵에 합쳐 굽기 |
@@ -116,20 +116,20 @@ Auto는 지원 어댑터가 읽을 수 있는 **원본 재질의 얼굴 플래�
 
 ## 원본 추적 (provenance)
 
-변환 재질은 **원본 재질의 GUID를 임포터 userData에 기록**합니다. `원본 머티리얼 복구`가 이걸로 동작합니다.
+변환 재질은 **원본 재질의 GUID를 임포터 userData에 기록**합니다. `변환 되돌리기 (MingToon 이전 재질로)`가 이걸로 동작합니다.
 
 기록이 깨지는 경우:
 
 | 감사 메시지 | 의미 | 결과 |
 |---|---|---|
-| `importer userData written by another tool` | 다른 툴이 이미 userData를 쓰고 있어서, **데이터를 파괴하지 않으려고 GUID를 찍지 않았습니다** | `원본 복구` 사용 불가 |
+| `importer userData written by another tool` | 다른 툴이 이미 userData를 쓰고 있어서, **데이터를 파괴하지 않으려고 GUID를 찍지 않았습니다** | `변환 되돌리기` 사용 불가 |
 | `Source material name is ambiguous; reconvert once to stamp its GUID.` | 이름만으로는 원본을 특정할 수 없음 | 한 번 다시 변환하면 GUID가 찍힙니다 |
 | `The source material could not be resolved.` | 원본을 찾지 못함 | 원본이 삭제·이동됨 |
 
 복구 결과에 `정확한 원본 GUID가 없거나 원본을 찾지 못한 슬롯: N개` 로 집계됩니다.
 
 :::tip[다른 툴과 함께 쓴다면]
-MingToon은 **남의 userData를 덮어쓰지 않습니다.** 대신 추적 기능을 포기합니다. 원본 복구가 필요하면 변환 전에 그 툴의 userData 사용 여부를 확인하세요.
+MingToon은 **남의 userData를 덮어쓰지 않습니다.** 대신 추적 기능을 포기합니다. 변환 되돌리기가 필요하면 변환 전에 그 툴의 userData 사용 여부를 확인하세요.
 :::
 
 ---
@@ -166,7 +166,7 @@ source  converted  resolution  face  surfaceMode  renderQueue  cull
 2. **텍스처 ST** (Tiling / Offset)
 3. **AO**
 4. **표면 모드** — 특히 머리카락이 컷아웃으로 왔는지
-5. **얼굴 슬롯 판정** — 위 판정 근거 표
+5. **얼굴 재질 판정** — 위 판정 근거 표
 6. **레이어 개수** — 원본의 2nd/3rd 표면이 몇 번 레이어로 왔는지
 
 ## 관련 문서

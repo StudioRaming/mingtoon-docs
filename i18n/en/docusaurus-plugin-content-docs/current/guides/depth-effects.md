@@ -29,7 +29,7 @@ It's pointless to adjust width or intensity while these messages appear.
 Although it looks like an outline, it reads screen depth, so it belongs **in this group, not the outline group**. It's common to look for it in outlines and not find it.
 :::
 
-## One Depth Texture, Separate Effects {#one-depth-texture-separate-effects}
+## One Depth Texture, Separate Effects {#깊이-한-장-효과는-각각}
 
 The effects on this page read the **same camera depth texture** supplied by the active camera. Each module toggle only decides whether that module's result is composited; it does not create depth for another module. Check each module's toggle, master, and strength first; if no effects are visible or results differ between cameras, check the camera and pipeline's depth availability.
 

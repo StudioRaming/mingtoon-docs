@@ -13,7 +13,7 @@ MingToon brings together the direction of facial shadows, the way light and shad
 
 [Start with MingToon Manager](/getting-started/first-material) · [Start with installation](/getting-started/installation) · [Convert a lilToon avatar](/workflow/liltoon-conversion) · [Check current limitations](/limitations)
 
-:::note[Current public version: 0.1.8 BRP Open Beta]
+:::note[Current public version: 0.1.10 BRP Open Beta]
 The current download is the Built-in Render Pipeline (BRP) core beta. Check the [installation guide](/getting-started/installation) for the environment required by VRChat, Warudo, or general Unity use. VRChat client behaviour and successful upload are still being verified. Commercial use of the current Open Beta is prohibited.
 
 [Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) · [BOOTH product](https://raming.booth.pm/items/8810209) · [Licenses and included tools](/legal/beta-license)

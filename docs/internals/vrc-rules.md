@@ -117,7 +117,7 @@ MingToon은 모바일 셰이더 타깃이 아니고 자동 변환 경로도 제�
 
 코드의 `CanAvatarForceMainCameraDepth = false`는 아바타가 호스트 카메라의 깊이를 일괄 보장하지 못한다는 기준입니다. Photo Camera, 월드 설정과 다른 깊이 공급 조건을 구분해 확인하세요. 깊이가 있어도 큐·카메라 깊이 참여·품질·거리 설정에 따라 효과가 달라질 수 있습니다.
 
-Manager의 `업로드 시 깊이 라이트 싣기` 옵션을 켜면 업로드 복제본에 보조 Directional Light를 추가합니다. 설치 버전과 기존 아바타 설정에 따라 옵션 상태가 다를 수 있으니 실제 값을 확인하세요. Avatar Safety, 월드와 광원 설정에 영향을 받으며 모든 사용자 화면에서 깊이를 보장하지 않습니다. [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)를 먼저 읽고 본인 화면·미러·Photo Camera를 비교하세요.
+Manager의 `빌드 시 깊이 라이트 싣기` 옵션을 켜면 업로드 복제본에 보조 Directional Light를 추가합니다. 설치 버전과 기존 아바타 설정에 따라 옵션 상태가 다를 수 있으니 실제 값을 확인하세요. Avatar Safety, 월드와 광원 설정에 영향을 받으며 모든 사용자 화면에서 깊이를 보장하지 않습니다. [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)를 먼저 읽고 본인 화면·미러·Photo Camera를 비교하세요.
 
 ## 실무 결론
 

@@ -118,4 +118,3 @@ If Manager status continues to show `Restore Required`, run `Restore After Inter
 - Fixed distribution assets: [Manual Bake and Restore](/workflow/bake-and-restore)
 - Platform checklists: [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)
 - For errors: [Troubleshooting](/troubleshooting)
-- For errors: [Troubleshooting](/troubleshooting)

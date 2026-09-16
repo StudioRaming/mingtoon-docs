@@ -102,4 +102,4 @@ Animation dependencyと`ベイク除外`条件は引き続き検査しますが�
 
 ## 次へ
 
-[ビルド時の自動最適化](/workflow/build-optimization)・[VRChat](/platforms/vrchat)・[Warudo](/platforms/warudo)・[トラブルシューティング](/troubleshooting)・[トラブルシューティング](/troubleshooting)
+[ビルド時の自動最適化](/workflow/build-optimization)・[VRChat](/platforms/vrchat)・[Warudo](/platforms/warudo)・[トラブルシューティング](/troubleshooting)

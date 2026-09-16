@@ -51,18 +51,18 @@ The toolbar remains at the top while you scroll down the inspector.
 
 The colored navigation bar below the toolbar represents the position of each workflow group. Select a color segment to jump to that group.
 
-## Full Setup Workflow Groups {#전체-설정의-워크플로-그룹}
+## Quick Navigation Groups {#전체-설정의-워크플로-그룹}
 
-| Order | Group | Main Sections | Documentation |
+The Full Setup top bar currently shows six quick-navigation groups. Basic Settings, Screen-space Effects, and Advanced Rendering continue as separate groups and are distinct from these six quick-navigation entries.
+
+| Order | Quick Navigation Label | Main Sections | Documentation |
 |---|---|---|---|
-| 1 | **Basic Setup** | Master Adjustment · Surface Rendering · Lighting | [Basic Setup](/guides/basics) · [Light and Shadow](/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때) |
-| 2 | **Detail Maps** | Surface Maps · Normal · MatCap · Emission · Occlusion · Glitter | [Detail Maps](/guides/detail-maps) |
-| 3 | **Shadow** | Shadow Color · Shaped Shadow · Shadow Projection · Pattern | [Light and Shadow](/guides/light-and-shadow) |
-| 4 | **Character Expression** | Face Shading · Character Height | [Character Expression](/guides/character) |
-| 5 | **PBR** | PBR Surface · Toon Specular · Region Masks | [Detail Maps](/guides/detail-maps#pbr-표면) |
-| 6 | **Depth-Based Effects** | Master · 2D Rim · 2D Translucency · 2D Shadow · SSAO · Inner Outline | [Depth-Based Effects](/guides/depth-effects) |
-| 7 | **Rim** | Rim Shade · Rim Light · Front/Back Light · Inner Reflection | [Rim](/guides/rim) |
-| 8 | **Advanced** | Stencil · Rendering Options | [Property Reference](/reference/basics) |
+| 1 | **Basic** | Base Surface · Additional Textures · Alpha & Cutout | [Basic Setup](/guides/basics) |
+| 2 | **Shadows** | Form Shadow · Shadow Projection · Shadow Color · Screentone · Occlusion · Rim Shade | [Light and Shadow](/guides/light-and-shadow) |
+| 3 | **Emission** | Emission · Glitter | [Detail Maps](/guides/detail-maps) |
+| 4 | **Material & Gloss** | Normal Maps · MatCap · PBR · Reflection · Toon Specular | [Detail Maps](/guides/detail-maps) |
+| 5 | **Rim & Fill Lights** | Rim Light · Backlight · Shadow Interior Reflection · Front Light | [Rim](/guides/rim) |
+| 6 | **Face & Outlines** | Normal Outline · Face/Hair Shading · Character Height Gradient | [Character Expression](/guides/character) |
 
 ## Overall Effect and Section Masters {#전체-효과--가장-위의-마스터-스위치}
 

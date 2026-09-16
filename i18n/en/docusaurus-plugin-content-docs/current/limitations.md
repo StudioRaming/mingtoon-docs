@@ -8,7 +8,7 @@ Every commercial license includes the URP version. MLC is included in the Early 
 
 # Current Limitations and Release
 
-Based on MingToon `0.1.8`.
+Based on MingToon `0.1.10`.
 
 ## What to know before deployment
 
@@ -19,7 +19,7 @@ Based on MingToon `0.1.8`.
 - URP support scope is limited to **Unity 2021.3 + URP 12.x**, and VRChat does not use URP.
 - 2D rim light · 2D shadow · inner 2D edge **depend on the host providing camera depth**. On regular VRChat player screens, avatars cannot force depth.
 - lilToon conversion is an **interop tool** and does not mathematically replicate results from other shaders.
-- Current distribution is **source** not DLL-obfuscated product.
+- The BRP core installed through VCC is a source package; the BOOTH installer is a separate DLL distribution path. Both paths point to the same BRP core version.
 
 ## Validation you must pass yourself
 
@@ -56,10 +56,8 @@ When reporting, including these speeds up reproduction:
 
 1. Unity version and target platform (VRChat PC / Warudo / general Unity)
 2. Render pipeline (BRP / URP 12.x)
-3. MingToon version (`0.1.8`)
+3. MingToon version (`0.1.10`)
 4. Full Console log
 5. Steps to reproduce
-
-If the problem continues, start with [Troubleshooting](/troubleshooting).
 
 If the problem continues, start with [Troubleshooting](/troubleshooting).

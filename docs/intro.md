@@ -13,7 +13,7 @@ MingToon은 얼굴 그림자의 방향, 빛과 그림자가 겹치는 방식, �
 
 [Manager로 처음 시작하기](/getting-started/first-material) · [설치부터 시작하기](/getting-started/installation) · [기존 lilToon 아바타 변환하기](/workflow/liltoon-conversion) · [현재 제한 확인하기](/limitations)
 
-:::note[현재 공개 버전: 0.1.8 BRP 오픈 베타]
+:::note[현재 공개 버전: 0.1.10 BRP 오픈 베타]
 현재 다운로드는 Built-in Render Pipeline(BRP) 본체 베타입니다. VRChat·Warudo·일반 Unity의 대상별 환경을 [설치 문서](/getting-started/installation)에서 확인하세요. VRChat 클라이언트 동작과 실제 업로드는 검증 중입니다. 현재 오픈 베타의 상업 이용은 금지됩니다.
 
 [오픈 베타 참여 안내](https://studioraming.github.io/mingtoon-site/ko/download/) · [BOOTH 상품](https://raming.booth.pm/items/8810209) · [라이선스와 포함 구성](/legal/beta-license)

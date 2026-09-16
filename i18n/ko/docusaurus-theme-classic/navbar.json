@@ -15,16 +15,16 @@
     "message": "패치노트",
     "description": "Navbar item with label 패치노트"
   },
-  "item.label.v0.1.9": {
-    "message": "v0.1.9",
-    "description": "Navbar item with label v0.1.9"
-  },
   "item.label.Official website": {
     "message": "공식 사이트",
-    "description": "Navbar link to the official website"
+    "description": "Navbar item with label Official website"
   },
   "item.label.BOOTH": {
     "message": "BOOTH",
-    "description": "Navbar link to the BOOTH store page"
+    "description": "Navbar item with label BOOTH"
+  },
+  "item.label.v0.1.10": {
+    "message": "v0.1.10",
+    "description": "Navbar item with label v0.1.10"
   }
 }

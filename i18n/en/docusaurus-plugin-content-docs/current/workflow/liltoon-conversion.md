@@ -62,4 +62,4 @@ Reapplication runs **look → color**. Keep Existing Values restores existing co
 
 ## Next
 
-[MingToon Manager](/workflow/character-manager) · [Automatic Build Optimization](/workflow/build-optimization) · [Troubleshooting](/troubleshooting) · [Troubleshooting](/troubleshooting)
+[MingToon Manager](/workflow/character-manager) · [Automatic Build Optimization](/workflow/build-optimization) · [Troubleshooting](/troubleshooting)

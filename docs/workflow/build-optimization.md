@@ -29,7 +29,7 @@ sidebar_position: 2
 
 ### VRChat 아바타에서 추가되는 처리 {#vrchat-추가-처리}
 
-- `Depth Availability = Auto`를 그대로 보존합니다. Force On / Force Off도 작성자 지정값을 유지합니다. `업로드 시 깊이 라이트 싣기`가 켜져 있을 때만 업로드 복사본에 깊이 라이트를 추가하며 재질 값은 바꾸지 않습니다. 실행 전 Manager의 옵션 상태를 확인하세요.
+- `Depth Availability = Auto`를 그대로 보존합니다. Force On / Force Off도 작성자 지정값을 유지합니다. `빌드 시 깊이 라이트 싣기`가 켜져 있을 때만 업로드 복사본에 깊이 라이트를 추가하며 재질 값은 바꾸지 않습니다. 실행 전 Manager의 옵션 상태를 확인하세요.
 - 얼굴 노멀을 **업로드 복사본 Mesh**의 UV7에 굽습니다. Face SDF가 UV7을 소유하거나 텍스처 Face Area Mask가 필요한 Renderer는 동일한 결과를 위해 Live 경로를 유지합니다.
 - 프로젝트에서 설정한 베이스·노멀·마스크 등 슬롯 종류별 텍스처 해상도 상한을 업로드 복사본에 적용합니다.
 - VRC Light Volumes 변형을 아바타 업로드에 자동 포함합니다.
@@ -71,13 +71,13 @@ VRChat 훅은 Modular Avatar·VRCFury 같은 도구가 재질을 처리한 뒤 �
 
 `Auto`는 바인딩된 카메라 깊이 텍스처와 VRChat Photo Camera 상태를 카메라마다 직접 읽습니다. 업로드 훅은 이 값을 다시 쓰지 않으므로 Auto는 Auto로, Force On / Force Off는 작성자가 고른 값 그대로 출하됩니다. Force On은 자동 판정이 못 보는 호스트 깊이를 작성자가 보증할 때만 사용하세요.
 
-`업로드 시 깊이 라이트 싣기`가 켜져 있으면 업로드 복사본에 그림자를 켠 Directional Light를 추가해 카메라가 실제 depth buffer를 만들게 하며, 재질은 Auto로 남습니다. 이 옵션의 현재 상태를 Manager에서 확인하고, 켜져 있으면 성능·월드 조명 비용을 고려하세요. → [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)
+`빌드 시 깊이 라이트 싣기`가 켜져 있으면 업로드 복사본에 그림자를 켠 Directional Light를 추가해 카메라가 실제 depth buffer를 만들게 하며, 재질은 Auto로 남습니다. 이 옵션의 현재 상태를 Manager에서 확인하고, 켜져 있으면 성능·월드 조명 비용을 고려하세요. → [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)
 
 미러 안전 차단은 별도입니다. Force On이어도 미러가 다른 카메라의 깊이를 읽지 않도록 깊이 모듈을 끕니다. → [VRChat 깊이](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 
-## 텍스처 최적화 {#텍스처-최적화}
+## 텍스처 해상도 상한 {#텍스처-최적화}
 
-밍툰 매니저의 `텍스처 최적화`는 프로젝트 전체 설정입니다. 씬·프리팹이 아니라 Editor 환경설정에 저장되고, 이 프로젝트에서 출하하는 모든 캐릭터에 적용됩니다.
+밍툰 매니저의 `텍스처 해상도 상한 (업로드 시)`은 프로젝트 전체 설정입니다. 씬·프리팹이 아니라 Editor 환경설정에 저장되고, 이 프로젝트에서 출하하는 모든 캐릭터에 적용됩니다.
 
 ### 슬롯별 해상도 상한
 
@@ -111,7 +111,7 @@ VRChat 훅은 Modular Avatar·VRCFury 같은 도구가 재질을 처리한 뒤 �
 
 셰이더 스왑과 텍스처 재작성은 디스크 저널을 사용해 다음 도메인 리로드에서 복구합니다. 얼굴 노멀 업로드 bake는 build clone 파괴가 정상 종료 경로이고, 살아 있는 공유 재질이 있으면 원래 float·keyword를 대상별로 복원하고 저장합니다.
 
-매니저의 상태가 계속 `복원 필요`라면 `Restore After Interrupted Build`를 실행하고 Console의 항목별 실패를 확인하세요.
+다음 도메인 리로드 뒤에도 작업용 재질이나 텍스처가 원래대로 돌아오지 않았다면 `Restore After Interrupted Build`를 실행하고 Console의 항목별 실패를 확인하세요.
 
 ## 다음
 

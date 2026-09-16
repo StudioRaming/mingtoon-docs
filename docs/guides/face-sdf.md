@@ -49,7 +49,7 @@ Packed RGBA는 **R=왼쪽 · G=오른쪽 · B=위 · A=아래**의 네 방향을
 :::caution[UV7 소유권은 하나뿐입니다]
 얼굴 노멀은 편집 중 Live이며 VRChat 업로드 복사본에만 자동 베이크됩니다. Face SDF가 `Baked Front UV7`을 사용하면 SDF가 UV7을 소유하고 업로드 얼굴 노멀 베이크는 해당 Renderer를 건너뜁니다.
 
-예전 tangent-normal UV7이 남은 재질에서 `Baked Front UV7`을 선택하면 좌표를 잘못 읽습니다. `Base Texture UV (Legacy)`로 되돌리거나, 해당 맵과 함께 준비된 올바른 UV7 payload가 있을 때만 `Baked Front UV7`을 선택하세요. 필요하면 밍툰 매니저의 `얼굴 노멀 실시간으로 되돌리기`를 실행합니다. → [메시 UV 베이크](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
+예전 tangent-normal UV7이 남은 재질에서 `Baked Front UV7`을 선택하면 좌표를 잘못 읽습니다. `Base Texture UV (Legacy)`로 되돌리거나, 해당 맵과 함께 준비된 올바른 UV7 payload가 있을 때만 `Baked Front UV7`을 선택하세요. 필요하면 밍툰 매니저의 `구운 얼굴 노멀 해제`를 실행합니다. → [메시 UV 베이크](/guides/mesh-bakes#얼굴-프론트뷰-노멀-uv7)
 :::
 
 ## 준비된 맵을 Inspector에 연결하기 {#face-sdf-studio-작업-순서}
@@ -61,7 +61,7 @@ Face SDF Studio 없이도 준비한 맵을 직접 사용할 수 있습니다.
 3. `SDF 맵 형식`에서 `Packed RGBA` 또는 `Single Channel Mirrored U`를 고릅니다.
 4. `얼굴 SDF 맵`에 준비한 텍스처를 할당합니다. Packed RGBA는 RG를 좌우, BA를 상하 방향에 사용하고, Single Channel은 R을 좌우에 미러링해 사용합니다.
 5. `SDF 좌표`에서 `Base Texture UV (Legacy)`를 고릅니다. 맵과 함께 올바른 정면 투영 UV7 payload를 이미 준비한 경우에만 `Baked Front UV7`을 선택합니다.
-6. `좌우 영향`·`상하 영향`·`SDF 그림자량`을 조정합니다. Single Channel에서는 상하 영향이 사용되지 않습니다.
+6. `좌우 영향`·`상하 영향`·`SDF 그림자 양`을 조정합니다. Single Channel에서는 상하 영향이 사용되지 않습니다.
 7. `경계 이동`과 `경계 부드러움`을 실제 아바타 조명에서 맞춥니다.
 8. 좌우와 상하 조명을 각각 움직여 맵의 네 방향이 뒤바뀌지 않았는지 확인합니다.
 

@@ -62,4 +62,4 @@ MingToon Managerの`元のマテリアルを復元`は、記録された元GUID�
 
 ## 次へ
 
-[MingToon Manager](/workflow/character-manager)・[ビルド時の自動最適化](/workflow/build-optimization)・[トラブルシューティング](/troubleshooting)・[トラブルシューティング](/troubleshooting)
+[MingToon Manager](/workflow/character-manager)・[ビルド時の自動最適化](/workflow/build-optimization)・[トラブルシューティング](/troubleshooting)
