@@ -1,65 +1,123 @@
 ---
 id: liltoon-conversion
 title: lilToon Material Conversion
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # lilToon Material Conversion
 
-:::tip[Do the Actual Work in MingToon Manager]
-Manage Face / Skin / Common roles, conversion looks, output paths, source restoration, and the loss report in one place. → [MingToon Manager](/workflow/character-manager#1--변환)
+> This page is for anyone moving a lilToon avatar to MingToon.
+> It covers what conversion carries over, what it cannot, and what to check afterwards. It takes about 15 minutes.
+
+## What is this
+
+Conversion reads the source material and creates a new MingToon authoring material.
+The source material file is not deleted and stays as it is.
+Only the Renderer slots switch to the new material.
+
+What conversion carries over:
+
+- Base color and textures, HSVG, normals, emission, occlusion, PBR, MatCap
+- 2nd and 3rd layers and their masks
+- Render states such as stencil, render queue, visible faces, and surface mode
+
+If the source holds real data, the PBR, emission, outline, and alpha mask modules are turned on too.
+Features that cannot be carried over are recorded in the loss report as `lossy` or `unsupported`.
+
+:::caution[The look will not become identical]
+The two shaders differ in their formulas and in what their features mean.
+Conversion is a tool that creates a starting point, not a cloning tool.
 :::
 
-## What Conversion Does and Does Not Do
+## When to use it
 
-- Preserves source materials and creates new authoring MingToon materials.
-- Moves base color and texture, HSVG, normals, emission, occlusion, PBR, MatCap, 2nd/3rd layers, and masks where equivalents exist.
-- Preserves stencil, render queue, Cull, and surface states such as Opaque / Cutout / Fade / Premultiply.
-- Enables PBR, Emission, Surface Stack, Outline, and Alpha Mask modules when the source contains actual data for them.
-- Records unmatched features as `lossy` or `unsupported` in the loss report.
+- When moving a whole avatar made with lilToon
+- When reviving an avatar that turned pink because the shader files are missing
+- When moving only some materials first to compare the result
 
-:::caution[An Identical Look Is Not Guaranteed]
-The two shaders use different formulas and feature semantics. Conversion is an interoperability tool that creates a starting point, not a mathematical replica.
+## Try it in 30 seconds
+
+1. Select the MingToon Manager on the avatar root.
+2. Find **2. Choose look → Convert** on the **Get Started** tab.
+3. Press **Convert Child Materials to MingToon**.
+
+You succeeded when the result line shows a converted slot count.
+If it is 0, see [Slots that are not converted](/workflow/character-manager#변환되지-않는-슬롯).
+
+## How to turn it on
+
+1. Attach Manager to the avatar root. Keep it on the root even when moving only an outfit.
+2. Assign the face and bare skin meshes in **1. Assign face & skin renderers**.
+3. Pick **Look Preset On Convert** in **2. Choose look → Convert**.
+4. Pick **Color Preset** in the same place.
+5. Pick **Keep Existing Values** under color to keep the source colors.
+6. Press **Convert Child Materials to MingToon** on the same card.
+7. Read the succeeded, excluded, failed, and loss items in the result.
+
+If you already have MingToon materials, use **Apply to Current MingToon Materials**.
+
+![A lilToon avatar before conversion next to the MingToon avatar after conversion](/img/placeholder.png)
+<!-- CAPTURE: workflow/liltoon-conversion-01-before-after.png | 같은 아바타 전신을 변환 전 lilToon과 변환 후 MingToon으로 나란히 렌더한 2분할 | 1200x700 -->
+
+:::note[The look is applied first]
+The look preset lays down every value, and the color preset puts color on top of it.
+Keep Existing Values does not skip the look; it restores the source colors afterwards.
 :::
 
-## Recover and Convert Missing Shader Materials {#missing-shader}
+If some materials fail, the rest are still processed.
+Do not read the presence of successful materials as overall success.
+Failed slots keep their source materials attached.
 
-0.1.8 can convert pink materials whose shader file is missing by reading serialized property names and values. It recognizes stored patterns from NiloToon, lilToon, and Unity Standard families and shows the evidence for that classification in the preview.
+## Recovery conversion for Missing Shader materials {#missing-shader}
 
-When a shader is missing, its hidden defaults and full keyword semantics cannot all be recovered. After conversion, inspect these items in particular:
+You can also convert materials that turned pink because the shader file is missing.
+It reads the stored property names and values to identify the NiloToon, lilToon, or Unity Standard family.
+The basis for that identification is shown in the conversion preview.
 
-- Surface Mode, Blend, Alpha Clip, and Cutoff
-- Cull, Render Queue, and Stencil
-- Whether Emission, PBR, and Outline are enabled
-- Mask channels and inversion
+On this route, the hidden defaults and keyword meanings of the original shader cannot all be recovered.
+Check the four items below yourself after converting.
 
-## Procedure
+1. **Surface Mode** and **Alpha Cutoff**
+2. **Visible Faces**, the render queue, and stencil
+3. Whether the emission, PBR, and outline modules are on
+4. Mask channels and inversion
 
-1. Keep the Manager on the avatar root, including outfit-only work.
-2. In Get Started, assign Face/Skin targets and review slot roles and exclusions.
-3. Choose a factory look first; a new selection defaults to Basic Toon.
-4. Choose Neutral or another color preset. Choose Keep Existing Values to retain source colors and protected shadow values.
-5. If needed, open advanced conversion settings and check output paths, UV4/UV8 ownership and overwrite options.
-6. Convert and read success, failure, exclusion and loss results. For already converted materials, use Apply to Current MingToon Materials.
-7. Compare with the source in SceneView/GameView and inspect roles, surface states, textures and shadows.
+## Checking after conversion
 
-If conversion fails for some materials, their original slots remain while other convertible materials continue. Read failure, exclusion and loss entries and inspect the remaining original slots. If only the look/color stage fails after a valid conversion, the converted values from before that stage are retained and an error is recorded. Some successful materials do not mean the entire operation succeeded.
+![The material Inspectors before and after conversion, side by side, comparing surface mode and textures](/img/placeholder.png)
+<!-- CAPTURE: workflow/liltoon-conversion-02-slot-check.png | 원본 재질과 변환된 MingToon 재질의 Inspector를 나란히 열어 표면 모드·텍스처·타일링을 대조한 2분할 | 1200x700 -->
 
-## Check After Conversion
+- Does the Renderer use the new MingToon material, with the source asset still present
+- Do opaque, cutout, semi-transparent, and transparent give the same result as the source
+- Are the render queue, visible faces, and stencil as intended
+- Are the texture tiling and offset, channels, and inversion the same
+- Are PBR, emission, outline, and alpha mask on where they are needed
+- Are the face and skin roles and the face proxy correct
 
-- Renderers use the new authoring MingToon materials and source assets remain.
-- Opaque / Cutout / Transparent and Blend results match.
-- Render Queue, Cull, and Stencil are intentional.
-- Texture Tiling / Offset, channels, and inversion match.
-- Modules are enabled on materials that need PBR, Emission, Outline, or Alpha Mask.
-- Face / Skin roles and face proxies are correct.
+How to read the loss report is in [Reading the Conversion Report](/internals/conversion-internals).
 
-Reapplication runs **look → color**. Keep Existing Values restores existing colors and protected shadow band strength, boundaries, widths and blending after the look. Protected character-specific values such as surface identity and face proxies are retained; exact source appearance is not guaranteed.
+## Values you will touch often
 
-## Restore Sources
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Look Preset On Convert** | The whole look applied right after conversion | Basic Toon High | Switching to Low gives a lighter look with depth effects off |
+| **Color Preset** | The color tone laid over the look | Keep Existing Values | Picking another preset replaces the source colors with that tone |
+| **None** | Skips the look preset itself | Do not pick it | Picking it leaves only the values read from the source and can look flat |
+| **Outline Smooth Normals (UV8)** | Outline continuity on sharp corners | On | Off splits the line at corners |
+| **Overwrite Occupied UV Channels** | Whether a UV channel already in use can be reused | Off | On overwrites someone else's data and can break the look |
 
-`Restore Original Materials` in MingToon Manager returns current slots to their recorded source GUIDs in one Undo step. It does not automatically delete generated conversion materials or mesh-bake assets.
+## Common problems
 
-## Next
+### Pressing the convert button does nothing
+Every readable slot is on the conversion exclusion list. The list is in [Slots that are not converted](/workflow/character-manager#변환되지-않는-슬롯).
 
-[MingToon Manager](/workflow/character-manager) · [Automatic Build Optimization](/workflow/build-optimization) · [Troubleshooting](/troubleshooting)
+### The face is shaded exactly like the body
+The face slot is still `Regular`. How to assign it is in [Face and skin assignment](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계).
+
+### I reverted and the values I had just fixed disappeared too
+**Undo Conversion (back to pre-MingToon materials)** is a single Undo step.
+It returns only the current slots to the source, and it does not delete the created conversion materials or mesh bakes.
+
+## More detail
+
+[MingToon Manager](/workflow/character-manager) · [Reading the Conversion Report](/internals/conversion-internals) · [Automatic Optimization On Build](/workflow/build-optimization) · [Troubleshooting](/troubleshooting#conversion)

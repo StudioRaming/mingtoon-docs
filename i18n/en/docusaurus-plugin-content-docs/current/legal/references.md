@@ -1,55 +1,61 @@
+---
+id: references
+title: References
+sidebar_position: 3
+---
+
 # References
 
-These references cover standard techniques used in MingToon's reflections, normal-map blending, shadow filtering, and color processing. Each entry identifies the relevant feature and the scope of its use. MingToon includes adjustments for toon rendering; these features do not reproduce every part of the cited models.
+References for the standard techniques used in MingToon's reflections, normal map compositing, shadow filtering and color processing. Each entry also states which feature uses it and the scope of that use. Adjustments for toon rendering are included, so not every feature reproduces the full model of the paper below it.
 
 ## GGX microfacet distribution {#ggx}
 
-**Used in:** The highlight distribution for direct PBR reflections. GGX provides the underlying shape as surface roughness changes, with toon-highlight controls adjusting that shape. This reference concerns the reflection distribution, rather than the paper's complete transmission model.
+**Where it is used:** the highlight distribution of PBR direct-light reflection. The GGX distribution gives the basic shape of how a highlight spreads with surface roughness, and the toon highlight settings then adjust that shape. This entry is a reference for the reflection distribution and does not imply the paper's full transmission model.
 
-Bruce Walter, Stephen R. Marschner, Hongsong Li, Kenneth E. Torrance (2007), [*Microfacet Models for Refraction through Rough Surfaces* — author-hosted paper and materials](https://www.cs.cornell.edu/~srm/publications/EGSR07-btdf.html).
+Bruce Walter, Stephen R. Marschner, Hongsong Li, Kenneth E. Torrance (2007), [*Microfacet Models for Refraction through Rough Surfaces* — paper and materials from the authors](https://www.cs.cornell.edu/~srm/publications/EGSR07-btdf.html).
 
 ## Schlick Fresnel approximation {#schlick}
 
-**Used in:** The viewing-angle response of PBR reflections. A Schlick-shaped response connects reflectance at normal incidence with reflectance at grazing angles. The default exponent is 5; changing it in the material produces a stylized variation.
+**Where it is used:** how PBR reflection changes with view angle. It uses the Schlick form that runs from the head-on reflectance to the reflectance at grazing angles. The default exponent is 5; changing the exponent in the material settings makes it a variation for toon rendering.
 
 Christophe Schlick (1994), [*An Inexpensive BRDF Model for Physically-based Rendering* — publisher's paper page](https://onlinelibrary.wiley.com/doi/10.1111/1467-8659.1330233).
 
 ## Reoriented Normal Mapping (RNM) {#rnm}
 
-**Used in:** Normal-map layer blending. Detail normals are reoriented to the accumulated normal so that surface direction and detail are retained together. MingToon adds layer-strength controls and numerical safeguards.
+**Where it is used:** normal map layer compositing. It composites an additional normal by reorienting it onto the existing normal, keeping both the surface direction and the detail. MingToon adds layer strength control and numerical stabilization on top of it.
 
-Colin Barré-Brisebois, Stephen Hill (2012), [*Blending in Detail* — the authors' technical article](https://blog.selfshadow.com/publications/blending-in-detail/).
+Colin Barré-Brisebois, Stephen Hill (2012), [*Blending in Detail* — technical article from the authors](https://blog.selfshadow.com/publications/blending-in-detail/).
 
 ## Interleaved Gradient Noise (IGN) {#ign}
 
-**Used in:** Varying shadow-filter sample directions and alpha dithering. This noise sequence helps reduce visible repetition with small sample counts. Coordinate placement is adapted to each feature, including surface-anchored dithering.
+**Where it is used:** scattering the sample directions of the shadow filter, and alpha dithering. It is a noise sequence used to reduce visible repeating patterns when only a few samples are taken. Coordinate placement, such as dithering that sticks to the surface, is adjusted to fit each feature.
 
-Jorge Jimenez (2014), [*Next Generation Post Processing in Call of Duty: Advanced Warfare* — the author's presentation materials](https://www.iryoku.com/next-generation-post-processing-in-call-of-duty-advanced-warfare/). The sequence and its attribution also appear in [Unity's official Random.hlsl (v10.10.1)](https://github.com/Unity-Technologies/Graphics/blob/v10.10.1/com.unity.render-pipelines.core/ShaderLibrary/Random.hlsl#L94-L102).
+Jorge Jimenez (2014), [*Next Generation Post Processing in Call of Duty: Advanced Warfare* — presentation from the author](https://www.iryoku.com/next-generation-post-processing-in-call-of-duty-advanced-warfare/). The same sequence and attribution can also be found in [Unity's official Random.hlsl (v10.10.1)](https://github.com/Unity-Technologies/Graphics/blob/v10.10.1/com.unity.render-pipelines.core/ShaderLibrary/Random.hlsl#L94-L102).
 
 ## Shadow visibility filtering and PCF {#pcf}
 
-**Used in:** Softening cast-shadow boundaries. The URP shadow-map path uses the Percentage-Closer Filtering (PCF) principle of combining multiple depth-comparison results. The BRP screen-space path resamples shadow visibility already evaluated by Unity. Sample placement and filter radius are adjusted for MingToon's rendering.
+**Where it is used:** the soft border of cast shadows. The URP shadow map path uses the Percentage-Closer Filtering (PCF) principle of gathering several depth comparisons. The BRP screen-space path resamples the shadow visibility Unity has already computed. The filter's sample placement and radius are adjusted to fit MingToon's rendering.
 
-William T. Reeves, David H. Salesin, Robert L. Cook (1987), *Rendering Antialiased Shadows with Depth Maps*. For the original technique and a GPU implementation, see Michael Bunnell and Fabio Pellacini, [*GPU Gems*, Chapter 11: Shadow Map Antialiasing — NVIDIA's official publication](https://developer.nvidia.com/gpugems/gpugems/part-ii-lighting-and-shadows/chapter-11-shadow-map-antialiasing).
+William T. Reeves, David H. Salesin, Robert L. Cook (1987), *Rendering Antialiased Shadows with Depth Maps*. For the original technique and an explanation of the GPU implementation: Michael Bunnell, Fabio Pellacini, [*GPU Gems*, Chapter 11: Shadow Map Antialiasing — official NVIDIA material](https://developer.nvidia.com/gpugems/gpugems/part-ii-lighting-and-shadows/chapter-11-shadow-map-antialiasing).
 
-## Spherical-harmonic (SH) ambient lighting {#sh}
+## Spherical harmonics (SH) ambient light {#sh}
 
-**Used in:** Indirect lighting from Unity light probes. MingToon uses Unity's SH evaluation for smoothly varying ambient light over surface directions. The paper below provides the theoretical background for low-order SH diffuse lighting; it does not describe MingToon's complete lighting composition or all of Light Volumes.
+**Where it is used:** indirect light through Unity light probes. It uses Unity's feature that evaluates smooth ambient light per surface direction with SH. The paper below is the theoretical background for representing diffuse lighting with low-order SH. It does not describe MingToon's whole lighting composite or all of Light Volumes.
 
-Ravi Ramamoorthi, Pat Hanrahan (2001), [*An Efficient Representation for Irradiance Environment Maps* — author-hosted paper and materials](https://graphics.stanford.edu/papers/envmap/).
+Ravi Ramamoorthi, Pat Hanrahan (2001), [*An Efficient Representation for Irradiance Environment Maps* — paper and materials from the authors](https://graphics.stanford.edu/papers/envmap/).
 
-## Reinhard-shaped brightness compression {#reinhard}
+## Reinhard-style brightness compression {#reinhard}
 
-**Used in:** The soft knee of the brightness limit. A Reinhard-shaped rational curve smoothly compresses brightness near the limit. MingToon applies it to the excess above a configured knee; it does not perform the paper's exposure estimation or full-screen tone mapping.
+**Where it is used:** the soft knee of the brightness ceiling. A Reinhard-style rational curve compresses brightness smoothly as it approaches the ceiling. MingToon applies this curve to brightness above a configured threshold, and does not perform the paper's exposure estimation or full-screen tone mapping.
 
-Erik Reinhard, Michael Stark, Peter Shirley, Jim Ferwerda (2002), [*Photographic Tone Reproduction for Digital Images* — University of Utah paper PDF](https://www-old.cs.utah.edu/docs/techreports/2002/pdf/UUCS-02-001.pdf).
+Erik Reinhard, Michael Stark, Peter Shirley, Jim Ferwerda (2002), [*Photographic Tone Reproduction for Digital Images* — paper PDF from the University of Utah](https://www-old.cs.utah.edu/docs/techreports/2002/pdf/UUCS-02-001.pdf).
 
 ## Standard color blend modes {#blending}
 
-**Used in:** Normal, Multiply, Screen, and Overlay blending for texture and effect layers. These correspond to standard blend expressions within the usual 0–1 color range. MingToon extends the handling of HDR colors, so results outside that range are not claimed to match web compositing standards.
+**Where it is used:** Normal, Multiply, Screen and Overlay blending of texture and effect layers. Within the usual 0-1 color range it matches the standard blend formulas. Extended handling for HDR colors is included, so this does not mean results for out-of-range values match the web compositing standard.
 
-W3C, [*Compositing and Blending Level 1*, §10 — official blend-mode definitions](https://www.w3.org/TR/compositing-1/#blending).
+W3C, [*Compositing and Blending Level 1*, §10 — official blend mode definitions](https://www.w3.org/TR/compositing-1/#blending).
 
-## Related documentation {#related}
+## Related documents {#related}
 
-Copyright notices and licenses for included external components are listed in [Third-party credits](/legal/third-party-credits).
+Copyright notices and licenses for the external components included in MingToon are in [Third-Party Credits](/legal/third-party-credits).

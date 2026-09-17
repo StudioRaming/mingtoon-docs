@@ -7,111 +7,74 @@ slug: /
 
 # MingToon
 
-**A character toon shader connecting facial shading, clothing detail, and silhouette.**
+> This page explains what MingToon is.
+> To start right away, go to [Installation](/getting-started/installation).
 
-MingToon brings together the direction of facial shadows, the way light and shadow overlap, and the colour and texture of surfaces. Build the face, hair, and clothing material by material, then use MingToon Manager to adjust the look across the avatar.
+## In one line
 
-[Start with MingToon Manager](/getting-started/first-material) · [Start with installation](/getting-started/installation) · [Convert a lilToon avatar](/workflow/liltoon-conversion) · [Check current limitations](/limitations)
+MingToon is a character toon shader for VRChat and Warudo avatars.
+It handles face shadows, surface color and texture, and silhouettes in one inspector.
+Build materials one at a time, then align the whole avatar with MingToon Manager.
 
-:::note[Current public version: 0.1.10 BRP Open Beta]
-The current download is the Built-in Render Pipeline (BRP) core beta. Check the [installation guide](/getting-started/installation) for the environment required by VRChat, Warudo, or general Unity use. VRChat client behaviour and successful upload are still being verified. Commercial use of the current Open Beta is prohibited.
+## If this is your first time, follow this order
 
-[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) · [BOOTH product](https://raming.booth.pm/items/8810209) · [Licenses and included tools](/legal/beta-license)
-:::
+1. [Installation](/getting-started/installation) — match the Unity version and add the package.
+2. [Getting Started with Manager](/getting-started/first-material) — convert one avatar.
+3. [Basic Settings](/guides/basics) — set color and brightness.
+4. [Light and Shadow](/guides/light-and-shadow) — refine the shadow boundary.
 
-## From setup to a finished avatar
+## What changes
 
-**Add the component → assign Face Mesh and Skin Mesh → choose a look → choose colours or existing values → convert → Quick Settings.**
+![A side-by-side render of the same avatar face before and after conversion](/img/placeholder.png)
+<!-- CAPTURE: intro/intro-01-before-after.png | 같은 아바타의 상반신을 변환 전 원본 셰이더와 변환 후 MingToon으로 나란히 렌더한 2분할 | 1200x700 -->
 
-Keep Manager on the avatar root. After editing, uploading through VRC SDK or building the WARUDO mod automatically runs optimization baking.
+### Shadows are split into three kinds
 
-[Follow the steps](/getting-started/first-material). Always keep Manager on the avatar root, including when editing its outfit. Use Manager to check updates too. **If installed through VCC, update MingToon in VCC.** Check the installation method before following update guidance in Manager. Leave face and skin roles empty when the outfit has neither.
+The shadow made by surface curvature is **Form Shadow**.
+The shadow cast by a real-time light is **Shadow Projection**.
+The shadow drawn from the depth the camera measures is **Depth Shadow**.
+For details, see [Light and Shadow](/guides/light-and-shadow) and [Depth Effects](/guides/depth-effects).
 
-## Build your character's look
+### Color and texture stack in layers
 
-### Control colour and edges where shadows overlap
+Textures, normal maps, and MatCaps (a single sphere image that fakes a highlight) are layered on top of each other.
+Masks (black-and-white images where white marks the area the effect applies to) split the coverage.
+For details, see [Detail Maps](/guides/detail-maps), [Shadow Pattern (Screentone)](/guides/shadow-pattern), and [Outline](/guides/outline).
 
-Combine **form shadows** from surface curvature, **cast shadows** from real-time lights, and **2D shadows** that read camera depth. Shape shading around bangs, hands, and sleeves, then use unified shadow controls to adjust the colour of overlapping areas. Overall shadow brightness and colour controls are also available.
+### It gets lighter automatically on upload
 
-The same camera depth supports 2D rim light, inner 2D edges, depth translucency, and SSAO. These handle silhouettes, internal edges, light through thin areas, and contact darkening respectively. **These effects require available camera depth.** If they are missing, check the depth setup and target environment first. Some environments may require a depth-enabling assist light.
+While editing, you use a heavy shader that can turn every feature on.
+When you run a VRC SDK upload or a WARUDO mod build, only the features you use remain.
+For details, see [Automatic Optimization On Build](/workflow/build-optimization).
 
-→ [Light and Shadow](/guides/light-and-shadow) · [Depth Effects and requirements](/guides/depth-effects)
+## Inspector groups and documents
 
-### Layer colour, texture, and reflection
-
-Texture, normal, and Matcap layers use masks to separate their areas of influence. Set up skin colour, hair highlights, and clothing patterns independently, then add hybrid PBR, toon specular, glitter, or emission where needed.
-
-Colour correction and overall brightness and tint controls help bring several materials into the same mood. Shadow patterns create halftone or line-work effects, with patterns attached to the surface or fixed to the screen. Finish the silhouette with outline and rim controls.
-
-→ [Detail Maps](/guides/detail-maps) · [Shadow Pattern](/guides/shadow-pattern) · [Outline](/guides/outline) · [Rim](/guides/rim)
-
-### Carry edited materials into a build configuration
-
-Combine the features needed while authoring the look. Supported build optimization paths analyze feature usage and animation dependencies to generate shaders that retain the required features. Baking separates colour information that can be stored in textures from responses that must continue to react to lighting and the view.
-
-Actual cost and results depend on the retained features, avatar, and world. **Check appearance and required animations after optimization.** Verified GPU performance figures are not currently published.
-
-→ [Automatic Optimization On Build](/workflow/build-optimization) · [Shader Structure](/internals/shader-structure)
-
-## Core and additional tools
-
-Face SDF Studio is not yet released and is not required for this onboarding.
-
-The BRP core handles material rendering and settings. **URP is excluded from the current BRP Open Beta and included with every commercial license.** See [Add-ons](/guides/add-ons) for authoring tools such as Face SDF Studio and Mask Maker.
-
-Ming Light Controller (MLC) is installed separately. It applies to an upload clone and connects virtual light, brightness, and colour controls to VRChat expression menus. The Modular Avatar path is designed to preserve existing menus, parameters, and FX; successful client upload is still being verified. MLC is included in the Personal Streaming and Personal Creator Early Access Founders Editions, and contents may change after full release.
-
-→ [Ming Light Controller](/guides/ming-light-controller) · [Licenses and included tools](/legal/beta-license)
-
-## Implementation foundations and credits
-
-MingToon connects public graphics techniques and adapted implementations to its layer, face, depth-effect, and build structures. See [Third-Party Credits and Licenses](/legal/third-party-credits) for the adapted scope, original copyright, and licenses, including selected lilToon UV, colour-correction, and glitter calculations and selected NonToon shadow processing.
-
-## Where to start
-
-| Situation | Document |
+| Inspector group | Document |
 |---|---|
-| **I want to use it on a VRChat avatar** | [VRChat](/platforms/vrchat) |
-| Start creating a look | [Basics](/guides/basics) → [Light and Shadow](/guides/light-and-shadow) |
-| Migrate an existing lilToon avatar | [lilToon Conversion](/workflow/liltoon-conversion) |
-| Upload an avatar | [Automatic Optimization On Build](/workflow/build-optimization) |
-| 2D rim light · 2D shadow not showing | [Depth Effects](/guides/depth-effects) |
-| Find the meaning of one property | [Property Reference](/reference/basics) |
-| Something is wrong | [Troubleshooting](/troubleshooting) |
-| Want to understand why it works that way | [Internal Architecture](/internals/shader-structure) |
+| Base Color & Transparency | [Basic Settings](/guides/basics) · [Basic Settings Reference](/reference/basics) |
+| Shadows | [Light and Shadow](/guides/light-and-shadow) · [Reference](/reference/light-and-shadow) |
+| Rim & Fill Lights | [Rim](/guides/rim) · [Reference](/reference/rim) |
+| Screen-space Effects | [Depth Effects](/guides/depth-effects) · [Reference](/reference/depth-effects) |
+| Emission & Effects · Material & Gloss | [Detail Maps](/guides/detail-maps) · [Reference](/reference/detail-maps) |
+| Face & Outlines | [Character Rendering](/guides/character) · [Outline](/guides/outline) |
 
-## Document structure
-
-Guides are organized by task, and references group related inspector controls. Display mode and installed add-ons can change visible groups or control locations; use inspector search as well.
-
-| Inspector Group | Document |
-|---|---|
-| Basic | [Basics](/guides/basics) · [Reference](/reference/basics) |
-| Light & Shadow | [Light & Shadow](/guides/light-and-shadow) · [Reference](/reference/light-and-shadow) |
-| Rim | [Rim](/guides/rim) · [Reference](/reference/rim) |
-| Depth Effects | [Depth Effects](/guides/depth-effects) · [Reference](/reference/depth-effects) |
-| Detail Maps | [Detail Maps](/guides/detail-maps) · [Reference](/reference/detail-maps) |
-| Character | [Character](/guides/character) · [Reference](/reference/character) |
-| Outline | [Outline](/guides/outline) · [Reference](/reference/outline) |
-
-:::note[Reference is generated from source]
-Property names and descriptions are taken exactly as **MingToon inspector displays them**. Terminology never drifts between documentation and screen.
+:::info[The current release is a BRP open beta]
+Only the Built-in Render Pipeline core is distributed.
+VRChat client behavior and actual uploads are still being verified.
+Read [Current Limitations and Release](/limitations) first.
 :::
 
-## BRP core beta notes
+<details><summary>Open beta terms and license</summary>Commercial use of the current open beta is prohibited. <a href="/legal/beta-license">License and commercial use</a></details>
 
-:::warning[This distribution is preview]
-- No validated GPU performance numbers are published.
-- VRChat / Warudo are **test targets** and have not completed release certification.
-- Check [current limitations and release](/limitations) before deployment.
-:::
+## Where to get help
 
-Report bugs in the **bug-report channel** of the [official Discord server](https://discord.gg/Zsj6pkWKKs).
+[Open beta signup](https://studioraming.github.io/mingtoon-site/ko/download/) · [BOOTH product](https://raming.booth.pm/items/8810209) · [Official Discord server](https://discord.gg/Zsj6pkWKKs)
 
-When reporting, including these speeds up reproduction:
+Send bugs to the bug report channel on Discord.
+Including the five items below makes reproduction faster.
 
 1. Unity version and target platform (VRChat PC / Warudo / general Unity)
 2. Render pipeline (BRP / URP 12.x)
-3. MingToon version (shown on the badge at the top right)
-4. Full Console log
+3. MingToon version (the value shown under **Update settings** on the Get Started tab of Manager)
+4. The full Console log
 5. Steps to reproduce

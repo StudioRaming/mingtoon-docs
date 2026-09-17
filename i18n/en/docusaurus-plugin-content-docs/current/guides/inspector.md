@@ -1,126 +1,135 @@
 ---
 id: inspector
-title: Inspector Guide
+title: Using the Inspector
 sidebar_position: 1
 ---
 
-# Inspector Guide
+# Using the Inspector
 
-[Start with MingToon Manager](/getting-started/first-material)
+> This page is for anyone opening the MingToon inspector for the first time.
+> It covers where things are and what to check first when a value does nothing. It takes about 5 minutes.
 
-**Add the component → assign Face Mesh and Skin Mesh → choose a look → choose colours or existing values → convert → Quick Settings.**
+## What is this
 
-Keep Manager on the avatar root. After editing, uploading through VRC SDK or building the WARUDO mod automatically runs optimization baking.
+Selecting a MingToon material switches the Inspector to the MingToon screen.
+A toolbar sits at the top, with a navigation bar split into color segments below it.
+Below that, groups and sections are stacked and collapsed.
 
-[Follow the steps](/getting-started/first-material). Always keep Manager on the avatar root, including when editing its outfit. Use Manager to check updates too. **If installed through VCC, update MingToon in VCC.** Check the installation method before following update guidance in Manager. Leave face and skin roles empty when the outfit has neither.
+## When to use it
 
-Face SDF Studio is not yet released and is not required for this onboarding.
+- When you changed a value and the view stayed the same
+- When you cannot find the name of an item you saw on screen
+- When you need to fix several materials at once
 
-**After reading this guide,** you will understand the MingToon inspector's view modes, sticky toolbar, group structure, and multi-material editing rules.
+## Try it in 30 seconds
 
-## Material Roles {#머티리얼-역할}
+1. Select one converted material.
+2. Switch the view mode in the toolbar to **Full**.
+3. Type `Blur` into **Search** in the toolbar.
+4. Lower **1st Shadow Blur** to 0.05 in the results.
 
-**Face, Skin, and Common** roles determine which role values a look preset applies. **Release builds also let you assign the role directly at the top of the material inspector.** The row is shared by Simple, Full Setup, and Bulk Setup. During initial avatar conversion, assign renderers and material slots in [MingToon Manager](/workflow/character-manager); after conversion, you can also edit the role in the material inspector.
+You succeeded when the shadow boundary sharpens.
+If nothing changes, see [All Effects and section masters](#전체-효과--가장-위의-마스터-스위치) below.
 
-When selected materials have different roles, the field shows a mixed state. Changing the role applies it to every selected material.
+## The three view modes {#보기-모드}
 
-## View Modes {#보기-모드}
-
-| Mode | Shows | Use It For |
+| Mode | What you see | When |
 |---|---|---|
-| **Simple** | Surface, lighting, key maps, and representative shadow, rim, face, and depth controls | Establishing a look after conversion, quick adjustments |
-| **Full Setup** | Every user-facing workflow group and advanced render states | Full authoring and troubleshooting |
-| **Bulk Setup** | Safe values that can be applied across multiple selected materials | Unifying an entire avatar |
+| **Simple** | Surface, lighting, key maps, and the main items of shadow, rim, face, and depth | Setting the look right after conversion |
+| **Full** | Every workflow group and the advanced render states | Serious editing, troubleshooting |
+| **Bulk** | Values that are safe to apply to several materials at once | Unifying a whole avatar |
 
-`Simple` is a condensed view of the feature set. Switch to `Full Setup` when a required control is missing. Maintainer features such as `Diagnostics`, internal technical names, and variant dumps do not appear in release builds; they are available only in `MINGTOON_DEV` development builds.
+Simple is a shortened screen. Switch to Full if the item you need is missing.
+Search finds Korean, English, and Japanese names.
 
-## Sticky Toolbar {#고정-툴바}
+![The inspector in Simple mode and Full mode side by side](/img/placeholder.png)
+<!-- CAPTURE: guides/inspector-01-view-modes.png | 같은 재질을 간단 모드와 전체 설정 모드로 연 Inspector 2분할 | 1200x700 -->
 
-The toolbar remains at the top while you scroll down the inspector.
+## The navigation bar and groups {#이동-막대와-그룹}
 
-| Tool | Purpose |
-|---|---|
-| **Search** | Finds controls by aliases in Korean, English, and Japanese, not only the current language |
-| **Favorites Only** | Shows only favorite sections and rows. Available in Full Setup |
-| **Collapse All / Expand All** | Closes or opens all workflow groups and sections at once |
-| **Changed Only** | Keeps only rows that differ from shader defaults and automatically opens their sections |
-| **Copy / Paste** | Moves material settings to other materials |
-| **Language** | Switches between 한국어 / English / 日本語 |
+Press a segment of the color bar below the toolbar to jump to that group.
+The bar holds six groups in order.
 
-`Changed Only` is a diagnostic tool for finding values that you or a preset may have changed. It also distinguishes a texture's default fallback from an actually assigned texture. If nothing is changed, `No Changed Values` is shown.
+| Order | Group | Document |
+|---|---|---|
+| 1 | **Base Color & Transparency** | [Basic Settings](/guides/basics) |
+| 2 | **Shadows** | [Light and Shadow](/guides/light-and-shadow) |
+| 3 | **Emission & Effects** | [Detail Maps](/guides/detail-maps) |
+| 4 | **Material & Gloss** | [Detail Maps](/guides/detail-maps) |
+| 5 | **Face & Outlines** | [Character Rendering](/guides/character) · [Outline](/guides/outline) |
+| 6 | **Rim & Fill Lights** | [Rim](/guides/rim) |
 
-The colored navigation bar below the toolbar represents the position of each workflow group. Select a color segment to jump to that group.
+Full has three more groups.
+The inspector's **Basic Settings** group and **Screen-space Effects** · **Advanced Rendering** do not appear on the bar.
+Scroll or use search to reach them. Depth items are in [Depth Effects](/guides/depth-effects).
 
-## Quick Navigation Groups {#전체-설정의-워크플로-그룹}
+## All Effects and section masters {#전체-효과--가장-위의-마스터-스위치}
 
-The Full Setup top bar currently shows six quick-navigation groups. Basic Settings, Screen-space Effects, and Advanced Rendering continue as separate groups and are distinct from these six quick-navigation entries.
+**All Effects** turns every MingToon effect on and off at once.
+Turning it off leaves only alpha, cutout, and the shadow caster silhouette.
+While it is off, the rows it affects are shown as disabled.
 
-| Order | Quick Navigation Label | Main Sections | Documentation |
-|---|---|---|---|
-| 1 | **Basic** | Base Surface · Additional Textures · Alpha & Cutout | [Basic Setup](/guides/basics) |
-| 2 | **Shadows** | Form Shadow · Shadow Projection · Shadow Color · Screentone · Occlusion · Rim Shade | [Light and Shadow](/guides/light-and-shadow) |
-| 3 | **Emission** | Emission · Glitter | [Detail Maps](/guides/detail-maps) |
-| 4 | **Material & Gloss** | Normal Maps · MatCap · PBR · Reflection · Toon Specular | [Detail Maps](/guides/detail-maps) |
-| 5 | **Rim & Fill Lights** | Rim Light · Backlight · Shadow Interior Reflection · Front Light | [Rim](/guides/rim) |
-| 6 | **Face & Outlines** | Normal Outline · Face/Hair Shading · Character Height Gradient | [Character Expression](/guides/character) |
+Each section also has its own master.
+Rows in a section that is off get `(Module Off)` appended.
+If you found such a row through search, press **Turn This Module On** next to it.
 
-## Overall Effect and Section Masters {#전체-효과--가장-위의-마스터-스위치}
-
-All Effects is a shared switch for multiple additional effects. Affected controls are shown as disabled when it is off. Do not assume that the basic surface and every independently gated feature are disabled in the same way.
-
-Each section also has its own master. A disabled section shows `(Module Off)`, and when search finds a child row you can use `Turn On This Module`.
-
-:::danger[When a value does not respond]
-Check `Overall Effect` → the relevant section master → required platform prerequisites, in that order. For a depth effect, also check [Depth Availability](/guides/depth-effects#깊이-가용성).
-:::
+![The same character with All Effects off and on](/img/placeholder.png)
+<!-- CAPTURE: guides/inspector-02-all-effects-before-after.png | 같은 캐릭터를 전체 효과 끔·켬으로 렌더한 2분할 | 1200x700 -->
 
 ## Quick Settings {#빠른-설정}
 
-`Quick Settings` gathers commonly adjusted values such as shadow boundaries, 2D rim, outline, and emission. These are duplicate controls for the real values, so changes here synchronize with the original section immediately.
+**Quick Settings** collects the values you touch most often into one card.
+They are the same values as in their original sections, so both move together.
+If the selected materials hold different values, `(Mixed State)` is shown.
 
-A disabled module shows `(Module Off)`, while selected materials with different values show `(Mixed State)`.
+## Values you will touch often
 
-## Editing Multiple Materials {#여러-재질-동시-편집}
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **All Effects** | The top-level switch for every MingToon effect | On | Turning it off leaves only alpha and the silhouette, and removes the rest |
+| **Simple** | How many items the inspector shows | On right after conversion | Switching to Full reveals every group |
+| **Search** | Find an item by name | Empty | Typing switches the view to Full automatically |
+| **Changed Only** | Show only rows that differ from the factory default | Off | On leaves only the values you and the presets changed |
+| **Favorites Only** | Show only starred sections and rows | Off | On hides every section without a star |
+| **Collapse All** | Tidy up groups and sections at once | Only when needed | **Expand All** reverses it |
+| **Language** | The display language of item names | Korean | Switching to English or Japanese leaves values untouched |
 
-Rows whose values differ show `Mixed Values`. Changing that row writes the same value to every selected material.
+**Changed Only** works in the Full view only.
+If nothing changed, `Nothing Changed` is shown.
 
-Use the face-proxy SceneView editor only with compatible Face materials under the same character root. If selections from different roots are mixed, editing does not start, preventing incorrect synchronization. Use `Select Face Materials Only` in MingToon Manager first for a safe selection.
+## Several materials at once
 
-## Presets {#프리셋}
+Rows whose values differ are shown as mixed values.
+Fixing such a row writes the same value into every selected material.
+The **Face·Skin·Regular** role at the top of the material changes too.
 
-`Material Presets` save and apply look values. When multiple materials are selected, the preset is applied to all of them.
+Use **Copy Material** to pick up and **Paste Material** to move.
+Right-click the paste button to choose the kind.
 
-When applying a preset, check preservation of character-specific settings such as the following.
+- **Paste All**
+- **Paste Values Only (No Textures)**
+- **Paste Textures Only**
+- **Paste Keywords Only**
+- **Paste Render Queue Only**
 
-- Surface mode (Opaque, Cutout, Semi-Transparent, Transparent) and render queue
-- Alpha mask and cutoff
-- Face proxy center, radius, shape, axis, and height
-- Already assigned character-specific textures and their tiling/offset
+Pasting applies to every selected target and is reversed with Undo.
 
-Role-specific Face / Skin / Common values follow the role stored on the material. Check it in the Manager or material inspector.
+:::caution[Face proxies only within the same character]
+When you edit a face proxy in the Scene view, select Face materials from one avatar only.
+Editing does not start if different avatars are mixed.
+:::
 
-## Copy / Paste {#복사--붙여넣기}
+## Common problems
 
-After selecting `Copy`, choose the paste scope:
+### I changed a value and the view stayed the same
+Check **All Effects** first, then that section's master, then the prerequisites it needs.
 
-- `All`
-- `Values Only (Exclude Textures)`
-- `Textures Only`
-- `Keywords Only`
-- `Render Queue Only`
+### I cannot find a slider from the screen in the documentation
+Type its name into **Search** in the toolbar. It searches all three languages.
 
-Paste applies to every selected target and supports Undo.
+### Only the effects that use depth are missing
+Check [Depth availability](/guides/depth-effects#깊이-가용성) first.
 
-## Material Cost {#재질-부하}
+## More detail
 
-The headline number is the estimated cost of the **post-bake shader that will be uploaded**. The authoring shader is heavier because it keeps every authoring feature available. The detail table separates the current authoring state from the expected post-bake state.
-
-## Edit Performance and Development Tools {#편집-성능에-대해}
-
-The authoring shader keeps its authoring paths available so you do not wait for a new variant every time a toggle changes. Unused-feature removal and constant folding happen during [Automatic Build Optimization](/workflow/build-optimization).
-
-Release packages do not expose variant dump/record tools, the technical diagnostics panel, or Depth Debug Post Process registration that users do not need. They reappear only in builds where product developers define `MINGTOON_DEV`.
-
-## Next
-
-[Basic Setup](/guides/basics) · [MingToon Manager](/workflow/character-manager) · [Bulk Editing](/guides/bulk-editing)
+[Basic Settings](/guides/basics) · [Editing Multiple Materials](/guides/bulk-editing) · [MingToon Manager](/workflow/character-manager) · [Troubleshooting](/troubleshooting#performance)

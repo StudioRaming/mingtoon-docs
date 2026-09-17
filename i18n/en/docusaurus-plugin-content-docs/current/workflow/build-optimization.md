@@ -1,120 +1,149 @@
 ---
 id: build-optimization
-title: Automatic Build Optimization
+title: Automatic Optimization On Build
 sidebar_position: 2
 ---
 
-# Automatic Build Optimization
+# How automatic optimization on build works
 
-**After reading this guide,** you will know what MingToon optimizes during upload or build while preserving originals, and how to verify failures and restoration.
+> This page is an explanation. If you want to upload right now, see [VRChat](/platforms/vrchat).
 
-## In One Sentence
+## In one line
 
-Automatic optimization is enabled by default. It makes shipping copies lighter during VRChat upload, Warudo mod builds, and regular Player builds, then restores authoring Materials and Renderers to an editable state.
+Automatic optimization is on by default. There is nothing for you to do.
 
-Use Manual Bake only when you need fixed assets directly. Automatic optimization is sufficient for normal distribution.
+It makes the upload and build copy lighter, and returns your working materials to an editable state.
 
-## What Happens
+## Confirming it applied {#제대로-걸렸는지-확인하기}
 
-Common flow:
+1. Get the C# and shader errors in the Console to zero.
+2. Check the environment conditions with `StudioRaming > MingToon > Validate Project`.
+3. Check the candidate count, swap count and face normal bake count in the build log.
+4. Open `StudioRaming/MingToonOptimizeReport.txt` next to the project folder.
+5. On VRChat, check your own view, a mirror and the Photo Camera separately.
 
-1. Collect MingToon materials referenced by shipping Renderers and AnimationClips.
-2. Analyze features actually in use and values that are animated.
-3. Generate a lightweight shader with fixed features folded into constants, or retrieve it from cache.
-4. Swap materials to the lightweight shader for shipping.
-5. Run platform-specific processing.
-6. Restore the original state on completion, failure, or domain reload.
+In a VRChat project, `[MingToon] VRChat build hook compiled and registered.` appears in the Console once per session.
 
-Generated shaders retain the same ShaderLab Properties contract as the authoring shader. Animated properties stay dynamic, and materials referenced only by an AnimationClip are collected even when they are not currently assigned to a Renderer.
+![The MingToon Manager's Optimize tab showing the automatic upload optimization settings group](/img/placeholder.png)
+<!-- CAPTURE: workflow/build-optimization-01-optimize-tab.png | 밍툰 매니저 「최적화」 탭의 「업로드 자동 최적화 설정」 그룹 전체. 토글 3개가 보이는 상태 | 1200x700 -->
 
-### Additional VRChat Avatar Processing {#vrchat-추가-처리}
+## Where to turn it on and off
 
-- Preserves `Depth Availability = Auto`. Author-selected Force On and Force Off values are also preserved. When `Include Depth Light on Upload` is enabled, it adds a depth light to the upload copy without rewriting the material value. Check the option state in Manager before running the upload.
-- Bakes face normals into UV7 of the **upload-copy Mesh**. Renderers remain on the Live path when Face SDF owns UV7 or a texture Face Area Mask is required, preserving the same result.
-- Applies project-configured texture resolution caps by slot type—such as base, normal, and mask—to the upload copy.
-- Automatically includes VRC Light Volumes variants in avatar uploads.
-- Marks MingToon runtime components as `IEditorOnly`. After exporter processing, verify separately that `RuntimeComponentCount = 0` on the actual build clone. This value counts authoring MingToon components; it is not a count of all SDK or runtime components.
+All three are under **Automatic upload optimization** in the MingToon Manager's `Optimize` tab. The top toggle also appears under `4. Build & upload automation` in the `Get Started` tab.
 
-Face-normal upload output uses a dedicated path separate from authoring mesh bakes. Even for the same character and UV channel, it neither reuses nor overwrites authoring Mesh assets.
+| Item | Default | What it does |
+|---|---|---|
+| **Optimize On Build / Upload (Applies To Everything)** | On | Turns this whole feature on and off. It applies to the entire editor environment |
+| **Allow build, shader and mesh hooks in Play mode (opt-in)** | Off | Runs the hooks on the Play build copy as well |
+| **Reviewed Texture Rewrites On Build (Opt-In)** | Off | Additionally permits reviewed texture reprocessing |
 
-### Animated Values Are Preserved {#애니메이션되는-값은-건드리지-않습니다}
+You also choose a method per avatar. **Build / upload optimization method for this avatar** appears in both tabs.
 
-The analyzer follows AnimationClips, Animator Controllers, and nested or array fields in components. Features that must switch at runtime require the Inspector opt-in so baking does not fold them into constants.
-
-Examples:
-
-- `Animate Depth Effects with FX Animator`
-- `Switch Shadow Projection from FX Menu`
-- VRC Quality Low / Mid / High
-
-Opting in preserves switchability but retains the related uniform branch and code. Enable it only on materials you will actually animate.
-
-### Recoverable Failures Are Isolated; Fatal Failures Stop the Build
-
-Material and Renderer restoration isolates exceptions per entry. If one entry fails, restoration continues for later entries, leaving only the failed item for the next attempt. Saving also uses `SaveAssetIfDirty` only on assets MingToon changed, so unrelated dirty assets are not saved with them.
-
-A recoverable failure, such as an analysis or conversion exception in one ordinary material, restores that material to the authoring shader, leaves a warning, and continues with the rest.
-
-By contrast, errors that cannot guarantee a coherent result—such as `BuildFailedException`, failure to determine the shared constant intersection, or restoration failure—stop the entire build. Resolve the Console error and confirm that originals have been restored before building again.
-
-## Platform Entry Points
-
-| Platform | Entry Point |
+| Method | When |
 |---|---|
-| **VRChat avatar/world** | VRC SDK build callback |
-| **Warudo mod** | UMod build processor |
-| **Regular Player** | Unity build preprocess callback |
+| **FastUpload (recommended)** | The default. It uses a shared shader to shorten upload time |
+| **Legacy GPU precise optimization** | Only when you need the older per-material bake |
 
-The VRChat hook runs late so it analyzes the actual final state after tools such as Modular Avatar and VRCFury have processed materials.
+## What happens
 
-### VRChat Depth Auto Contract {#vrchat-깊이-자동-승격}
+1. It collects the MingToon materials referenced by shipping Renderers and AnimationClips.
+2. It analyzes which features are actually used and which values are animated.
+3. It creates a lightweight shader with fixed features folded to constants, or pulls one from the cache.
+4. It swaps the materials' shaders to the lightweight ones for the duration of shipping.
+5. It runs the platform-specific extra processing.
+6. It returns everything to its original state when it finishes, fails, or a domain reload happens.
 
-`Auto` directly reads the bound camera depth texture and VRChat Photo Camera state for each camera. The upload hook does not rewrite this value: Auto ships as Auto, while Force On and Force Off remain exactly as authored. Use Force On only when the author guarantees host depth that automatic detection cannot see.
+Generated shaders keep the same property contract as the editing shaders.
 
-When `Include Depth Light on Upload` is enabled, it adds a shadow-casting Directional Light to the upload copy so the camera creates a real depth buffer, while the material remains Auto. Check its current state in Manager and account for performance and world-lighting cost when it is enabled. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
+### Extra processing on VRChat avatars {#vrchat-추가-처리}
 
-Mirror safety blocking is separate. Even under Force On, depth modules are disabled in mirrors so they cannot read another camera's depth. → [VRChat Depth](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
+- It leaves the **Depth Availability** value alone. Auto ships as Auto.
+- It bakes face normals into UV7 of the upload copy's Mesh.
+- Renderers whose Face SDF uses UV7 keep the Live path for the same result.
+- It applies the per-slot-kind texture resolution limits to the upload copy.
+- It turns on the VRC Light Volumes variant automatically.
+- It marks MingToon runtime components as `IEditorOnly`. Deletion is not guaranteed.
 
-## Texture Optimization {#텍스처-최적화}
+The face normal upload output uses a different path from the editing mesh bake. It does not overwrite the editing Mesh.
 
-`Texture Optimization` in MingToon Manager is a project-wide setting. It is stored in Editor preferences rather than a Scene or Prefab and applies to every character shipped from the project.
+### It does not touch animated values {#애니메이션되는-값은-건드리지-않습니다}
 
-### Resolution Caps by Slot
+The analyzer follows AnimationClips, Animator Controllers and nested fields on components. Features you will switch at run time need the inspector opt-in on so they are not folded to constants.
 
-Set a maximum resolution for slot types such as base, normal, MatCap, and mask. Only the upload copy is resized; the source TextureImporter and source file are unchanged.
+- **Switch Depth Effects From FX**
+- **Switch Shadow Projection From FX**
+- **Use VRC Runtime Controls**
 
-### Reviewed Texture Rewrites On Build (Opt-In)
+An opt-in keeps the switching possible but also keeps the related code. Turn it on only for materials you will actually change.
 
-Off by default. Allows surface/normal flattening and reviewed RGBA mask repacking. Because readback, color space, mips, and platform compression can change pixels, compare before-and-after captures whenever it is enabled.
+### The VRChat depth Auto contract {#vrchat-깊이-자동-승격}
 
-Even while this option is off, mathematically lossless duplicate-sample and identity-mask removal still applies.
+`Auto` reads the depth texture and Photo Camera state directly, per camera. The upload hook does not rewrite this value, so Auto ships as Auto.
 
-## Verify That It Ran {#제대로-걸렸는지-확인하기}
+An avatar that needs depth carries a depth light instead. The material values are not changed.
+→ [VRChat depth light](/platforms/vrchat#vrchat-깊이-라이트)
 
-1. Reduce C# and shader errors in the Console to zero.
-2. In MingToon Manager's `Readiness Check`, inspect the cache version, generated shaders, and whether originals changed.
-3. Check candidate, swap, depth-state preservation, Upload Depth Light, texture-rewrite, and face-normal-bake counts in the build log.
-4. Review per-material results in `StudioRaming/MingToonOptimizeReport.txt`.
-5. For VRChat, check your own view, mirrors, and Photo Camera separately.
+Mirror blocking is separate. Even with Force On, depth modules are off in mirrors.
+→ [How far depth effects are guaranteed](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 
-## Menu Options
+## Texture resolution limits {#텍스처-최적화}
 
-Release builds show only user-facing items under `Tools > Studio Raming > MingToon`.
+**Texture Resolution Limits (On Upload)** is a project-wide setting. It is stored in the Editor preferences rather than a scene or prefab, and applies to every character in this project.
 
-- **Optimize Shaders On Build** — on by default. Controls automatic shader optimization.
-- **Reviewed Texture Rewrites On Build (Opt-In)** — off by default. Allows reviewed texture rewrites.
-- **Clean Build Optimization Output** — clears the generated-shader cache.
+You set a maximum resolution per slot kind, such as base, normal, matcap and mask. It only shrinks the upload copy and does not change the original files or their import settings.
 
-`Debug: Tint Optimized Shaders Red`, variant dump/record tools, and internal performance-measurement menus do not appear in release packages. They are available only in `MINGTOON_DEV` development builds.
+### The texture rewrite opt-in
 
-## If the Editor Closed During a Build
+**Reviewed Texture Rewrites On Build (Opt-In)** is off by default. Turn it on to permit surface and normal flattening and reviewed mask repacking.
 
-Shader swaps and texture rewrites use a disk journal and recover on the next domain reload. Upload face-normal baking normally ends by destroying the build clone; if live shared materials remain, MingToon restores and saves their original floats and keywords per target.
+:::caution[If you turned it on, compare before and after by eye]
+Reading, color space, mips and platform compression can change the pixels.
+:::
 
-If Manager status continues to show `Restore Required`, run `Restore After Interrupted Build` and inspect per-entry failures in the Console.
+Mathematically lossless deduplication keeps applying even with this option off.
 
-## Next
+## The constraints that follow
 
+### Recoverable failures are isolated and fatal ones stop the build
+
+A recoverable error, such as analysis failing on one material, returns just that material to editing and leaves a warning. An error that makes result consistency impossible aborts the build.
+
+Saving only applies to assets MingToon changed. It does not save unrelated assets along with them.
+
+### If the editor exited mid-build
+
+Shader swaps and texture rewrites are recorded in a journal on disk. They are recovered automatically at the next domain reload, and if that still fails, check the per-item failures in the Console.
+
+Discard a leftover recovery journal with the menu below.
+
+`StudioRaming > MingToon > Advanced > Discard Pending Generated Shader Recovery Journal`
+
+:::danger[This command only discards recovery information]
+It does not revert generated shaders left by an aborted bake. The next bake creates them again.
+:::
+
+### When you do need a manual Bake
+
+| Situation | Automatic optimization | Manual Bake |
+|---|---|---|
+| VRChat upload | Sufficient | Not needed |
+| WARUDO mod build | Sufficient | Not needed |
+| Handing over baked material assets directly | Not possible | Needed |
+| Comparing and approving results in the scene | Not possible | Needed |
+
+## Entry points by platform
+
+| Platform | Entry point |
+|---|---|
+| VRChat avatar | VRC SDK build callback |
+| WARUDO mod | UMod build processor |
+| General Player | Unity build preprocess callback |
+
+The VRChat hook runs late. It analyzes the final state after Modular Avatar or VRCFury has processed the materials.
+
+## Related pages
+
+- Cleaning the generated shader cache: `StudioRaming > MingToon > Advanced > Clean Build Optimization Output`
 - Fixed distribution assets: [Manual Bake and Restore](/workflow/bake-and-restore)
 - Platform checklists: [VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo)
-- For errors: [Troubleshooting](/troubleshooting)
+- If you have errors: [Troubleshooting](/troubleshooting#vrchat)

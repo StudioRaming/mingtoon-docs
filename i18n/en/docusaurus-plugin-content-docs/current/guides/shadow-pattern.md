@@ -6,126 +6,144 @@ sidebar_position: 4
 
 # Shadow Pattern (Screentone)
 
-**After reading this document** you'll be able to turn shadows into halftone dots like manga screentones and create your own custom-shaped tiles.
+> This page is for anyone turning on **Enable Shadow Pattern** for the first time.
+> It turns shadows into the halftone dots of a comic screentone. It takes about 4 minutes.
 
-This covers `Shadow Pattern (Screentone)` in the `Lighting and Shadows` group. The full list of items is in the [Lighting and Shadows Reference](/reference/light-and-shadow).
+## What is this
 
-## How It Works
+It turns shadows into the dense dots of a printed comic.
+The deeper the shadow, the larger the dots.
+You can also use lines or crosshatching instead of dots.
 
-Form shadows and 2D shadows are rendered as halftone dots. The dots grow as the shadow deepens.
+![A character with the shadow pattern off next to one with it on](/img/placeholder.png)
+<!-- CAPTURE: guides/shadow-pattern-01-on-off.png | 같은 캐릭터 상반신, 그림자 패턴 끈 상태(전) / 켠 상태(후) 2컷 | 1200x700 -->
 
-Computed circular dots are the default, with an optional single shape-tile read. When `Pattern Space` is `Mesh`, the grid sticks to rest-pose coordinates; when it is `Screen`, the grid is fixed to the screen.
+## When to use it
 
-A Skinned Mesh needs a rest-pose anchor for Mesh space, or the pattern may slide over the skin during animation.
+- When you want a black-and-white comic panel look.
+- When the shadow area is wide and looks like a flat block.
+- When you want a pop-art feel printed over the artwork.
 
-<!-- SCREENSHOT: Shadow pattern on / off comparison -->
+## Try it in 30 seconds
 
-:::note[Works together with unified shadows]
-The shadow pattern remains intact even when [unified shadows](/guides/light-and-shadow#통합-그림자--겹칠-때-새까매지는-문제) are enabled.
+1. Select a converted body material.
+2. Turn on **Enable Shadow Pattern**.
+3. Lower **Pattern Density** to 40.
+4. Set **Pattern Rotation** to 45.
+
+You succeeded when tilted halftone dots appear in the shadow areas.
+If nothing changes, go to [Troubleshooting](/troubleshooting#shadow).
+
+## How to turn it on
+
+1. Turn on **Enable Shadow Pattern**. The default is off.
+2. Choose **Pattern Target**. **Form** is the form shadow, and **Depth** is the depth shadow.
+3. Set the dot size with **Pattern Density**.
+4. Check **Pattern Intensity**. At 0, nothing is visible.
+5. To use a shape other than dots, turn on **Use Shape Tile**.
+
+:::tip[Rotation looks natural around 45 degrees]
+At 0 degrees the grid tends to overlap the screen pixel grid and create moire.
+The default of 78 degrees avoids the grid for the same reason.
 :::
 
-## Runtime Values {#런타임-값}
+## Pattern space: stick to the surface or fix to the screen {#패턴-기준}
 
-| Item | Function |
+**Pattern Space** decides what the grid is attached to. The default is **Mesh**.
+
+| Value | Where the grid lives |
 |---|---|
-| **Pattern Target** | Form shadow, 2D shadow, or both |
-| **Pattern Style** | `Recolor` — redraw the shadow coverage itself. Dots use the shadow color as-is<br />`Overlay` — keep the shadow as-is and layer it with ink color |
-| **Pattern Density** | Number of cells filling the screen width. Based on screen **height**, so the same size appears regardless of resolution |
-| **Pattern Rotation** | Grid angle |
-| **Pattern Edge Softness** | Softness of dot edges |
-| **Pattern Strength** | How strongly the pattern is applied. **0 means nothing shows** |
-| **Distance Compensation** | Adjust dot size as distance changes |
-| **FOV / Projection Compensation** | Compensation when FOV changes |
-| **Keep Pattern in Full Shadow** | Whether to retain dots in the darkest areas. Adjust the amount with `Full Shadow Fill` |
+| **Mesh** | Stuck to the surface, moving with the character. Raise an arm and the dots follow |
+| **Screen** | Fixed to the screen, with the character passing underneath |
 
-:::caution[On the 2D shadow, `Overlay` falls back to `Recolor`]
-With `Pattern Style` set to `Overlay` and `Pattern Target` set to `Depth2D`, the pattern still prints, but it takes the shadow colour instead of the `Ink Color`. `Overlay` lays line work over finished shading, and only the form shadow path has that compositing point. It has always worked this way; the inspector now says so when you pick that combination.
+**Distance Compensation** and **FOV / Projection Compensation** work in opposite directions in the two spaces.
+In Mesh they subtract camera stability, and in Screen they add it.
+At 1 in Screen, the size you set up close is kept at a distance.
 
-To keep `Overlay`, set `Pattern Target` to `Form` or `Both`.
-:::
+![The same raised-arm pose in Mesh space and Screen space](/img/placeholder.png)
+<!-- CAPTURE: guides/shadow-pattern-02-mesh-vs-screen.png | 팔을 든 같은 포즈, 패턴 기준 Mesh(전) / Screen(후) 2컷 | 1200x700 -->
 
-:::tip[Rotation angle]
-**Around 45 degrees** looks natural like printed halftones. **0 degrees** often creates moire because it aligns with the screen pixel grid.
-:::
+## Mesh space needs a rest pose anchor
 
-## Pattern Space - stuck to the surface, or locked to the screen {#패턴-기준}
+With Mesh space on a Skinned Mesh, the pattern slides over the skin.
+You must bake a rest pose anchor so it stays attached during animation.
+Baking turns authoring settings into upload settings, and you cannot change the values afterwards.
 
-`Pattern Space` - **default `Mesh`**
+1. Select MingToon Manager.
+2. Press the **Bake Rest Pose Anchor** button the inspector shows.
 
-| Value | Where the lattice lives |
-|---|---|
-| `Mesh` | On the surface, **travelling with the character.** Raise an arm and its dots come along |
-| `Screen` | Locked to the viewport, with **the character sliding underneath.** The overprinted screentone / pop-art reading |
+The baker creates a duplicate mesh holding the rest pose and turns anchor use on.
+Renderers rejected because of a conflict with an existing channel are listed separately in the Console.
+Screen space needs no anchor.
 
-The shape tile, the density, and the rotation are the same in both. All that changes is what the lattice is attached to.
+## Shape tiles {#패턴-모양-타일}
 
-:::caution[Mesh space on a Skinned Mesh requires a Rest Pose Anchor]
-When an anchor is missing, the Inspector warns how many Skinned Renderers are affected and shows a `Bake Rest Pose Anchor` button. Select MingToon Manager first and use the button, or run `Tools > Studio Raming > MingToon > Advanced > Bake Rest Pose Anchor`.
+**Use Shape Tile** is off by default.
+Left off, a calculated round halftone is used and no texture is read.
+Turned on, only the shape inside the cell changes, while the grid and density stay the same.
 
-The baker creates a duplicate Mesh with the rest pose stored in an available UV2 or UV4 payload and enables anchor use on related materials. Renderers rejected because their existing channels conflict are listed separately in the Console.
-:::
-
-`Screen` needs no separate anchor. The pattern does not bend or shimmer as the field of view or camera angle changes, and cells stay square across aspect ratios.
-
-### The compensation sliders reverse meaning between the two
-
-`Distance Compensation` and `Projection / FOV Compensation` **work in both.** Their direction is what flips.
-
-- On `Mesh` they **remove** camera stability. At 0 the pattern is welded to the surface; at 1 it compensates size against camera movement.
-- On `Screen` they **add** camera stability. At 1, the default, the mark size and density you set up close are what you get from across the room and at any field of view. At 0 the lattice is welded to the pixel grid and nothing the camera does moves it at all.
-
-:::tip[Author up close, check from far away]
-`Screen` with `Distance Compensation` at 1 is exactly that combination. Set density and size up close, then check that the pattern stays consistent from farther away.
-:::
-
-## Shape Tile {#패턴-모양-타일}
-
-`Use Shape Tile` — **off by default**
-
-- **When off**, computed circular dots are used and textures are never read.
-- **When on**, only the **shape** drawn inside each cell changes to a tile image. Grid, density, and tone response stay the same.
-
-### Included Tiles
-
-Five built-in tiles can be loaded directly with the Inspector buttons.
+The five bundled tiles can be assigned directly from inspector buttons.
 
 | Button | Shape |
 |---|---|
 | **Dots** | Standard halftone |
 | **Fine Dots** | Fine halftone |
-| **Line** | Parallel lines |
-| **Crosshatch** | Cross hatching |
+| **Lines** | Parallel lines |
+| **Crosshatch** | Crosshatching |
 | **Stipple** | Stipple |
 
-<!-- SCREENSHOT: Results of each of the 5 tile types -->
+### A tile is a threshold map, not a picture {#타일은-그림이-아니라-임계값-맵입니다}
 
-:::danger[Empty tile slot means the pattern won't show at all]
-An empty slot reads as **white**, and white is a threshold that can't be exceeded at any density. The inspector warns about this and shows the built-in tile buttons together.
-:::
+If you misunderstand this when making your own tile, it will always fail.
+Each point of the tile holds the density at which that spot turns to ink.
+That is how one tile covers everything from the first dot to full coverage.
 
-### Tiles Are Threshold Maps, Not Images {#타일은-그림이-아니라-임계값-맵입니다}
+If you feed in a dot pattern that is already black-and-white, it does not react to tone.
+The same size of dot appears no matter how deep the shadow gets.
 
-If you misunderstand this part, you will definitely fail when making your own tiles.
+There are two import settings when you make your own.
 
-Each texel in the tile contains **the density at which that texel becomes ink**. It's not "a picture of a pattern." So a single tile expresses **everything from the first dot to completely filled** as the shadow deepens.
-
-:::danger[If you put in an already-binarized dot pattern]
-You'll get **the same size dots** regardless of shadow depth. It won't respond to tone.
-:::
-
-### Import Settings When Making Your Own
-
-| Setting | Value | Reason |
+| Setting | Value | Why |
 |---|---|---|
-| `sRGB (Color Texture)` | **Off** | sRGB conversion distorts the tone curve |
-| Compression | **Off** | Block compression squashes gradients and creates artifacts in the pattern |
+| `sRGB (Color Texture)` | Off | sRGB conversion distorts the tone curve |
+| `Compression` | Off | Block compression crushes the gradient and creates blotches |
 
-All brightness levels must occupy **the same number of texels**. This way, when dots become smaller than the sampling limit, they converge back to the original density.
+Every brightness step must occupy the same number of dots.
+One cell is exactly one repeat of the tile, so the slot has no Tiling/Offset.
 
-### Why There's No Tiling / Offset
+## Values you will touch often {#자주-만지는-값}
 
-One cell is exactly one repetition of the tile. Therefore, density is controlled by `Pattern Density` and direction by `Pattern Rotation`. This is why the slot has no Tiling/Offset.
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Pattern Density** | How many cells fill one mesh unit | 40 | Raising it packs the dots, and lowering it enlarges them |
+| **Pattern Rotation** | The angle of the grid | 45 | Around 0 degrees it overlaps the screen grid and creates blotches |
+| **Pattern Intensity** | The mix ratio between the original shadow and the pattern | Leave at the default (1) | Lowering it fades the pattern, and 0 hides it |
+| **Pattern Edge Softness** | The blur width of the dot edge | Leave at the default (0.14) | Raising it smears the dots, and 0 breaks them into stair steps |
+| **Distance Compensation** | Size compensation as the camera moves away | Leave at the default (1) | The direction is opposite in Mesh and Screen |
+| **Ink Color** | The color of the lines printed in the Overlay style | Black | It is not used in the Recolor style |
+| **Full Shadow Fill** | How much the darkest area is filled with solid color | Leave at the default (1) | Lowering it leaves dots even in the darkest area |
 
-## Next
+## Common problems
 
-[Rim](/guides/rim)
+### No pattern is printed at all
+
+An empty **Shape Tile** slot is read as white.
+White is a threshold that no density can cross.
+The inspector warns you about this and shows the bundled tile buttons alongside.
+
+### I chose Overlay but the ink color does not show
+
+When **Pattern Target** is **Depth**, **Overlay** falls back to **Recolor**.
+The pattern is printed, but it uses the shadow color instead of the ink color.
+To use the ink color, set the target to **Form** or **Both**.
+
+### The pattern slides over the skin during animation
+
+You are in Mesh space without a rest pose anchor.
+Finish the anchor bake procedure above first.
+
+## More detail
+
+- Every item and its range: [Light and Shadow Reference](/reference/light-and-shadow)
+- Setting up the shadow itself first: [Light and Shadow](/guides/light-and-shadow)
+- Using it with unified shadow: [Unified Shadow](/guides/light-and-shadow#통합-그림자--겹칠-때-새까매지는-문제)

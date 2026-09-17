@@ -1,129 +1,113 @@
 ---
 id: basics
-title: Basic
+title: Basic Settings
 sidebar_position: 1
 ---
 
-# Basic
+# Basic Settings
 
-Base colour, surface mode and the everyday maps - the first things you touch on a new material.
+These are the first fields you touch when you make a material. They cover base color, surface mode, transparency and stencil.
 
-Start with the guide: [Basic](/guides/basics)
+This page is a table for looking up values. If you want the order to turn things on in, see the [Basic Settings guide](/guides/basics).
 
-:::note
-This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
-:::
+The headings and order follow the inspector's section names and display order exactly.
 
-## Base Surface
+The fields inside map and mask slots are the same in every slot.
 
-Configure the base texture, color, and UV transform.
+Channel, remap, feather and mask UV are written once in the [Shared Texture Slot UI](/guides/texture-modules).
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Base Map** | The main color texture. Its alpha channel is only used when Surface Mode is Cutout or Transparent. | `_MainTex` |
-| **Base Tint** | A color laid over the Base Map. Tint Blend Mode decides how it combines; Base Map Opacity independently controls the final surface alpha. | `_Color` |
-| **Tint Blend Mode** | How Base Tint combines with the Base Map. The default Multiply keeps the map's shading and only recolors it; Normal replaces the map with a flat color. | `_ColorBlendMode` |
-| **Tint Blend Strength** | Advanced compatibility setting. It affects only the selected Base Tint/Map blend result; it does not control final surface alpha. | `_ColorBlendOpacity` |
+## Base Surface {#기본-표면}
 
-## Surface Rendering
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Base Map** | Texture | - | None | The main color texture |
+| **Base Tint** | Color | - | White | A color laid over the Base Map |
+| **Tint Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Multiply | How Base Tint combines with the Base Map |
+| **Base Map Opacity** | Float | 0 ~ 1 | 1 | Multiplies the Base Map alpha at the final surface step |
+| **Use Color Adjust Mask** | Toggle | - | Off | Applies the Base HSVG adjustment only where the mask is… |
+| **Base Color Adjustment Mask** | Texture | - | None | - |
+| **Gradation LUT** | Toggle | - | Off | Re-maps the Base Map's colours through per-channel R/G/B… |
+| **Gradation LUT** | Texture | - | None | A horizontal ramp texture |
+| **Gradation Strength** | Float | 0 ~ 1 | 0 | How far the ramp result is mixed over the source colour |
 
-Configure surface type, culling, and alpha handling.
+## Surface Rendering {#표면-렌더링}
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Camera Depth Contribution** | Controls whether this material is written to the camera-depth texture. When off, Opaque, Cutout, and Transparent surfaces are excluded from 2D shadows, SSAO, and 2D Rim Light while normal color rendering and real-time light shadows remain. | `_2DShadowCasterEnabled` |
-| **Soft Cutout** | Uses MSAA sample coverage for alpha edges. Current surface-state code supports non-Opaque modes and adjusts blending when enabled to avoid applying alpha blending twice. Do not expect the same smoothing in views without MSAA. | `_AlphaToCoverage` |
-| **Edge Sharpness** | How wide the softened band is. 1 is one screen pixel; raising it narrows the band and sharpens the edge, lowering it widens and blurs. Raise it if hair tips look washed out. | `_AlphaToCoverageSharpness` |
-| **Enable Alpha Mask** | Combines a separate image with the Base Map alpha using the selected blend mode. While off, all mask settings below are ignored, and an Opaque Surface Mode hides the result even when it is on. | `_AlphaMaskEnabled` |
-| **Mask Image** | Grayscale image used as the alpha source. It is ignored while Enable Alpha Mask is off. | `_AlphaMask` |
-| **Alpha Blend Mode** | How the mask combines with the Base alpha. Multiply is MingToon's legacy default; Replace, Add, and Subtract support lilToon-compatible alpha results. | `_AlphaMaskBlendMode` |
-| **Mask Value Scale** | Multiplies the mask after channel, invert, remap, feather, and gradient processing. The default 1 preserves the existing look. | `_AlphaMaskScale` |
-| **Mask Value Offset** | Added after Mask Value Scale. The final mask is clamped to 0-1; the default 0 preserves the existing look. | `_AlphaMaskOffset` |
-| **Alpha Mask Strength** | How strongly the mask changes final transparency. 0 preserves the Base Map alpha; 1 applies the mask fully with the selected blend mode. | `_AlphaMaskStrength` |
-| **Alpha Cutoff** | Only has an effect when Surface Mode is Cutout. Pixels whose alpha is below this value are discarded. 0.3-0.6 works for hair and lashes; near 0 leaves ragged semi-transparent fringes. | `_Cutoff` |
-| **Camera Depth Cutoff** | Where the transparent surface's silhouette in the camera depth texture is cut. The 2D shadow, depth rim and inner edge all read that silhouette, so a low value lets barely-visible pixels cast shadow while a high one drops parts you can actually see out of depth. Separate from Alpha Cutoff, which cuts the visible alpha. | `_TransparentDepthPrepassCutoff` |
-| **Color Mask** | Which color channels the outline pass writes. 15 is full RGBA; 0 means the outline is never written to the screen at all. | `_OutlineColorMask` |
-| **Mask Channel** | Which channel of the mask image to read. Pick R/G/B/A when several masks are packed into one texture; Luma uses the RGB brightness. | `_AlphaMaskChannel` |
-| **Invert Mask** | Flips the mask black-for-white. Use it when the mask was painted white where the surface should disappear. | `_AlphaMaskInvert` |
-| **Transparent Depth Prepass** | Writes depth without color for Transparent (3000). It can reduce overlap or outline problems but may hide translucent surfaces behind it; compare on the actual model. | `_TransparentDepthPrepass` |
-| **Two-Sided Dual Pass** | Draws the far side of a two-sided surface in a separate pass before the near side. It adds vertex-pass and draw-setup work. Check the combination with your surface mode. | `_TwoSidedDualPass` |
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Camera Depth Contribution** | Toggle | - | On | Controls whether this material is written to the… |
+| **Flip Backface Lighting Normal** | Toggle | - | On | - |
+| **Blend Operation** | Enum | Add / Subtract / ReverseSubtract / Min / Max | Add | - |
+| **Two-Pass Mode** | Toggle | - | Off | - |
+| **Transparent Depth Prepass** | Toggle | - | Off | - |
+| **Depth Test** | Enum | Disabled / Never / Less / Equal / LessEqual / Greater / NotEqual / GreaterEqual / Always | LessEqual | - |
 
-## Alpha Fades
+## Alpha & Cutout {#알파와-컷아웃}
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Alpha & Cutout Effects** | Enables or bypasses alpha mask, cutoff, soft cutout, distance, Fresnel, and directional alpha transforms as one group. Off uses identity for these transforms only; Surface Mode and Render Queue are unchanged. | `_SurfaceAlphaEffectsEnabled` |
-| **Enable Distance Fade** | Fades the surface out by how far it is from the camera. Use it to keep your own head or accessories out of your own view in first person, or to make something disappear with distance. Nothing changes the moment you switch it on - the shipped ranges hide nothing, so set the distances below. An Opaque Surface Mode hides the result. | `_AlphaDistanceFadeEnabled` |
-| **Enable Fresnel Alpha** | Varies transparency with how squarely the surface faces the camera. Use it to make only the silhouette see-through, or the reverse. It reads the mesh's own facing rather than a normal map, so it follows the silhouette. An Opaque Surface Mode hides the result. | `_AlphaFresnelEnabled` |
-| **Near - Fully Gone At** | Closer than this the surface is fully gone. Metres. 0 means the near fade is unused. | `_AlphaFadeNearStart` |
-| **Near - Fully Visible At** | Farther than this the surface is fully there. The gap between the two near values is where it fades. Equal values give a hard switch at that distance. | `_AlphaFadeNearEnd` |
-| **Far - Starts Fading At** | Past this distance the surface starts fading. Metres. At the top of the slider the far fade is unused. | `_AlphaFadeFarStart` |
-| **Far - Fully Gone At** | Farther than this the surface is fully gone. Equal to the start distance gives a hard switch there. | `_AlphaFadeFarEnd` |
-| **Opacity Facing Camera** | Opacity where the surface faces the camera head on. 1 leaves it as authored, 0 is fully transparent. | `_AlphaFresnelFacing` |
-| **Opacity At Silhouette** | Opacity at the silhouette edge. Lower than the facing value makes the rim see-through; higher leaves only the rim. The two values decide the direction, which is why there is no mode to pick. | `_AlphaFresnelEdge` |
-| **Edge Falloff** | How fast the value travels from facing to edge. Higher confines the edge value to very grazing angles and narrows the band; lower spreads it wide. | `_AlphaFresnelPower` |
-| **Enable Directional View Alpha** | Adjusts surface opacity from the camera direction in the mesh-local axes or Face Provider frame. Set front, back, side, and vertical values in the details below. | `_AlphaDirectionalEnabled` |
-| **Front Opacity** | Opacity when viewed from the selected frame's front. 1 keeps the surface opaque; 0 makes it fully transparent. | `_AlphaDirectionalFront` |
-| **Back Opacity** | Opacity when viewed from the selected frame's back. | `_AlphaDirectionalBack` |
-| **Left Opacity** | Opacity when viewed from the selected frame's left. | `_AlphaDirectionalLeft` |
-| **Right Opacity** | Opacity when viewed from the selected frame's right. | `_AlphaDirectionalRight` |
-| **Up Opacity** | Opacity when viewed from the selected frame's up direction. | `_AlphaDirectionalUp` |
-| **Down Opacity** | Opacity when viewed from the selected frame's down direction. | `_AlphaDirectionalDown` |
-| **Directional Transition Softness** | Width used to blend the six direction endpoints. Raise it for a softer transition; lower it for a sharper boundary. | `_AlphaDirectionalSoftness` |
-| **Direction Frame** | Object uses the mesh-local axes. Face Provider uses the face frame supplied by MLC and safely falls back to Object when it is unavailable. | `_AlphaDirectionalFrame` |
-| **Up Axis (Local)** | Local axis treated as up in the Object frame. The shader orthogonalizes it against the front axis automatically. | `_AlphaDirectionalUpOS` |
-| **View Region Mask Strength** | How strongly the four-region mask affects directional alpha. 0 ignores the mask; 1 applies its resolved region result fully. | `_AlphaViewMaskStrength` |
-| **View Region Mask Weights** | Weights for the four channels of the shared Region Mask. X/Y/Z/W control regions one through four. | `_AlphaViewMaskRegions` |
-| **Invert View Region Mask** | Inverts the resolved region result. Use it when you want to keep masked-out areas and limit masked-in areas. | `_AlphaViewMaskInvert` |
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Alpha & Cutout Effects** | Toggle | - | On | Enables or bypasses alpha mask, cutoff, soft cutout… |
+| **Cutout Threshold** | Float | 0 ~ 1 | 0 | When Enable Cutout is on, pixels with alpha below this… |
+| **Soft Cutout** | Toggle | - | Off | Smooths the stair-stepped edge of a cutout using the… |
+| **Edge Sharpness** | Float | 0.25 ~ 4 | 1 | How wide the softened band is |
+| **Enable Alpha Mask** | Toggle | - | Off | Combines a separate image with the Base Map alpha using the… |
+| **Mask Image** | Texture | - | None | Grayscale image used as the alpha source |
+| **Alpha Blend Mode** | Enum | Multiply / Replace / Add / Subtract | Multiply | How the mask combines with the Base alpha |
+| **Mask Value Scale** | Float | - | 1 | Multiplies the mask after channel, invert, remap, feather… |
+| **Mask Value Offset** | Float | - | 0 | Added after Mask Value Scale |
+| **Camera Depth Cutoff** | Float | 0 ~ 1 | 0.5 | Where the transparent surface's silhouette in the camera… |
+| **Enable Distance Fade** | Toggle | - | Off | Fades the surface out by how far it is from the camera |
+| **Near - Fully Gone At** | Float | 0 ~ 5 | 0 | Closer than this the surface is fully gone |
+| **Near - Fully Visible At** | Float | 0 ~ 5 | 0 | Farther than this the surface is fully there |
+| **Far - Starts Fading At** | Float | 0 ~ 200 | 200 | Past this distance the surface starts fading |
+| **Far - Fully Gone At** | Float | 0 ~ 200 | 200 | Farther than this the surface is fully gone |
+| **Enable Fresnel Alpha** | Toggle | - | Off | Varies transparency with how squarely the surface faces the… |
+| **Alpha Fades · Opacity Facing Camera** | Float | 0 ~ 1 | 1 | Opacity where the surface faces the camera head on |
+| **Opacity At Silhouette** | Float | 0 ~ 1 | 0 | Opacity at the silhouette edge |
+| **Edge Falloff** | Float | 0.1 ~ 10 | 3 | How fast the value travels from facing to edge |
+| **Enable Directional View Alpha** | Toggle | - | Off | Adjusts surface opacity from the camera direction in the… |
+| **Opacity by View Direction · Front Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's front |
+| **Back Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's back |
+| **Left Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's left |
+| **Right Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's right |
+| **Up Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's up direction |
+| **Down Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's down direction |
+| **Directional Transition Softness** | Float | 0 ~ 1 | 0.5 | Width used to blend the six direction endpoints |
+| **Direction Frame** | Enum | Object / Face Provider | Object | Object uses the mesh-local axes |
+| **Forward Axis (Local)** | Float | Four values | 0, 0, 1, 0 | Local axis treated as front in the Object frame |
+| **Up Axis (Local)** | Float | Four values | 0, 1, 0, 0 | Local axis treated as up in the Object frame |
+| **View Region Mask Strength** | Float | 0 ~ 1 | 0 | How strongly the four-region mask affects directional alpha |
+| **View Region Mask Weights** | Float | Four values | 1, 1, 1, 1 | Weights for the four channels of the shared Region Mask |
+| **Invert View Region Mask** | Toggle | - | Off | Inverts the resolved region result |
+| **Enable Region Mask** | Toggle | - | Off | Off by default |
+| **Region Mask (RGBA = 4 Regions)** | Texture | - | None | - |
+| **Smoothness ±** | Float | Four values | 0, 0, 0, 0 | Tightens or loosens the highlight in this region |
+| **Metallic ±** | Float | Four values | 0, 0, 0, 0 | Range -1-1; default 0 |
+| **Environment Reflection ±** | Float | Four values | 0, 0, 0, 0 | This is how a world reflection is kept off skin and |
+| **Toon Specular Intensity ±** | Float | Four values | 0, 0, 0, 0 | Range -8-8; default 0 |
+| **Toon Specular Smoothness ±** | Float | Four values | 0, 0, 0, 0 | Range -1-1; default 0 |
 
-## section.base_adjust
+## Stencil Settings {#스텐실-설정}
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Base Map Opacity** | Multiplies the Base Map alpha at the final surface step. It controls overall surface opacity independently from Tint Blend Strength. | `_BaseMapOpacity` |
-| **Hue Rotation Space** | Which space the Hue (H) of the HSVG above rotates in. OKLab turns the hue while holding lightness and chroma steady, so moving a skin or hair colour stays predictable. HSV is the legacy behaviour; a material already dialled in under HSV keeps its colour by staying there. | `_BaseHueColorSpace` |
-| **Gradation LUT** | Re-maps the Base Map's colours through per-channel R/G/B ramps. Off reads no ramp texture at all. | `_BaseGradationEnabled` |
-| **Gradation LUT** | A horizontal ramp texture. Each channel's source level is the horizontal coordinate the new colour is read from. Import it as sRGB. | `_BaseGradationTex` |
-| **Gradation Strength** | How far the ramp result is mixed over the source colour. At 0 the result matches the source even with a ramp assigned. | `_BaseGradationStrength` |
-| **Mask Channel** | Which channel of the adjust mask to read. Split channels when several masks share one packed texture. | `_BaseAdjustMaskChannel` |
-| **Invert Mask** | Flips the adjust mask black-for-white so the HSVG adjustment applies to the opposite area. | `_BaseAdjustMaskInvert` |
-| **Hue** | Rotates the color around the hue wheel. Use it to recolor clothing or hair without re-exporting the texture. Neutral is 0. |  |
-| **Saturation** | Color intensity. 0 is grayscale, 1 is the source, above 1 oversaturates. |  |
-| **Value** | Overall brightness. 1 is the source; raising it clips the brightest areas to white first. |  |
-| **Gamma** | Adjusts the mid-tones. Below 1 raises contrast; above 1 lifts the mid-tones and flattens the image. |  |
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **General Pass · Reference** | Int | 0 ~ 255 | 0 | Reference value (0-255) the general pass compares against… |
+| **General Pass · Read Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when comparing the stencil |
+| **General Pass · Write Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when writing to the stencil |
+| **General Pass · Compare** | Enum | Disabled / Never / Less / Equal / LessEqual / Greater / NotEqual / GreaterEqual / Always | Always | Stencil comparison function |
+| **General Pass · Pass** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | Stencil operation when both stencil and depth tests pass |
+| **General Pass · Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | Stencil operation when the stencil test fails |
+| **General Pass · Z Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | Stencil operation when the stencil test passes but the depth… |
+| **Normal Outline Pass · Reference** | Int | 0 ~ 255 | 0 | Stencil value used by the outline pass |
+| **Normal Outline Pass · Read Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when reading the stencil buffer |
+| **Normal Outline Pass · Write Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when writing the stencil buffer |
+| **Normal Outline Pass · Compare** | Enum | Disabled / Never / Less / Equal / LessEqual / Greater / NotEqual / GreaterEqual / Always | Always | How the stencil value is compared to decide which pixels… |
+| **Normal Outline Pass · Pass** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do to the stencil buffer when both the stencil and… |
+| **Normal Outline Pass · Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do to the stencil buffer when the stencil test fails |
+| **Normal Outline Pass · Z Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do when the stencil test passes but the depth test… |
+| **Color Mask** | Int | 0 ~ 15 | 15 | Which color channels the outline pass writes |
 
-## View Clip Guard
+## Related pages
 
-Stop a camera pressed up close from cutting the surface open and showing the inside of the head.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **View Clip Guard** | Pushes back any surface about to be cut away when a camera comes very close, so the inside of the head cannot be seen through the gap. Turn it on when selfies or close mirrors punch a hole in the face. Off by default, and a material that leaves it off carries no cost after optimization. | `_MingViewClipGuardEnabled` |
-| **Clearance** | How far in front of the cut-off boundary, in metres, the surface starts being pushed. Raising it guards with more margin, at the cost of the surface flattening a little sooner. | `_MingViewClipGuardClearance` |
-| **Push Limit** | The furthest a single vertex may travel. It is the ceiling that stops the mesh being dragged out when a camera ends up inside the head; lowering it deforms less but stops covering the deepest intrusions. | `_MingViewClipGuardLimit` |
-| **Front Facing Only** | Decides whether only surfaces squarely facing the camera are pushed, or ones turned aside and away as well. Higher values move only what faces the camera. Set it too low and interior surfaces such as eyes or the inside of the mouth are pushed too, land level with the outer skin and flicker against it - leaving the outer shell alone to move is the safe setting. | `_MingViewClipGuardFacing` |
-
-## Stencil Settings
-
-Configure stencil state separately for the general and Normal Outline passes.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Reference** | Reference value (0-255) the general pass compares against and writes into the stencil buffer. Change it only when building stencil setups such as eyebrows showing through hair; otherwise leave it at 0. | `_StencilRef` |
-| **Read Mask** | Bit mask applied when comparing the stencil. Change it only when several effects partition the stencil bits. | `_StencilReadMask` |
-| **Write Mask** | Bit mask applied when writing to the stencil. Change it only when several effects partition the stencil bits. | `_StencilWriteMask` |
-| **Compare** | Stencil comparison function. Always draws without any stencil test. Change it only when this material must react to values another material wrote. | `_StencilComp` |
-| **Pass** | Stencil operation when both stencil and depth tests pass. Use Replace to leave a mark for other materials to test against. | `_StencilPass` |
-| **Fail** | Stencil operation when the stencil test fails. Usually left at Keep. | `_StencilFail` |
-| **Z Fail** | Stencil operation when the stencil test passes but the depth test fails. Usually left at Keep. | `_StencilZFail` |
-
-## Common Maps
-
-Quickly configure frequently used normal, emission, occlusion, PBR, and MatCap maps.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Normal Map** | Normal map that fakes surface relief. This is normal layer 01; it has no effect while the Normal module is off. | `_BumpMap` |
-| **Normal Intensity** | How pronounced the normal map relief is. 0 renders flat even with a map assigned, 1 is the authored strength, above 1 exaggerates it. | `_BumpScale` |
-| **Occlusion Map** | Grayscale map that darkens areas indirect light cannot reach. It does not touch direct light, so the effect is hard to see under strong front lighting. | `_OcclusionMap` |
-| **Occlusion Intensity** | How much of the occlusion map is applied. At 0 an assigned map changes nothing. | `_OcclusionStrength` |
+- [Basic Settings usage guide](/guides/basics)
+- [Shared Texture Slot UI](/guides/texture-modules) — the channel, remap and UV fields inside map and mask slots
+- [Troubleshooting](/troubleshooting)

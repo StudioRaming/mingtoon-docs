@@ -1,74 +1,129 @@
 ---
 id: tiled-materials
 title: Tiled Material Composer
-sidebar_position: 16
+sidebar_position: 17
 ---
 
 # Tiled Material Composer
 
-**Purpose:** Connect up to four logical regions from one RGBA region mask to Texture Stack, Normal, and MatCap layers in one physical material slot. Use it when repeating surface details such as cloth, leather, and metal need separate treatment.
+> This page is for people using the **Tiled Material Composer** for the first time.
+> It lays different surfaces on the cloth, leather and metal inside one material. It takes about 7 minutes.
 
-Open **StudioRaming > MingToon > Tiled Material Composer**. The tool does not edit meshes, submeshes, or renderers.
+## What is this
 
-## First setup
+A whole outfit is often bundled into a single material.
 
-1. Assign the target to **MingToon Material**.
-2. Assign a Texture2D containing the R/G/B/A regions to **Packed Region Mask**.
-3. In each of the four cards, leave the region **Enabled** and set its channel and maps.
+To give the cloth and the metal in it different textures, you would have to fill several slots by hand.
+
+The composer does that work with a single black-and-white four-channel mask.
+
+It uses small repeating textures as they are, so it never rebakes the original artwork.
+
+It does not touch meshes, submeshes or renderers.
+
+:::note[This is not the detail map region mask]
+The [region mask](/guides/detail-maps#영역-마스크) adjusts reflection values per area.
+The composer lays a different texture on each area.
+:::
+
+## When to use it
+
+- When one outfit material mixes cloth, leather and metal
+- When you want the same pattern repeated at a different scale per area
+
+## Turn it on in 30 seconds
+
+1. Open `StudioRaming > MingToon > Tiled Material Composer`.
+2. Put the target material into **MingToon Material**.
+3. Put an RGBA texture into **Packed Region Mask**.
 4. Press **Apply Four Logical Regions**.
 
-The Apply button is enabled when the material and packed mask are assigned. The window always creates four region cards, so there is no separate region input to fill.
+If the button is pressable, it worked.
 
-The defaults are region 1=R, 2=G, 3=B, and 4=A, named Cloth, Leather, Metal, and Label. Change names and channels per card.
+If it is gray, one of the two fields above is empty.
 
-## Region card controls
+![The Tiled Material Composer window with its material field, mask field and four region cards](/img/placeholder.png)
+<!-- CAPTURE: guides/tiled-materials-01-window.png | 타일드 머티리얼 컴포저 창 전체 — MingToon 머티리얼/패킹된 지역 마스크 + 01 천 카드 펼침 + 하단 적용 버튼 | 1200x700 -->
 
-| Control | Range or effect |
+## How to use it
+
+1. Prepare the mask. Each of the R, G, B and A channels takes one area.
+2. Open the window and add the material and the mask.
+3. Check the checkbox to the left of the title on the cards you want to use.
+4. Fill in each card's **Mask Channel** and maps.
+5. Press **Apply Four Logical Regions**.
+
+There are always four cards, with fixed default names and channels.
+
+| Card | Default name | Default channel |
+|---|---|---|
+| 01 | Cloth | R |
+| 02 | Leather | G |
+| 03 | Metal | B |
+| 04 | Label | A |
+
+You can change the name and the channel on the card.
+
+## Values you will touch often
+
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Mask Channel** | The channel this card reads | Leave at default (01 R · 02 G · 03 B · 04 A) | If it differs from the channel you actually painted, nothing shows anywhere |
+| **Tiled Surface** | The surface map to repeat on this area | One small pattern | Leave it empty and this area's surface slot is cleared |
+| **Surface Tiling** | How many times that map repeats | 8, 8 | Raise it and the pattern gets denser; at 1 it is placed once |
+| **Surface Tint** | The color multiplied into the surface color | White | Add a color and only that area takes the tint |
+| **Surface Opacity** | How much the surface is layered on (0 to 1) | 1 | Lower it and the original color shows through; at 0 it disappears |
+| **Normal Intensity** | The strength of the relief (0 to 2) | 1 | Raise it and the relief is exaggerated; at 0 it goes flat |
+| **MatCap Intensity** | The strength of the gloss (0 to 20) | 1 | Raise it and it turns shiny; at 0 it is not evaluated |
+
+## What Apply writes to the material
+
+| Field on the card | Where it goes |
 |---|---|
-| **Enabled** | When off, clears that region's surface, normal, and MatCap slots on Apply |
-| **Mask Channel** | R, G, B, or A read by this region |
-| **Surface Texture** | Repeating surface map |
-| **Surface Tiling** | UV repeat for that surface map |
-| **Surface Tint** | Color multiplied into the surface layer |
-| **Surface Opacity** | Surface layer amount, 0 to 1 |
-| **Normal Map / Normal Strength** | Normal map and strength, 0 to 2 |
-| **Matcap Map / Matcap Strength** | MatCap map and strength, 0 to 20 |
+| Surface map · tiling · tint · opacity | The additional texture slot with the same number |
+| Normal map · tiling · intensity | The normal layer with the same number |
+| MatCap · intensity | The matcap layer with the same number |
+| The mask and its channel | The mask slot of all three modules |
+| The last number used | Each module's enable switch and layer count |
 
-Clearing a map also clears that slot on the next Apply. For example, clearing only Normal Map removes that region's normal slot while surface and MatCap are processed independently.
+Apply walks all four cards.
 
-## What Apply writes
+Cards that are off and empty maps clear that slot explicitly.
 
-Apply visits all four cards. Enabled cards with maps write to their layer slot; empty maps and disabled cards are explicitly cleared.
+The whole thing is recorded as a single Undo.
 
-| Card values | MingToon target |
-|---|---|
-| Surface map, Tiling, Tint, Opacity, packed mask, channel | Texture Stack |
-| Normal map, Tiling, strength, packed mask, channel | Normal layer |
-| MatCap map, strength, packed mask, channel | MatCap layer |
-| Highest used slot number | Each module's enable toggle and layer count |
+:::caution[The card 01 normal uses the base normal map slot]
+The composer does not clear a hand-assigned normal map it did not place.
+A normal map sitting there without a mask stays after applying.
+:::
 
-The first normal card uses MingToon's base **Bump Map** slot. If that card is disabled, an existing hand-authored Bump Map can survive when the composer did not own a region mask for it; inspect the target slot separately when you need to remove a manual normal. Apply is one Undo unit.
+## Principles for writing the mask
 
-## Mask authoring
+The brightness of each channel is that area's weight.
 
-Each mask channel is an area weight. If multiple channels are bright at one pixel, their layer effects overlap and composite. Check that overlaps are intentional and soften hard boundaries in the mask when needed.
+If two channels are bright at the same pixel, the two areas overlap and blend.
 
-Surface and normal maps use the card's Tiling. The packed mask is the selector for the composer; it does not automatically split one large illustration into four pieces. Surface Mode and render queue are material-wide, so regions that need different surface modes require separate materials.
+If the boundary is rough, paint a soft transition into the mask.
 
-## After Apply
+The mask is for dividing areas.
 
-Use [Detail Maps](/guides/detail-maps) to check Stack, Normal, and MatCap layer counts and strengths, and [Common Texture Slot UI](/guides/texture-modules) to adjust each map's Tiling / Offset. The composer records ordinary layer properties; it does not create a separate runtime mode.
+It does not automatically split one large illustration into four pieces.
 
-## If Apply is disabled or a result is missing
+:::caution[Surface mode cannot be split per area]
+There is only one surface mode and one render queue per material.
+If you need different surface modes, you have to split the material.
+:::
 
-- If Apply is disabled, assign both the target material and Packed Region Mask.
-- If a region is missing, check Enabled, its map field, and whether Mask Channel matches the painted channel.
-- If an old region remains, disable the card or clear its maps and Apply again.
-- If regions overlap unexpectedly, inspect duplicate mask channels and their boundaries.
-- If a layer is invisible, raise that module's layer count through the last used slot.
+## Common problems
 
-## Related docs
+| Symptom | Cause | Fix |
+|---|---|---|
+| The Apply button is gray | The material or the mask is empty | Fill in both fields |
+| Only one area does not show | The mask channel differs from the channel you painted | Change the card's mask channel |
+| Values remain on an area you removed | You only cleared the map without turning the card off | Turn the card off and apply again |
 
-- [Detail Maps](/guides/detail-maps)
-- [Common Texture Slot UI](/guides/texture-modules)
-- [Module Cost](/internals/module-cost)
+## More detail
+
+- [Detail Maps](/guides/detail-maps) — checking the layer count and strength after applying
+- [Shared Texture Slot UI](/guides/texture-modules) — adjusting each map's tiling
+- [Modules and Performance Cost](/internals/module-cost) — the cost of adding layers

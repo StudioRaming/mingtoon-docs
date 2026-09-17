@@ -1,143 +1,152 @@
 ---
 id: ming-light-controller
 title: Using Ming Light Controller
-sidebar_position: 15
+sidebar_position: 16
 ---
-
-Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
 
 # Using Ming Light Controller
 
-Ming Light Controller (MLC) is a **separate add-on** that lets users control MingToon material brightness, colour, virtual lighting, and performance settings from a VRChat expression menu. Install it separately from the MingToon BRP beta core. MLC is free only through Studio Raming's official BOOTH page during the open beta and is sold from the start of Early Access. Free distribution does not include a MingToon commercial license and does not permit file sharing or redistribution. This guide covers avatar setup, menu budget checks, Play Mode, and upload checks.
+> This page is for people attaching MLC for the first time.
+> You make brightness and color changeable from an in-game menu. It takes about 15 minutes.
 
-## Free distribution and shader support
+## What is this {#ming-light-controller란}
 
-**MLC is free only during the Open Beta.** Paid sales are planned to begin with Early Access. See the [official BOOTH product page](https://raming.booth.pm/items/8810346) for distribution information and packages. Install the MingToon shader separately.
+Ming Light Controller (MLC) is a separate add-on. You install it apart from MingToon BRP itself.
 
-| Shader | Support status |
-|---|---|
-| **MingToon** | Supported in the current version |
-| **lilToon** | Planned for a future update; not supported in the current version |
-| **Poiyomi** | Planned for a future update; not supported in the current version |
-
-Timing and scope for planned support will be announced later. MLC does not convert one shader to another. Free distribution does not include a MingToon commercial license; file sharing and redistribution are prohibited.
-
-:::note[Settings stay on the original avatar]
-The MLC component in Edit Mode stores this avatar's settings. The actual menu, parameters, FX, and required material processing are performed on a Play Mode or upload build clone. Original FX, menus, parameters, and materials are not overwritten. It is normal for no Generated folder to appear while authoring.
-:::
-
-## Distinguish these products first
+Building the shader look is MingToon's job. Choosing what the wearer can change in game is MLC's job.
 
 | Product | Role |
 |---|---|
-| **MingToon BRP beta core** | Material rendering, Inspector and Manager, build optimization |
+| **MingToon BRP core** | Material rendering, the inspector and manager, build optimization |
 | **Ming Light Controller** | Per-avatar control settings and in-game expression menu generation |
-| **URP add-on** | URP support package excluded from the current BRP Open Beta and included with every commercial license |
-| **Mask Maker / Face SDF Studio** | Separate authoring tools; see [Separately Sold Add-ons](/guides/add-ons) |
 
-## What Ming Light Controller is {#ming-light-controller란}
+## Before you start
 
-MingToon authors the shader look; MLC selects what the wearer can change in game. Each avatar can choose menu features, sync state, initial values, and presets.
+- An avatar with MingToon materials
+- VRChat Avatars SDK
+- NDMF — a shared framework that attaches things to a copy of the avatar
+- Modular Avatar, or supported VRCFury, if the avatar already has menus or an FX layer
 
-### What you need
+MLC does not install these dependencies for you.
 
-For VRChat, you need an avatar with MingToon materials, the VRChat Avatars SDK, and NDMF. For avatars that already have menus and FX, use Modular Avatar or a supported VRCFury connection. MLC does not install these dependencies automatically.
+## Turn it on in 30 seconds
 
-Direct Descriptor is available only on an avatar clone with empty FX, expression menu, and parameters. Standalone does not attach a menu to the avatar, so selecting it alone cannot provide in-game controls.
+1. Add the MLC component to the avatar root.
+   `GameObject > Studio Raming > Ming Light Controller > Add or Configure Component`
+2. In **Quick Start**, choose a starting preset and leave the profile on Auto. Press **Apply**.
+3. In **Menu Layout**, turn on the items you want and set the menu location.
+4. In **Budget & Validation**, check the total and whether generation is possible.
 
-## Quick start
+If there are no red errors on the budget screen, it worked.
 
-1. Add the MLC component to the avatar root, or select the root and run **GameObject → Studio Raming → Ming Light Controller → Add or Configure Component**.
-2. In **Quick Start**, choose a starting preset and leave the profile at **Auto**. Press **Apply** to commit it to the settings.
-3. In **Menu Layout**, enable the entries you want and choose their menu locations. Adjust only the required entries in **Selected Item Settings**.
-4. In **Budget & Validation**, inspect MLC cost, other feature costs, the total, and whether generation is possible. Resolve red errors and unknown external costs first.
-5. In Play Mode, check the generated menu and controls, then upload. If the Play Mode preview option is off, MLC does not create a menu in the preview clone.
+If red errors remain, see [what to check in Play Mode and on upload](#설치-확인).
 
-A preset is a starting point. You can edit entries after applying it, and the changed configuration becomes the user setting. Apply can be undone. Selecting a preset and pressing **Apply** are separate actions.
+After resolving the errors, confirm the menu opens in Play Mode and then upload.
 
-### Integration mode and Write Defaults
+![The MLC inspector's Budget & Validation panel showing MLC cost, external cost, total and whether generation is possible](/img/placeholder.png)
+<!-- CAPTURE: guides/ming-light-controller-01-budget.png | MLC 인스펙터 「예산·검증」 패널 전체. MLC 비용 / 외부 비용 / 합계 / 생성 가능 여부 줄이 모두 보이는 상태 | 1200x700 -->
 
-Integration Auto chooses an available Modular Avatar backend, then a supported VRCFury provider, then Direct Descriptor, then Standalone. This is separate from the Auto parameter profile. If you explicitly choose VRCFury and its supported provider is missing, MLC reports an error instead of silently switching backends.
+Choosing a preset and pressing **Apply** are two different things. After applying you can still edit each item, and Undo reverses it.
 
-Generated animator states are authored with Write Defaults off. The Modular Avatar attachment requests matching the avatar’s Write Defaults convention, so inspect the final merged result with your chosen backend. This does not instruct you to change Write Defaults across the original FX controller.
+## Choosing an attachment method
 
-### MingToon features unlocked by installation {#설치하면-열리는-mingtoon-기능}
+The attachment method sets how the menu MLC builds is attached to the avatar.
 
-MLC-connected Master Adjustment and Virtual Light authoring, plus the Manager entry points for MLC settings, become available in MingToon. If a button stays locked, check Console compilation errors and the add-on installation.
+| Method | When to use it |
+|---|---|
+| **Modular Avatar** | An avatar that already has menus or an FX layer. The safest option |
+| **VRCFury** | When a supported provider is installed |
+| **Direct Descriptor** | Only on a copy whose FX, menus and parameters are **empty** |
+| **Standalone** | Does not attach a menu to the avatar. Pick only this and there is no in-game control |
 
-### What works without MLC {#mlc-없이도-되는-것}
+`Auto` works down the list and picks the first one it can use. If you pick VRCFury without a supported provider, it shows an error. It does not quietly switch to another method.
 
-MingToon's lighting, shadow, rim, depth effects, and outline rendering work without MLC. A locked MLC editing UI does not remove values already stored on a material.
-
-Check depth texture availability and platform build policy in MingToon Manager. MLC's performance menu controls prepared depth effects in game. See [Depth Effects](/guides/depth-effects) for the actual conditions.
+:::caution[Write Defaults does not bulk-change your existing FX]
+The states MLC creates are written with Write Defaults off.
+The Modular Avatar attachment asks to match the avatar's own setting, so check the final result yourself.
+:::
 
 ## Profiles and budget {#파라미터-프로필}
 
-| Profile | Selection rule |
+A VRChat avatar has a fixed number of bits available for syncing. The profile sets how those bits are spent.
+
+| Profile | How to choose |
 |---|---|
-| **Auto** | Checks current settings and avatar budget, considering Smooth first and switching to Compact when needed. |
-| **Smooth** | Prioritizes continuous-control precision and may use more synced bits. |
-| **Compact** | Uses fewer synced bits while changing control steps and local-processing parameter count. |
+| **Auto** | Looks at your current settings and budget and considers Smooth first. If it does not fit, it switches to Compact |
+| **Smooth** | Prioritizes precision on continuous controls. Uses more bits |
+| **Compact** | Uses fewer bits. The control steps get coarser in exchange |
 
-**Synced bits** and **parameter entry count** are separate limits. A profile with fewer bits does not always have fewer entries. When choosing Compact, check the precision and step description shown in the UI as well as the savings.
+Sync bits and the parameter item count are two different limits. Few bits does not mean few items.
 
-Cost depends on enabled features, Saved/Synced settings, the selected profile, and other avatar components. Use the current Inspector calculation rather than fixed numbers in documentation. Auto shows the selected profile, MLC cost, external cost, and combined total.
+The cost depends on which features are active, on the save and sync settings, and on other components. Judge from the current calculation in the **Budget & Validation** panel, not from a fixed number in the docs.
 
-:::caution[Unknown does not mean available]
-If the cost created by another component cannot be read, the full budget cannot be guaranteed. Showing an MLC estimate does not mean the whole avatar is within its limits. Inspect the integration state that caused the unknown result, then validate again.
+:::caution[Unconfirmed does not mean confirmed usable]
+If the cost of another component cannot be read, the overall budget cannot be guaranteed.
+Seeing an MLC estimate does not mean the whole avatar is within the limit.
 :::
 
-## Menu configuration {#루트-메뉴-구성}
+## Menu layout {#루트-메뉴-구성}
 
-The recommended starting set is Reset, Final Output, Hue/Saturation, Photo Looks, Virtual Light, Master Adjust, and Performance. The final tree changes with features added or removed and with submenus. Check slot counts in the menu-tree display.
+The recommended layout is the seven below. It is a starting point, and adding or removing items changes the final layout.
 
-- **Enabled**: include the feature in the menu and generated target.
-- **Saved**: keep the value for the next use.
-- **Synced**: synchronize the value to other users; this affects budget.
-- Ranges and initial values for continuous controls and toggles are shown for the selected entry.
+`Reset` · `Final Output` · `Hue/Saturation` · `Photo Looks` · `Virtual Light` · `Master Adjust` · `Performance`
+
+For each item you decide three things.
+
+- **Enabled** — put this feature into the menu.
+- **Saved** — keep the value the next time the avatar is worn.
+- **Synced** — other people see it too. It spends budget.
 
 ### Commands run when pressed
 
-Commands such as Reset and performance presets run as events when their button is pressed. They do not expose fixed values, pins, or restore values like continuous controls do, so command details do not show those value controls.
+Commands like Reset or a performance preset are events that run once when the button is pressed. They do not take a fixed value or a restore value the way continuous controls do.
 
-If an older configuration left an invalid pinned command value, a warning and **Repair Command Value Settings** button appear. The button cleans up command value settings while preserving Saved/Synced selection. It can be undone. Validate generation again after repairing the warning.
+If an old configuration still has an incorrect command fixed value, a warning and a **Repair Command Value Settings** button appear. Undo reverses it.
 
-## Templates and reuse
+## MingToon features this unlocks {#설치하면-열리는-mingtoon-기능}
 
-You can move the current configuration to another avatar with a template file or copy and paste. Preset Apply and template import change the selected settings, so confirm the target before committing. Unreadable files and invalid content produce an error and are not treated as a successful apply.
+The Master Adjust and virtual light editing UI in the MingToon inspector, and the MLC settings entry point in the manager, become available. If the buttons stay locked, check the Console for compile errors and confirm the add-on is installed.
 
-## What to check in Play Mode and upload
+## What works without MLC {#mlc-없이도-되는-것}
 
-Generation runs on the avatar clone created by NDMF. The selected connection attaches menus, parameters, and FX to the clone, while the original component remains authoring settings. If a required integration is unavailable, MLC reports it rather than installing into the original.
+Lighting, shadows, rim, depth effects and outline rendering all work without MLC. Master Adjust values saved in a material keep rendering; only the editing UI is hidden.
 
-Before upload, open the menu and check control direction, initial values, Reset, and required Saved/Synced behaviour. Passing editor tests does not verify two-user synchronization in the actual VRChat client. See [Limitations](/limitations) for the current validation scope.
+Securing the depth texture and the build policy belong to the MingToon Manager. Delete MLC and the build behavior is unchanged. → [VRChat depth light](/platforms/vrchat#vrchat-깊이-라이트)
 
-If older versions left Generated assets or MLC attachments, use the dedicated cleanup action shown by the tool. Do not bulk-delete folders whose ownership cannot be confirmed.
+## What to check in Play Mode and on upload {#설치-확인}
 
-## Mask Maker {#mask-maker}
+:::note[Only the settings are stored on the original avatar]
+The actual menus, parameters and FX are created in Play Mode or on the upload copy.
+It is normal that no Generated folder appears on the original while you edit.
+:::
 
-Mask Maker is a separate tool for creating masks and vertex paint. It is not required to generate MLC expression menus.
+Before uploading, check that the menu opens, the control directions, the initial values and the Reset behavior.
 
-### MingToon features unlocked by installation {#mask-maker-설치하면-열리는-mingtoon-기능}
+| Symptom | What to check |
+|---|---|
+| The menu does not appear | The Play Mode preview option, the attachment method you picked, the SDK and NDMF compile state |
+| Direct Descriptor aborted | There are existing menus or FX. Switch to Modular Avatar |
+| External cost is unconfirmed | Do not treat the total as final |
+| Command fixed-value error | Clean it up with that command's repair button |
 
-The MM button on mask slots, Scene View outline-width painting, and face-area painting are its integration points. See [Separately Sold Add-ons](/guides/add-ons) for installation and scope.
+Testing in the editor alone does not verify two-user syncing on the real client. → [Current Limitations and Release](/limitations)
 
-### What works without Mask Maker {#mask-maker-없이도-되는-것}
+## Distribution and price
 
-Assign a mask texture made in another tool, or use vertex colours that are already prepared. See [Face SDF and Face SDF Studio](/guides/face-sdf) for Face SDF authoring.
+MLC is distributed free only during the open beta and is sold from the Early Access release onward. The free distribution does not include a MingToon commercial license, and sharing or redistributing the files is prohibited.
 
-## Checking installation {#설치-확인}
+MingToon is currently the only supported shader. lilToon and Poiyomi support is planned, and MLC is not a tool that converts shaders.
 
-- If the menu does not appear, check Play Mode preview, the selected connection, and compilation of the SDK, NDMF, and connection add-on.
-- If Direct Descriptor stops because of an existing menu or FX, use Modular Avatar or a supported VRCFury path.
-- Treat an unknown external cost as unresolved; do not treat the total as final.
-- Repair invalid command pins with the command repair button.
-- It is normal for authoring to leave the original without FX or menus; inspect the Play Mode/upload clone.
+[Official BOOTH store page](https://raming.booth.pm/items/8810346) · [License and Included Tools](/legal/beta-license)
 
-## Related documents
+## Other tools {#mask-maker}
+
+Mask Maker is a separate tool for creating masks and vertex paint. It is not required for MLC menu generation.
+→ [Mask Maker Integration](/guides/mask-maker) · [Paid Add-ons and Integration](/guides/add-ons)
+
+## Related pages
 
 - [MingToon Manager](/workflow/character-manager)
-- [Separately Sold Add-ons](/guides/add-ons)
-- [Automatic Optimization on Build](/workflow/build-optimization)
+- [Automatic Optimization On Build](/workflow/build-optimization)
 - [VRChat](/platforms/vrchat)
-- [Troubleshooting](/troubleshooting)
+- [Troubleshooting](/troubleshooting#vrchat)

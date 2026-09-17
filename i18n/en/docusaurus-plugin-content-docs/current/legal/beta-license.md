@@ -1,63 +1,99 @@
 ---
 id: beta-license
-title: Licensing and commercial use
+title: License and Commercial Use
 sidebar_position: 2
 ---
 
-# Licensing and commercial use
+# License and Commercial Use
 
-Also review the EULA included with your distribution. This page distinguishes current Open Beta restrictions from the Early Access license plans.
+## Open beta rules right now
 
-## Current distribution and use
+- **Allowed** — every non-commercial activity. Personal avatar creation and customization, non-monetized screenshots and video, non-monetized streaming, personal practice and study, non-commercial portfolios and exhibitions.
+- **Not allowed** — all commercial use. Sharing or redistributing the MingToon package itself and Ming Light Controller (MLC) files. Selling the source code itself.
+- **Contact** — [studioraming@gmail.com](mailto:studioraming@gmail.com)
 
-All commercial use is prohibited during Open Beta. Commercial license sales begin at Early Access.
+Also read the EULA included in the distribution.
+[Full license notice](https://studioraming.github.io/mingtoon-site/ko/license/)
 
-URP is excluded from the current BRP Open Beta and included with every commercial license.
+## What is distributed now
 
-Ming Light Controller (MLC) is free on the official BOOTH during Open Beta and paid from Early Access. Included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. MLC file sharing and redistribution are prohibited.
+All commercial use is prohibited in the current open beta. Commercial license sales begin with Early Access.
 
-## Personal licenses
+URP is not included in the current BRP open beta, and is included in every commercial license.
 
-### FREE
+Ming Light Controller (MLC) is free on the official BOOTH during the open beta.
+It becomes paid from Early Access, and is included in the Early Access Founders Edition packages of Personal Streaming and Personal Creator.
+The composition may change after the full release. Sharing and redistributing MLC files is not permitted.
+
+## FREE
 
 **Price: Free**
 
-Freedom for all non-commercial activities.
+Free to use for every non-commercial activity.
 
 - Personal avatar creation and customization
-- Non-monetized screenshots and videos
-- Non-monetized streams and content
-- Personal practice, study, and experiments
-- Non-commercial portfolios, exhibitions, and showcases
+- Non-monetized screenshot and video production
+- Non-monetized streaming and content production
+- Personal practice, study and experimentation
+- Non-commercial portfolios, exhibitions and public showings
+
+## Business license
+
+**Price: Contact us**
+
+A license for companies developing games, programs and products, and for MCNs and V-Tuber agencies.
+We consult on business adoption that fits the content and production workflow of MCNs and V-Tuber agencies.
+
+- Fast development support
+- Source code provided
+- Games, programs and products that include the source may be sold
+- URP version included
+
+[Business inquiries by email](mailto:studioraming@gmail.com) · studioraming@gmail.com
+
+## Source code and file distribution
+
+Selling the source code itself is prohibited under every license.
+The business license permits selling games, programs and products that include the source.
+
+The MingToon package itself and MLC files in the current beta may not be shared or redistributed.
+A personal license notice or a list of included add-ons does not grant the right to redistribute the product's original files.
+
+## Early Access sales plan
+
+Below is the plan for licenses that are not on sale yet. They cannot be purchased now.
+
+<details>
+<summary>See the Personal Streaming · Personal Creator packages</summary>
 
 ### Personal Streaming
 
-**Price: Coming soon · Sales begin at Early Access**
+**Price: In preparation · planned for sale at Early Access**
 
-For individuals creating monetized streams and video.
+A license for individuals who make monetized streams and video content.
 
-- Use in monetized streams and video content
-- One Streaming license per person
-- No additional charge based on avatar count
+- Use in monetized streaming and video content
+- One Streaming license per user
+- No extra charge by avatar count
 - URP version included
 
-Early Access Founders Edition add-ons:
+Add-ons included in the Early Access Founders Edition:
 
 - WARUDO add-ons: SpoutPlus, Outfit Switcher, Photo Booth WARUDO, MingToon Warudo Volume
 - Ming Light Controller
 
 ### Personal Creator
 
-**Price: Coming soon · Sales begin at Early Access**
+**Price: In preparation · planned for sale at Early Access**
 
-For individuals selling assets or presets and doing paid creative work.
+A license for individuals who sell assets and presets and do paid production work.
 
-- Asset or preset sales and paid avatar commissions
-- One Creator license per person
-- No additional charge based on avatar count
+- Asset and preset sales, and paid avatar commissions
+- One Creator license per user
+- No extra charge by avatar count
 - URP version included
 
-Early Access Founders Edition add-ons:
+Add-ons included in the Early Access Founders Edition:
 
 - MaskMaker
 - SDF Maker
@@ -66,37 +102,24 @@ Early Access Founders Edition add-ons:
 - Photo Booth Unity
 - Ming Light Controller
 
-Photo Booth Unity is for Unity. Ming Light Controller is not categorized as a WARUDO add-on.
+Photo Booth Unity is for Unity. Ming Light Controller is not classified as a WARUDO add-on.
 
-Included add-ons are based on the Early Access Founders Edition; contents may change after full release. Planned inclusion does not mean each add-on is already released or ready for distribution.
+The included add-ons are those of the Early Access Founders Edition, and the composition may change after the full release.
+A planned inclusion does not mean that individual add-on has already been released or distributed.
 
-### Doing both kinds of work?
+### If you do both
 
-Personal licenses are purchased per person and per license type. If you both monetize streams and do paid creative work, you need Streaming and Creator. Joint-purchase discount benefits are coming soon.
+Personal licenses are purchased per person and per license type.
+Doing monetized streaming and paid production together needs both Streaming and Creator.
+A bundle discount is in preparation.
 
-## Corporate license
+</details>
 
-**Price: Contact us**
+A separate platform for managing paid licenses may be added later.
 
-For businesses developing games, software, and products, including MCNs and V-Tuber agencies.
+## Related pages
 
-Discuss corporate adoption for the content and production workflows of MCNs and V-Tuber agencies.
+- [Third-Party Credits](/legal/third-party-credits)
+- [References](/legal/references)
 
-- Fast development support
-- Source code provided
-- Sell games, software, or products that include the source
-- URP version included
-
-[Email for business enquiries](mailto:studioraming@gmail.com) · studioraming@gmail.com
-
-## Source code and file distribution
-
-Selling the source code itself is prohibited under every license. Corporate licenses allow sales of games, software, and products that include the source.
-
-Current MingToon Beta and MLC files may not be shared or redistributed. Personal license descriptions and included add-on lists do not grant redistribution rights to original product files.
-
-[Full license information](https://studioraming.github.io/mingtoon-site/en/license/)
-
-A separate platform for managing paid licenses may be added in the future.
-
-[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/) — The BOOTH product has not been published yet. Its official product link will be added here after publication.
+[How to join the open beta](https://studioraming.github.io/mingtoon-site/ko/download/) — the BOOTH product is not posted yet. Once it is, the official product link will be added to this page.

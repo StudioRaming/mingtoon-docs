@@ -4,76 +4,96 @@ title: Shader Structure and Passes
 sidebar_position: 1
 ---
 
-# Shader Structure and Passes
+# How the shader draws one frame
 
-Use this page when investigating surface modes or depth. **The number of declared passes is not the number of draws in a frame.** Baking, feature switches, cameras and lights affect execution; inspect actual draws with Frame Debugger.
+> This page is an explanation. To pick a surface mode right now, see the [Basic Settings Guide](/guides/basics).
 
-## Built-in passes
+## In one line
 
-| Declaration order | Pass | LightMode | Purpose |
-|---|---|---|---|
-| 1 | `FORWARD_BASE_BACKFACE` | ForwardBase | Backface rendering for the two-sided dual-pass option |
-| 2 | `FORWARD_BASE` | ForwardBase | Main light, environment and surface effects |
-| 3 | `FORWARD_ADD` | ForwardAdd | Additional pixel-light contribution |
-| 4 | `TRANSPARENT_DEPTH_PREPASS` | Always | Transparent depth prepass |
-| 5 | `OUTLINE_HULL_DIRECT` | ForwardBase | Mesh-expanded Normal Outline |
-| 6 | `SHADOW_CASTER` | ShadowCaster | Light shadows and Built-in camera-depth paths |
+MingToon splits one material into six passes.
+The surface mode changes the render state those passes use, all at once.
 
-This table describes declarations in the BRP editable shader. URP uses separate passes and Renderer Features; do not transfer this order or count to URP. See [Compatibility](/platforms/compatibility).
+:::note[The counts here are the numbers declared in the source]
+They are not the number of draws that actually go out in one frame.
+Baking, feature toggles, the camera and the lights all change it. Check the real count in Frame Debugger.
+:::
+
+## What happens
+
+The Built-in shader declares six passes.
+
+| Order | Pass | What it does |
+|---|---|---|
+| 1 | FORWARD_BASE_BACKFACE | Draws the far side first in two-sided two-pass |
+| 2 | FORWARD_BASE | Main light, ambient light, main surface effects |
+| 3 | FORWARD_ADD | Additional lights such as point and spot |
+| 4 | TRANSPARENT_DEPTH_PREPASS | Writes depth first, without color |
+| 5 | OUTLINE_HULL_DIRECT | The Normal Outline drawn by expanding the mesh |
+| 6 | SHADOW_CASTER | Light shadows and Built-in camera depth |
+
+URP has a different pass layout. Do not apply this order or count to it.
+In URP, outlines and depth effects are wired up as Renderer Features.
+See [Supported Environments](/platforms/compatibility) as well.
 
 ### Main surface {#2-forward_base}
 
-Most surface effects run in the main pass. Two-sided dual-pass rendering can add backface work. Additional-light cost depends on the affecting lights and rendering path.
+Most surface effects are calculated in pass 2. Turn on two-sided two-pass and pass 1 takes the far side.
 
-### Transparent depth prepass
-
-Transparent mode does not write depth in its color pass. A prepass writes depth without color to reduce some overlap or outline problems. It can hide translucent layers behind it, so **it does not solve every transparency-sorting problem.**
-
-Collapsing inactive triangles does not make vertex processing and draw submission free. Check the generated shader to determine whether baking actually removed a pass.
+Ordinary transparency does not write depth in the pass that draws color.
+When pass 4 lays down depth first without color, the outline does not punch through its own surface.
+In exchange it can hide translucent layers behind it, so it is not a switch that solves every sorting problem.
 
 ### Shadows and camera depth {#5-shadow_caster}
 
-Keeping ShadowCaster enabled, contributing to camera depth, and casting a light shadow are separate conditions. The existence of a pass does not put a transparent-queue surface into the camera depth texture.
+Three things are separate conditions.
+Pass 6 being alive, this surface entering camera depth, and this surface casting a light shadow.
 
-Camera-depth contribution controls whether other 2D effects can read this surface as an occluder. Distinguish it from color-depth sorting and light-shadow settings.
+A surface does not enter camera depth just because the pass exists.
+Camera depth participation decides whether another material's depth effects read this surface as an occluder.
 
-## What surface mode changes {#표면-모드가-실제로-바꾸는-값}
+## What surface mode actually changes {#표면-모드가-실제로-바꾸는-값}
 
-These are default presets. Alpha To Coverage and advanced buffer settings can change the final state.
+| Surface mode | RenderType | Queue | Blend | ZWrite | Depth prepass |
+|---|---|---:|---|---|---|
+| Opaque | Opaque | 2000 | One / Zero | On | None |
+| Cutout | TransparentCutout | 2450 | One / Zero | On | None |
+| Semi-Transparent | Opaque | 2499 | SrcAlpha / OneMinusSrcAlpha | On | None |
+| Transparent | Transparent | 3000 | SrcAlpha / OneMinusSrcAlpha | Off | Yes |
 
-| Surface mode | RenderType | Queue | Default blend | ZWrite |
-|---|---|---:|---|---|
-| Opaque | Opaque | 2000 | One / Zero | On |
-| Cutout | TransparentCutout | 2450 | One / Zero | On |
-| Semi-Transparent | Opaque | 2499 | SrcAlpha / OneMinusSrcAlpha | On |
-| Transparent | Transparent | 3000 | SrcAlpha / OneMinusSrcAlpha | Off |
+Semi-Transparent blends color and still writes depth.
+Queue 2499 sits inside the opaque range, so it sorts front to back.
+In that order the nearest face needs depth to win.
+This is why two-sided hair does not paint its inner strands over the outer ones.
 
-Semi-Transparent writes depth, so nearer faces can hide those behind them. Transparent is an option for overlapping translucent layers, but sorting still needs inspection. Queue 2499 lies within Built-in's opaque depth collection range; **camera-depth supply and material participation conditions are still required.**
-
-Changing surface mode synchronizes related queue, blend, depth, culling and outline-buffer states. Do not assume all advanced render settings are preserved. Alpha To Coverage also adjusts the blend combination and needs verification with MSAA.
+Transparent sorts back to front and does not write depth.
+This mode is for a single material that mixes an opaque body, see-through shorts and a skirt.
 
 ## Shader keywords {#셰이더-키워드}
 
-Module keywords work together with properties. An enabled keyword does not prove that an effect runs or is visible. Check the overall effects toggle, role, strength, textures and camera-depth conditions as appropriate.
+Each module's keyword and properties work together.
+A keyword being on does not mean the effect is always visible on screen.
+The overall effects toggle, the material role, strength, textures and camera depth are conditions too.
 
 ### Layer tier keywords {#레이어-티어-키워드}
 
-| Module | Additional tier keywords |
+| Module | Additional tiers |
 |---|---|
-| Texture layers | `_MING_STACK_4`, `_MING_STACK_10` |
-| Normal layers | `_MING_NORMAL_2`, `_MING_NORMAL_5` |
-| Matcap layers | `_MING_MATCAP_2`, `_MING_MATCAP_5` |
+| Surface Layer | `_MING_STACK_4`, `_MING_STACK_10` |
+| Normal Layer | `_MING_NORMAL_2`, `_MING_NORMAL_5` |
+| MatCap Layer | `_MING_MATCAP_2`, `_MING_MATCAP_5` |
 
-Tiers define the compiled slot range; actual layer count also controls runtime branches. Reducing the count within a tier can change executed work. Do not infer performance from the tier alone.
+The tier sets the slot range that gets compiled. The actual layer count is also used for runtime branching.
 
-## Editable and generated shaders
+## What that constrains
 
-The editable shader keeps code available for changing settings. Generated shaders reduce unused paths while respecting animation and bake exclusions. This does not guarantee that initial imports or new variants never require compilation.
-
-VRChat fallback depends on the `VRCFallback` tag and host policy and does not reproduce every MingToon feature. Transparent fallback can look different. See [VRChat rules](/internals/vrc-rules).
+- Cutting layers within the same tier leaves the compiled code the same size. It only shrinks when you cross a tier boundary.
+- Even with a path that removes triangles in an inactive pass, vertex processing and draw submission are not free.
+- The editable shader keeps code around so values can change. Check the actual reduction in the baked shader.
+- VRChat fallback follows the `VRCFallback` tag and host policy, and does not reproduce MingToon's effects.
 
 ## Related pages
 
-- [Basic settings](/guides/basics)
-- [Modules and performance cost](/internals/module-cost)
-- [What baking removes](/internals/bake-internals)
+- [Basic Settings Reference](/reference/basics)
+- [Modules and Performance Cost](/internals/module-cost)
+- [What Baking Removes](/internals/bake-internals)
+- [VRChat Compatibility Rules](/internals/vrc-rules)

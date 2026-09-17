@@ -6,188 +6,202 @@ sidebar_position: 5
 
 # Detail Maps
 
-The layers and material response stacked on the base. Every layered section shares one trap: a slot past the layer count is skipped entirely.
+These are the layers and material qualities stacked on top of the base. For the layer families you have to raise the layer count first.
 
-Start with the guide: [Detail Maps](/guides/detail-maps)
+This page is a table for looking up values. If you want the order to turn things on in, see the [Detail Maps guide](/guides/detail-maps).
 
-:::note
-This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
-:::
+The headings and order follow the inspector's section names and display order exactly.
 
-## Texture Layers
+The fields inside map and mask slots are the same in every slot.
 
-Composite additional surface texture layers.
+Channel, remap, feather and mask UV are written once in the [Shared Texture Slot UI](/guides/texture-modules).
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable Surface Stack** | Off by default. Composites multiple textures into the surface color in order. Each active layer adds texture, mask, and blend work. | `_StackEnabled` |
-| **Surface Stack Layer Count** | Range 0-10; default 0. Slots beyond the count are never evaluated; increasing the count accumulates texture, mask, and blend cost. | `_StackLayerCount` |
+## Additional Textures (up to 10) {#추가-텍스처-최대-10장}
 
-## Normal Layers
+Up to 10 surface layers. Adding a layer repeats the fields below once per layer.
 
-Configure layered normal maps and blend strengths.
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Surface Stack** | Toggle | - | Off | Off by default |
+| **Surface Stack Layer Count** | Int | 0 ~ 10 | 0 | Range 0-10; default 0 |
+| **Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Multiply | How this stack layer combines with the result below it |
+| **Opacity** | Float | 0 ~ 1 | 1 | How much this layer is applied |
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable Normal Layers** | Off by default. Enables stacked normal maps for lighting, rims, and other modules. Each active layer adds texture and composite work; a layer count of 0 produces no result. | `_NormalEnabled` |
-| **Normal Layer Count** | Range 0-5; default 0. Only this many normal slots are evaluated; slots beyond the count are never sampled. Each added layer costs more texture, mask, and composite work. | `_NormalLayerCount` |
+## Normal Maps (up to 5) {#노말맵-최대-5장}
 
-## MatCap Layers
+Up to 5 normal layers. Adding a layer repeats the fields below once per layer.
 
-Configure MatCap textures, blending, and projection.
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Normal Layers** | Toggle | - | Off | Off by default |
+| **Normal Layer Count** | Int | 0 ~ 5 | 0 | Range 0-5; default 0 |
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable MatCap Layers** | Off by default. Composites view-based MatCap layers onto the surface. Each active layer adds texture and blend work; a layer count of 0 changes nothing. | `_MatcapEnabled` |
-| **MatCap Layer Count** | Range 0-5; default 0. Slots beyond the count are not evaluated; every active layer adds map, mask, and blend cost. | `_MatcapLayerCount` |
-| **MatCap Metallic Areas Only** | Off by default. Restricts every MatCap layer to areas with high PBR metallic value. With PBR or a metallic mask off there is little to gate against. | `_MatcapMetallicOnly` |
-| **MatCap Reflection Desaturation** | Range 0-1; default 0.25. Drains color from MatCap so the Base Map stays readable; 1 removes almost all hue. | `_MatcapDesaturation` |
-| **MatCap Normal Map** | One normal map shared by all five MatCap slots. It disturbs only the normal used to project the MatCap, so the surface shading stays where it is while the highlight distorts. Each slot sets how far it follows with MatCap Normal Map Strength; with every slot at 0 the map is never read. It is shared rather than per slot because of the texture binding budget - five maps would spend five slots on what one can do. | `_MatcapNormalMap` |
+## MatCap (up to 5) {#매트캡-최대-5장}
 
-## PBR Surface
+Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 
-Configure metallic, smoothness, and direct-light specular.
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable MatCap Layers** | Toggle | - | Off | Off by default |
+| **MatCap Layer Count** | Int | 0 ~ 5 | 0 | Range 0-5; default 0 |
+| **Metallic Areas Only** | Toggle | - | Off | Off by default |
+| **Reflection Desaturation** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **MatCap Normal Map** | Texture | - | None | MatCap Normal Map |
+| **MatCap Map** | Texture | - | None | A lighting and material image painted on a sphere |
+| **Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Screen | How the MatCap combines with the surface |
+| **Strength** | Float | 0 ~ 20 | 0.74 | How much this layer is applied |
+| **MatCap Emission Intensity** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | 0 ignores base color; at 1, darker base colors weaken the… |
+| **Normal Map Influence** | Float | 0 ~ 1 | 1 | 0 uses the mesh normal; 1 applies the complete stacked… |
+| **MatCap Normal Map Intensity** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Form / AO Shadow Visibility** | Float | 0 ~ 1 | 0.28 | At 0, hides the MatCap in form shadow and ambient occlusion;… |
+| **Cast / Depth Shadow Visibility** | Float | 0 ~ 1 | 0.28 | At 0, hides the MatCap in cast and depth shadows; at 1… |
+| **Light Brightness Link** | Float | 0 ~ 1 | 1 | 0 keeps current brightness; at 1, darker main light reduces… |
+| **MatCap / Mesh UV Projection** | Float | 0 ~ 1 | 0 | 0 projects the MatCap from the view, 1 pins it to the mesh… |
+| **MatCap Rotation** | Float | -180 ~ 180 | 0 | Range -180-180 degrees; default 0 |
+| **MatCap Circle Radius** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **MatCap Circle Feather** | Float | 0 ~ 1 | 0.25 | Range 0-1; default 0.25 |
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable PBR Surface** | Off by default. Enables the metallic, smoothness, and reflection-based surface path. It changes the toon-light result and can add normal and environment-reflection work. | `_PbrEnabled` |
-| **Workflow** | Metallic derives the reflection color from the metallic value; Specular lets you author the specular color directly. With Specular selected the Metallic slider no longer affects the result. | `_WorkflowMode` |
-| **Use Packed Mask** | Reads metallic, occlusion and smoothness from one packed texture by channel. While off, the channel and invert rows below are ignored and only the Metallic and Smoothness sliders are used. | `_PbrMaskMapEnabled` |
-| **PBR Packed Mask** | Default packing is R = metallic, G = occlusion, A = smoothness. Use the channel rows below if your texture packs them differently. | `_MaskMap` |
-| **Metallic** | 0 is dielectric, 1 is metal. With a packed mask it is multiplied by the mask, so areas where the mask is black never become metal. | `_Metallic` |
-| **Smoothness** | Higher values give smaller, sharper reflections. 0.3-0.6 suits a toon look; near 1 the highlight shrinks to a dot. | `_Smoothness` |
-| **Specular Intensity** | Range 0-2; default 1. Strength of the specular response. At 0 both the direct highlight and the environment reflection disappear, so raising Smoothness or the reflection sliders does nothing. | `_PbrSpecularStrength` |
-| **Enable Region Mask** | Off by default. Splits one RGBA texture into four region masks for per-region material adjustments. It adds a mask sample and adjustment math; mismatched UVs misalign the boundaries. | `_RegionMaskEnabled` |
-| **Region Metallic Delta** | Range -1-1; default 0. Per-R/G/B/A metallic delta added to the material value. Large positive values can push a region abruptly toward metal. | `_RegionMetallic` |
-| **Region Reflection Delta** | Range -4-4; default 0. Per-region environment-reflection delta. Negative suits skin or cloth; positive emphasizes hard surfaces. | `_RegionReflection` |
-| **Region Toon Specular Intensity Delta** | Range -8-8; default 0. Per-region toon-specular strength delta. Large values can over-brighten highlights and clip. | `_RegionSpecularStrength` |
-| **Region Toon Specular Smoothness Delta** | Range -1-1; default 0. Per-region toon-specular smoothness delta. Positive is sharper; negative spreads the highlight. | `_RegionSpecularSmoothness` |
-| **Metallic Channel** | Which channel of the packed mask holds metallic. Ignored while Use Packed Mask is off. | `_PbrMetallicChannel` |
-| **Invert Metallic** | Flips the sampled metallic value. Use it when the mask was painted white for non-metal. | `_PbrMetallicInvert` |
-| **PBR Occlusion Channel** | Which channel of the packed mask holds reflection occlusion. It never reaches the image while Reflection Occlusion is 0. | `_PbrOcclusionChannel` |
-| **Invert PBR Occlusion** | Flips the sampled reflection-occlusion value. Ignored while Reflection Occlusion is 0. | `_PbrOcclusionInvert` |
-| **Reflection Occlusion** | Range 0-1; default 0. How much the packed mask's occlusion channel suppresses environment reflection. At 0 the channel and invert settings never show up in the render. | `_PbrOcclusionStrength` |
-| **Smoothness Channel** | Which channel of the packed mask holds smoothness. Ignored while Use Packed Mask is off. | `_PbrSmoothnessChannel` |
-| **Use Roughness (Invert)** | Turn this on when the texture stores roughness instead of smoothness; the channel is used as 1 minus its value. | `_PbrSmoothnessInvert` |
-| **Use Specular Color Map (RGB)** | Sources the specular color from a texture. While off, the specular map and its invert row are ignored. With the Metallic workflow the reflection color comes from metallic instead, so the effect is limited. | `_PbrSpecularMapEnabled` |
-| **Invert Specular Color Map** | Inverts the RGB of the specular color map. Ignored while Use Specular Color Map is off. | `_PbrSpecularInvert` |
-| **Direct Highlight Intensity** | Range 0-4; default 1. Strength of the highlight coming straight from the light. At 0 the highlight is skipped entirely, so raising Smoothness produces no shine. | `_PbrDirectStrength` |
-| **Visible In Shadow** | Range 0-1; default 0. How much of the PBR highlight survives inside shadow. 0 hides it completely in shadow, 1 keeps it fully visible regardless. | `_PbrShadowVisibility` |
-| **Normal Map Influence** | Range 0-1; default 1. 0 uses the mesh normal only, 1 uses the stacked normal maps in full. With no normal map assigned the value makes no difference. | `_PbrNormalInfluence` |
-| **Highlight Toon Amount** | Range 0-1; default 0. Steps the GGX highlight falloff into a toon shape. 0 keeps the physical lobe; higher values add an edge and make Threshold relevant. | `_PbrDirectToonAmount` |
-| **Highlight Toon Threshold** | Range 0-1; default 0.5. Chooses where the lobe becomes the highlight shape. Lower is wider, higher is tighter; ignored when Toon Amount is 0. | `_PbrDirectToonThreshold` |
-| **PBR Fresnel Power** | Range 1-8; default 5. Falloff of grazing-angle reflection. Lower spreads edge brightness inward; higher keeps it near the silhouette. | `_PbrFresnelPower` |
+## PBR Surface {#pbr-표면}
 
-## Reflection
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable PBR Surface** | Toggle | - | Off | Off by default |
+| **Workflow** | Enum | Specular / Metallic | Metallic | Metallic derives the reflection color from the metallic… |
+| **Metallic** | Float | 0 ~ 1 | 0 | 0 is dielectric, 1 is metal |
+| **Smoothness** | Float | 0 ~ 1 | 0.5 | Higher values give smaller, sharper reflections |
+| **Specular Intensity** | Float | 0 ~ 2 | 1 | Range 0-2; default 1 |
+| **Use Packed Mask** | Toggle | - | Off | Reads metallic, occlusion and smoothness from one packed… |
+| **PBR Packed Mask** | Texture | - | None | Default packing is R = metallic, G = occlusion, A =… |
+| **Metallic Channel** | Enum | R / G / B / A | R | Which channel of the packed mask holds metallic |
+| **Invert Metallic** | Toggle | - | Off | Flips the sampled metallic value |
+| **Occlusion Channel** | Enum | R / G / B / A | G | Which channel of the packed mask holds reflection occlusion |
+| **Invert Occlusion** | Toggle | - | Off | Flips the sampled reflection-occlusion value |
+| **Reflection Occlusion** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Smoothness Channel** | Enum | R / G / B / A | A | Which channel of the packed mask holds smoothness |
+| **Roughness / Invert** | Toggle | - | Off | Turn this on when the texture stores roughness instead of… |
+| **Use Specular Color Map (RGB)** | Toggle | - | Off | Sources the specular color from a texture |
+| **Invert Specular Color Map** | Toggle | - | Off | Inverts the RGB of the specular color map |
+| **Direct Highlight Intensity** | Float | 0 ~ 4 | 1 | Range 0-4; default 1 |
+| **Visible In Shadow** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Normal Map Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Highlight Toon Amount** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Highlight Toon Threshold** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
 
-Configure main-light, additional-light, and environment reflection plus its color mask and cubemap independently of the PBR surface.
+## Reflection {#반사}
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable Reflection** | Enables main-light, additional-light, and environment reflection plus the reflection color map and cubemap independently of the PBR surface. Off skips this module's reflection work and texture samples. | `_ReflectionEnabled` |
-| **Main Light Specular** | Applies the reflection color and mask to the main light's direct highlight, matching lilToon's Apply Specular. When PBR Surface is also enabled, the shared PBR lobe owns the result and this switch is inactive. | `_ReflectionApplySpecular` |
-| **Additional Light Specular** | Applies reflection to direct highlights from point, spot, and other additional lights, matching lilToon's Apply Specular FA. When PBR Surface is also enabled, the shared PBR lobe owns the result and this switch is inactive. | `_ReflectionApplySpecularAdditional` |
-| **Environment Reflection** | Applies reflection probes, skybox reflection, and the material cubemap, matching lilToon's Apply Reflection. When PBR Surface is also enabled, the shared PBR environment lobe owns the result and this switch is inactive. | `_ReflectionApplyEnvironment` |
-| **Environment Reflection Intensity** | Range 0-4; default 0. How much the reflection probe or skybox shows up. With no probe in the scene, raising this changes almost nothing. | `_PbrReflectionStrength` |
-| **Reflection Blur Bias** | Range -1-1; default 0. Blurs or sharpens environment reflection beyond physical smoothness. Negative sharpens it for eyes or wet surfaces. | `_PbrReflectionSmoothnessBias` |
-| **Reflection Desaturation** | Range 0-1; default 0. Drains color from environment reflection. 1 keeps brightness with little hue, which protects the material's authored color. | `_PbrReflectionDesaturation` |
-| **Reflection Tint** | HDR tint for environment reflection; default is (1, 1, 1). It combines with Desaturation, and high values can clip the reflection to white. | `_PbrReflectionTint` |
-| **Dielectric Reflectance** | Range 0-1; default 0.04. Dielectric reflectance (F0) used by Reflection-only materials and the dielectric portion of the Metallic workflow. Areas near Metallic 1 transition to the surface color. | `_ReflectionReflectance` |
-| **Use Reflection Color Map** | Multiplies Reflection Color by the texture's RGB and alpha. When off, the texture sample and its Tiling/Offset are unused. | `_ReflectionColorTexEnabled` |
-| **Reflection Color / Mask** | RGB tint and A mask corresponding to lilToon's Reflection Color Tex. Its Tiling/Offset is independent and is not shared with the surface maps. | `_ReflectionColorTex` |
-| **Reflection Color** | HDR post-lobe colour, matching lilToon's Reflection Color. It tints both the direct highlight and environment reflection; alpha controls how much both lobes are applied. Default is white and opaque (1). | `_ReflectionColor` |
-| **Apply Surface Transparency** | Multiplies surface alpha into the reflection colour alpha. It is off by default to preserve existing MingToon materials; the lilToon converter carries the source toggle explicitly. | `_ReflectionApplyTransparency` |
-| **Reflection Blend Mode** | How the reflection colour is composited onto the surface. Add preserves the existing PBR sum; Multiply, Screen and the other modes reproduce converted lilToon layer compositing. | `_ReflectionBlendMode` |
-| **Reflection Cubemap** | Material cubemap sampled when the reflection probe is empty or Override Reflection Probe is on. The default black texture leaves existing materials unchanged. | `_ReflectionCubeTex` |
-| **Cubemap Tint** | HDR tint applied to the material cubemap. It defaults to black, so no extra reflection appears until a cubemap is intentionally configured. | `_ReflectionCubeColor` |
-| **Override Reflection Probe** | Uses the material cubemap even when a scene reflection probe exists. When off, the probe wins and the cubemap is used only as an empty-probe fallback. | `_ReflectionCubeOverride` |
-| **Cubemap Light Influence** | Controls how much the resolved main-light colour and intensity affect the material cubemap. 0 keeps its source colour; 1 applies the lighting fully. | `_ReflectionCubeEnableLighting` |
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Reflection** | Toggle | - | Off | Enables main-light, additional-light, and environment… |
+| **Main Light Specular** | Toggle | - | On | Applies the reflection color and mask to the main light's… |
+| **Additional Light Specular** | Toggle | - | On | Applies reflection to direct highlights from point, spot… |
+| **Environment Reflection** | Toggle | - | On | Applies reflection probes, skybox reflection, and the… |
+| **Environment Reflection Intensity** | Float | 0 ~ 4 | 0 | Range 0-4; default 0 |
+| **Reflection Blur Bias** | Float | -1 ~ 1 | 0 | Range -1-1; default 0 |
+| **Reflection Desaturation** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Reflection Tint** | Color | - | White | HDR tint for environment reflection; default is (1, 1, 1) |
+| **Dielectric Reflectance** | Float | 0 ~ 1 | 0.04 | Range 0-1; default 0.04 |
+| **Use Reflection Color Map** | Toggle | - | Off | Multiplies Reflection Color by the texture's RGB and alpha |
+| **Reflection Color / Mask** | Texture | - | None | RGB tint and A mask corresponding to lilToon's Reflection… |
+| **Reflection Color** | Color | - | White | HDR post-lobe color, matching lilToon's Reflection Color |
+| **Apply Surface Transparency** | Toggle | - | Off | Multiplies surface alpha into the reflection color alpha |
+| **Reflection Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | How the reflection color is composited onto the surface |
+| **Use Cubemap** | Toggle | - | On | Whether the material's own cubemap feeds the reflection |
+| **Reflection Cubemap** | Texture | - | None | Material cubemap sampled when the reflection probe is empty… |
+| **Cubemap Tint** | Color | - | Black | HDR tint applied to the material cubemap |
+| **Override Reflection Probe** | Toggle | - | Off | Uses the material cubemap even when a scene reflection probe… |
+| **Cubemap Light Influence** | Float | 0 ~ 1 | 1 | Controls how much the resolved main-light color and… |
+| **Fresnel Power** | Float | 1 ~ 8 | 5 | Range 1-8; default 5 |
 
-## Toon Specular
+## Toon Specular {#툰-스페큘러}
 
-Configure a lightweight toon-style highlight without enabling PBR.
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Toon Specular** | Toggle | - | Off | Off by default |
+| **Toon Specular Color** | Color | - | White | White by default |
+| **Toon Specular Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | Add by default |
+| **Blend Opacity** | Float | 0 ~ 1 | 1 | How strongly the toon specular highlight blends in |
+| **Intensity** | Float | 0 ~ 8 | 0.5 | Range 0-8; default 1 |
+| **Highlight Color Source** | Enum | Single Color / Mask Texture Color | Single Color | Single Color uses only the color you set |
+| **Mask Color Amount** | Float | 0 ~ 1 | 1 | At 0 the highlight keeps the color you set; at 1 the mask… |
+| **Enable Toon Specular Mask** | Toggle | - | On | On by default |
+| **Mode** | Enum | Isotropic / Anisotropic | Isotropic | Isotropic by default |
+| **Smoothness** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Threshold** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Softness** | Float | 0.001 ~ 1 | 0.05 | Range 0.001-1; default 0.05 |
+| **Anisotropic Shift** | Float | -1 ~ 1 | 0 | Range -1 to 1; default 0 |
+| **Normal Map Influence** | Float | 0 ~ 1 | 1 | 0 = mesh normal, 1 = fully stacked normal maps |
+| **Shadow Visibility** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Scene Light Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable Toon Specular** | Off by default. Adds a highlight shaped by the light direction. It is the lighter choice when a surface needs gloss but not the whole PBR path. | `_ToonSpecularEnabled` |
-| **Toon Specular Color** | White by default. It is HDR, so values above 1 are allowed. The blend mode defaults to Add. | `_ToonSpecularColor` |
-| **Toon Specular Blend Mode** | Add by default. Screen, Overlay, Hue, and Color are formulas defined over 0-1, so an HDR color or an intensity above 1 may not give the shape you intended. | `_ToonSpecularBlendMode` |
-| **Blend Opacity** | How strongly the toon specular highlight blends in. Try lowering this before Strength when the highlight overpowers; at 0 the module is effectively off. | `_ToonSpecularBlendOpacity` |
-| **Toon Specular Intensity** | Range 0-8; default 1. How bright the highlight is. It clips toward white as it rises, so shape the highlight with threshold and softness and use this only for brightness. | `_ToonSpecularStrength` |
-| **Toon Specular Color Source** | Single Color by default, which uses only the color you set. Switch to Mask Texture Color and the colors painted into the Toon Specular Mask multiply into the highlight color, so a single highlight can change color from one area to the next the way hair does. With no mask assigned the map is white, so nothing changes, and the mask's channel, invert, and remap controls keep masking intensity exactly as before. | `_ToonSpecularTintMode` |
-| **Toon Specular Mask Color Amount** | Range 0-1; default 1. Meaningful only while the color source is Mask Texture Color. At 0 the highlight keeps the color you set; at 1 the mask color is applied in full. Lower it when dark areas of the mask drag the highlight down with them. | `_ToonSpecularTintStrength` |
-| **Toon Specular Mode** | Isotropic by default. Isotropic is a round highlight; Anisotropic is a band across the strand direction, which is the hair highlight that slides as the head turns. | `_ToonSpecularMode` |
-| **Toon Specular Smoothness** | Range 0-1; default 0.5. How tight the lobe is. Roughly: 0.2 cloth, 0.45 skin, 0.7 polished metal or gems, 0.9 wet lips and enamel. | `_ToonSpecularSmoothness` |
-| **Toon Specular Threshold** | Range 0-1; default 0.5. How much of the lobe survives as the highlight shape. It is independent of Smoothness, so either is usable alone. | `_ToonSpecularThreshold` |
-| **Toon Specular Softness** | Range 0.001-1; default 0.05. 0.001 is a hard cel highlight, 1 is the raw lobe. This is the dial from cel to physical. | `_ToonSpecularSoftness` |
-| **Toon Specular Anisotropic Shift** | Range -1 to 1; default 0. Meaningful only in Anisotropic mode. It slides the band along the normal, away from the strand root, which is what places the ring on the head. | `_ToonSpecularAnisoShift` |
-| **Toon Specular Normal Map Influence** | Range 0-1; default 1. 0 uses the mesh normal only; 1 uses the stacked normal maps fully. | `_ToonSpecularNormalInfluence` |
-| **Toon Specular Visibility In Shadow** | Range 0-1; default 0. 0 hides it in shadow, 1 keeps it fully visible there. A specular is a reflection of the light source, so 0 is the physical answer and anything above it is a stylistic one. | `_ToonSpecularShadowVisibility` |
-| **Toon Specular Base Color Influence** | Range 0-1; default 0. At 0 the highlight keeps the color you set; raising it tints the highlight with the base color underneath. Raise it when the gloss should follow the material color, as on metal. | `_ToonSpecularBaseColorInfluence` |
-| **Toon Specular Scene Light Influence** | Range 0-1; default 1. At 1 the highlight follows the color and brightness of the scene light; at 0 it stays exactly the color you set regardless of the scene. Lower it when the gloss should read the same in every world. | `_ToonSpecularSceneLightInfluence` |
+## Emission {#이미션}
 
-## Emission
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Emission** | Toggle | - | Off | Off by default |
+| **Emission Map** | Texture | - | None | Texture that marks the self-illuminated areas |
+| **Emission Color** | Color | - | White | The glow color |
+| **Emission Blend Mode** | Enum | Normal / Add / Screen / Multiply | Add | How the glow is composited onto the surface beneath it - the… |
+| **Emission Blend Strength** | Float | 0 ~ 1 | 1 | How much of the blend above is applied |
+| **Glow Map · Intensity** | Float | 0 ~ 16 | 1 | Multiplier on the glow brightness |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | Mixes the base map's color into the glow |
+| **Glow Map · Visibility in Shadow** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Glow Map · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel… |
+| **Emission Scroll Speed** | Float | Four values | 0, 0, 0, 0 | Scrolls the emission map over time |
+| **Enable Emission Layer 2** | Toggle | - | Off | Turn on a second emission map when different areas need… |
+| **Emission Blend Mode (Layer 2)** | Enum | Normal / Add / Screen / Multiply | Add | How layer 2's glow is composited onto the surface beneath it |
+| **Emission Blend Strength (Layer 2)** | Float | 0 ~ 1 | 1 | How much of layer 2's blend is applied |
+| **Glow Map Layer 2 · Intensity** | Float | 0 ~ 16 | 1 | - |
+| **Base Color Influence (Layer 2)** | Float | 0 ~ 1 | 0 | Mixes the base map's color into layer 2's glow |
+| **Glow Map Layer 2 · Visibility in Shadow** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Glow Map Layer 2 · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel… |
+| **Emission Scroll Speed (Layer 2)** | Float | Four values | 0, 0, 0, 0 | Scrolls emission layer 2 over time |
 
-Configure self-illumination color, texture, and intensity.
+## Occlusion {#오클루전}
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Overall Emission Intensity** | Multiplies the final combined contribution of both emission layers and MatCap emission once. 0 removes emission; 1 keeps its original strength. Layer settings and MLC photo controls remain independent. | `_EmissionMasterIntensity` |
-| **Enable Emission** | Off by default. Adds self-emission from the map and HDR color after lighting. It can bloom or clip highlights; when off, the map and intensity are ignored. | `_EmissionEnabled` |
-| **Emission Map** | Texture that marks the self-illuminated areas. It is multiplied by the Emission Color, so a black color means nothing glows even with a texture assigned. | `_EmissionMap` |
-| **Emission Color** | The glow color. It is HDR, so values above 1 can drive bloom; black is equivalent to no emission. | `_EmissionTint` |
-| **Emission Intensity** | Multiplier on the glow brightness. Without a bloom post-process in the scene, raising it only clips to white instead of blooming. | `_EmissionIntensity` |
-| **Emission Blend Mode** | How the glow is composited onto the surface beneath it. Add is the ordinary light-adding glow; Multiply, Screen and the rest reproduce a converted material's compositing. | `_EmissionBlendMode` |
-| **Emission Blend Strength** | How much of the blend above is applied. At 0 the glow does not show; at 1 it applies fully. | `_EmissionBlendOpacity` |
-| **Base Color Influence** | Mixes the base map's colour into the glow. At 0 the glow keeps its own colour; at 1 it follows the surface beneath. Use it so a glow tracks a recoloured outfit. | `_EmissionMainColorInfluence` |
-| **Emission Visibility In Shadow** | Range 0-1; default 1. 0 follows shadow visibility and hides emission in full shadow; 1 bypasses shadow visibility so emission stays fully bright. | `_EmissionShadowVisibility` |
-| **Emission Scroll Speed** | Scrolls the emission map over time. X and Y are the horizontal and vertical UV movement per second; Z and W are unused. At 0 the map is still. | `_EmissionScroll` |
-| **Emission Blend Mode (Layer 2)** | How layer 2's glow is composited onto the surface beneath it. | `_EmissionBlendMode02` |
-| **Emission Blend Strength (Layer 2)** | How much of layer 2's blend is applied. At 0 it does not show. | `_EmissionBlendOpacity02` |
-| **Base Color Influence (Layer 2)** | Mixes the base map's colour into layer 2's glow. At 0 the glow keeps its own colour. | `_EmissionMainColorInfluence02` |
-| **Emission Scroll Speed (Layer 2)** | Scrolls emission layer 2 over time. X and Y are the horizontal and vertical UV movement per second; Z and W are unused. At 0 the map is still. | `_EmissionScroll02` |
-| **Emission Mask Mode** | RGBA multiplies the emission color by mask RGB and the blend strength by mask alpha. Channel selection and inversion do not apply. | `_EmissionBlendMaskRgba` |
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Occlusion** | Toggle | - | Off | Off by default |
+| **Occlusion Map** | Texture | - | None | Grayscale map that darkens areas indirect light cannot reach |
+| **Occlusion Intensity** | Float | 0 ~ 1 | 1 | How much of the occlusion map is applied |
 
-## Occlusion
+## Glitter {#글리터}
 
-Configure indirect-light occlusion and strength.
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Glitter** | Toggle | - | Off | Off by default |
+| **Color** | Color | - | White | HDR sparkle color; default is (1, 1, 1) |
+| **Intensity** | Float | 0 ~ 8 | 8 | Range 0-8; default 8 |
+| **Enable Glitter Mask** | Toggle | - | Off | Off by default |
+| **Application Mask · Use Color Too** | Toggle | - | Off | Off by default |
+| **Use Glitter MatCap** | Toggle | - | Off | Off by default |
+| **MatCap Texture** | Texture | - | None | The glitter-only matcap |
+| **MatCap Limit · Use Color Too** | Toggle | - | Off | Off by default |
+| **Invert** | Toggle | - | Off | Off by default |
+| **MatCap Limit · Strength** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Enable Shape Map** | Toggle | - | Off | Off by default |
+| **Shape Map** | Texture | - | None | The silhouette of a single particle |
+| **Shape Channel** | Enum | R / G / B / A / Luma | A | Default is A |
+| **Rotation Randomize** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Scale** | Float | 1 ~ 512 | 379 | Range 1-512; default 379 |
+| **Particle Size** | Float | 0 ~ 1 | 0.39 | Range 0-1; default 0.39 |
+| **Size Randomize** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Particle Contrast** | Float | 0.25 ~ 128 | 50 | Range 0.25-128; default 50 |
+| **Post Contrast** | Float | 0.1 ~ 8 | 1 | Range 0.1-8; default 1 |
+| **Sensitivity** | Float | 0.01 ~ 64 | 0.25 | Range 0.01-64; default 0.25 |
+| **Speed** | Float | 0 ~ 4 | 0.3 | Range 0-4; default 0.3 |
+| **View Parallax** | Float | 0 ~ 1 | 0.52 | Range 0-1; default 0.52 |
+| **Normal Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Light Angle** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Light Direction** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Color Randomize** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Shadow Visibility** | Float | 0 ~ 1 | 0.54 | Range 0-1; default 0.54 |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable Occlusion** | Off by default. Uses the occlusion map to darken areas blocked from indirect light. It does not replace direct-light or shadow modules; off skips map and strength calculation. | `_OcclusionEnabled` |
+## Related pages
 
-## Glitter
-
-Configure Voronoi particle sparkle with stable distance response, view sensitivity, light angle, and randomized size or color.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable Glitter** | Off by default. Adds Voronoi particle sparkle. It evaluates procedural pattern and light response per pixel, so check the cost on low-end hardware or many characters. | `_GlitterEnabled` |
-| **Glitter Color** | HDR sparkle color; default is (1, 1, 1). Final color also depends on Strength and Base Color Influence. | `_GlitterColor` |
-| **Glitter Intensity** | Range 0-8; default 8. Brightness multiplier; at 0 the pattern contributes no visible sparkle. | `_GlitterStrength` |
-| **Enable Glitter Mask** | Off by default. Limits glitter to a separate mask. Off ignores the mask texture, channel, and invert controls and saves the mask sample. | `_GlitterMaskEnabled` |
-| **Use Color Too** | Off by default. On, the same mask texture is read as full RGBA: alpha is the region and RGB tints the particles. It costs no extra texture sample. While on, the channel selector is fixed to alpha. | `_GlitterMaskUseColor` |
-| **Use Glitter MatCap** | Off by default. Limits where glitter shows using a dedicated matcap texture's brightness, judged from the view direction: bright areas show glitter, dark areas hide it. Off never reads the matcap, so it costs nothing. | `_GlitterMatcapMaskEnabled` |
-| **MatCap Texture** | The glitter-only matcap. Put a spherical highlight image here and glitter sparkles only where it is bright. Independent from the matcap layers. | `_GlitterMatcapTex` |
-| **Use Color Too** | Off by default. On, the matcap's RGB also tints the glitter particles. Off uses only its brightness for the region and leaves the color alone. Either way the texture is read once. | `_GlitterMatcapUseColor` |
-| **Invert** | Off by default. On, flips the brightness so glitter shows in the matcap's dark areas instead. | `_GlitterMatcapMaskInvert` |
-| **Strength** | Range 0-1; default 1. How strongly the matcap's region limit applies. At 0 only the region limit disappears - the tint from Use Color Too still applies. | `_GlitterMatcapMaskStrength` |
-| **Enable Shape Map** | Off by default. On, each particle's silhouette is replaced by a texture (star, heart, and so on). Off keeps the round particle and does not read the shape map. | `_GlitterShapeEnabled` |
-| **Shape Map** | The silhouette of a single particle. The square is laid inside the particle, so leave a margin rather than filling to the edge. The background must be black (or alpha 0). | `_GlitterMap` |
-| **Shape Channel** | Default is A. Picks which channel of the shape map carries the silhouette. Use A for a PNG with alpha, or R / Luma for a black-and-white image. | `_GlitterShapeChannel` |
-| **Rotation Randomize** | Range 0-1; default 1. How far each particle is turned from the next. At 0 every particle faces the same way and the result reads as a stamped pattern; at 1 the angle is spread evenly over a full turn. Lower it only when a directional shape such as a heart should stand upright. | `_GlitterShapeRotation` |
-| **Glitter Density** | Range 1-512; default 379. Sets particle-cell detail. Higher values make finer sparkles but can increase shimmer, aliasing, and procedural pattern work. | `_GlitterDensity` |
-| **Glitter Particle Size** | Range 0-1; default 0.39. Screen coverage of each particle; higher makes larger sparkles, lower makes smaller points. | `_GlitterSize` |
-| **Glitter Size Randomize** | Range 0-1; default 1. Randomizes particle size. 0 is uniform; 1 is more organic but less predictable. | `_GlitterScaleRandomize` |
-| **Glitter Particle Contrast** | Range 0.25-128; default 50. Contrast inside each particle. Higher is crisper but can increase stepping and shimmer. | `_GlitterContrast` |
-| **Glitter Post Contrast** | Range 0.1-8; default 1. Applies contrast after the particle pattern. 1 is neutral; higher removes dim pixels sooner. | `_GlitterPostContrast` |
-| **Glitter View Sensitivity** | Range 0.01-64; default 0.25. Sensitivity to view changes; higher values make sparkle shift more as the camera moves. | `_GlitterSensitivity` |
-| **Glitter Speed** | Range 0-4; default 0.3. Animates the view-dependent sparkle. 0 is static; higher values change faster and can make flicker more noticeable. | `_GlitterSpeed` |
-| **Glitter View Parallax** | Range 0-1; default 0.52. How particles slide with view movement; higher adds depth but can shimmer more. | `_GlitterViewParallax` |
-| **Glitter Normal Influence** | Range 0-1; default 1. Uses mesh and stacked-normal direction for sparkle. With normal layers off, 1 still falls back to the mesh normal. | `_GlitterNormalInfluence` |
-| **Glitter Light Angle** | Range 0-1; default 1. Influence of the particle-to-light angle on sparkle brightness. | `_GlitterLightAngle` |
-| **Glitter Light Direction** | Range 0-1; default 1. How strongly sparkle follows light direction; lower values make it more view-driven. | `_GlitterLightDirection` |
-| **Glitter Color Randomize** | Range 0-1; default 1. Randomizes per-particle color. 0 is a single color; 1 is varied but more complex. | `_GlitterColorRandomize` |
-| **Glitter Shadow Visibility** | Range 0-1; default 0.54. How much glitter remains in shadow; 0 hides it, 1 ignores the shadow gate. | `_GlitterShadowVisibility` |
-| **Glitter Base Color Influence** | Range 0-1; default 0. 0 keeps the glitter color; 1 multiplies it by the Base Map. | `_GlitterBaseColorInfluence` |
-| **Glitter Scene Light Influence** | Range 0-1; default 0.5. How scene-light brightness dims the glitter. | `_GlitterSceneLightInfluence` |
+- [Detail Maps usage guide](/guides/detail-maps)
+- [Shared Texture Slot UI](/guides/texture-modules) — the channel, remap and UV fields inside map and mask slots
+- [Troubleshooting](/troubleshooting)

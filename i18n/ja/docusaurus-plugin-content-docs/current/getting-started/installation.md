@@ -4,138 +4,117 @@ title: インストール
 sidebar_position: 1
 ---
 
-:::note[オープンベータ参加案内]
-[オープンベータ参加案内](https://studioraming.github.io/mingtoon-site/ja/download/)
-:::
-
-
-すべての商用ライセンスにURPバージョンが含まれます。Personal Streaming・Personal CreatorのEarly Access Founders EditionにはMLCが含まれ、正式リリース後に構成が変更される場合があります。現在のオープンベータでは商用利用は禁止です。[ライセンスと同梱構成](/legal/beta-license)をご確認ください。
-
 # インストール
 
-MingToon 0.1.10 オープンベータ本体は BRP 対象です。URP は今回の BRP オープンベータに含まれず、すべての商用ライセンスに含まれます。
+> このページを終えると、MingToon がエラーなく入った Unity プロジェクトができます。
+> 約 15 分かかります。
 
-**このドキュメントを完了すると、** MingToonがエラーなくインポートされたUnityプロジェクトが手に入ります。
+## 始める前の準備
 
-## 1. まずUnityのバージョンを合わせます
+- Unity Hub と下の表に合う Unity バージョン、そして作業するプロジェクトのバックアップ
+- VRChat が対象なら VRChat SDK3 (Avatars)
 
-:::danger[対象によってUnityバージョンが異なります]
-| 対象 | Unity | 根拠 |
-|---|---|---|
-| **VRChat PC** (主要な対象) | **2022.3.22f1** | 現在のVRChat SDK基準 |
-| **Warudo** | **2021.3.45f2** | Warudo Mod SDK 0.14.3.10基準 |
-| 一般的なUnity | 2021.3 LTS | |
+## 1. Unity のバージョンを合わせます
 
-**VRChat対象の場合は必ず2022.3.22f1を使用してください。** MingToonのVRChat ビルドフックとVRChat ランタイムは、`UNITY_2022_3_OR_NEWER` 条件でのみコンパイルされます。2021.3では、このコードが**全く存在しない**ため、アップロード時の自動最適化も、深度ライトなどのアップロード処理も実行されません。
-:::
+| 対象 | Unity |
+|---|---|
+| VRChat PC | 2022.3.22f1 |
+| Warudo | 2021.3.45f2 |
+| 一般 Unity | 2021.3 LTS |
 
-1つのプロジェクトでVRChatとWarudoを同時に対応させることはできません。対象ごとにプロジェクトを分けてください。
+VRChat が対象なら 2022.3.22f1 を使ってください。
+MingToon の VRChat ビルドフックは 2022.3 以上でのみコンパイルされます。
+2021.3 のプロジェクトにはアップロード時の自動最適化がまったくありません。
+1 つのプロジェクトで VRChat と Warudo の両方には対応できないので、分けてください。
 
-## 2. インストール方法を選ぶ
+![Unity Hub のプロジェクト一覧でエディターバージョンが 2022.3.22f1 と表示された画面](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-01-unity-version.png | Unity Hub 프로젝트 목록에서 대상 프로젝트의 Editor Version 칸이 2022.3.22f1인 상태 | 1200x700 -->
 
-[公式ダウンロード案内](https://studioraming.github.io/mingtoon-site/ja/download/)からVCCまたはBOOTHを選択してください。VRChat用プロジェクトには、先にVRChat SDK3 (Avatars)を用意します。
+## 2. パッケージをインストールします
 
-:::caution[旧Assets版から移行する場合]
-プロジェクトをバックアップし、Playモードを終了してください。`Assets/StudioRaming/MingToon`内に自分で保存したマテリアル・テクスチャ・プリセットを別のフォルダーへ移してから、**古いMingToonフォルダーだけを削除**し、新しいパッケージを導入します。`Assets/StudioRaming`全体や`MingLightController`フォルダーは削除しないでください。この整理は旧Assets版から移行するときだけ必要です。
-:::
+[公式ダウンロード案内](https://studioraming.github.io/mingtoon-site/ko/download/)で VCC または BOOTH を選びます。
 
-### VCCでインストール
+VCC でインストールする場合:
 
-1. 公式ダウンロード案内で**VCCに追加**を選択します。
-2. VCCでリポジトリの追加を確認し、対象プロジェクトの**Manage Project**を開きます。
-3. MingToonを追加してUnityを開き、パッケージのインポートとコンパイルが終わるまで待ちます。
-4. 以降の更新はVCCのManage Projectから行います。
+1. ダウンロード案内で **VCC に追加**を押します。
+2. VCC でリポジトリの追加を確認します。
+3. 対象プロジェクトの **Manage Project** を開きます。
+4. MingToon を追加して Unity を開きます。
 
-### BOOTHのインストーラーで導入
+BOOTH インストーラーでインストールする場合:
 
-1. [公式BOOTH商品](https://raming.booth.pm/items/8810209)からインストーラーの`.unitypackage`をダウンロードします。
-2. Unityの`Assets > Import Package > Custom Package`からインポートします。
-3. インターネットに接続したまま待つと、DLLインストーラーが必要なMingToonパッケージを自動で導入します。初回は追加のインストールボタンを押す必要はありません。
-4. 以降はUnity起動時に新しいバージョンを確認します。案内画面の**更新**を押した場合のみインストールし、**スキップ**はそのバージョンだけに適用されます。Unityを再起動するだけでは更新を自動インストールしません。
+1. [BOOTH 商品](https://raming.booth.pm/items/8810209)でインストーラーの `.unitypackage` を入手します。
+2. Unity で `Assets > Import Package > Custom Package` からインポートします。
+3. インターネットに接続したまま待ちます。インストーラーが本体を自動で取得します。
 
-## 3. インストールの確認
+![Unity が MingToon パッケージをインポートしコンパイルを終えた Project ウィンドウ](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-02-import-done.png | Project 창에 MingToon 패키지가 들어오고 진행 바가 사라진 직후 상태 | 1200x700 -->
 
-Projectウィンドウの**Packages > MingToon**と、導入先の`Packages/com.studioraming.mingtoon`を確認してください。インポートとコンパイルの完了後、Consoleのエラーと、マテリアルのMingToonシェーダーが正常に表示されることを確認します。
+VCC でインストールした場合は、更新も VCC で行います。
+BOOTH インストーラーは Unity を起動したときに新しいバージョンを案内します。
 
-Ming Light Controllerは別パッケージです。使用する場合はMLCも別途導入・更新してください。今回のMingToon配布はBRP本体であり、URPアドオンは含まれません。
+## 3. シェーダーが入ったか確認します
 
-## 以前のバージョンからアップグレードした場合 {#이전-버전에서-올라왔다면}
+マテリアルを 1 つ選び、Inspector 最上部のシェーダー一覧を開きます。
+`StudioRaming/MingToon/MingToon BRP` が見えれば正常です。
+URP シェーダーは今回の BRP オープンベータには含まれていません。
 
-以前のバージョンからアップグレードしたプロジェクトでは、以下の2つを**それぞれ1回ずつ**実行する必要があります。
+![Inspector のシェーダードロップダウンに MingToon BRP 項目が見える画面](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-03-shader-list.png | 재질 Inspector의 Shader 드롭다운을 펼쳐 StudioRaming/MingToon/MingToon BRP가 보이는 상태 | 1200x700 -->
 
-:::danger[1. スキーマ マイグレーションを1回実行してください]
-`Tools > Studio Raming > MingToon > Advanced > Migrate Project To Current Schema`
+## 4. VRChat 連携を確認します
 
-マテリアルスキーマが**10から11に**アップグレードされました。`リムライトマスクを使用` · `リム影マスクを使用`という2つの新しいトグルが追加されましたが、以前のマテリアルにはこれらのトグルがないため**オフ状態で読み込まれます。** マイグレーションは白色のデフォルト値ではないマスクを見つけて、トグルをオンにします。
-
-**実行するまで、該当するマテリアルのリムマスクは適用されません。** マスクがデフォルトの白色のマテリアルはオフのままで、その方が良いです。
-
-実行前に確認を受け、変更されたファイルはバックアップされます。完了するとコンソールに処理されたマテリアル・プリセット・アニメーション クリップの数とバックアップパスが1行に表示されます。 → [リム](/guides/rim#림-마스크)
-:::
-
-:::caution[2. ベイクキャッシュが再生成されます]
-生成シェーダーキャッシュのバージョンが**28から38に**アップグレードされ、既存のベイク出力は無効になります。次のビルド/アップロード時に自動的に再度焼き込みされるため、手動で削除する必要はありませんが、その1回は時間がかかります。
-
-**VRChat アバターは再度アップロードする必要があります。このバージョンの修正が反映されます。** シェーダーはアバター AssetBundle に含まれているため、既にアップロードされたアバターは古いシェーダーを使用し続けます。 → [VRChat](/platforms/vrchat)
-:::
-
-## 4. VRChat連携確認 (VRChat対象のみ)
-
-スクリプトリロード後、Consoleに次の行があるはずです。
+VRChat が対象の場合のみ該当します。リロードが終わったあと、Console に次の行があるはずです。
 
 ```text
 [MingToon] VRChat build hook compiled and registered.
 ```
 
+![Console ウィンドウに MingToon のビルドフック登録ログが 1 行出た画面](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-04-hook-log.png | Console 창에서 [MingToon] VRChat build hook compiled and registered. 한 줄이 보이는 상태 | 1200x700 -->
+
 :::danger[この行がない場合]
-VRChat ビルドフックが**全く存在しない状態**です。アップロードしても自動最適化と、深度ライトなどのアップロード処理は実行されません。確認すべきこと:
-
-1. Unityバージョンが**2022.3.22f1**であるか
-2. VRChat SDK3がプロジェクトに正しく入っているか (`VRC_SDK_VRCSDK3` 定義)
+VRChat ビルドフックがない状態です。
+アップロードしても自動最適化がかかりません。
 :::
 
-## 5. プロジェクト検証
+## 5. プロジェクトを検証します
 
-メニューから`Tools > Studio Raming > MingToon > Validate Project`を実行します。
+メニューから `StudioRaming > MingToon > Validate Project` を実行します。
+ビルドターゲットがシェーダーモデル 4.5 を満たせない場合は `MING-ENV-BUILD-TARGET` エラーが出ます。
+その状態で進めると、マテリアルがマゼンタ（ピンク色）になります。
+エディターが 2021.3 で VRC SDK がある場合は `MING-VRC-UNITY-VERSION` 警告が出ます。
 
-主に確認するのは、**現在のビルドターゲットがシェーダーモデル4.5を満たすかどうか**です。満たさない場合はエラーとして報告され、その状態で続行するとマテリアルがマゼンタ(ピンク色)でレンダリングされます。 → [サポート環境](/platforms/compatibility)
+![Validate Project の実行結果ウィンドウ](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-05-validate.png | Validate Project를 실행해 결과 목록이 표시된 창 | 1200x700 -->
 
-<!-- SCREENSHOT: Validate Project 結果 -->
+## うまくいったかの確認
 
-:::note[サポートするエディターストリームは2021.3と2022.3の両方です]
-どちらでも`MING-ENV-UNITY-VERSION`エラーは出ません。
+- Console に赤いエラーがありません。
+- シェーダー一覧に `StudioRaming/MingToon/MingToon BRP` があります。
+- VRChat が対象ならビルドフックのログが出ています。
+- `Validate Project` の結果にエラーがありません。
 
-ただし**VRC SDKが入っているのにエディターが2021.3の場合**、`MING-VRC-UNITY-VERSION` **警告**が表示されます — 「MingToonのVRChat連携は2022.3ストリームでのみコンパイルされるため、このプロジェクトではアバター アップロードサポートがありません。」これは正確な警告であり、VRChat対象の場合は2022.3.22f1に移動する必要があることを意味します。
-:::
+4 つのうち 1 つでも合わなければ[トラブルシューティング](/troubleshooting#install)へ進んでください。
 
-## 6. シェーダーの選択
+## 以前のバージョンから上げた場合 {#이전-버전에서-올라왔다면}
 
-| プロジェクト | シェーダー |
-|---|---|
-| Built-in Render Pipeline (BRP) — VRChat・Warudo含む | `StudioRaming/MingToon/BRP` |
-| URP 12.x (Unity 2021.3) | MingToon URPシェーダー |
+ベイクキャッシュが一度作り直されます。
+手で消すものはなく、次のビルドやアップロードがその分だけ長くかかります。
+VRChat のアバターは再アップロードしないと今回のバージョンが反映されません。
+シェーダーがアバターに一緒に載るためです。条件は [VRChat](/platforms/vrchat) にあります。
 
-:::danger[URPはVRChat対象ではありません]
-VRChat + URPはサポートされていません。URPはUnity 2021.3 + URP 12.xのみを対象とし、URP 13以上は動作しているように見えても、サポートとは見なさないでください。
-:::
+## 任意: Post Processing Stack v2 {#선택-사항-post-processing-stack-v2}
 
-## オプション: Post Processing Stack v2 {#선택-사항-post-processing-stack-v2}
+MingToon は PPv2 がなくても完全に動作します。シーン確認と撮影用です。
 
-MingToonはPPv2なしで完全に動作します。PPv2関連のソースはすべて`UNITY_POST_PROCESSING_STACK_V2` シンボルで除外されているため、きれいなプロジェクトに`com.unity.postprocessing`をインストールする必要はありません。
+1. PPv2 **3.4.0** をインストールします。
+2. **Player Settings > Scripting Define Symbols** に `UNITY_POST_PROCESSING_STACK_V2` を手動で追加します。
+3. Unity が再コンパイルを終えるまで待ちます。
+4. `StudioRaming > MingToon > Create or Repair BRP PPv2 Global Volume` を実行します。
 
-PPv2連携を使用する場合:
+2 番を飛ばすと、4 番のメニューは何もしません。
 
-1. PPv2 **3.4.0**をインストールします。
-2. **Player Settings > Scripting Define Symbols**に`UNITY_POST_PROCESSING_STACK_V2`を**直接追加**します。
-3. Unityが再コンパイルを完了するまで待ちます。
-4. `Tools > Studio Raming > MingToon > Create or Repair BRP PPv2 Global Volume`を実行します。
+## 次に読む文書
 
-:::note
-パッケージをインストールするだけではこのシンボルは生成されません。ステップ2をスキップするとメニューは何もしません。
-:::
-
-VRChatアバターはワールドのポストプロセッシングに従うため、PPv2は主にシーン確認・撮影用です。
-
-## 次へ
-
-[最初のマテリアルを作成する](/getting-started/first-material) · [トラブルシューティング](/troubleshooting)
+[Manager ではじめる](/getting-started/first-material) · [対応環境](/platforms/compatibility) · [トラブルシューティング](/troubleshooting#install)

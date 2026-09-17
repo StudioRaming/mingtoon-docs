@@ -1,71 +1,115 @@
 ---
 id: first-material
-title: Start with MingToon Manager
+title: Getting Started with Manager
 sidebar_position: 2
 ---
 
-# Start with MingToon Manager
+# Getting Started with Manager
 
-**Keep MingToon Manager on the root of every avatar you work on with MingToon.** It manages target meshes, conversion, looks, and update checks. This guide starts with adding Manager after installation, then converting and refining materials in Quick Settings. Complete [installation](/getting-started/installation) first. Face SDF Studio is not yet released and is not needed for this workflow.
+> When you finish this page, one avatar is running on MingToon materials.
+> It takes about 15 minutes.
 
-## 1. Add Manager to the avatar root first
+## Before you start
 
-In Hierarchy, select the **root object of the avatar** you are working on. Find **MingToon Manager** in Add Component and add it. Keep Manager on the avatar root even when working only on its outfit. Check that the target meshes are beneath this object, and work with one Manager selected. Keep the component after conversion and use it to check updates and work status.
+- A project that finished [Installation](/getting-started/installation)
+- One avatar placed in the scene
+- A project backup
 
-**If installed through VCC, update MingToon in VCC.** Check the installation method before following update guidance in Manager.
+## 1. Add Manager to the avatar root
 
-## 2. Assign Face Mesh and Skin Mesh
+1. Select the topmost object of the avatar in the Hierarchy.
+2. Press `GameObject > MingToon > Add MingToon Manager` from the menu.
 
-In Manager's Setup, assign the face mesh as **Face** and bare-skin meshes as **Skin**. Use the face and skin renderer assignment fields and check the per-slot role preview. Do not assign all eyes, eyelashes, clothing, or hair as face or skin.
+You are fine when MingToon Manager appears in the Inspector with three tabs.
+The tabs are **Get Started** · **Look & Bake** · **Optimize**.
 
-When converting only an outfit without a face or bare skin, leave those assignments empty. If one Renderer combines skin and clothing, separate their slot roles and keep clothing as **Regular**. Roles determine which materials receive the preset's face, skin, or common values.
+![The Inspector with MingToon Manager on the avatar root and three tabs visible](/img/placeholder.png)
+<!-- CAPTURE: getting-started/first-material-01-add-manager.png | Hierarchy에서 아바타 루트를 고른 상태로 Inspector에 MingToon Manager와 시작하기·룩·베이크·최적화 탭이 보이는 화면 | 1200x700 -->
 
-→ [Role assignment details](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계)
+:::caution[Do not delete it when you are done]
+Manager remembers how far upload optimization should treat this as one avatar.
+Keep it on the avatar root even when you only edit an outfit.
+:::
 
-## 3. Choose a look preset
+## 2. Assign the face and skin renderers
 
-Choose a starting look in **Look Preset On Convert**. Start with a preset close to the desired mood, then refine its values after conversion. Select **None** to start from imported source settings without applying a look preset.
+Find **1. Assign face & skin renderers** on the **Get Started** tab.
 
-## 4. Choose a colour tone or existing material values
+1. Put the face mesh into **Direct Face Renderer**.
+2. Put the bare skin mesh into **Direct Skin Renderer**.
+3. Press **Mark Roles on the Named Renderers**.
 
-| Starting point | Selection |
-|---|---|
-| Create a new mood with preset colours | Choose a tone in **Color Preset** |
-| Start with the original material's colours | Select **Keep Existing Values** |
+You are fine when the slot list shows `Face` and `Skin`.
+Leave the hair and clothing slots as `Regular`.
 
-**Keep Existing Values** preserves **converted source colours, shadow bands, and blending settings**. It is separate from **None**, which disables the look preset. The colour preset applies after the look; selecting it alone does not edit materials.
+![The Get Started tab with Face and Skin roles shown in the slot list](/img/placeholder.png)
+<!-- CAPTURE: getting-started/first-material-02-face-skin.png | 시작하기 탭의 "1. 얼굴 · 스킨 대상 지정" 카드에서 슬롯 목록에 Face·Skin·Regular가 표시된 상태 | 1200x700 -->
 
-## 5. Press Convert
+Leave both fields empty if you only convert hair and clothing.
+For details on role assignment, see [Role assignment in detail](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계).
 
-Check the meshes, roles, look, and colour selection, then press **Convert**. After completion, check that editable MingToon materials are assigned to the target. If the result lists excluded or failed slots, inspect those materials and reasons before continuing.
+## 3. Choose the conversion presets
 
-## 6. Refine the look in Quick Settings
+Find **2. Choose look → Convert** on the same tab.
 
-Select converted materials and open **Quick Settings** in their Inspector. Manager's material selection tools help select just the face, skin, or other materials you need. Start by adjusting face, skin, and clothing separately; select multiple materials when you want the same values on all of them.
+1. Pick **Basic Toon High** in **Look Preset On Convert**.
+2. Pick **Keep Existing Values** in **Color Preset**.
 
-Work through **colour and brightness → shadow edges → outline → rim, gloss, and emission**, moving one control at a time and watching the model. Use search or Full Settings for controls absent from Quick Settings. You do not need to enable every feature below.
+Basic Toon High is the reference look that turns depth effects on.
+Pick Basic Toon Low for a lighter result.
+Keep Existing Values leaves the color and shadow values read from the source untouched.
 
-## Frequently adjusted parameters
+![Look Preset On Convert and Color Preset selected](/img/placeholder.png)
+<!-- CAPTURE: getting-started/first-material-03-presets.png | 시작하기 탭의 "2. 룩 선택 → 변환" 카드에서 변환 시 룩 프리셋이 베이직툰 High, 색감 프리셋이 기존값 사용인 상태 | 1200x700 -->
 
-| Desired change | Controls to find first | What to watch |
-|---|---|---|
-| Overall colour | Base Map HSVG | Adjust hue, saturation, value, and gamma gradually; check skin and clothing |
-| Brightness in dark areas | Indirect Light Lift · Minimum Final Brightness | Check dark-area brightness and shading; use Preserve Base Map Color separately for lighting hue |
-| Shadow edges | 1st Shadow Softness | Lower for a sharper edge, higher for a softer transition |
-| Shadow colour | Shadow Colour | Tune skin, hair, and clothing separately |
-| Outline | Outline Width · Outline Colour | Check both close-up and full-body views |
-| Edge lighting | Rim Light · 2D Rim | Check silhouette emphasis; 2D rim also requires camera depth |
-| Surface gloss | Matcap · Toon Specular | Check for excessive highlights on hair and clothing |
-| Self-lit details | Emission | Limit it to intended areas and adjust colour and intensity |
+## 4. Run the conversion
 
-If a value has no visible effect, check **overall effects → the module toggle → the feature's requirements**. Depth-based features such as 2D rim and 2D shadow need the setup described in [Depth Effects](/guides/depth-effects).
+Press **Convert Child Materials to MingToon** inside the same **2. Choose look → Convert** card.
 
-## 7. Upload or build after editing
+The source materials are not deleted.
+New MingToon authoring materials are created, and only the slots change.
 
-Once the materials look the way you want, **upload the avatar through VRC SDK** or **build the WARUDO mod**. Automatic optimization baking runs during that workflow; a separate manual Bake is not the starting requirement. **Keep MingToon Manager on the avatar root** and check its automatic build/upload optimization status.
+![The result line shown after pressing the convert button](/img/placeholder.png)
+<!-- CAPTURE: getting-started/first-material-04-convert.png | "2. 룩 선택 → 변환" 카드의 하위 재질을 MingToon으로 변환 버튼과 그 아래 변환 결과 줄이 보이는 상태 | 1200x700 -->
 
-See [Automatic Optimization On Build](/workflow/build-optimization) and your target platform guide. See [Current Limitations](/limitations) for the beta's verification boundaries.
+## 5. Check the conversion result
 
-## Continue from here
+Read the `Converted slots` · `Excluded slots` · `Failed slots` counts on the result line.
+If failed slots is above 0, check those materials first.
+Excluded slots are families like particles that are left alone on purpose.
 
-[Quick Settings and search](/guides/inspector#빠른-설정) · [Light and Shadow](/guides/light-and-shadow) · [Detail Maps](/guides/detail-maps) · [Manager details](/workflow/character-manager)
+![The result panel showing converted, excluded, and failed slot counts](/img/placeholder.png)
+<!-- CAPTURE: getting-started/first-material-05-result.png | 변환 결과 패널에 변환된 슬롯·제외한 슬롯·실패한 슬롯 개수가 표시된 상태 | 1200x700 -->
+
+Which materials get excluded is listed in [Slots that are not converted](/workflow/character-manager#변환되지-않는-슬롯).
+
+## 6. Refine in Quick Settings
+
+Select one face material and open **Quick Settings** in the Inspector.
+
+If a row shows `(Module Off)`, press **Turn This Module On** next to it first.
+
+1. Lower **1st Shadow Blur** to 0.05. The default is 0.3.
+2. Raise **Outline Width** to 2. The default is 1.
+3. Move the saturation in **Base Map HSVG** in steps of 0.05.
+
+You succeeded when the shadow boundary sharpens and the outline thickens.
+
+![A face with the shadow boundary and outline adjusted in Quick Settings](/img/placeholder.png)
+<!-- CAPTURE: getting-started/first-material-06-quick-settings.png | 빠른 설정 카드를 펼치고 1차 그림자 번짐과 아웃라인 폭을 조정한 얼굴 클로즈업 | 1200x700 -->
+
+## Check that it worked
+
+- The avatar is not magenta (pink).
+- The face slot shows `Face`.
+- Failed slots is 0.
+- Changing a value in Quick Settings updates the view immediately.
+
+If any item does not match, go to [Troubleshooting](/troubleshooting#conversion).
+
+When you finish editing, run the VRC SDK upload or the WARUDO mod build as usual.
+Automatic optimization runs at that point. You do not need to press a manual Bake first.
+
+## What to read next
+
+[Basic Settings](/guides/basics) · [Using the Inspector](/guides/inspector) · [MingToon Manager](/workflow/character-manager)

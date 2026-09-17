@@ -6,96 +6,128 @@ sidebar_position: 3
 
 # Warudo
 
-**このドキュメントを終えると** Warudo Modビルド最適化とカメラ深度供給を、それぞれ正しい場所へインストールできます。
-
-:::caution[対応状況]
-Warudoは対応対象ですが、実機回帰テストの範囲はVRChatより狭いです。最終ModをWarudoで直接開き、メイン出力と使用するSpout・NDIカメラをすべて確認してください。
-:::
+> このページはWARUDOでMingToonキャラクターを使う方のためのものです。
+> 深度供給プラグインのインストールと、モッドビルドの確認を扱います。
 
 ## 基準バージョン
 
 | 項目 | 値 |
 |---|---|
 | Unity | **2021.3.45f2** |
-| Warudo Mod SDK | **0.14.3.10** |
+| WARUDO Mod SDK | **0.14.3.10** |
 | レンダーパイプライン | Built-in (BRP) |
 
-:::danger[VRChatプロジェクトと兼用できません]
-VRChatはUnity **2022.3.22f1**、Warudoは**2021.3.45f2**を使用します。対象ごとにプロジェクトを分けてください。
+:::danger[VRChatプロジェクトと兼用することはできません]
+VRChatはUnity 2022.3.22f1、WARUDOは2021.3.45f2を使います。対象ごとにプロジェクトを分けてください。
 :::
 
 ---
 
-## カメラ深度の導入 — WARUDO Depth Bridge {#warudo-depth-bridge}
+## カメラ深度のインストール — WARUDO Depth Bridge {#warudo-depth-bridge}
 
-2Dリムライト・2Dシャドウ・インナー2Dエッジ・SSAOなどの画面深度エフェクトには、Warudoカメラの深度テクスチャが必要です。0.1.10パッケージには、これを供給する独立したWarudoプラグインソースが含まれます。
+デプスリムライト・デプスシャドウ・インナーアウトライン・SSAOには、WARUDOのカメラの深度テクスチャが必要です。
+
+パッケージには、その深度を供給する独立プラグインのソースが入っています。
+
+### これはキャラクターではなくWARUDO本体にインストールします
+
+:::caution[プレハブに付けるコンポーネントではありません]
+このファイルは、WARUDOアプリケーションのPlaygroundで動くグローバルプラグインです。
+キャラクターのモッドフォルダーに入れたり、プレハブにコンポーネントとして追加したりしないでください。
+:::
 
 ### インストール
 
-1. Unityプロジェクトで`Assets/StudioRaming/MingToon/Docs/Warudo/MingToonWarudoDepthBridge.cs.txt`を探します。
-2. このファイルをWarudoインストールフォルダーの`Warudo_Data/StreamingAssets/Playground`へコピーします。
-3. ファイル名末尾の`.txt`を外し、`MingToonWarudoDepthBridge.cs`にします。
-4. WarudoのPlaygroundプラグインが再読み込みされたら、Consoleで`[MingToon Warudo Depth Bridge] installed`ログを確認します。
+1. Unityプロジェクトで `Assets/StudioRaming/MingToon/Docs/Warudo/MingToonWarudoDepthBridge.cs.txt` を探します。
+2. このファイルをWARUDOのインストールフォルダーの `Warudo_Data/StreamingAssets/Playground` にコピーします。
+3. ファイル名末尾の `.txt` を削除して `MingToonWarudoDepthBridge.cs` にします。
+4. WARUDOを再起動し、Consoleで `[MingToon Warudo Depth Bridge] installed` のログを確認します。
 
-:::important[キャラクタープレハブへ付けるコンポーネントではありません]
-このファイルはWarudoアプリケーションのPlaygroundで実行されるグローバルプラグインです。キャラクターModフォルダーへ入れたり、プレハブへコンポーネントを追加したりしないでください。以前の`MingToonWarudoRoot`方式の案内は現在のドキュメントで廃止されました。
-:::
+プラグイン一覧に `MingToon Warudo Depth Bridge` が表示されれば成功です。
 
-### 供給するもの
+![WARUDO 설치 폴더의 Warudo_Data/StreamingAssets/Playground 안에 MingToonWarudoDepthBridge.cs 파일이 놓인 탐색기 화면](/img/placeholder.png)
+<!-- CAPTURE: platforms/warudo-01-playground-folder.png | Warudo_Data/StreamingAssets/Playground 폴더에 MingToonWarudoDepthBridge.cs가 있는 탐색기 + 옆에 WARUDO 플러그인 목록 | 1200x700 -->
 
-プラグインはレンダー直前ごとに有効な`Game`カメラを確認します。
+### 何を供給するのか
 
-- 各カメラへ`DepthTextureMode.Depth`を要求します。
-- 中央・左・右目のworld-to-view行列をシェーダーグローバル値として渡します。
-- メイン画面だけでなく、有効なSpout・NDI・切り替えカメラもカメラごとに処理します。
-- カメラが変わっても`Camera.main`一つをキャッシュせず、実際のレンダーカメラを使います。
+プラグインは描画の直前ごとに、アクティブなGameカメラを確認します。
 
-プラグインはMingToonランタイムアセンブリへ依存しません。Warudoプロジェクトがasmdef配下のスクリプトをModへ含めない条件でも動くよう、独立ファイルとして提供されます。
+- 各カメラに深度テクスチャを要求します。
+- 中央・左目・右目の視点行列をシェーダーのグローバル値として渡します。
+- メイン画面だけでなく、アクティブなSpout・NDI・トランジションカメラもカメラごとに処理します。
+- カメラが切り替わっても1つをキャッシュせず、実際に描画しているカメラを使います。
 
-### 症状から確認
+プラグインはMingToonのランタイムアセンブリに依存しません。そのため独立したファイルとして提供しています。
 
-| 症状 | 確認 |
+### 症状で確認する
+
+| 症状 | 確認すること |
 |---|---|
-| 深度エフェクトがすべて空 | Playgroundパスと`.cs`拡張子、`installed`ログを確認 |
-| メイン画面は正常だがSpout・NDI出力だけ異なる | 該当出力カメラの`depth enabled for camera=...`ログを確認 |
-| ノーマルアウトラインだけ見え、内部線がない | ノーマルアウトラインには深度が不要なので、まずBridgeのロード有無を確認 |
+| 深度エフェクトがすべて出ない | Playgroundのパス、 `.cs` 拡張子、 `installed` ログ |
+| メイン画面は正常なのにSpout・NDIだけ違う | その出力カメラの `depth enabled for camera=` ログ |
+| ノーマルアウトラインだけ見えて内側の線がない | ノーマルアウトラインに深度は不要です。まずBridgeが読み込まれているか |
+
+→ [トラブルシューティング — WARUDO](/troubleshooting#warudo)
 
 ---
 
-## Warudo Modビルド
+## WARUDOモッドのビルド
 
-`Warudo > Build Mod`を実行すると、MingToonのUModビルドフックが自動最適化を適用します。Unity標準の`IPreprocessBuildWithReport`ではなく、UModのprocessor/post-processor経路を使います。
+`Warudo > Build Mod` を実行すると、MingToonのビルドフックが自動最適化をかけます。
 
-### 処理範囲
+Unityの一般的なビルドコールバックではなく、UModのprocessor経路を使います。
 
-- 可能ならUModが書き出すGameObjectアセットからビルドルートを探し、**そのキャラクターだけ**を最適化します。
-- 生成したシェーダーとテクスチャをUModビルドアセット一覧へ追加します。
-- ビルド終了または失敗後にオーサリング用マテリアルを復元します。
-- 書き出すルートを判別できない場合は、ロード済みシーンのMingToonマテリアルへフォールバックし、Consoleへ警告します。
+### 処理の範囲
 
-Consoleで`[MingToon] Auto optimize`のサマリーと、ビルド後の`[MingToon] Restored authored materials.`を確認してください。エラーや復元失敗があれば、そのビルドは使用せず原因を先に解決してください。
+- UModが書き出すGameObjectからビルドルートを探し、そのキャラクターだけを最適化します。
+- 生成したシェーダーとテクスチャをUModのビルドアセット一覧に追加します。
+- ビルドが終了または失敗したら、オーサリング用マテリアルを復元します。
+- 書き出すルートを判別できない場合は、読み込まれているシーンのMingToonマテリアルにフォールバックし、警告を残します。
 
-:::note[手動Bakeは基本手順ではありません]
-Warudo書き出しもビルド時の自動最適化を使います。bakedマテリアルアセット自体が必要な特殊な場合を除き、[手動Bake](/workflow/bake-and-restore)を先に実行する必要はありません。
+### 確認するログ
+
+| ログ | 意味 |
+|---|---|
+| `[MingToon] Warudo mod build processor entered` | フックが実行されました |
+| `[MingToon] Applied auto optimize and registered N generated assets.` | 最適化がかかりました |
+| `[MingToon] Restored authored materials.` | オーサリング状態に戻りました |
+| `[MingToon] Could not restore authored materials.` | 復元に失敗しました。このビルドは使わないでください |
+
+:::note[手動のBakeは標準の手順ではありません]
+WARUDOの書き出しもビルド時の自動最適化を使います。baked マテリアルアセットそのものが必要なときにだけ手動Bakeを使ってください。
 :::
 
+→ [手動Bakeと復元](/workflow/bake-and-restore)
+
+### 深度ライト
+
+WARUDOのビルドでも、深度エフェクトを使う場合は深度ライトを一緒に載せます。
+
+MingToonマネージャーの **ビルド時に深度ライトを削除** で強制的に除外できます。
+→ [VRChat深度ライト](/platforms/vrchat#vrchat-깊이-라이트)
+
 ---
 
-## ライティングの違い
+## 照明の違い
 
-- `VRC Light Volumes`はVRChatワールド用です。Warudoでは無効にし、Unity Light Probeとシーン照明を使ってください。
-- Built-inのポイント・スポット追加光はForwardAddパスへ入ります。マテリアルの`追加光を受ける`、`追加光強度`、トゥーン境界設定で調整します。
-- WARUDO（Built-in）では、ポイント・スポット追加光が作るシャドウ内部反射に`キャストシャドウ内の表示量`と`2Dシャドウ内の表示量`フィルターは適用されません。
-- 複数カメラを使う場合は、各出力で深度エフェクトと透明ソートを個別に確認してください。
+- **VRCライトボリューム（テスト用）** はVRChatのワールド用です。WARUDOではオフにして、UnityのLight Probeを使ってください。
+- Built-inのポイント・スポットの追加光はForwardAddパスで入ってきます。
+- 追加光が強い場合は **追加ライト受信量** と **追加ライト強度** で調整してください。
+- カメラを複数使う場合は、出力ごとに深度エフェクトと透明のソートを個別に確認してください。
 
-## 書き出しチェックリスト
+:::caution[ForwardAddには影のフィルターがかかりません]
+WARUDOのBuilt-inでは、追加光が作る影の内部反射にフィルターが適用されません。
+詳しい条件は [リムリファレンス](/reference/rim) を見てください。
+:::
 
-- Unity 2021.3.45f2とBuilt-inシェーダーを使いました。
-- `MingToonWarudoDepthBridge.cs`をWarudo Playgroundへインストールしました。
-- `Warudo > Build Mod`のConsoleに最適化・復元エラーがありません。
-- メイン画面と実際の送出カメラで2Dリムライト・2Dシャドウ・内部境界を確認しました。
-- シーン照明を制御しにくい場合は`ベース色保持`と`最終最小明るさ`を調整しました。
+## 書き出しのチェックリスト
+
+1. Unity 2021.3.45f2とBuilt-inシェーダーを使います。
+2. `MingToonWarudoDepthBridge.cs` がPlaygroundにインストールされています。
+3. `Warudo > Build Mod` のConsoleに最適化・復元のエラーがありません。
+4. メイン画面と実際の配信カメラで深度エフェクトを確認します。
+5. シーンの照明を制御しにくい場合は **ベースカラー保持** と **最終最小明るさ** を調整します。
 
 ## 次へ
 
-[ビルド時の自動最適化](/workflow/build-optimization)・[深度ベースエフェクト](/guides/depth-effects)・[ライティングとシャドウ](/guides/light-and-shadow)・[トラブルシューティング](/troubleshooting)
+[ビルド時の自動最適化](/workflow/build-optimization) · [深度ベースのエフェクト](/guides/depth-effects) · [ライティングと影](/guides/light-and-shadow)

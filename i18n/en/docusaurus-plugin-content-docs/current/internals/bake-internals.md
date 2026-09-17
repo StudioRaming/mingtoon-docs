@@ -1,212 +1,101 @@
 ---
 id: bake-internals
-title: What Bake Removes
+title: What Baking Removes
 sidebar_position: 3
 ---
 
-# What Bake Removes
+# What baking erases
 
-**After reading this guide,** you'll understand what criteria bake and build optimization use to remove code, and you can answer yourself: "Why wasn't just this material optimized?"
+> This page is an explanation. To run a bake right now, see [Automatic Optimization On Build](/workflow/build-optimization).
 
----
+## In one line
 
-## Processing flow
+Baking finds the parts of a material that will never change again and erases that code.
+Anything it judges could still change is kept. That is why some materials optimize less.
 
-```text
-1) Animation dependency analysis    What must not be touched
-        ↓
-2) Feature set (FeatureSet) result  What code looks like
-        ↓
-   Materials with same structure profile share generated shader
-```
+## What happens
 
----
+It goes through three stages.
 
-## Step 1 — Animation Dependency Analysis {#1단계--애니메이션-의존성-분석}
+1. Find **what moves** in this material.
+2. Keep only what does not move, and settle the **code shape**.
+3. Materials with the same code shape **share one shader**.
 
-> This analyzer **never rewrites clips, controllers, or materials.** It only reads.
+Stage 3 is why materials with different textures and colors still use the same shader.
+The code shape holds only the surface mode, cull mode, module on/off, layer count, blend mode and whether it is a face.
+Numbers and textures are deliberately left out.
 
-What it scans:
+### Stage 1 — finding what moves {#1단계--애니메이션-의존성-분석}
 
-| Target | Notes |
-|---|---|
-| Material property curves in `AnimationClip` | |
-| Controller assigned to `Animator` | |
-| **Controller references in nested/array serialized fields of components** | See below |
-| Materials designated by object reference curves in `AnimationClip` | Costume toggles |
+MingToon only **reads** animation. It never rewrites clips, controllers or materials.
 
-:::danger[Critical for VRChat Avatars]
-It also finds controllers owned by Avatar/Exporter components. **VRChat Avatar Descriptor's Playable Layer** is the critical case — those controllers may **not** be assigned to the Animator, yet after upload the material curves actually run. Therefore they must be marked for preservation.
+It scans four places. Material-value curves in animation clips, the controller assigned to the Animator,
+controller references held inside components, and object-reference curves that swap the material itself, such as an outfit toggle.
 
-MingToon finds this without taking a compile-time dependency on the VRChat SDK.
+:::caution[This matters most on VRChat avatars]
+Look at the controllers in the Avatar Descriptor's Playable Layers.
+Those controllers may not be assigned to the Animator.
+Their material curves still run after upload, so they always go on the preserve list.
 :::
 
-### When multiple roots use the same material
+Animating just the R channel of a color leaves the whole color as a moving value.
+When several avatars share one material, the results from all of them are combined.
 
-When multiple hierarchies reference one shared material, each report is merged by **union**.
+Anything you marked yourself with **Keep This Group Editable At Bake** also stays.
+Use it for values you will not animate but will change from a script later.
 
-> Taking the first one is not safe. A later root may animate a property that was static in the earlier root.
+If the analysis fails, it does not assume "there is no animation".
+That material stays editable and one line is written to the Console.
 
-### When analysis fails
+### Stage 2 — what actually disappears
 
-On analysis failure, the build does not assume that animation is absent; it skips generated-shader replacement and texture baking. Separate work such as shipping-keyword synchronization may still run with recovery records.
+| What disappears | Condition |
+|---|---|
+| An unused pass | That feature is off and is not animated |
+| Fresnel Rim, the 2nd form shadow, all depth effects | Same as above |
+| Calculations in a texture module that is off | |
+| Calculations in slots beyond the layer count | It only shrinks once a tier boundary is crossed |
+| Texture reads for a mask proven to be all white | The result does not change |
+| Calculations on fixed numbers | They fold into constants |
 
-This appears in the Console:
+### Stage 3 — re-baking textures {#텍스처-최적화}
 
-```text
-[MingToon] Animation analysis failed for {root}; leaving its materials editable.
-```
+The default stays **within the range that does not rewrite original pixels**.
+It drops one sample when a mask proves to be an identity, or when PBR and AO read the same texture with the same UV.
 
-The report records it as `SKIPPED: animation dependency analysis failed`.
+Turn on `Reviewed Texture Rewrites On Build` and it also flattens surface and normal layers and repacks masks.
+That path can genuinely change pixels.
 
-### Property name normalization
-
-Convert renderer material animation paths to shader property names. **Remove component channels (`.r`, `.x`, etc) but keep suffixes like `_ST` for tiling/offset**.
-
-That is, if you animate just the R channel of a color, the entire color stays dynamic.
-
-### Keep Editable — Manual override
-
-Items marked as "Keep This Group Editable At Bake" fold into the report.
-
-:::note[Present in Both Lists]
-The two halves of bake read different lists:
-- **Texture baker** → `AlwaysPreservedPropertyNames`
-- **Feature analyzer** → list for shader strip decision
-
-Use this for values that aren't animated but will later be changed by script.
+:::danger[Why pixels change]
+It re-reads the textures, converts color space, regenerates mips and re-applies platform compression.
+Once it is on, compare captures before and after the bake yourself.
 :::
 
----
+On failure it restores exactly that one material.
+The restore values are written to disk first, so recovery works even if the editor dies partway.
+If even the restore fails, the build stops.
 
-## Step 2 — Feature Set
+## Why only this material did not optimize {#왜-이-재질만-최적화가-안-됐나}
 
-A **structural snapshot** of the material.
+Check `StudioRaming/MingToonOptimizeReport.txt` and the Console.
 
-:::tip[What's Included and What's Not]
-- **Included** — surface mode, cull mode, on/off of each module, layer count, blend mode, whether it's a face, SDF usage, backend ID
-- **Deliberately excluded** — **numeric look values and texture asset identity**
-
-This is why **materials with the same code structure share one generated shader.** Different textures and colors don't matter.
-:::
-
-### Mask identity bits
-
-`OptionalWhiteMaskIdentityBits` holds bits that prove "this mask is mathematically white (= identity)."
-
-| Bit | Target |
+| Entry | Meaning |
 |---|---|
-| 0 | Fresnel rim mask |
-| 1 | Shadow interior reflection mask |
-| 2–6 | MatCap masks 01–05 |
-| 7 | Rim shade mask |
+| `SKIPPED: animation dependency analysis failed` | The analysis failed, so it was left editable |
+| `SKIPPED:` followed by a message | That material errored and the build carried on |
+| No line at all | It was never in scope |
 
-**When identity is proven, that mask's texture sample disappears entirely.** This optimization is lossless.
+The last case is usually one of three.
+It is outside the scene or prefab scope, it is already baked, or it was never restored from a previous build.
 
-### Dynamic state
+## What that constrains
 
-Flags such as `AllEffectsDynamic` preserve runtime changeability required by animation analysis or preservation settings. Such controls are not folded as static without establishing that it is safe.
+- The collection scope differs by build type. A player build scans the scene; a Warudo mod build scans only the target prefab.
+- Outlines come in only two kinds: expanding the mesh, and reading camera depth. There is no separate runtime for screen-space compositing.
+- A baked material's values can no longer be changed. To fix the look, restore it to editable and bake again.
 
----
+## Related pages
 
-## Step 3 — Structure Profile and Constant Intersection {#3단계--구조-프로파일과-상수-교집합}
-
-Materials with the same **structure profile** (code shape of generated shader) intersect constants only with each other.
-
-```text
-Profile A: 3 materials  →  12 shared numeric constants
-Profile B: 5 materials  →  4 shared numeric constants
-```
-
-:::note
-Shared constants are found within materials of the same structure. Differing values stay uniform within that group without blocking constant folding in other structural groups.
-:::
-
-`MaterialConstants` is intentionally excluded from profile identification — the constants themselves would split the profile, creating a cycle.
-
-`CanonicalLiteral` is already an immutable HLSL expression, so **profile identity is not affected by editor locale** (avoiding the regional decimal-point problem).
-
----
-
-## What Actually Gets Removed
-
-| Target | Condition |
-|---|---|
-| Unused **passes** | The feature is off and not animated |
-| Fresnel rim · 2nd-order form shadow · depth effect · 2D rim light · 2D shadow | Same as above |
-| Inactive **texture module** math | |
-| **Slot math exceeding layer count** | Crossing tier boundaries actually shrinks code |
-| **Texture samples** of masks proved identity | |
-| **Math** of static numerics | Folded to constants |
-
-Outline supports only **directly-rendered hull** and **camera-depth-reading inner 2D edge**, with no separate screen-composition runtime.
-
----
-
-## Texture Optimization {#텍스처-최적화}
-
-The default is **`LosslessOnly`**. Original texture texels are **never rewritten.**
-
-| Lossless proof | Content |
-|---|---|
-| depth mask identity | `optimized depth-mask(-1 sample)` |
-| PBR/AO shared sample | Same Texture object · same UV equation → `pbr/ao(-1 shared sample)` |
-
-Enabling `ReviewedHighQuality` (or build menu's `Reviewed Texture Rewrites On Build`) adds:
-
-| Rewrite | Risk |
-|---|---|
-| surface flatten | Pixels may change |
-| normal flatten | Pixels may change |
-| RGBA mask repack | Packs slots into a shared texture. Fewer textures and fewer shader samples are separate outcomes; UVs and generated-shader shared-read conditions determine the result |
-
-:::danger[Why Pixels Change]
-imported texture readback · color space · mip regeneration · platform compression. You must directly compare captures before and after bake.
-:::
-
-### Perfect rollback on failure
-
-Before texture optimization, we **snapshot the entire property block** of the material. Even lossless proofs change hidden structural flags.
-
-The snapshot is **saved to disk**, so the editor can recover if it dies during build.
-
-On failure:
-
-1. Precisely roll back that material only → `Texture baking failed and was rolled back exactly for {material}`
-2. If rollback is incomplete, attempt full recovery
-3. If that also fails, **halt the build** (`BuildFailedException`)
-
----
-
-## Why Wasn't Just This Material Optimized
-
-Check the report (`StudioRaming/MingToonOptimizeReport.txt`) and Console.
-
-| Record | Cause |
-|---|---|
-| `SKIPPED: animation dependency analysis failed` | Analysis failed. Conservatively kept editable |
-| `SKIPPED: {message}` | Exception on that material. Build continues |
-| No line at all | Not collected — outside scene/prefab scope or already on generated shader |
-
-:::note[Already-Swapped Materials Are Skipped]
-Only editable MingToon materials are targeted. Materials created by manual bake or not restored from a previous build are left alone.
-:::
-
----
-
-## Collection Scope
-
-| Scenario | Scope |
-|---|---|
-| Player build | Scans **scenes.** Scenes are the build |
-| Warudo mod build | **Build-target prefabs only** |
-
-:::danger[Why Scanning the Scene When Building One Prefab Is Wrong]
-In one measured mod build, the prefab used 7 materials, yet 41 materials the author had open **were swapped.** Worse, if that prefab isn't in the scene, **only what's actually shipped goes out unoptimized.**
-:::
-
-## Related Documents
-
-- [Automatic Optimization on Build](/workflow/build-optimization)
+- [Automatic Optimization On Build](/workflow/build-optimization)
 - [Manual Bake and Restore](/workflow/bake-and-restore)
 - [Modules and Performance Cost](/internals/module-cost)

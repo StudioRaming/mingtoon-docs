@@ -6,55 +6,45 @@ sidebar_position: 7
 
 # Outline
 
-Normal Outline expands the mesh, so it does not require camera depth. Inner 2D Edge, which reads screen depth to draw lines inside the surface, lives in the [Depth Effects](/reference/depth-effects) group.
+These fields draw a contour by expanding the mesh. They do not use camera depth.
 
-Start with the guide: [Outline](/guides/outline)
+This page is a table for looking up values. If you want the order to turn things on in, see the [Outline guide](/guides/outline).
 
-:::note
-This page follows inspector labels, with surface-state explanations checked against the rendering-state code. Availability depends on the installed version, inspector mode, material role and feature conditions.
-:::
+The headings and order follow the inspector's section names and display order exactly.
 
-## Normal Outline
+The fields inside map and mask slots are the same in every slot.
 
-Configure the width, color, and distance correction of the outline expanded along the mesh normals.
+Channel, remap, feather and mask UV are written once in the [Shared Texture Slot UI](/guides/texture-modules).
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Enable Normal Outline** | Draws the line by expanding the mesh along its normals, in one additional pass. It works without a camera depth texture. | `_OutlineHullEnabled` |
-| **Outline Width** | Outline width. Tune it while watching the whole character so the silhouette stays clean; per-area differences belong to the Width Mask. | `_OutlineHullWidth` |
-| **Outline Color** | Color of the Normal Outline. A darkened relative of the base color reads natural; nearer black reads more comic. | `_OutlineHullColor` |
-| **Color Gamma** | Applies gamma to the outline color value axis while preserving hue and saturation. 1 is neutral and alpha, opacity, and width are unchanged. | `_OutlineHullColorGamma` |
-| **Follow Surface Alpha** | On, the outline fades in step with the surface - it stops a transparent garment's outline from staying solid and reading as wire hovering where the cloth used to be. Off, the outline keeps its own strength however transparent the surface becomes, which is what a nearly invisible garment needs to hold a readable silhouette. Opaque and Cutout publish full coverage either way, so the row changes nothing there. | `_OutlineHullFollowAlpha` |
-| **Apply to Normal Outline** | Applies the painted pressure to the Normal Outline width. With Pressure Source set to Constant, turning it on changes nothing. | `_OutlineHullPressureApply` |
-| **Pressure Contrast** | Raises the pressure value to a power, widening the difference in line weight. 0 ignores pressure entirely, 1 is the raw value, and higher values thin the thin parts further. With Pressure Source set to OutlineNormalUV8 this reads as thick along long faces and tapered at points. | `_OutlineHullPressureContrast` |
-| **Protect Outline From DOF** | Makes the outline write depth so depth-of-field blur cannot erase the line. Turn it off if the outline reacts badly to other depth-based post effects. | `_OutlineHullDofProtection` |
-| **Far-Distance Minimum Pixels** | Keeps the outline from thinning below this many screen pixels at distance. Raise it when far-away lines break up; lower it when they stand out too much. | `_OutlineDistanceMinPixels` |
-| **Width Mode** | PixelStable keeps the line a constant thickness on screen regardless of distance; WorldSpace scales it with world size so it thins as the camera pulls back. PixelStable is the safe choice for avatars. | `_OutlineHullWidthMode` |
-| **Normal Source** | Which direction the outline is pushed along. MeshNormal uses the raw mesh normal; VertexColorTS and UV8TS read a smoothed outline normal baked into vertex color or UV8. Choosing either on a mesh without that bake breaks the line at hard edges. | `_OutlineHullNormalSource` |
-| **Authored Vector Direction** | Sources the outline push direction from a texture. While off, the vector UV and vector scale rows below are ignored and Normal Source decides the direction. | `_OutlineVectorEnabled` |
-| **Vector UV** | Which UV set the outline direction texture is sampled with. Ignored while Authored Vector Direction is off. | `_OutlineVectorUVMode` |
-| **Vector Scale** | Strength of the authored direction vector; negative values flip it. Ignored while Authored Vector Direction is off. | `_OutlineVectorScale` |
-| **Depth Bias** | Pulls the whole Normal Outline toward or away from the camera to rescue an outline buried inside another part. Pulling too far makes the line float in front of the face. | `_OutlineHullZBias` |
-| **Include Shading** | Includes form, cast, and 2D shadows plus the 2D rim in the final outline color. Turn it off to keep one lighting-independent line color. | `_OutlineIncludeFormShadow` |
-| **Outline Shadow Pattern** | Prints the shadow pattern screentone onto the outline as well, following the Shadow Pattern tab's settings. | `_OutlinePatternEnabled` |
-| **Blend Opacity** | How strongly the outline color blends in. At 0 the line is invisible. | `_OutlineHullColorBlendOpacity` |
+## Normal Outline {#노멀-아웃라인}
 
-## section.outline
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Normal Outline** | Toggle | - | On | Draws the line by expanding the mesh along its normals, in… |
+| **Outline Color** | Color | - | 0.75, 0.6, 0.6, 1 | Color of the Normal Outline |
+| **Outline Color Blend** | Enum | Normal / Multiply | Multiply | How the outline tint is combined with its base color |
+| **Outline Tint Strength** | Float | 0 ~ 1 | 1 | Tint strength for the selected blend mode on the outline… |
+| **Follow Base Map** | Toggle | - | Off | Uses the RGB from the base map and all texture layers… |
+| **Follow Alpha** | Toggle | - | On | On, the outline uses the source surface alpha |
+| **Outline Width** | Float | 0 ~ 10 | 1 | Outline width |
+| **Switch to vertex color alpha (VertexAlpha)** | Enum | Constant / VertexAlpha / VertexRed / WidthMask / OutlineNormalUV8 | Constant | Which painted channel modulates line width |
+| **Apply to Normal Outline** | Toggle | - | On | Applies the painted pressure to the Normal Outline width |
+| **Apply to Inner Outline** | Toggle | - | Off | Also applies the painted pressure to the Inner Depth Edge… |
+| **Pressure Contrast** | Float | -4 ~ 4 | 2 | Raises the pressure value to a power, widening the… |
+| **Inner Line Suppression Offset** | Float | 0 ~ 1 | 0.004 | Higher values move only the outline raster-depth criterion… |
+| **Protect Outline From DOF** | Toggle | - | On | Makes the outline write depth so depth-of-field blur cannot… |
+| **Far-Distance Minimum Pixels** | Float | 0 ~ 4 | 0.95 | Keeps the outline from thinning below this many screen… |
+| **Width Mode** | Enum | PixelStable / WorldSpace | WorldSpace | PixelStable keeps the line a constant thickness on screen… |
+| **Normal Source** | Enum | MeshNormal / VertexColorTS / UV8TS | MeshNormal | Which direction the outline is pushed along |
+| **Authored Vector Direction** | Toggle | - | Off | Sources the outline push direction from a texture |
+| **Vector Scale** | Float | -10 ~ 10 | 1 | Strength of the authored direction vector; negative values… |
+| **Depth Bias** | Float | -0.1 ~ 0.1 | 0 | Pulls the whole Normal Outline toward or away from the… |
+| **Apply Lighting** | Toggle | - | On | Applies form shadow, rim, and front light to the outline |
+| **Front Light Color** | Color | - | White | Color mixed into the front light when Apply Lighting is on |
+| **Front Light Strength** | Float | 0 ~ 1 | 0 | How much front light color is mixed using saturate(N·L), the… |
 
-| Control | What it does | Shader property |
-|---|---|---|
-| **Outline Master** | Shared gate both Normal Outline and Inner 2D Edge sit behind. While off, neither tab renders. Kept as a compatibility switch for older materials. | `_OutlineEnabled` |
+## Related pages
 
-## Stencil Settings
-
-Configure stencil state separately for the general and Normal Outline passes.
-
-| Control | What it does | Shader property |
-|---|---|---|
-| **Stencil Reference** | Stencil value used by the outline pass. Only touch it when matching another shader's mask; at the defaults the stencil does not affect the render. | `_OutlineStencilRef` |
-| **Stencil Read Mask** | Bit mask applied when reading the stencil buffer. Only needed when interoperating with another shader's stencil mask. | `_OutlineStencilReadMask` |
-| **Stencil Write Mask** | Bit mask applied when writing the stencil buffer. Only needed when interoperating with another shader's stencil mask. | `_OutlineStencilWriteMask` |
-| **Stencil Compare** | How the stencil value is compared to decide which pixels pass. Always means the stencil never masks the outline. Change it only when another shader should clip the outline. | `_OutlineStencilComp` |
-| **Stencil Pass** | What to do to the stencil buffer when both the stencil and depth tests pass. The default Keep leaves the buffer untouched. | `_OutlineStencilPass` |
-| **Stencil Fail** | What to do to the stencil buffer when the stencil test fails. The default Keep leaves the buffer untouched. | `_OutlineStencilFail` |
-| **Stencil ZFail** | What to do when the stencil test passes but the depth test fails. The default Keep leaves the buffer untouched. | `_OutlineStencilZFail` |
+- [Outline usage guide](/guides/outline)
+- [Shared Texture Slot UI](/guides/texture-modules) — the channel, remap and UV fields inside map and mask slots
+- [Troubleshooting](/troubleshooting)

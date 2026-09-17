@@ -1,176 +1,148 @@
 ---
 id: conversion-internals
-title: Reading Conversion Reports
+title: Reading the Conversion Report
 sidebar_position: 4
 ---
 
-# Reading Conversion Reports
+# Conversion report reference
 
-**After reading this document** you can interpret each log entry from lilToon conversion in the Console by code, and know exactly what to fix manually.
-
-Right after conversion you see a line like this:
+Converting a lilToon material prints a line like this to the Console.
 
 ```text
-MingToon conversion complete: 12 slots, 8 materials, 5 losses/unsupported features. Original preserved.
+MingToon Conversion Complete: 12 slots, 8 materials, 5 explicit losses. Sources preserved as they were.
 ```
 
-**If `losses/unsupported features` count is not 0, see below.**
+If `explicit losses` is not 0, find the code below.
+The conversion procedure is in [lilToon Material Conversion](/workflow/liltoon-conversion).
 
----
+## Severity
 
-## Four Severity Levels
-
-| Severity | Meaning | Action |
+| Severity | Meaning | Counted |
 |---|---|---|
-| `Information` | Informational. Conversion worked as intended | Safe to read and skip |
-| **`Lossy`** | Moved, but **the result may differ visually** | Check the actual model |
-| **`Unsupported`** | **Cannot be moved** | Recreate manually or accept loss |
-| `Error` | Conversion failed | Remediation needed |
+| Information | The conversion went as intended | No |
+| Lossy | Carried across, but the result may differ | Yes |
+| Unsupported | Could not be carried across | Yes |
+| Error | The conversion failed | Yes |
 
-Counted in the aggregate: `Lossy` · `Unsupported` · `Error` only.
+## Issue codes
 
----
+All 19 of them, in alphabetical order.
 
-## Complete Issue Code Reference
+| Code | Severity | Meaning | What to check |
+|---|---|---|---|
+| AlphaApproximation | Lossy | The alpha formula differs | Surface Mode and Alpha Cutoff |
+| AnimatedUvRequiresBake | Unsupported | UV scroll and rotation animation could not be carried across | Rebuild it with animation |
+| AudioLinkUnsupported | Unsupported | AudioLink integration is not supported | No alternative |
+| ConversionFailed | Error | This material failed to convert | The message body |
+| DecalRequiresBake | Unsupported | The decal could not be carried across | Place it again as an extra texture layer |
+| DissolveRequiresBake | Unsupported | Dissolve could not be carried across | Reproduce it with an alpha mask and animation |
+| EmissionMaskRequiresBake | Unsupported | The emission mask could not be carried across | Bake it into the emission map |
+| FaceClassification | Information | A report of the face classification result | The reason table below |
+| FeatureUnsupported | Unsupported | Some other unsupported feature | The message names it |
+| MissingTextureSkipped | Lossy | A texture the source used is not in the project | Restore the texture and convert again |
+| OutlineApproximation | Lossy | The outline width and color formula differs | Width mode and pressure source |
+| RimApproximation | Lossy | The rim formula differs | [Rim](/guides/rim) |
+| SecondEmissionRequiresBake | Unsupported | The second emission could not be carried across | Bake it into the emission map |
+| ShadowApproximation | Lossy | The shadow formula differs | [Form shadow border](/guides/light-and-shadow#1-형태-그림자-경계--가장-먼저) |
+| SourceDefaultsReplaced | Lossy | Source defaults were replaced by MingToon defaults | It will look different if the source relied on those defaults |
+| SourceExcluded | Information | The source was caught by a conversion exclusion rule | The exclusion reason in the message |
+| SpecialSurfaceUnsupported | Unsupported | Special surfaces such as fur and jelly have no counterpart | No alternative |
+| UvApproximation | Lossy | UV transforms differ | Tiling and Offset on the texture |
+| ValueClamped | Lossy | The value was clamped to MingToon's range | The source was using a value outside that range |
 
-### Approximation — moved, but mathematics differ
-
-| Code | What was approximated | What to check |
-|---|---|---|
-| `SourceDefaultsReplaced` | Source defaults replaced by MingToon defaults | If the original relied on defaults, appearance will differ |
-| `ShadowApproximation` | Shadow math differs | Re-tune [Form Shadow Border & Brightness](/guides/light-and-shadow#1-형태-그림자-경계--가장-먼저) |
-| `OutlineApproximation` | Outline width and color calculation differs | Check width mode and pressure source |
-| `RimApproximation` | Rim formula differs | See [Rim](/guides/rim) |
-| `AlphaApproximation` | Alpha handling differs | Check surface mode and alpha cutoff |
-| `UvApproximation` | UV transformation differs | Check texture ST |
-| `ValueClamped` | Value clamped to MingToon range | Source was using out-of-range values |
-
-:::caution[Approximation is not "wrong"]
-Different shaders have different formula and feature semantics. Conversion is an **interoperability tool**, not mathematical cloning. Approximation entries are **signals to visually confirm and retune values**.
+:::caution[An approximation does not mean it is wrong]
+When shaders differ, features with the same name use different formulas.
+Conversion is an interoperability tool, not a mathematical copy.
+An approximation entry is a signal to look at it and set the values again.
 :::
 
-### Baking needed — cannot reproduce at runtime
+## Face classification
 
-| Code | Original feature | Alternative |
+Auto reads only the face flag the source material declares.
+It does not guess a face from a name or a shader brand.
+
+A material named `Face` is not necessarily a face, and `Body` sometimes has the face mixed in.
+A wrong guess puts face shading on the wrong mesh, and the cause is hard to find.
+
+### Classification reason {#판정-근거-표시}
+
+| Reason | Meaning | Needs checking |
 |---|---|---|
-| `AnimatedUvRequiresBake` | UV scroll/rotation animation | Pre-bake texture or reproduce with animation |
-| `DecalRequiresBake` | Decal | Reposition as texture layer |
-| `DissolveRequiresBake` | Dissolve | Reproduce with alpha mask + animation |
-| `SecondEmissionRequiresBake` | 2nd emission pass | Merge and bake into emission map |
-| `EmissionMaskRequiresBake` | Emission mask | Merge and bake into emission map |
+| Direct Face Renderer | A person named the renderer | No |
+| Direct Skin Renderer | A person named the renderer | No |
+| Material override | A person named the material | No |
+| Material-slot override | A person pinned it per slot | No |
+| Source face flag | The source shader marked it as a face | No |
+| Global conversion mode | It was applied in bulk | Yes |
+| Regular default | There was no flag, so it stayed Regular | Yes |
 
-:::note[What a static texture can replace]
-These codes report features that conversion could not transfer directly. Static patterns or colors may be flattened into a texture, but animated UVs, dissolve or emission are not preserved by a single static image. Rebuild required animation separately and compare the result.
+### The three roles
+
+| Role | Preview | Preset it receives |
+|---|---|---|
+| Face | Face shading | Face values |
+| Skin | Skin look | Skin values, bare skin only |
+| Regular | Regular shading | Shared values |
+
+Switch between the three on the role row in the material inspector.
+Set it for a whole avatar in [MingToon Manager](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계).
+
+:::note[The preset capture window calls it Common]
+The Regular role appears as the `Common` slot in the window that captures look presets.
+It is the same thing as Regular in the role dropdown.
 :::
 
-### Unsupported — cannot move
+## Source tracking
 
-| Code | Meaning |
-|---|---|
-| `SpecialSurfaceUnsupported` | Source special surface (fur, jelly, etc.) has no MingToon equivalent |
-| `AudioLinkUnsupported` | AudioLink integration is not supported |
-| `FeatureUnsupported` | Other unsupported feature. Name appears in message |
-
-### Asset / Judgment
-
-| Code | Meaning | Action |
-|---|---|---|
-| `MissingTextureSkipped` | Texture referenced by source is not in project | Recover texture and reconvert |
-| `FaceClassification` | Face judgment result report | See below |
-| `ConversionFailed` | Material conversion failed | Check message |
-| `SourceExcluded` | Source matched a conversion exclusion rule | Check the reported reason and selected material |
-
----
-
-## Face Classification — Auto does not infer
-
-:::note[Scope of Auto classification]
-Auto checks a **source-material face flag that a supported adapter can read**. A name or shader brand alone does not establish that a material is a face. Without a flag or explicit assignment it can remain general-purpose. Assign Face Mesh and Skin Mesh in the Manager first, then inspect the classification evidence.
-:::
-
-This is intentional. A slot named `Face` is not always a face, and body meshes can contain faces — when approximation is wrong, the cost is much higher. If face shading lands on the wrong mesh, the cause is hard to find.
-
-### Classification Evidence {#판정-근거-표시}
-
-| Indicator | Meaning | Confidence |
-|---|---|---|
-| Object/Renderer assignment | User designated via `Direct Face Renderer`/`Direct Skin Renderer` | ✅ |
-| Material direct or slot assignment | Human-locked per slot | ✅ |
-| Source face flag | Source shader marks it as face | ✅ |
-| Whole-convert mode | Blanket applied | ⚠️ |
-| Regular default | No flag, remains Regular | ⚠️ **verify required** |
-
-### Three Roles
-
-| Role | Preview | Preset values for |
-|---|---|---|
-| `Face` | Face shading | Face-only |
-| `Skin` | Skin look | Skin — **bare skin only** |
-| `Regular` | General shading | General use |
-
-→ [MingToon Manager](/workflow/character-manager#얼굴--피부-지정--가장-중요한-단계)
-
-The Common UI role can appear as `Regular` in internal reports. The general release also allows direct Face, Skin and Common role changes in the material inspector. Keep avatar-wide assignments in the Manager.
-
----
-
-## Source Provenance
-
-Converted materials **record the source material's GUID in the importer userData**. `Restore Original Material` operates this way.
-
-Records break in these cases:
+A converted material records the GUID of its source material.
+**Undo Conversion (back to pre-MingToon materials)** runs on that record.
 
 | Audit message | Meaning | Result |
 |---|---|---|
-| `importer userData written by another tool` | Another tool is already using userData, so **we didn't stamp GUID to avoid destroying data** | `Restore` unavailable |
-| `Source material name is ambiguous; reconvert once to stamp its GUID.` | Name alone cannot identify source | Re-convert once and GUID is stamped |
-| `The source material could not be resolved.` | Source not found | Source deleted/moved |
+| `importer userData written by another tool` | Another tool already occupies that field | Undo cannot be used |
+| `Source material name is ambiguous; reconvert once to stamp its GUID.` | The source could not be identified by name alone | Convert once more and it gets recorded |
+| `The source material could not be resolved.` | The source was not found | It was deleted or moved |
 
-Recovery aggregates as `slots without precise source GUID or source not found: N`.
+The restore result totals this as `Slots without an exact source GUID or a resolvable source: N`.
 
-:::tip[If using together with other tools]
-MingToon **does not overwrite others' userData**. Instead it forgoes tracking. If restore is needed, check whether that tool uses userData before converting.
+:::tip[If you use another tool alongside]
+MingToon does not overwrite another tool's record. It gives up the undo instead.
+If you need the undo, check before converting whether that tool uses the same field.
 :::
 
----
+## Columns in the audit table
 
-## Audit Table
+The audit table is 18 tab-separated columns.
 
-Conversion audits produce a tab-delimited table:
-
-```text
-source  converted  resolution  face  surfaceMode  renderQueue  cull
-        surfaceLayers  normalLayers  matcapLayers  occlusion  passes
-        keywords  mismatches  losses
-```
-
-| Column | What to check |
+| Column | What it holds |
 |---|---|
-| `resolution` | How source was located |
-| `face` | Face classification result |
-| `surfaceMode` · `renderQueue` · `cull` | Whether render state matches source |
-| `surfaceLayers` · `normalLayers` · `matcapLayers` | How many layers came over |
-| `passes` · `keywords` | Code shape that compiles |
-| `mismatches` | Items differing from source |
-| `losses` | Loss entries |
+| `source` · `converted` | Asset paths of the source and the converted result |
+| `resolution` | How the source was resolved |
+| `face` | The face classification result (`Face` or `Regular`) |
+| `surfaceMode` · `renderQueue` · `cull` | Render state before and after conversion |
+| `outlineCull` | Outline cull mode before and after conversion |
+| `stencil` · `outlineStencil` | Stencil on the regular pass and the outline pass, before and after |
+| `surfaceLayers` · `normalLayers` · `matcapLayers` | How many layers were carried across |
+| `occlusion` | Occlusion settings |
+| `passes` · `keywords` | Pass count and keyword count, before and after |
+| `mismatches` | Items that came out different from the source |
+| `losses` | Lost items |
 
-If you see `renderQueue differs: expected ...`, surface mode was detected differently than source.
+`renderQueue differs: expected ...` means the surface mode came out different from the source.
 
----
+## What to check after converting
 
-## Always Check After Conversion
+Check it on the real model. The preview sphere in the inspector cannot tell you.
 
-After reading the report, verify on the **actual model**. Inspector preview sphere cannot be trusted.
+1. Mask channel selection and inversion — this goes wrong most often
+2. Tiling and Offset on textures
+3. Occlusion
+4. Surface Mode — especially whether hair came across as Cutout
+5. Face material classification — the reason table above
+6. Layer count — which layer the source's 2nd and 3rd surfaces landed on
 
-1. **Mask channel selection and inversion** — most commonly misaligned
-2. **Texture ST** (Tiling / Offset)
-3. **AO**
-4. **Surface mode** — especially whether hair came in as cutout
-5. **Face slot classification** — see evidence table above
-6. **Layer count** — whether source 2nd/3rd surfaces came over as how many layers
+## Related pages
 
-## Related Documents
-
-- [MingToon Manager — 1 · Convert](/workflow/character-manager#1--변환)
 - [lilToon Material Conversion](/workflow/liltoon-conversion)
-- [Texture Slot Common UI](/guides/texture-modules)
+- [MingToon Manager — 1 · Convert](/workflow/character-manager#1--변환)
+- [Shared texture slot UI](/guides/texture-modules)

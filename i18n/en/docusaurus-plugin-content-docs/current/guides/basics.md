@@ -6,107 +6,130 @@ sidebar_position: 2
 
 # Basic Settings
 
-After [starting with Manager](/getting-started/first-material), select the converted material you want to refine. **Keep MingToon Manager on the avatar root.** This guide follows the current inspector's surface, colour, and lighting controls. Check your installed version if names differ. **Update VCC installations through VCC.**
+> This page is for anyone setting the color and brightness of a converted material for the first time.
+> It covers surface mode, base color, and light response in order. It takes about 10 minutes.
 
-## Find the control for your change
+## What is this
 
-| Desired change | Open first | Main controls |
-|---|---|---|
-| Darker or brighter appearance | Lighting → Core Light Response / Lighting Brightness Limits | Lit Brightness · Indirect Light Lift · Minimum/Maximum Final Brightness |
-| Excessive world-light colour | Lighting → Core Light Response | Environment Color Influence · Preserve Base Map Color |
-| Texture colour | Detail Maps → Surface Maps | Base HSVG · Hue Rotation Space · Base Tint |
-| Cutout or transparency | Surface Rendering / Alpha & Cutout | Surface Mode · Base Map Opacity · Alpha Cutoff |
-| Backfaces and overlapping cloth | Surface Rendering | Visible Faces · Two-Sided Dual Pass |
-| Contribute as a depth occluder | Surface Rendering | Camera Depth Contribution |
+You decide how transparent the character is, what color it is, and how strongly it reacts to light.
+These are split between the **Base Color & Transparency** group and the **Basic Settings** group in the inspector.
+Shadow boundaries and outlines are covered in other documents, not here.
 
-Start with Quick Settings, then search or open **Full Setup** for individual controls. **Face, Skin, and Common can be assigned at the top of the material inspector in release builds too.** Editing a role or value with multiple materials selected applies it to all selected targets.
+## When to use it
 
-## Separate brightness from lighting colour
+- When the character is too dark or blown out right after conversion
+- When hair tips look cut off into square edges
+- When world light color mixes too strongly into the skin
 
-Start with the four controls in **Core Light Response**.
+## Try it in 30 seconds
 
-| Control | Changes | Starting point |
-|---|---|---|
-| Lit Brightness | Brightness multiplier on the lit side | 1 is neutral; watch for highlights losing colour as it increases |
-| Environment Color Influence | Light-probe and ambient hue | Lower it when environment colour overwhelms skin or clothing; independent of brightness |
-| Indirect Light Lift | How indirect light lifts dark areas | 0 adds no indirect brightness; 1 uses its authored strength |
-| Preserve Base Map Color | Lighting hue mixed into the completed base colour | Higher favours base colour; **does not preserve or increase brightness** |
+1. Select a converted body material.
+2. Open **Lighting** in the **Basic Settings** group of the inspector.
+3. Raise **Minimum Final Brightness** from 0.2 to 0.5.
 
-For overly dark areas, check **Indirect Light Lift** and **Lighting Brightness Limits → Minimum Final Brightness**. For washed-out bright areas, adjust **Lit Brightness** and **Maximum Final Brightness**. Preserve Base Map Color alone does not solve insufficient brightness.
+You succeeded when the dark side lifts.
+If nothing changes, see [Using the Inspector](/guides/inspector#전체-효과--가장-위의-마스터-스위치).
 
-Use **Additional Light Reception** for point and spot light influence. Advanced settings expose more colour and response-curve controls. → [Light and Shadow](/guides/light-and-shadow)
+## How to turn it on
 
-## Base colour and textures {#2-베이스-색}
+Decide **Surface Mode** first, then the base color, then the brightness.
+If you touch a later step before settling an earlier one, you cannot tell the causes apart.
 
-Use **Surface Maps** for the base texture and colour adjustments. For a converted material, check existing assignments before replacing textures.
+### 1. Decide the surface mode first {#1-표면-모드부터-정합니다}
 
-| Control | Purpose |
-|---|---|
-| Base Map | Original surface texture |
-| Base HSVG | Hue, saturation, value, and gamma adjustment |
-| Hue Rotation Space | HSV or OKLab. Keep HSV when preserving a look authored with it |
-| Base Tint · Tint Blend Mode | Multiply keeps texture shading; Normal replaces it with the selected colour |
-| Base Map Opacity | Multiplies final base alpha; **surface opacity independent of tint strength** |
+Pick the value that fits the part in **Surface Mode** under **Surface Rendering**.
 
-The older description of tint opacity does not describe the current **Base Map Opacity** control. Tint Blend Strength is an advanced compatibility setting for colour blending; it does not change final surface alpha. To show transparency, also choose the appropriate surface mode below.
-
-### Gradation LUT
-
-Enable **Gradation LUT** and assign a horizontal ramp to remap the base colour per channel. Import the LUT as sRGB and use **Gradation Strength** for its contribution. Begin with HSVG and tint, adding a LUT when needed.
-
-### Limit colour adjustment to a region {#색조보정-범위-마스크}
-
-Enable **Color Adjust Mask → Use Color Adjust Mask** and assign the mask. White applies adjustment, black retains the original colour, and gray blends between them. Select a channel for a packed texture and invert when needed.
-
-The mask has **its own tiling and offset**. Do not assume changing Base Map tiling also aligns the mask; check the intended regions, such as eyes or skin.
-
-## Choose Surface Mode {#1-표면-모드부터-정합니다}
-
-If the converted appearance already behaves as intended, there is no need to change its mode first. Choose by opacity, cutout, and overlapping-layer needs. **Surface Rendering** and **Alpha & Cutout** edit the same mode value.
-
-| Current label | Use | Depth and overlap |
+| Display | Parts that use it | Depth and overlap |
 |---|---|---|
 | Opaque (2000) | Ordinary skin and clothing | Writes depth without alpha blending |
-| Cutout (2450) | Cut edges in hair or eyelashes | Discards pixels below Alpha Cutoff; the rest write depth |
-| Semi-Transparent (2499) | Alpha blending where the nearest surface should win | Writes depth in a camera-depth eligible queue; different from showing every overlapping layer through the others |
-| Transparent (3000) | Layered cloth or glass that should show surfaces behind it | The default colour pass writes no depth and uses transparent ordering; not a normal camera-depth-effect target |
+| Cutout (2450) | Hair, eyelashes | Discards pixels thinner than the cutoff; the rest writes depth |
+| Semi-Transparent (2499) | Parts that use alpha but need the nearer face to win | Writes depth, so it becomes a target of Depth Shadow |
+| Transparent (3000) | Layered cloth, glass | Does not use depth, so layers behind show through |
 
-The old transparent-with-outline-depth label is now **Semi-Transparent (2499)**. Both transparent modes can retain outlines. Mode changes align render state, default queue, and outline-buffer state while preserving Alpha Cutoff and outline enable/appearance settings.
+Switching to Semi-Transparent alone does not guarantee depth effects.
+Also check the camera depth setup and the effect module. The steps are in [Depth Effects](/guides/depth-effects).
 
-**Choosing Semi-Transparent does not guarantee every depth effect.** Check camera-depth availability, Camera Depth Contribution, enabled modules, and the actual render queue. → [Depth Effects](/guides/depth-effects)
+**Transparent Depth Prepass** appears only on Transparent (3000).
+It handles transparent sorting and outlines, and it is a different contract from camera depth.
 
-### Camera Depth Contribution
+**Camera Depth Contribution** decides whether other materials read this material as an occluder.
+Turning it off removes this material from other materials' Depth Shadow, SSAO, and Depth Rim Light.
+This checkbox does not prepare the depth texture for you.
+The depth texture is the camera's measurement of what is how far in front.
 
-This decides whether **other materials' 2D shadows, SSAO, and 2D rim read this material as an occluder**. Turning it off excludes that contribution; normal colour rendering and real-time light shadows remain separate. The checkbox does not itself prepare the camera's depth texture.
+Choose front faces only, back faces only, or both in **Visible Faces**.
+Use both faces for cloth or skirts where both sides must be visible.
+If back-face lighting looks wrong, check **Flip Backface Lighting Normal**.
+If jagged edges on folded cloth bother you, turn on **Two-Pass Mode**.
 
-### Visible faces and two-sided rendering {#표시할-면}
+### 2. Base color and textures {#2-베이스-색}
 
-Choose front faces, backfaces, two-sided rendering, or the two-sided/outline-flip combination under **Visible Faces**. Use two-sided rendering for cloth that must show both sides. Check **Flip Backface Lighting Normal** when its backface lighting looks wrong.
+**Base Surface** covers textures and color correction.
 
-**Advanced Color Buffer → Two-Sided Dual Pass** draws a two-sided surface's backfaces separately first. Consider it for folded-cloth overlap issues; it adds a pass, so apply it where needed.
+- **Base Map** — the source texture of the surface.
+- **Base Map HSVG** — adjusts hue, saturation, value, and gamma in one place.
+- **Hue Rotation Space** — the default OKLab rotates hue while keeping brightness.
+- **Base Tint** · **Tint Blend Mode** — the default Multiply keeps the light and shade of the map.
+- **Base Map Opacity** — multiplies the surface alpha last.
 
-### Troubleshoot transparent overlap {#머리카락이-볼을-뚫고-보일-때}
+Turning on **Gradation LUT** remaps color through a horizontal ramp.
+Import the ramp texture as sRGB and set the amount with **Gradation Strength**.
 
-First choose between the depth priority of **Semi-Transparent (2499)** and layer blending of **Transparent (3000)**. The latter exposes **Transparent Depth Prepass** under **Advanced Color Buffer**. This relates to transparent sorting and outlines; it is distinct from Camera Depth Contribution and real-time light shadows. Do not enable it indiscriminately for every overlap problem.
+#### Correcting color on part of the surface only {#색조보정-범위-마스크}
 
-## Alpha masks and cutout {#3-투명도를-텍스처로-따로-지정하기}
+Turn on **Use Color Adjust Mask** in **Color Adjust Mask** and add a mask.
+White applies the correction, black keeps the original, and gray sits between them.
 
-Check the **Alpha & Cutout** section master. For a separate transparency texture, enable **Alpha Mask**, set its texture, channel, inversion, and strength, then adjust **Alpha Cutoff**. Lower alpha does not turn Opaque mode into alpha blending.
+:::caution[The mask uses its own tiling and offset]
+Moving the base map does not move the mask with it.
+Check by eye that it landed on the area you wanted, such as eyes or skin.
+:::
 
-**Alpha To Coverage** depends on MSAA. If MSAA is disabled, repeatedly increasing its sharpness will not produce the expected edge smoothing. **Camera Depth Alpha Cutoff**, shown for semi-transparent/transparent modes, adjusts the depth silhouette separately from colour alpha.
+### 3. Brightness and light color
 
-Open the distance, Fresnel, or directional alpha groups only when needed. Establish mask, surface opacity, and cutoff first.
+Open **Lighting** in the **Basic Settings** group of the inspector and start from the items below.
 
-## Master Adjust and Performance Distance
+If dark places go pure black, raise **Indirect Light Lift** and **Minimum Final Brightness**.
+If color blows out in bright places, lower **Lit Brightness** and **Maximum Final Brightness**.
+Do not try to fix darkness by raising **Preserve Base Map Color** alone. It does not raise brightness.
 
-Brightness/tint authoring rows in **Master Adjust** appear when MLC is installed; they are absent without it. **Performance Distance** works without an add-on and reduces sample limits and selected effects at distance. If an effect disappears far away, check its distance and scale settings. → [Ming Light Controller](/guides/ming-light-controller)
+Adjust the influence of point and spot lights with **Additional Light Reception**.
 
-## Common maps {#4-공통-맵}
+![A character whose shape is lost in a dark scene at the default Minimum Final Brightness](/img/placeholder.png)
+<!-- CAPTURE: guides/basics-01-brightness-before.png | 어두운 씬에서 최종 최소 밝기 0.2로 렌더해 캐릭터가 거의 검게 묻힌 상태 | 1200x700 -->
 
-Normal maps control surface detail; occlusion maps affect indirect-light occlusion. Check module toggles and strength as well as texture assignments. Continue with normal layers, Matcap, emission, and PBR in [Detail Maps](/guides/detail-maps).
+![The same scene with Minimum Final Brightness raised so the shape is visible](/img/placeholder.png)
+<!-- CAPTURE: guides/basics-02-brightness-after.png | 같은 씬과 같은 카메라에서 최종 최소 밝기만 0.5로 올린 상태 | 1200x700 -->
 
-**Render Disabled** stops drawing the material. **All Effects** is the parent switch for stylized effects. Distinguish a missing material from an individual unresponsive effect.
+### 4. Shared maps {#4-공통-맵}
 
-## Next
+Normal maps handle surface relief, and occlusion maps handle indirect light blocking.
+Adding the texture is not enough. You must also turn on the matching module and its strength.
+Extra normal layers, MatCaps, emission, and PBR continue in [Detail Maps](/guides/detail-maps).
 
-[Light and Shadow](/guides/light-and-shadow) · [Using the Inspector](/guides/inspector) · [Basic Settings Reference](/reference/basics). After editing, keep Manager on the avatar root and continue with VRC SDK upload or WARUDO mod build.
+## Values you will touch often
+
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Surface Mode** | How transparency and overlap are handled | Opaque (2000) for skin and clothing | Cutout clips the edge, and Transparent shows the layers behind |
+| **Lit Brightness** | The brightness multiplier of lit faces | Leave at the default (1) | Raising it blows out bright areas, and lowering it sinks everything |
+| **Indirect Light Lift** | How much ambient indirect light lifts dark faces | Leave at the default (1) | Raising it brightens shade, and 0 uses no indirect light |
+| **Minimum Final Brightness** | The floor brightness kept no matter how dark it gets | 0.5 in dark worlds (default 0.2) | Raising it keeps the shape visible in dark worlds, and 0 sinks to pure black |
+| **Environment Color Influence** | How much environment color bleeds into the surface | Leave at the default (0.3) | Raising it follows the world tint, and 0 keeps the original color |
+| **Base Map Opacity** | The value multiplied into the final surface alpha | Leave at the default (1) | Lowering it makes the surface show through, and it has no effect in Opaque mode |
+| **Alpha Cutoff** | The alpha boundary to clip at | 0.5 in Cutout | Raising it shaves the edge, and lowering it leaves translucent leftovers |
+
+## Common problems
+
+### I changed the base color and the view stayed the same
+Check **Tint Blend Mode**. Multiplying white in Multiply changes nothing.
+
+### I lowered the opacity and it did not become transparent
+Opaque (2000) does not blend even if you lower alpha. Change the surface mode first.
+
+### Hair shows through the cheek
+Choose between the depth priority of Semi-Transparent (2499) and the layer blending of Transparent (3000) first. Then see [Troubleshooting](/troubleshooting#depth).
+
+## More detail
+
+[Light and Shadow](/guides/light-and-shadow) · [Basic Settings Reference](/reference/basics) · [Using the Inspector](/guides/inspector) · [Ming Light Controller](/guides/ming-light-controller)

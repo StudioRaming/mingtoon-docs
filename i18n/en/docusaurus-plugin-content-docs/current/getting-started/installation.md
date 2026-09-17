@@ -4,138 +4,117 @@ title: Installation
 sidebar_position: 1
 ---
 
-:::note[Join the Open Beta]
-[Join the Open Beta](https://studioraming.github.io/mingtoon-site/en/download/)
-:::
-
-
-Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
-
 # Installation
 
-MingToon 0.1.10 Open Beta core targets BRP. URP is excluded from this BRP Open Beta and included with every commercial license.
+> When you finish this page, you have a Unity project with MingToon installed and no errors.
+> It takes about 15 minutes.
 
-**After this guide**, you will have a Unity project with MingToon imported without errors.
+## Before you start
 
-## 1. Match Unity version first
+- Unity Hub, a Unity version from the table below, and a backup of the project you will work on
+- VRChat SDK3 (Avatars) if you target VRChat
 
-:::danger[Target determines which Unity version]
-| Target | Unity | Rationale |
-|---|---|---|
-| **VRChat PC** (primary target) | **2022.3.22f1** | Current VRChat SDK baseline |
-| **Warudo** | **2021.3.45f2** | Warudo Mod SDK 0.14.3.10 baseline |
-| General Unity | 2021.3 LTS | |
+## 1. Match the Unity version
 
-**Use 2022.3.22f1 if targeting VRChat.** MingToon's VRChat build hook and VRChat runtime compile only under `UNITY_2022_3_OR_NEWER`. On 2021.3, this code **does not exist at all**, so automatic optimization and VRChat-specific upload processing—including the separate Upload Depth Light opt-in—do not run.
-:::
+| Target | Unity |
+|---|---|
+| VRChat PC | 2022.3.22f1 |
+| Warudo | 2021.3.45f2 |
+| General Unity | 2021.3 LTS |
 
-You cannot target both VRChat and Warudo with one project. Split projects by target.
+Use 2022.3.22f1 if you target VRChat.
+The MingToon VRChat build hook only compiles on 2022.3 or later.
+A 2021.3 project has no upload optimization at all.
+One project cannot cover both VRChat and Warudo, so split them.
 
-## 2. Choose an installation method
+![Unity Hub project list showing editor version 2022.3.22f1](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-01-unity-version.png | Unity Hub 프로젝트 목록에서 대상 프로젝트의 Editor Version 칸이 2022.3.22f1인 상태 | 1200x700 -->
 
-Choose VCC or BOOTH on the [official download page](https://studioraming.github.io/mingtoon-site/en/download/). Prepare VRChat SDK3 (Avatars) first for a VRChat project.
+## 2. Install the package
 
-:::caution[Migrating from the older Assets installation]
-Back up your project and exit Play mode. Move any materials, textures or presets you saved inside `Assets/StudioRaming/MingToon` to another folder, then **delete only the old MingToon folder** before installing the new package. Do not delete all of `Assets/StudioRaming` or the `MingLightController` folder. This cleanup is needed only when moving from the older Assets installation.
-:::
+Choose VCC or BOOTH on the [official download page](https://studioraming.github.io/mingtoon-site/ko/download/).
 
-### Install with VCC
+To install with VCC:
 
-1. Select **Add to VCC** on the official download page.
-2. Confirm the repository in VCC and open **Manage Project** for your project.
-3. Add MingToon, open Unity, and wait for package import and compilation to finish.
-4. Use VCC's Manage Project for subsequent updates.
+1. Press **Add to VCC** on the download page.
+2. Confirm the repository in VCC.
+3. Open **Manage Project** for the target project.
+4. Add MingToon and open Unity.
 
-### Install with the BOOTH installer
+To install with the BOOTH installer:
 
-1. Download the installer `.unitypackage` from the [official BOOTH product](https://raming.booth.pm/items/8810209).
-2. Import it in Unity using `Assets > Import Package > Custom Package`.
-3. Stay connected to the internet while the DLL installer automatically installs the required MingToon package. No separate install button is needed for the first installation.
-4. On later Unity launches, the updater checks for a new version. Installation starts only when you select **Update** in the prompt. **Skip** applies to that version only. Restarting Unity does not automatically install an update.
+1. Download the installer `.unitypackage` from the [BOOTH product](https://raming.booth.pm/items/8810209).
+2. Import it in Unity with `Assets > Import Package > Custom Package`.
+3. Stay connected to the internet and wait. The installer downloads the core automatically.
 
-## 3. Verify installation
+![The Project window after Unity imported the MingToon package and finished compiling](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-02-import-done.png | Project 창에 MingToon 패키지가 들어오고 진행 바가 사라진 직후 상태 | 1200x700 -->
 
-Check **Packages > MingToon** in the Project window and the installation path `Packages/com.studioraming.mingtoon`. After Unity finishes importing and compiling, check the Console for errors and confirm that your materials display their MingToon shaders correctly.
+If you installed with VCC, update in VCC as well.
+The BOOTH installer tells you about new versions when you open Unity.
 
-Ming Light Controller is a separate package. Install or update MLC separately if you use it. This MingToon release contains the BRP core and does not include the URP add-on.
+## 3. Check that the shader arrived
 
-## Upgrading from an earlier version {#이전-버전에서-올라왔다면}
+Select one material and open the shader list at the top of the Inspector.
+You are fine if `StudioRaming/MingToon/MingToon BRP` is there.
+The URP shader is not included in this BRP open beta.
 
-If you upgraded a project from an earlier version, perform the following two steps **once each**.
+![The Inspector shader dropdown showing the MingToon BRP entry](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-03-shader-list.png | 재질 Inspector의 Shader 드롭다운을 펼쳐 StudioRaming/MingToon/MingToon BRP가 보이는 상태 | 1200x700 -->
 
-:::danger[1. Run schema migration once]
-`Tools > Studio Raming > MingToon > Advanced > Migrate Project To Current Schema`
+## 4. Check the VRChat integration
 
-Material schema has moved from **version 10 to 11**. Two new toggles were added: `Enable Fresnel Rim Mask` and `Enable Rim Shade Mask`. Old materials do not have these toggles, so they read as **disabled**. Migration finds masks that are not the default white and enables the toggles.
-
-**Rim masks do not apply to materials until you run this.** Materials with default white masks remain disabled, which is fine.
-
-Migration confirms before running and backs up changed files. When complete, the console reports the count of processed materials, presets, and animation clips in one line, along with the backup path. → [Rim](/guides/rim#림-마스크)
-:::
-
-:::caution[2. Bake cache regenerates]
-Generated-shader cache version moves from **28 to 38**, invalidating existing bake output. The next build or upload regenerates it automatically, so nothing needs manual deletion, but that one run takes longer.
-
-**VRChat avatars must be re-uploaded for this version's fixes to take effect.** Shaders are bundled in the avatar asset bundle, so already-uploaded avatars continue using the old shader. → [VRChat](/platforms/vrchat)
-:::
-
-## 4. VRChat integration check (VRChat target only)
-
-After script reload, Console must show this line:
+This applies only to VRChat targets. After the reload finishes, the Console must contain the line below.
 
 ```text
 [MingToon] VRChat build hook compiled and registered.
 ```
 
+![The Console window showing one MingToon build hook registration log line](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-04-hook-log.png | Console 창에서 [MingToon] VRChat build hook compiled and registered. 한 줄이 보이는 상태 | 1200x700 -->
+
 :::danger[If this line is missing]
-VRChat build hook **does not exist**. Upload will not trigger automatic optimization or VRChat-specific upload processing. Check:
-
-1. Is Unity version **2022.3.22f1**?
-2. Is VRChat SDK3 properly imported into the project? (`VRC_SDK_VRCSDK3` define)
+The VRChat build hook is not present.
+Uploading will not run the automatic optimization.
 :::
 
-## 5. Project validation
+## 5. Validate the project
 
-From the menu, run `Tools > Studio Raming > MingToon > Validate Project`.
+Run `StudioRaming > MingToon > Validate Project` from the menu.
+If the build target cannot meet shader model 4.5, you get a `MING-ENV-BUILD-TARGET` error.
+Continuing in that state makes materials render magenta (pink).
+If the editor is 2021.3 and the VRC SDK is present, you get a `MING-VRC-UNITY-VERSION` warning.
 
-Mainly checks whether the current build target satisfies Shader Model 4.5. If not, it reports an error, and materials will render magenta. → [Support environment](/platforms/compatibility)
+![The result window after running Validate Project](/img/placeholder.png)
+<!-- CAPTURE: getting-started/installation-05-validate.png | Validate Project를 실행해 결과 목록이 표시된 창 | 1200x700 -->
 
-<!-- SCREENSHOT: Validate Project result -->
+## Check that it worked
 
-:::note[Supported editor streams are both 2021.3 and 2022.3]
-Neither will raise `MING-ENV-UNITY-VERSION` error.
+- The Console has no red errors.
+- The shader list contains `StudioRaming/MingToon/MingToon BRP`.
+- The build hook log is present if you target VRChat.
+- `Validate Project` reports no errors.
 
-However, **if VRC SDK is present but editor is 2021.3**, the `MING-VRC-UNITY-VERSION` **warning** appears — "MingToon's VRChat integration compiles only on the 2022.3 stream, so this project has no avatar upload support." This is an accurate warning; if targeting VRChat, switch to 2022.3.22f1.
-:::
+If any of the four does not match, go to [Troubleshooting](/troubleshooting#install).
 
-## 6. Shader selection
+## If you upgraded from an earlier version {#이전-버전에서-올라왔다면}
 
-| Project | Shader |
-|---|---|
-| Built-in Render Pipeline (BRP) — includes VRChat·Warudo | `StudioRaming/MingToon/BRP` |
-| URP 12.x (Unity 2021.3) | MingToon URP shader |
-
-:::danger[URP is not a VRChat target]
-VRChat + URP is not supported. URP targets only Unity 2021.3 + URP 12.x. URP 13 and above, even if they appear to work, are not considered supported.
-:::
+The bake cache is rebuilt once.
+There is nothing to delete by hand, but the next build or upload takes that much longer.
+A VRChat avatar must be uploaded again for this version to apply.
+The shader ships with the avatar. The conditions are in [VRChat](/platforms/vrchat).
 
 ## Optional: Post Processing Stack v2 {#선택-사항-post-processing-stack-v2}
 
-MingToon works completely without PPv2. All PPv2-related source is excluded by `UNITY_POST_PROCESSING_STACK_V2` symbol, so a clean project needs no `com.unity.postprocessing`.
-
-To enable PPv2 integration:
+MingToon works fully without PPv2. This is for scene checks and capture.
 
 1. Install PPv2 **3.4.0**.
-2. **Player Settings > Scripting Define Symbols**, **directly add** `UNITY_POST_PROCESSING_STACK_V2`.
-3. Wait for Unity to recompile.
-4. Run `Tools > Studio Raming > MingToon > Create or Repair BRP PPv2 Global Volume`.
+2. Add `UNITY_POST_PROCESSING_STACK_V2` manually to **Player Settings > Scripting Define Symbols**.
+3. Wait until Unity finishes recompiling.
+4. Run `StudioRaming > MingToon > Create or Repair BRP PPv2 Global Volume`.
 
-:::note
-Installing the package alone does not create this symbol. Skipping step 2 means the menu does nothing.
-:::
+If you skip step 2, the menu in step 4 does nothing.
 
-VRChat avatars inherit world post-processing, so PPv2 is mainly for scene preview·capture.
+## What to read next
 
-## Next
-
-[First Material](/getting-started/first-material) · [Troubleshooting](/troubleshooting)
+[Getting Started with Manager](/getting-started/first-material) · [Supported Environments](/platforms/compatibility) · [Troubleshooting](/troubleshooting#install)

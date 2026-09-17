@@ -4,60 +4,68 @@ title: Current Limitations and Release
 sidebar_position: 91
 ---
 
-Every commercial license includes the URP version. MLC is included in the Early Access Founders Editions of Personal Streaming and Personal Creator; contents may change after full release. Commercial use remains prohibited during Open Beta. See [licenses and included add-ons](/legal/beta-license).
+# What MingToon does not do right now
 
-# Current Limitations and Release
+> This page is an explanation. To install now, see [Installation](/getting-started/installation).
 
-Based on MingToon `0.1.10`.
+## In one line
 
-## What to know before deployment
+MingToon is a public open beta. Only the Built-in pipeline (BRP) is distributed.
 
-- This preview **does not include validated GPU ms or SetPass optimization numbers.** No performance claims are made.
-- **VRChat PC is a manual validation target and has not completed release certification.**
-- **VRChat Quest is not a direct MingToon execution target.**
-- Warudo is in **real-world verification pending** status.
-- URP support scope is limited to **Unity 2021.3 + URP 12.x**, and VRChat does not use URP.
-- 2D rim light · 2D shadow · inner 2D edge **depend on the host providing camera depth**. On regular VRChat player screens, avatars cannot force depth.
-- lilToon conversion is an **interop tool** and does not mathematically replicate results from other shaders.
-- The BRP core installed through VCC is a source package; the BOOTH installer is a separate DLL distribution path. Both paths point to the same BRP core version.
+Check the current version under `Update settings` in MingToon Manager. Changes by version are in the [changelog](/changelog).
 
-## Validation you must pass yourself
+## What to know before you ship
 
-Before deploying results made with MingToon, verify each of the following:
-
-1. BRP / URP shader compilation
-2. EditMode test
-3. Actual avatar **full-body + face** capture
-4. Target platform build
-5. Real testing on target platform — if VRChat, **self view · mirror · Photo Camera separately**
-
-## Release builder
-
-The package builder exports **by positive allowlist only**.
-
-| Included | Excluded |
+| Item | Current state |
 |---|---|
-| Runtime / Editor / Shaders | Tests |
-| Public Presets | Internal review · research · evidence · benchmark |
-| README, manual, manifest | Generated project artifacts |
-| Approved LICENSE or EULA | Repository metadata |
+| **Performance figures** | There are no validated GPU ms or SetPass improvement figures. We make no performance claims |
+| **VRChat PC** | The main target. Verification is manual and release certification is not finished |
+| **VRChat Quest** | It does not run the MingToon shader directly |
+| **WARUDO** | Waiting for verification on real hardware |
+| **URP** | Not included in this BRP open beta |
+| **Depth effects** | Visible only when the host provides camera depth |
+| **lilToon conversion** | An interoperability tool. It does not clone another shader's result |
 
-SHA-256 manifest is recorded along with it.
+→ [Supported Environments](/platforms/compatibility) · [How far depth effects are guaranteed](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 
-:::note
-Package build is blocked unless a MingToon-exclusive LICENSE/EULA approved by the user exists.
+## There are two installation routes
+
+The BRP core installed through VCC is a source package. The BOOTH installer is a DLL distribution route.
+
+Both routes point at the same BRP core version.
+
+## What to check yourself before shipping
+
+Check the following before handing your work to anyone else.
+
+1. The Console has 0 C# and shader errors.
+2. You captured the full body and the face of a real avatar separately.
+3. The target platform build succeeds.
+4. You looked at it on the target platform. For VRChat, check your own view, a mirror, and the Photo Camera separately.
+
+`StudioRaming > MingToon > Validate Project` screens the environment conditions first.
+
+:::note[This part is yours]
+We run shader compile regression tests and EditMode tests on every release.
+What you check is the result as it appears on a real avatar.
 :::
+
+## License
+
+The current open beta does not allow commercial use. The allowed scope and future structure are written in one place only.
+
+→ [License and Included Tools](/legal/beta-license)
 
 ## Beta feedback
 
-Report bugs in the **bug-report channel** of the [official Discord server](https://discord.gg/Zsj6pkWKKs).
+Please report bugs in the bug report channel of the [official Discord server](https://discord.gg/Zsj6pkWKKs).
 
-When reporting, including these speeds up reproduction:
+Including the following makes reproduction faster.
 
-1. Unity version and target platform (VRChat PC / Warudo / general Unity)
+1. Unity version and target platform (VRChat PC / WARUDO / general Unity)
 2. Render pipeline (BRP / URP 12.x)
-3. MingToon version (`0.1.10`)
-4. Full Console log
+3. MingToon version
+4. The full Console log
 5. Steps to reproduce
 
-If the problem continues, start with [Troubleshooting](/troubleshooting).
+To search by symptom first, go to [Troubleshooting](/troubleshooting).

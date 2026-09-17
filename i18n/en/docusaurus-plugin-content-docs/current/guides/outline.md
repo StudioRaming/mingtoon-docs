@@ -6,173 +6,163 @@ sidebar_position: 9
 
 # Outline
 
-**After reading this document** you can set up normal outlines and paint thickness per part to control their width.
+> This page is for people turning on the **normal outline** for the first time.
+> It draws a comic-style contour outside the character silhouette. It takes about 3 minutes.
 
-This covers the **Outline** group in the inspector — `Normal Outline`. For a complete list, see [Outline Reference](/reference/outline).
+## What is this
 
-:::note[Inner 2D Edge is elsewhere]
-`Inner 2D Edge`, which draws lines inside the surface, reads screen depth and therefore lives in the **Depth Effects** group. → [Depth Effects](/guides/depth-effects#내부-2d-경계)
-:::
+It draws one more slightly inflated shell of the mesh, leaving a line on the silhouette.
+
+It does not read the depth texture, so it draws on a normal VRChat screen too.
+
+## When to use it
+
+- When you want the avatar to read as sharp and cartoon-like
+- When the character silhouette gets lost against a bright background
+
+## Turn it on in 30 seconds
+
+1. Pick one converted material.
+2. Turn on **Enable Normal Outline**.
+3. Leave **Outline Width** at 1.
+4. Change **Outline Color** to something darker than the base.
+
+If you see a line outside the silhouette, it worked.
+
+If there is no line at all, go to [outline troubleshooting](/troubleshooting#outline).
+
+![The character's upper body side by side with the normal outline off and on](/img/placeholder.png)
+<!-- CAPTURE: guides/outline-01-before-after.png | 같은 캐릭터 상반신 2컷 — 왼쪽 노멀 아웃라인 사용 꺼짐, 오른쪽 켜짐에 폭 1 | 1200x700 -->
 
 ## Normal Outline {#노멀-아웃라인}
 
-This method expands the mesh by flipping it inside-out. In Built-in it draws in a single additional pass and **does not read the camera depth texture**. In URP, the active Renderer Data must have the `MingToon Outline Renderer Feature` installed. You can therefore choose it for screens such as VRChat desktop where depth is unavailable, but the pipeline setup and material gates still need to be in place.
-
-:::note[URP Renderer Feature and legacy gate]
-In a URP project, install and enable `MingToon Outline Renderer Feature` on every Renderer Data you use: `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`. Legacy materials also retain `_OutlineEnabled` (`Outline Master`) as a compatibility gate. If it is off, enabling `Classic Hull` cannot draw a line.
-:::
-
 ### Basic setup {#기본-설정}
 
-1. Enable `Enable Classic Hull`.
-2. Choose a `Width Mode`.
+1. Turn on **Enable Normal Outline**.
+2. Choose a **Width Mode**.
+3. Set **Outline Width** and **Outline Color**.
 
-| Width Mode | Behavior | Recommended |
-|---|---|---|
-| `PixelStable` | Screen-pixel based. Thickness stays constant regardless of distance | **For avatars** |
-| `WorldSpace` | World-space based. Thins out as you move away | Fixed-camera cinematics |
+**Width Mode** defaults to `WorldSpace`, and the line thins out with distance.
 
-3. Adjust `Outline Width` and `Outline Color`. (Also available in `Quick Look`)
+`PixelStable` works in screen pixels, so the thickness stays the same at any distance.
 
-**This is correct.** A line appears outside the character silhouette.
+`PixelStable` is the safe choice for avatars.
 
-<!-- SCREENSHOT: Normal outline enabled -->
+:::caution[URP needs the Renderer Feature]
+A URP project needs the feature on every renderer in the active URP asset.
+Without it every value still edits, but not a single pixel of line is drawn.
+`StudioRaming > MingToon > URP > Install Outline Renderer Feature`
+:::
 
----
+**Outline Master** is the shared switch for the normal outline and Inner Depth Edge.
 
-## Vary line width by part {#선-굵기를-부위마다-다르게}
+If it is off, neither tab draws.
 
-### Choose a pressure source {#압력-소스-고르기}
+## Values you will touch often
 
-`Pressure Source` selects which paint channel controls thickness.
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Outline Width** | The thickness of the line | Leave at default (1) | Raise it and it thickens; at 0 it disappears |
+| **Outline Color** | The color of the line | Darker than the base | The closer to black, the stronger the cartoon look |
+| **Outline Tint Strength** | How much the color blend mode takes effect | Leave at default (1) | Lower it to 0 and the blended color has no influence |
+| **Pressure Contrast** | The size of the per-area thickness difference | Leave at default (2) | Raise it and thin areas get thinner; at 0 pressure is ignored |
+| **Far-Distance Minimum Pixels** | The minimum thickness the line keeps at a distance | Leave at default (0.95) | Raise it and the line survives at a distance; at 0 it looks broken up |
+| **Depth Bias** | How far the whole line is pushed forward or back | 0 | Raise it and buried lines emerge; raise it too far and it floats in front of the face |
+| **Protect Outline From DOF** | Keeps depth-of-field blur from erasing the line | Leave at default (on) | Turn it off and the line smears away in worlds with depth of field on |
 
-| Source | Reads |
+Every field and its range is in the [Outline reference](/reference/outline).
+
+**Protect Outline From DOF** behaves the same on BRP and URP.
+
+The only place the backends differ is whether the Renderer Feature above is installed.
+
+## A different line thickness per area {#선-굵기를-부위마다-다르게}
+
+### Choosing a pressure source {#압력-소스-고르기}
+
+**Pressure Source** sets which channel controls the thickness. The default is `Constant`.
+
+| Value | What it reads |
 |---|---|
-| `VertexRed` | Vertex Color R |
-| `VertexAlpha` | Vertex Color A |
-| `WidthMask` | Width Mask texture |
-| `OutlineNormalUV8` | Outline normal baked to UV8. Long faces thick, vertices thin |
+| `Constant` | Reads nothing and uses the width as-is |
+| `VertexAlpha` | Vertex color A |
+| `VertexRed` | Vertex color R |
+| `WidthMask` | The width mask texture |
+| `OutlineNormalUV8` | The value baked into UV8. Long faces get thicker, corners get thinner |
 
-:::danger[The line disappeared entirely]
-This happens when `VertexRed` is chosen on a **mesh with vertex colors imported as black**. If pressure is 0, width becomes 0. Change the pressure source or check the vertex colors.
+Which lines the pressure applies to is set separately by **Apply to Normal Outline** and
+**Apply to Inner Outline**.
+
+:::caution[Apply to Inner Outline works even with the normal outline off]
+This toggle sits in the normal outline group but keeps acting on Inner Depth Edge.
+Leave it on for a mesh with black vertex colors and the inner lines vanish completely.
 :::
 
-`Hull Pressure Contrast` exaggerates thickness difference. **At 0, pressure is completely ignored**; 1 is the original, and higher values make thin areas even thinner.
+### Painting directly in the Scene view {#씬-뷰에서-직접-칠하기}
 
-Use `Apply to Hull Outline` / `Apply to Inner Edge Outline` to decide which outlines receive pressure.
+1. Set **Pressure Source** to `VertexAlpha` or `VertexRed`.
+2. Put the renderer that uses this material under your selection. Picking the MingToon Manager works.
+3. Select only one material.
+4. Press **Paint Outline Width in Scene View**.
 
-:::caution[`Apply to Inner Edge Outline` works even with Normal Outline off]
-This toggle is in the Normal Outline group but continues to affect [Inner 2D Edge](/guides/depth-effects#내부-2d-경계). If enabled on a mesh with black vertex colors, the entire inner edge disappears.
+Drag to paint, and hold Shift while dragging to erase.
+
+Change the brush size with `[` and `]`, and finish with Esc.
+
+Adjust **Radius**, **Strength**, **Falloff** and **Paint Through Backfaces** in the overlay.
+
+![The outline width painting overlay in the Scene view over a painted mesh](/img/placeholder.png)
+<!-- CAPTURE: guides/outline-02-vertex-paint.png | 씬 뷰 아웃라인 두께 페인팅 오버레이 + 반경/강도/감쇠 행 + 칠한 자리의 굵기 차이 | 1200x700 -->
+
+:::danger[Vertex painting writes the mesh asset straight to disk]
+It is blocked in Play mode, because Unity will not undo it for you.
+Other renderers using the same mesh change as well.
 :::
 
-### Paint directly in the scene view {#씬-뷰에서-직접-칠하기}
+To affect only this renderer, duplicate the mesh, assign it, and then paint.
 
-You can paint thickness by hand.
+If **Pressure Source** is `VertexRed` and **Normal Source** is `VertexColorTS`,
+the two read the same channel. Change the pressure source to `VertexAlpha`.
 
-#### Setup
+## When the line breaks at sharp corners {#각진-부분에서-선이-끊길-때}
 
-1. Set `Pressure Source` to **Vertex Alpha** or **Vertex Red**. Otherwise the inspector shows `Pressure Source must be Vertex Alpha or Vertex Red to control thickness via vertex painting.` with a `Switch to Vertex Alpha` button.
-2. The renderer using this material must be **under the current selection**. Select the MingToon Manager.
-3. Select **only one** material.
+The cause is **Normal Source**. The default is `MeshNormal`.
 
-:::danger[Don't proceed if a channel conflict warning appears]
-If `Pressure Source` is **Vertex Red** and `Normal Source` is **VertexColorTS**, both read the same vertex color. If you paint this way, **the outline direction stored in RGB gets overwritten**, and the depth-effect mask also reads the red channel.
+`VertexColorTS` and `UV8TS` are only correct when smoothed values were baked in advance.
 
-The inspector warns you and offers a `Paint Anyway` button. Before proceeding, do one of these:
-- Change `Pressure Source` to **Vertex Alpha**
-- Move outline normal to **UV8TS** → [Mesh UV Bake](/guides/mesh-bakes#아웃라인-스무스-노멀-uv8)
-:::
+Choosing `UV8TS` on an unbaked mesh makes the line break up even more.
 
-#### Painting
+How to bake UV8 is in [Mesh UV Bakes](/guides/mesh-bakes#아웃라인-스무스-노멀-uv8).
 
-Click `Paint Outline Width in Scene View` to bring up a scene-view overlay.
+### When the line leaves the shape on hair and skirts {#헤어스커트에서-선이-형태를-벗어날-때}
 
-| Control | Action |
-|---|---|
-| Drag | Paint |
-| **Shift** + Drag | Erase |
-| `[` `]` | Brush size |
-| Esc | Finish |
+A model with normals transferred from a sphere or cylinder has shading normals that differ from its shape.
 
-Adjustable values in the overlay:
+Turn on **Compute For Edited-Normal Models** when you bake UV8.
+→ [Models with edited normals](/guides/mesh-bakes#노멀을-편집한-모델용으로-계산)
 
-| Item | Purpose |
-|---|---|
-| `Radius` | Brush size |
-| `Intensity` | Amount painted per stroke |
-| `Falloff` | Softness at brush edge |
-| `Paint Through Backfaces` | Also paint vertices on the back face, out of view |
+You can also give the direction with a texture directly.
 
-The current channel always displays as `Channel: Vertex Red (Shift = erase)`, and when Vertex Red is used, it also shows `Red is also read by the depth-effect mask.`
+Turn on **Authored Vector Direction** and set **Vector UV** and **Vector Scale**.
 
-When done, click `Finish Outline Painting` or press Esc.
+If stray lines appear inside the body, raise **Inner Line Suppression Offset**.
 
-<!-- SCREENSHOT: Scene view outline thickness painting overlay -->
+## Making the outline color follow the lighting {#아웃라인-색이-조명을-따라가게}
 
-#### Things to know
+Turn on **Apply Lighting** and form shadow, rim and front light apply to the line as well.
 
-:::danger[Vertex painting writes directly to the mesh asset on disk]
-- **Blocked in Play mode.** Unity won't undo it. Exit Play and restart.
-- **Other renderers using the same mesh change too.** The inspector lists which mesh assets are affected. To apply only to this renderer, **first duplicate the mesh and assign it to this renderer** before painting.
-:::
+It leaves the impression of a thick line darkening with the light.
 
-:::note[Imported meshes automatically get a copy]
-The original FBX is untouched; an editable copy is created and assigned to the renderer.
+Turn it off and the line keeps a uniform color independent of lighting.
 
-If Undo restores the original mesh while painting, painting stops (`Undo restored the original mesh of '{mesh}', so the copy you were painting is no longer used.`). Just start again.
-:::
+**Front Light Color** and **Front Light Strength** let you give the lit side its own color.
 
-See [Troubleshooting](/troubleshooting#씬-뷰에서-아웃라인-두께를-칠할-수-없다) for cases where painting doesn't work.
+If **Front Light Strength** is 0, the front light color has no effect.
 
----
+To print screentone on the line too, turn on **Outline Shadow Pattern**.
 
-## Lines break at sharp edges {#각진-부분에서-선이-끊길-때}
+## More detail
 
-The `Normal Source` is the cause.
-
-| Source | Condition |
-|---|---|
-| `MeshNormal` | Mesh normal as-is. Lines separate at hard edges |
-| `VertexColorTS` / `UV8TS` | Valid **only when smooth outline normals are baked to vertex color or UV8** |
-
-:::danger[If you choose `UV8TS` on an unbaked mesh]
-Lines actually break **more** at sharp corners. Without baking, use `MeshNormal`.
-:::
-
-:::note[Using `VertexColorTS` with no vertex colors on the mesh]
-It falls back to mesh normal. The line doesn't slide diagonally off the mesh entirely.
-:::
-
-### Hair and skirt lines break away from form {#헤어스커트에서-선이-형태를-벗어날-때}
-
-Models like hair or skirts that **move normals from a sphere or cylinder** have shading normals that differ from their actual shape already. Baking as-is makes the outline follow the borrowed sphere instead of the mesh.
-
-When baking UV8, enable `Compute For Edited-Normal Models` to recalculate direction from mesh faces. Shading stays as authored and only the outline follows the mesh. Default is off. → [Mesh UV Bakes](/guides/mesh-bakes#노멀을-편집한-모델용으로-계산)
-
-You can also specify direction as a texture. Enable `Authored Vector Direction` and set `Vector UV` and `Vector Scale`. Negative scale flips direction. When off, these are ignored and `Normal Source` controls direction.
-
-## Lines disappear into other parts
-
-Use `Depth Bias` to pull the entire hull toward the camera. **Pull too much and the lines float in front of the face.**
-
-If unnecessary lines appear inside the body, use `Inner Line Suppression Offset` to push the hull back toward the surface.
-
-## Make outline color follow lighting {#아웃라인-색이-조명을-따라가게}
-
-Enable `Include Shading` and the outline receives **a soft brightness band** following the body's form-shadow color. Heavy outlines darken with lighting. Disable to keep a uniform color regardless of lighting.
-
-:::note[Outline does not duplicate body shading]
-The outline draws from base map color and light response alone. It does not redraw the body's shadow pattern, cast shadows, or depth effects over the line, keeping pixel cost low.
-
-To print screentone on the line too, enable `Outline Shadow Pattern` separately. → [Shadow Pattern](/guides/shadow-pattern)
-:::
-
-## When overlapping other shaders
-
-Adjust `Stencil Settings` only when coordinating with masks from other shaders. By default, stencil doesn't affect the outline.
-
-`Color Mask` at 0 prevents the outline from writing to the screen at all. The default 15 is full RGBA.
-
-## Next
-
-[lilToon Conversion](/workflow/liltoon-conversion) or [Auto-Optimize on Build](/workflow/build-optimization)
+- [Outline reference](/reference/outline) — every field and range
+- [Mesh UV Bakes](/guides/mesh-bakes) — baking UV8 smooth normals
+- [Outline troubleshooting](/troubleshooting#outline) — when the line does not show or breaks

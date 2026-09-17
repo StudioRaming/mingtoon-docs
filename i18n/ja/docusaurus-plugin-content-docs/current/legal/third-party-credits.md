@@ -1,3 +1,9 @@
+---
+id: third-party-credits
+title: Third-Party Credits
+sidebar_position: 4
+---
+
 # Third-Party Credits and Licenses / 서드파티 차용 및 라이선스 / サードパーティ表記とライセンス
 
 이 문서는 MingToon이 코드·수식·구현 방식을 수정 또는 차용한 공개 프로젝트와
@@ -167,3 +173,11 @@ freely, subject to the following restrictions:
 Report a missing third-party attribution to `studioraming@gmail.com`.
 
 記載漏れがある場合は `studioraming@gmail.com` までご連絡ください。
+
+---
+
+기법 출처와 적용 범위는 [참고자료](/legal/references)에 있습니다.
+
+Technique references and their scope are listed in [References](/legal/references).
+
+技法の出典と適用範囲は [参考資料](/legal/references) にあります。

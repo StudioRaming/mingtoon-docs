@@ -6,75 +6,110 @@ sidebar_position: 2
 
 # Supported Environments
 
-**After reading this guide** you can determine whether your environment supports MingToon and what you need to prepare.
+> This page is for people checking whether MingToon works in their environment.
 
-## Unity Version {#unity-버전}
+## The 30-second verdict
 
-:::danger[Varies by target. Cannot share one project]
+If all three below are yes, you can use it.
+
+1. It is a PC. Windows, macOS or Linux.
+2. You open the project with Unity 2021.3 or 2022.3.
+3. If you will upload to VRChat, it is Unity 2022.3.22f1.
+
+If any of them is not, find that row in the tables below.
+
+## Unity version {#unity-버전}
+
 | Target | Unity | Why |
 |---|---|---|
-| **VRChat PC** (primary target) | **2022.3.22f1** | Current VRChat SDK baseline. MingToon's VRChat hooks and runtime compile only under `UNITY_2022_3_OR_NEWER` |
-| **Warudo** | **2021.3.45f2** | Warudo Mod SDK 0.14.3.10 baseline |
-| General Unity | 2021.3 LTS | |
+| **VRChat PC** | **2022.3.22f1** | It matches the current VRChat SDK. The VRChat integration code only compiles on the 2022.3 stream |
+| **WARUDO** | **2021.3.45f2** | It matches WARUDO Mod SDK 0.14.3.10 |
+| General Unity | 2021.3 or 2022.3 | Both are supported streams |
+
+:::caution[One project cannot serve both targets]
+VRChat and WARUDO use different editor versions. Split the projects by target.
 :::
 
-:::note[Validate Project's Unity version judgment]
-Supported editor streams are **both 2021.3 and 2022.3**. Neither raises `MING-ENV-UNITY-VERSION` errors.
+### How Validate Project judges the version
 
-If VRC SDK is present but the editor is not on 2022.3 stream, `MING-VRC-UNITY-VERSION` **warning** appears. VRChat integration code compiles only on that stream, **but other targets are unaffected.** → [Validator Code](/reference/validator#ming-vrc-unity-version)
-:::
+The supported editor streams are both 2021.3 and 2022.3. Either way, the `MING-ENV-UNITY-VERSION` error does not appear.
 
-## Hardware Requirements (Mandatory) {#하드웨어-요구-사항-필수}
+If the VRC SDK is present but the editor is not on the 2022.3 stream, a `MING-VRC-UNITY-VERSION` warning appears.
 
-All MingToon passes declare `#pragma target 4.5` (shader model 4.5).
+That warning means there is no avatar upload support. Other targets are unaffected.
+→ [Validate Project Codes](/reference/validator#ming-vrc-unity-version)
 
-:::danger[Unmet conditions fail silently]
-On platforms that don't meet shader model 4.5, the entire SubShader is skipped. The result is **materials render magenta (pink), and no other error message appears**. Without checking this condition first, you cannot diagnose from logs alone.
-:::
+## Hardware requirements (required) {#하드웨어-요구-사항-필수}
 
-| Category | Supported |
+Every MingToon pass declares shader model 4.5.
+
+| Platform | Supported |
 |---|---|
-| Windows / macOS / Linux (DirectX 11+ · Vulkan · Metal) | ✅ |
-| Android / Quest | ❌ |
-| iOS | ❌ |
-| WebGL | ❌ |
+| Windows · macOS · Linux (DirectX 11 or later · Vulkan · Metal) | Supported |
+| Android · Quest | Not supported |
+| iOS | Not supported |
+| WebGL | Not supported |
 
-If the current build target does not meet the requirement, `Tools > Studio Raming > MingToon > Validate Project` reports an error.
+:::danger[Failing the requirement fails silently]
+On a platform that cannot meet shader model 4.5, the whole SubShader drops out.
+The only result is materials showing as magenta, with no error message.
+:::
 
-## Environment Compatibility
+If the current build target does not meet the requirement, a `MING-ENV-BUILD-TARGET` error appears. Check with `StudioRaming > MingToon > Validate Project`.
 
-| Environment | Status | Actions Needed |
+## Compatibility by environment
+
+The status labels mean the following.
+
+- **Main target** — development and regression testing happen in this environment.
+- **Awaiting verification** — it was built to work, but on-device confirmation is not finished.
+- **Not supported** — behavior is not guaranteed.
+
+| Environment | Status | What you need to do |
 |---|---|---|
-| **VRChat PC** (Unity 2022.3.22f1, BRP) | Primary target · Manual review · Uncertified | → [VRChat](/platforms/vrchat) |
-| **VRChat Quest** | Not directly supported | See below |
-| **Warudo 0.14.3.10** (Unity 2021.3.45f2, BRP) | Field verification pending | → [Warudo](/platforms/warudo) |
-| Unity 2021.3 **BRP** (general) | Primary verification target · Release certification pending | Set standard lighting/shadows, then prepare Depth Texture if using depth effects |
-| Unity 2021.3 **URP 12.x** | Optional verification target · Uncertified | Install MingToon URP shaders and required Renderer Features |
-| VRChat + URP | Not supported | Switch to BRP build |
+| **VRChat PC** (2022.3.22f1 · BRP) | Main target | → [VRChat](/platforms/vrchat) |
+| **WARUDO 0.14.3.10** (2021.3.45f2 · BRP) | Awaiting verification | → [Warudo](/platforms/warudo) |
+| General Unity **BRP** | Awaiting verification | Turn on the camera Depth Texture if you use depth effects |
+| Unity 2021.3 **URP 12.x** | Awaiting verification | Install the MingToon URP shaders and Renderer Features |
+| **VRChat Quest** | Not supported | See below |
+| VRChat + URP | Not supported | Switch to a BRP build |
 
-:::danger[URP 13+ is out of scope]
-URP is **Unity 2021.3 + URP 12.x only** right now. Even if it appears to work, do not consider it supported. VRChat does not use URP.
+:::caution[URP 13 and above are out of scope]
+URP targets only Unity 2021.3 + URP 12.x. Even if it appears to work, do not treat it as supported.
 :::
 
 ## VRChat Quest {#vrchat-quest}
 
-MingToon is not a mobile shader target. If Quest support is needed, **convert separately** to a mobile shader the SDK allows, and review what features are lost. We do not provide an automatic conversion path.
+MingToon is not a mobile shader target. You cannot upload MingToon shaders to Quest as they are.
 
-## Texture Import Settings Backend Differences
+If you need Quest support, build it separately with a mobile shader the SDK allows. No automatic conversion path is provided.
 
-Only relevant when planning to use both BRP and URP together. If VRChat is your only target, skip this.
+The MingToon Manager's Quest check counts what you lose in a replacement. Outlines, translucency and depth effects are the main ones.
 
-- **BRP** samples layer textures using the `_MainTex` sampler. Therefore, the `_MainTex` import Filter/Wrap settings **apply to all layers**.
-- **URP** uses a fixed inline sampler (Linear/Repeat). Individual texture Filter/Wrap settings are **ignored**.
+## Post Processing Stack v2 (optional)
 
-As a result, the two backends look different only when `_MainTex` is **imported as Clamp or Point**.
+MingToon works completely without PPv2.
 
-:::tip[If using both backends together]
-Keep `_MainTex` at its default (**Bilinear / Repeat**).
-:::
+VRChat avatars follow the world's post-processing. PPv2 is mainly for scene checks and capture.
+→ [Installation](/getting-started/installation#선택-사항-post-processing-stack-v2)
 
-This is an intentional URP pass-structure constraint. If each layer texture had a dedicated sampler, you would exceed sampler slots; if they shared the `_MainTex` sampler, passes that don't use `_MainTex` would fail to compile.
+## Differences that only apply when using BRP and URP together
 
-## Post Processing Stack v2 (Optional)
+<details>
+<summary>Texture import settings apply differently per backend</summary>
 
-BRP PPv2 is optional and MingToon works completely without it. VRChat avatars follow the world's post-processing, so PPv2 is mainly for scene preview and photography. See [Installation](/getting-started/installation#선택-사항-post-processing-stack-v2) for setup. If something fails, go to [Troubleshooting](/troubleshooting).
+BRP reads layer textures through `_MainTex`'s sampler. So `_MainTex`'s Filter and Wrap settings apply to every layer.
+
+URP uses a fixed inline sampler (Linear · Repeat). The Filter and Wrap settings of individual textures are ignored.
+
+The two backends only look different when `_MainTex` is imported as Clamp or Point.
+
+If you plan to use both backends, leave `_MainTex` at its defaults (Bilinear · Repeat).
+
+This is an intended constraint of the URP pass structure. Giving every layer its own sampler would exceed the sampler slot limit.
+
+</details>
+
+## Next
+
+[VRChat](/platforms/vrchat) · [Warudo](/platforms/warudo) · [Troubleshooting](/troubleshooting#install)

@@ -6,131 +6,135 @@ sidebar_position: 5
 
 # VRChat Compatibility Rules
 
-This page documents the static rules stored in the MingToon package. Its rule version and validated Unity version are package baselines, not a complete current VRChat allowlist or proof of upload success. Check the [official VRChat Unity guidance](https://creators.vrchat.com/sdk/upgrade/current-unity-version/) for the current SDK environment.
+These are all the rules MingToon checks statically for VRChat upload.
+They let you see what will be flagged before you upload.
 
-**After reading this document** you know all the rules MingToon checks for VRChat upload, and can predict what will fail before uploading.
-
-MingToon carries VRChat rules as a **versioned rule set**.
+This list is the baseline recorded in the package, not VRChat's complete current allowlist.
+Check the [official VRChat Unity guidance](https://creators.vrchat.com/sdk/upgrade/current-unity-version/) for the current SDK environment.
 
 | Item | Value |
 |---|---|
-| Rule version | `2026.07` |
-| Validated Unity version | `2022.3.22f1` |
+| Rule version | 2026.07 |
+| Validated Unity version | 2022.3.22f1 |
 | Reference | [VRChat Shader Fallback System](https://creators.vrchat.com/avatars/shader-fallback-system/) |
 
----
+## Practical conclusion {#실무-결론}
 
-## Fallback Shader {#fallback-셰이더}
+This is the order to design the look of a VRChat avatar in.
 
-MingToon BRP shaders declare this in the SubShader tag:
+1. **Build a look that works without depth first.** Form shadow, shadow projection, Normal Outline, rim light, rim shade.
+2. **Add depth effects afterwards.** Raise them while comparing how they read on each camera.
+3. **Check the hair's alpha and silhouette.** Choose a surface mode and also look at it in the fallback state.
+4. **Check that the upload clone has zero MingToon runtime components.**
+5. **Check your own view, a mirror and the Photo Camera separately.**
+
+## Fallback shader {#fallback-셰이더}
+
+MingToon Built-in shaders declare this in the SubShader tag.
 
 ```text
 VRCFallback = toonstandardoutline
 ```
 
-:::note[Checking fallback]
-`toonstandardoutline` is a tag used by the host to choose a replacement shader. It does not preserve every MingToon color, shadow or effect. Verify the transparent fallback path and actual Safety settings as well.
+`toonstandardoutline` is a tag the host uses to pick a replacement shader.
+It does not mean MingToon's colors, shadows and effects are preserved.
+
+:::note[Do not read the transparent fallback warning as a confirmed outcome]
+`TransparentFallbackUsesUnlit` is a warning from MingToon's analyzer.
+By the official documentation it covers the case of Toon combined with Transparent/Fade.
+That combination uses the Transparent Unlit path.
+`toonstandardoutline` is a standalone tag, separate from that combination.
+Check the actual result against the material's override tag and Safety state.
 :::
 
-:::note[Separate the transparency warning from the actual tag]
-`TransparentFallbackUsesUnlit` is a MingToon static-analyzer warning. The official rules route **Toon + Transparent/Fade** to Transparent Unlit, while **toonstandardoutline is a separate, non-combinable tag**. Do not read this warning as a confirmed outcome for every transparent MingToon material. Inspect the actual material override tag and Safety state. [Official VRChat fallback rules](https://creators.vrchat.com/avatars/shader-fallback-system/)
-:::
+### Standard aliases
 
-### Standard Aliases
-
-For fallback to inherit values, the shader must use Unity standard property names. MingToon checks this alias list:
+For fallback to inherit values, the shader has to carry Unity's standard names.
+It checks 13 aliases.
 
 ```text
-_MainTex      _Color        _BumpMap    _BumpScale
-_OcclusionMap _OcclusionStrength
-_EmissionMap  _EmissionColor
-_Cutoff       _Mode
-_SrcBlend     _DstBlend     _ZWrite
+_MainTex       _Color         _BumpMap    _BumpScale
+_OcclusionMap  _OcclusionStrength
+_EmissionMap   _EmissionColor
+_Cutoff        _Mode
+_SrcBlend      _DstBlend      _ZWrite
 ```
 
-If missing: `MissingStandardAlias` — `missing standard fallback alias: {name}`
+If one is missing, a `MissingStandardAlias` warning is raised.
+It does not appear on a healthy MingToon material. If it does, the shader is corrupted or was hand-modified.
 
-**Does not appear on healthy MingToon materials**. If present, the shader is corrupted or hand-modified.
+## Uploadable components
 
----
-
-## Uploadable MonoBehaviours
-
-VRChat avatars only allow components on the allowlist:
+MingToon holds an allowlist of components an avatar may keep. There are 12.
 
 ```text
 VRCAvatarDescriptor    VRCConstraint
 VRCContactReceiver     VRCContactSender
 VRCHeadChop            VRCIKFollower
 VRCPhysBone            VRCPhysBoneCollider
-PipelineManager     VRCRaycast
+PipelineManager        VRCRaycast
 VRCSpatialAudioSource  VRCStation
 ```
 
-Components outside this list trigger `CustomMonoBehaviourNotUploadable`:
+A component outside the list raises `CustomMonoBehaviourNotUploadable`.
+`<Missing Script>` counts too.
 
-> Custom MonoBehaviours cannot be included in avatar upload targets. **Remove them from PC Baked/Script-Free results.**
-
-`<Missing Script>` is counted too.
-
-:::note[Keep the Manager on the avatar root]
-Keep MingToonManager on the avatar root while editing and use the normal SDK upload. Static preflight and inspection of the processed SDK clone are different checks. Verify that MingToon authoring runtime components are removed from that clone; this does not mean deleting all SDK-allowed components.
+:::caution[Automatic removal is not guaranteed]
+MingToon runtime components are marked `IEditorOnly` for VRChat.
+That mark does not guarantee the SDK will delete them.
+So you have to check the build clone yourself, after the SDK has processed it.
+Look for zero MingToon components in that clone.
+While editing, leave MingToon Manager on the avatar root and upload as usual.
 :::
 
----
-
-## Complete Issue Code Reference
+## Issue codes
 
 ### PC
 
 | Code | Severity | Meaning |
 |---|---|---|
-| `PcRequiresBakedShader` | Error | PC upload MingToon materials must use Baked variant |
-| `CustomMonoBehaviourNotUploadable` | Error | Component outside allowlist |
-| `MissingStandardAlias` | Warning | Standard fallback alias missing |
-| `TransparentFallbackUsesUnlit` | Warning | Static transparency warning; see actual fallback-tag behavior above |
-| `CameraDependentFeatureNotPortable` | Warning | Screen/camera-dependent effects depend on VRChat camera setup |
-| `UnityVersionNotValidated` | Warning | Editor differs from validated version |
-| `UnsupportedRenderBackend` | Error | **URP backend/materials cannot be used for VRChat export**. Use Built-in or Built-in Baked |
+| `PcRequiresBakedShader` | Error | Materials for PC upload must be the baked variant |
+| `CustomMonoBehaviourNotUploadable` | Error | There is a component outside the allowlist |
+| `UnsupportedRenderBackend` | Error | The URP backend and URP materials cannot be used for VRChat output |
+| `MissingStandardAlias` | Warning | A standard fallback alias is missing |
+| `TransparentFallbackUsesUnlit` | Warning | A static warning for transparent surfaces. See the explanation above |
+| `CameraDependentFeatureNotPortable` | Warning | Effects that rely on the screen or camera depend on VRChat's camera setup |
+| `UnityVersionNotValidated` | Warning | The editor differs from the validated version |
 
-:::tip[No need for manual bake even if `PcRequiresBakedShader` appears]
-[Auto-optimize on build](/workflow/build-optimization) swaps materials to generated shaders at upload, then restores them. This analyzer is a **static-state tool**, so it naturally reports this item when run in edit mode.
+:::tip[A manual bake is not needed even if `PcRequiresBakedShader` appears]
+[Automatic Optimization On Build](/workflow/build-optimization) swaps the materials at the moment of upload and restores them when it finishes.
+This analyzer looks at the static state, so running it while editing naturally raises this item.
 :::
 
-### Quest / Android
+### Quest and Android
 
 | Code | Meaning |
 |---|---|
-| `QuestMingToonNotSupported` | MingToon shaders **cannot be uploaded directly to Quest/Android**. Prepare a separate `VRChat/Mobile/Toon Standard` conversion |
-| `QuestRequiresMobileShader` | Quest/Android materials must use the current SDK's `VRChat/Mobile/` shaders |
-| `QuestRequiresToonStandardConversion` | Conversion to Toon Standard is required |
-| `QuestOutlineNotSupported` | **Toon Standard conversion on Quest does not preserve outlines** |
-| `QuestToonStandardRequiresOpaque` | Toon Standard conversion target must be **opaque** |
+| `QuestMingToonNotSupported` | MingToon shaders cannot be uploaded to Quest directly |
+| `QuestRequiresMobileShader` | Quest materials must use a `VRChat/Mobile/` shader |
+| `QuestRequiresToonStandardConversion` | Conversion to `VRChat/Mobile/Toon Standard` is required |
+| `QuestOutlineNotSupported` | Quest conversion does not preserve outlines |
+| `QuestToonStandardRequiresOpaque` | A Quest conversion target must be opaque |
 
 :::danger[Quest support is separate work]
-MingToon is not a mobile-shader target and provides no auto-conversion path. If planning a Quest version, **assume outlines disappear and transparency is unavailable** and design look separately.
+MingToon is not a mobile shader target and provides no automatic conversion path.
+If you plan a Quest version, design the look separately, assuming outlines disappear and semi-transparency is unavailable.
 :::
-
----
 
 ## Conditions for depth effects
 
-`CanAvatarForceMainCameraDepth = false` records that an avatar cannot universally guarantee depth on host cameras. Check Photo Camera, world settings and other depth-supply conditions separately. Even with depth available, queue, depth participation, quality and distance settings affect the result.
+An avatar on its own cannot guarantee depth on the host camera.
+Check the Photo Camera, world settings and other depth-supply conditions separately.
+Even with depth available, queue, camera depth participation, quality and distance settings change the result.
 
-Enabling the Manager option to include a depth light on upload adds a helper Directional Light to the upload clone. Check its actual state, which can depend on the installed version and existing avatar settings. Avatar Safety, the world and light settings affect it; it does not guarantee depth for every viewer. Read [VRChat depth light](/platforms/vrchat#vrchat-깊이-라이트), then compare the player view, mirror and Photo Camera.
+The Manager's **Remove depth light on build** is off by default.
+Left off, it puts a helper Directional Light into the upload clone only when depth effects are actually used.
+Turned on, it forces that light out, so depth effects can disappear from the screen.
+Avatar Safety, the world and light settings all affect it, so depth is not guaranteed on every view.
+Read [VRChat depth light](/platforms/vrchat#vrchat-깊이-라이트) first, then compare your own view, a mirror and the Photo Camera.
 
-## Practical Conclusion
-
-When designing look for a VRChat avatar, follow this order:
-
-1. **Build look that works without depth first** — form shadow · shadow projection · normal outline · rim light / rim shade
-2. **Add depth effects after checking their conditions** — compare their behavior across camera views
-3. **Check hair alpha and silhouette** — choose a suitable surface mode and compare the actual fallback
-4. **Check the processed SDK clone for leftover MingToon authoring components**
-5. **Check your own screen · mirror · Photo Camera separately**
-
-## Related Documents
+## Related pages
 
 - [VRChat](/platforms/vrchat)
+- [Validate Project Codes](/reference/validator)
 - [Shader Structure and Passes](/internals/shader-structure)
-- [Validate Project Code](/reference/validator)

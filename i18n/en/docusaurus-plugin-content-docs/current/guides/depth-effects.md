@@ -6,373 +6,228 @@ sidebar_position: 6
 
 # Depth Effects
 
-**After reading this document** you will be able to diagnose why the five depth modules — 2D Rim Light, 2D Translucency, 2D Shadow, SSAO, and Inner Outline — are not visible, and learn how to ensure depth is available on each platform.
+> This page is for anyone turning on **Depth Effects** for the first time.
+> It draws bang shadows and even outlines from screen depth. It takes about 10 minutes.
 
-This document covers the six entries in the **Depth Effects** group in the inspector — `Depth Effects Master`, `2D Rim Light`, `2D Translucency`, `2D Shadow`, `SSAO`, and `Inner Outline`. For a complete list of all parameters, see [Depth Effects Reference](/reference/depth-effects).
+## What is this
 
-## What Uses Depth
+The depth texture is the camera's measurement of what is how far in front.
+Five effects drawn from that information live in the **Screen-space Effects** group.
 
-`Depth Effects Master` controls the five modules, and the other five read the same **camera depth texture**. Without depth, no amount of adjustment will make anything appear on screen.
-
-:::danger[Check depth before adjusting values]
-The inspector tells you the status directly.
-
-- `Depth Effects is off, so this module does not draw.` → `Turn Depth Effects On`
-- `This effect only appears on cameras with Depth enabled.`
-- `2D Rim Light and 2D Shadow require an opaque or cutout material that records depth. Depth Effects are disabled in the transparent queue.`
-- `The active Scene/Game camera's depth texture is not ready.`
-
-It's pointless to adjust width or intensity while these messages appear.
-:::
-
-:::note[Why Inner 2D Edge is here]
-Although it looks like an outline, it reads screen depth, so it belongs **in this group, not the outline group**. It's common to look for it in outlines and not find it.
-:::
-
-## One Depth Texture, Separate Effects {#깊이-한-장-효과는-각각}
-
-The effects on this page read the **same camera depth texture** supplied by the active camera. Each module toggle only decides whether that module's result is composited; it does not create depth for another module. Check each module's toggle, master, and strength first; if no effects are visible or results differ between cameras, check the camera and pipeline's depth availability.
-
-The material does not create a post-process pass or an extra camera for depth effects. Check the required depth provider once for BRP, URP, or Warudo, then decide separately which effects are needed when several modules share the same camera.
-
----
-
-## Platform-Specific Depth Setup {#플랫폼별-깊이-확보}
-
-### VRChat (Primary Target)
-
-| Situation | Depth |
+| Inspector section | What it draws |
 |---|---|
-| **Photo Camera active** | ⚠️ Host may provide depth; verify |
-| **World has Screen Camera depth enabled** | ✅ |
-| **Normal player screen (default)** | ❌ Avatar cannot force it |
-| **Inside mirror · stream paths** | ⚠️ Not guaranteed |
+| **Depth Rim Light** | A light line of even thickness along the whole silhouette |
+| **Depth Shadow** | The shadow bangs cast on the forehead |
+| **SSAO (Screen Space Occlusion)** | Contact shading in folds and where surfaces meet |
+| **SSSSS (Experimental)** | Light bleeding through hair tips and hems |
+| **Inner Outline** | Inner Depth Edge. Boundary lines inside the silhouette, such as collars and chins |
 
-Screen Camera settings are **controlled by the world/Udon side**. Adding an arbitrary Camera or Light to an avatar is not a supported solution. Check the current state of the shared `Carry Depth Light in Builds` preference in MingToon Manager. When it is enabled, it adds one `MingToon Depth Light` only to VRChat and WARUDO build clones, and only when the Depth Effects Master and at least one of the five depth modules is actually active. If the master is off or all five modules are off, both builds omit it even when the preference remains checked. Turn it off manually for a world or host that reliably supplies depth; the user's opt-out takes precedence over automatic inclusion. The build light adds an extra depth pass and can also incur per-light shadow-map and pixel-light cost, so keep it only when needed. → [VRChat Depth Light](/platforms/vrchat#vrchat-깊이-라이트)
+## When to use it
 
-Upload does not change `Depth Availability`. `Auto` detects depth actually bound to each camera, and `Force On` remains only when the author selected it explicitly. See [VRChat](/platforms/vrchat) for details.
+- When you want bang shadows to stay steady even as the lighting changes.
+- When you want contact shading where clothing meets the body.
 
-:::tip[Backup for screens without depth]
-The rim light and rim shade from [Rim](/guides/rim) and the normal outline from [Outline](/guides/outline) **do not require depth**. Don't rely solely on depth-based effects — lay a floor for silhouettes with these two.
+:::danger[Check depth before touching any value]
+Without depth, raising width or intensity puts nothing on screen.
+The inspector tells you directly what is missing at that point.
 :::
 
-### Standard Unity (BRP) {#일반-unity-brp}
+## Secure depth first {#플랫폼별-깊이-확보}
 
-Add the `Studio Raming/MingToon/Depth Texture Provider` component to the scene. It provides the necessary depth flags and camera matrices before the active Game Camera renders, and preserves existing camera flags.
-
-### URP 12
-
-1. Run `Tools > Studio Raming > MingToon > URP > Install Depth Effects Renderer Feature`.
-2. If you also use outlines, run `Tools > Studio Raming > MingToon > URP > Install Outline Renderer Feature`.
-3. Enable **Depth Texture** in the URP Renderer Data you're using.
-
-### Warudo
-
-You need a Warudo camera with Depth enabled. In some cases, a host camera cannot be changed with just an avatar bundle. → [Warudo](/platforms/warudo)
-
----
-
-## Depth Availability {#깊이-가용성}
-
-Decides **how the shader determines whether depth texture exists**. Choose from four options.
-
-| Value | Meaning |
+| Environment | What to do |
 |---|---|
-| `Auto` (default) | Shader finds it automatically. **Leave as is** |
-| `Force On` | Author guarantees depth buffer on hosts where auto-detection fails. **Excludes mirrors** |
-| `Force Off` | Completely blocks depth effects |
-| `Diagnostic` | Paints detection status on screen in solid color. **For bug reporting** |
+| VRChat | Turn on the Photo Camera, or have the world enable Screen Camera depth. Check that Manager's **Remove depth light on build** is off |
+| General Unity (BRP) | The MingToon Manager in the scene supplies it automatically in the editor. There is no component to add |
+| URP 12 | Run `StudioRaming > MingToon > URP > Install Depth Effects Renderer Feature` |
+| Warudo | You need a Warudo camera with Depth on |
 
-:::caution[`Force On` does not enable mirrors]
-A mirror camera does not draw its own depth texture, but the player camera's depth buffer stays bound. Read as-is, the character wears **a stranger's silhouette** as its own shadow — that is exactly what was happening when 2D Shadow and 2D Rim Light slid across the body every time the player looked around.
+On URP you must also enable Depth Texture on the Renderer Data you use.
+An avatar cannot force depth on the ordinary VRChat player screen.
+So lay a floor with [Rim](/guides/rim) and [Outline](/guides/outline).
 
-So `Force On` means "enable even where the host cannot report it, **except in mirrors**". Inside a mirror the depth modules stand down whatever you picked.
+### Depth availability {#깊이-가용성}
+
+**Depth Availability** decides how the presence of depth is judged.
+
+- **Auto** is the default. The shader finds it on its own, so leave it here.
+- **Force On** lets the author vouch for hosts the automatic check cannot reach.
+- **Force Off** blocks depth effects completely.
+- **Diagnostic** paints the decision state in color. It is for bug reports.
+
+:::caution[Force On does not enable mirrors]
+A mirror camera does not draw its own depth, yet someone else's depth buffer is attached.
+Reading it as is makes the character use someone else's silhouette as its own shadow.
 :::
 
-### Diagnostic — reporting only {#diagnostic}
+### Diagnostic: for reports only {#diagnostic}
 
-When depth effects appear to spread across the entire avatar, the shader paints a solid color showing **which depth texture it's actually reading**. The look changes entirely, so don't use it for normal work.
+It paints which depth the shader was looking at in solid colors. The whole look changes.
+Black is no depth, red is not this screen's buffer, and yellow is normal.
 
-| Color | Meaning |
-|---|---|
-| Black | No depth texture at all |
-| Red | Texture exists but this screen's buffer differs (size mismatch or mirror) |
-| Yellow | Exists and size matches |
-| Blue channel mixed in | Host reporting depth availability directly |
+![Diagnostic colors compared on a screen without depth and a screen with depth](/img/placeholder.png)
+<!-- CAPTURE: guides/depth-effects-06-availability-diagnostic.png | 깊이 가용성을 Diagnostic으로 둔 같은 캐릭터, 깊이 없는 카메라에서 검정(전) / 깊이 켠 카메라에서 노랑(후) 2컷 | 1200x700 -->
 
-Rendering itself does not change. Depth detection running under the diagnostic color behaves identically to `Auto`.
+## Try it in 30 seconds
 
-:::note[Re-upload needed to verify on VRChat]
-Shaders are bundled in the avatar asset bundle, so already-uploaded avatars continue using the old shader. → [VRChat](/platforms/vrchat)
+1. Select a converted face material.
+2. Turn on **Depth Effects**.
+3. Check that **Master Width** is 1.
+4. Turn on **Depth Shadow**.
+
+You succeeded when a bang shadow appears on the forehead.
+If nothing changes, go to [Troubleshooting](/troubleshooting#depth).
+
+## The depth effects master {#깊이--공통-값}
+
+The switch that turns all five modules on and off, plus their shared values, live here.
+
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Depth Effects** | The master switch of all five modules | On | Off turns all five modules off |
+| **Master Width** | The shared multiplier of Depth Rim Light and Depth Shadow | Leave at the default (1) | At 0, raising each module's width shows nothing |
+| **Master Bias** | The smallest depth difference accepted as a front-back boundary | Leave at the default (0.02) | Lowering it attaches lines to shallow curvature and looks messy |
+| **Master Softness** | The transition width of the depth boundary decision | Leave at the default (0.08) | Lowering it gives a hard ink line, and raising it gives a bled boundary |
+| **Width Mode** | What the thickness is measured against | Leave at the default (Distance Stable) | Screen Pixels thickens the line as you move away |
+
+## Depth Rim Light {#깊이-림-2d-림}
+
+It draws a light line of even thickness outside the silhouette.
+
+1. Check that **Depth Effects** is on.
+2. Turn on **Depth Rim Light**.
+3. Set **Rim Intensity** to 1.
+4. Set **Rim Width Multiplier** to 2.
+
+You succeeded when an even line of light follows the silhouette.
+
+![A silhouette with Depth Rim Light off next to one with it on](/img/placeholder.png)
+<!-- CAPTURE: guides/depth-effects-02-depth-rim-before-after.png | 어두운 배경의 캐릭터 상반신, 뎁스 림라이트 끔(전) / 켬(후) 2컷 | 1200x700 -->
+
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Rim Intensity** | The brightness multiplier of the line | Leave at the default (1) | At 0, changing color and width shows nothing |
+| **Rim Width Multiplier** | The dedicated multiplier applied to Master Width | Leave at the default (2) | If Master Width is 0, raising this is useless |
+| **360 Rim** | Whether it wraps the whole silhouette | 1 | At 0 it appears only on the light side, and at 1 it wraps everything |
+| **Scene Light Influence** | How closely it follows the scene brightness | 0.3 | At 0 the line stays even in dark worlds |
+| **Rim Sample Quality** | How many depth samples are read per pixel | Leave at the default (Standard) | Low catches eyes, nose, and mouth as rim too |
+
+## Depth Shadow {#2d-그림자}
+
+It pushes the silhouette of the object in front away from the light to draw a shadow band.
+
+1. Turn on **Depth Shadow** on the face material.
+2. Set **Shadow Width** to 3.
+3. Set **Shadow Intensity** to 1.
+4. Set **Depth Shadow Bias** to 0.03.
+
+You succeeded when a bang-shaped shadow appears on the forehead.
+
+![A forehead with Depth Shadow off next to one with it on](/img/placeholder.png)
+<!-- CAPTURE: guides/depth-effects-04-depth-shadow-before-after.png | 앞머리가 있는 얼굴 정면 클로즈업, 뎁스 그림자 끔(전) / 켬(후) 2컷 | 1200x700 -->
+
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Shadow Width** | The thickness of the pushed band | Leave at the default (3) | Raising it stretches below the forehead, and lowering it sticks to the mesh |
+| **Shadow Intensity** | The final amount of shadow applied | Leave at the default (1) | At 0, raising the width shows nothing |
+| **Depth Shadow Bias** | The smallest gap between the front object and the receiving surface | Leave at the default (0.03) | 0.03 is 3 mm. Lowering it sticks the shadow to the face |
+| **Depth Stretch** | How much the shadow widens with the floating distance | Leave at the default (0.75) | At 0, width alone decides the shadow |
+| **Depth Falloff** | How much further parts fade out | Leave at the default (0.5) | At 1 the furthest shadow disappears completely |
+| **Softness** | The width over which the boundary becomes full shadow | Leave at the default (0.05) | Lowering it snaps, and raising it fades shallow contacts |
+| **Depth Curve** | The curve shared by width, blur, and falloff | Leave at the default (0) | At 0 it is proportional to depth, and raising it changes only the far side |
+
+### Sticking and falloff {#눌어붙음과-감쇠}
+
+If the shadow sticks to its own face, raise **Depth Shadow Bias**.
+If it still remains, raise **Receiver Depth Pushback** on the face material. It sits right below the bias.
+Use it only on receiving materials such as face and body, and leave hair and clothing at 0.
+
+:::caution[A Receiver Depth Pushback above 0 blocks projected shadows]
+The projected shadows that material receives are turned off automatically.
+Turning Depth Shadow off or returning the value to 0 restores the original settings.
 :::
 
----
+## SSSSS (Experimental) {#깊이-투과광}
 
-## Diagnosis Checklist
+It makes thin parts look as though they hold light. It is still experimental.
 
-Check items from top to bottom.
+1. Turn on **Enable Translucency** on the hair material.
+2. Set **Translucency Intensity** to 1.
+3. Set **Measure Width** to 6.
+4. Move the light behind the character.
 
-1. **Overall Effects** — Is the master off? ([Inspector Usage](/guides/inspector#전체-효과--가장-위의-마스터-스위치))
-2. **Depth Effects** section master toggle
-3. **Surface Mode** — If transparent (does not record depth), all are disabled. Switch to `Transparent · Outline Depth Ready`
-4. **Master Width** — If 0, no amount of raising individual module width will produce anything
-5. **Each module's intensity** — If `Rim Intensity` is 0, rim calculation is skipped
-6. **Camera depth** — Platform-specific items above
-7. If issues persist, run `Tools > Studio Raming > MingToon > Validate Project`
+You succeeded when the hair tips glow red.
 
----
+![Hair tips in backlight with translucency off next to the same tips with it on](/img/placeholder.png)
+<!-- CAPTURE: guides/depth-effects-05-sssss-before-after.png | 광원을 캐릭터 뒤에 둔 머리끝 클로즈업, 투과광 사용 끔(전) / 켬(후) 2컷 | 1200x700 -->
 
-## Depth Effects Master {#깊이--공통-값}
-
-These values are shared by `2D Rim Light` and `2D Shadow`. Turning off the master disables the entire depth group, including SSAO, 2D Translucency, and Inner Outline. Set this section first, then move to the individual modules.
-
-| Parameter | Function |
-|---|---|
-| `Master Width` | Multiplier applied to screen offset for both modules. **If 0, nothing appears** |
-| `Width Mode` | `Screen Pixels` uses screen pixels as reference · `Distance Stable` maintains constant thickness despite distance/FOV changes |
-| `Distance Scaling` | Reference distance for `Distance Stable`. Ignored if `Screen Pixels` |
-| `Master Bias` | Only depth differences exceeding this value count as edges. **Lower** creates dirty lines on shallow curves, **higher** makes thin areas lose their lines |
-| `Master Softness` | Low produces sharp ink lines, high creates soft, blurred edges |
-
-:::tip[Use Distance Stable for avatars]
-In environments where camera distance constantly changes, `Distance Stable` keeps thickness consistent.
-:::
-
-### Runtime Switching {#런타임-전환}
-
-- `Animate Depth Effects with FX Animator` — prevents bake-time constant folding so an animator such as VRChat FX can switch the Depth Effects Master.
-- `Switch Shadow Projection from FX Menu` — adds `Shadow Projection` to MingToon Manager's VRC Quality menu. Turning it off skips feather samples, cast compositing, and related translucency work.
-
-Both options are off by default. Enable them only on materials that will actually switch at runtime. Opting in keeps that code from being removed during baking, so there is a small retained cost even in the High/On state.
-
----
-
-## 2D Rim Light {#깊이-림-2d-림}
-
-Final thickness = `Master Width` × `Rim Width Multiplier`.
-
-- `Rim Intensity` — **If 0, calculation is skipped.** Changing color and width has no effect.
-- `Mix Base Color` — 0 = solid color rim, 1 = multiply base map color for per-area variation.
-- `Color Purity` — range 0–10, default 1; saturation after the Base Color and rim color are composited. 0 is grayscale, 1 is the existing color, and values above 1 oversaturate the 2D rim.
-- `360 Rim` — 0 = light direction only, 1 = wraps entire silhouette.
-- `2D Rim Direction` — Direction the rim shifts.
-- `Rim Sample Quality` — Low 1 tap / Standard 2 taps / High 4 taps. Width stays the same; only internal-line suppression and cost change. At 1 tap, eyes, nose, or clothing boundaries may leak into the rim or shake by one texel as the camera moves. Four taps filters narrow internal lines more reliably.
-
-:::tip[For environments without lighting or with frequently changing direction]
-Raising `360 Rim` provides stability.
-:::
-
-`Silhouette Start` and `Silhouette Transition` are **not reflected at all if Outer Silhouette Limit in the same group is 0**.
-
-`Quick Setup`'s `2D Rim Width` and `2D Rim Intensity` map to this section's values.
-
----
-
-## 2D Shadow {#2d-그림자}
-
-Creates shadow by pushing character silhouette in screen space. Mainly used to draw shadows cast by bangs on the forehead without real-time shadows.
-
-### Basics
-
-| Parameter | Function |
-|---|---|
-| `Shadow Brightness` | Lower = darker. If [integrated with cast shadow](/guides/light-and-shadow#2d-그림자와-색이-따로-놀-때), this value is used as the brightness of the integrated layer |
-| `Additional Depth Bias` | Module-specific value added to Master Bias |
-
-### Direction
-
-`Silhouette Shift Direction` — Determines which way to push the silhouette.
-
-| Value | Result |
-|---|---|
-| `Along Light Projection` | Push direction matches light source. Physically natural |
-| `Opposite Light Projection` | Opposite direction. For deliberate reversal |
-
-Enable `2D Shadow Light Follow` to track scene lights, or disable to keep fixed.
-
-:::tip[For worlds with unpredictable lighting]
-Disable direction tracking and keep it fixed for stability. Prevents bangs shadows from ending up on the wrong side from world to world.
-:::
-
-Fine-tune shadow position with `2D Shadow Vertical Offset` and `2D Shadow Depth Offset`.
-
-### Face-Specific Assist
-
-Face has separate parameters.
-
-| Parameter | Function |
-|---|---|
-| `Face 2D Shadow Assist` | Enhance 2D shadow in the face region |
-| `Face Fixed Direction` | Lock the direction the face uses as reference |
-| `Face Self-Surface Suppression` | Suppress shadow clinging to the face's own surface |
-
-→ [Character Expression](/guides/character#4단계-앞머리-그림자)
-
-### Sticking & Falloff {#눌어붙음과-감쇠}
-
-| Parameter | Function |
-|---|---|
-| `Body Surface Guard` | Prevents shadow from clinging to the body surface itself |
-| `2D Shadow Fade Distance` | Distance where the effect disappears completely. The default is 12 m and it starts fading at 9 m. Set 0 to disable both the range limit and distance-based cost reduction |
-| `Distance Fade Range` (in `Distance Fade & Border` group) | Reduces effect with distance |
-
-:::caution[If shadow clings to the body like splotches]
-Raise `Body Surface Guard` first. If still present, raise `Master Bias` or `Additional Depth Bias`.
-:::
-
-Depth tolerance is stabilized using receiver distance and surface slope, and taps that would fall beyond the screen edge are faded. At long range, the sample count also falls through the fade interval, reducing cost in crowd scenes.
-
----
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Translucency Intensity** | The brightness multiplier of the whole translucency | Leave at the default (1) | At 0 the calculation is skipped |
+| **Measure Width** | How far toward the light it looks | Leave at the default (6) | Set it large and even thick parts are judged thin |
+| **Shell Floor** | The lower bound that treats hollow clothing as thin | 0.8 for skirts and capes | At 0 the measured value is used as is |
+| **Front Light Floor** | The translucency ratio left under front light | 0.2 | At 0 skin stops looking like skin |
 
 ## SSAO (Screen Space Occlusion) {#ssao-화면-공간-차폐}
 
-Darkens creases and the places where things meet: under the neck and jaw, armpits, cloth folds, and where feet touch the floor.
+It softly darkens folds and places where surfaces meet.
 
-:::tip[This is occlusion, not shadow]
-It applies to a material with `Form Shadow` off as well. It joins **after** the toon band and the screentone, so it cannot step the shadow boundary or get printed as halftone dots a second time.
-:::
+1. Turn on **SSAO Enabled** on the body material.
+2. Set **SSAO Intensity** to 1.
+3. Set **SSAO Radius** to 0.005.
+4. Set **SSAO Contrast** to 1.
 
-### How it combines with the occlusion map
+You succeeded when the place where clothing meets the body darkens.
 
-It is not multiplied. The two are computed separately and **whichever is darker wins**. Where the map already painted the area dark, SSAO does not add more; SSAO only contributes the occlusion a map cannot know about - the one that comes from the actual pose and from nearby objects.
+![A collar with SSAO off next to the same collar with it on](/img/placeholder.png)
+<!-- CAPTURE: guides/depth-effects-03-ssao-before-after.png | 옷깃과 목이 만나는 부분 클로즈업, SSAO 끔(전) / 켬(후) 2컷 | 1200x700 -->
 
-### The order to set it in
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **SSAO Intensity** | The strength of the effect | Leave at the default (1) | At 0 it is invisible, but the calculation still runs |
+| **SSAO Radius** | The distance over which occlusion is searched | Leave at the default (0.005) | Growing it makes contact shading wider and softer |
+| **SSAO Contrast** | The contrast of the occlusion | Leave at the default (1) | Raising it leaves only deeply carved places |
+| **Quality** | How many depth samples SSAO reads per pixel | Leave at the default (Low) | Low 4 · Standard 8 · High 16 |
+| **SSAO Tint** | The color multiplied only into occluded places | White | White leaves the existing shadow color alone |
 
-| Control | What it does |
-|---|---|
-| `SSAO Radius` | World-space search distance. Range 0.001–0.01 m; default 0.005 m |
-| `SSAO Intensity` | Strength. At 0 the image matches the effect being off while the calculation still runs, so turn `SSAO Enabled` off when you are not using it |
-| `SSAO Power` | Tightens the darkening curve |
-| `SSAO Quality` | Depth samples per pixel (4/8/12/16). A uniform loop rather than four keyword variants, so it adds no variants |
+## Inner Depth Edge {#내부-2d-경계}
 
-SSAO uses a view-space tangent plane to reduce self-occlusion on sloped surfaces and replaces the binary tap gate with a smooth ramp. A small internal floor also prevents depth-quantization marks even when bias is 0.
+It lives in the **Inner Outline** section. It draws lines on depth steps inside the silhouette.
 
-For character-scale subjects, start with Standard quality and the default 0.005 m radius, keeping only the contact areas you need instead of creating broad stains.
+1. Check that **Outline Master** is on.
+2. Turn on **Enable Inner Depth Edge**.
+3. Set **Width** to 0.3.
+4. Set **Inner Edge Color** dark.
 
-### Holding still across distance and FOV
+You succeeded when lines appear on collars and under the chin.
 
-With `SSAO Distance Compensation` at 1, its default, the same crease gets the same thickness of shading whether the camera comes close or pulls back, and through a change of field of view. FOV cancels out on its own with no separate control. Lower it to 0 and the radius shortens inside one metre, the older behaviour.
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Width** | The thickness of the inner boundary line | Leave at the default (0.3) | Keeping it thinner than the normal outline is usual |
+| **Depth Bias** | The smallest depth difference accepted as a boundary | Leave at the default (0.02) | Lowering it attaches lines to gentle curvature and looks messy |
+| **Inner Edge Color** | The color of the inner boundary line | A color darker than the base | The closer to black, the stronger the comic style |
+| **Outline Master** | The gate shared with the normal outline | On | While off, neither tab is drawn |
 
-`SSAO Far Distance` is where the effect is gone completely. The fade starts at **75% of that value**, so 12 means it begins thinning at 9m and is gone at 12m. 0 disables it.
+## Common problems
 
-### Light direction, mask, colour
+### No depth effect is visible at all
 
-- `SSAO Light Direction Influence` — leans the search disc toward the key light. At 0 the occlusion is uniform and light-independent; raising it gathers the occlusion on the side the light does not reach. The lean falls off on its own as the light approaches the camera axis.
-- `SSAO Mask Strength` — borrows the `2D Shadow Mask (Shared)` rather than declaring a texture of its own. Channel, invert, and HSVG come from the 2D shadow mask, and **editing it from either screen edits the same one texture.**
-- `SSAO Tint` · `SSAO Brightness` · `SSAO Saturation` — apply to the full SSAO coverage. They remain visible inside form shadows and backlighting; the default white color and brightness 1 preserve the result.
+1. Check that the **All Effects** master and **Depth Effects** are on.
+2. Check that **Master Width** is not 0.
+3. Check that each module's intensity is not 0.
+4. Review [Secure depth first](#플랫폼별-깊이-확보) above.
 
-:::caution[No depth, no effect - silently]
-Each effect samples the camera depth texture as needed. There is no post-process pass or second camera, but some environments may need a depth-enabling assist light; check MingToon Manager and the platform guidance above. [Getting depth per platform](#플랫폼별-깊이-확보) still applies; without depth, occlusion is fixed at 1 (no occlusion). VRChat client behaviour is still unverified.
+### Setting the surface mode to Transparent turns everything off
 
-The compatibility-retest candidate uses an `Important` (ForcePixel) assist light. Per-light shadow-map and pixel-light-slot costs may be added to the camera depth pass. The affected worlds require testing in the actual VRChat client; restoring the setting does not confirm a fix.
-:::
+Transparent (3000) does not write depth.
+Change the surface mode to **Semi-Transparent (2499)** in [Basic Settings](/guides/basics).
+Semi-Transparent (2499) blends alpha while still writing depth.
 
-## 2D Translucency {#깊이-투과광}
+### The shadow does not follow the body inside a mirror
 
-Makes **thin areas like hair tips or clothing edges** look as if they're glowing with light.
+In mirrors the depth modules step down no matter which value you pick.
 
-:::tip[This module is not tied to Master Width]
-It reads depth **twice** toward the light source to directly measure how much light passes through the character. So it works **independently** of 2D Rim Light and 2D Shadow. It appears even if `Master Width` is 0.
-:::
+## More detail
 
-### 1. How to Measure Thinness {#1-얇음을-어떻게-잴지}
-
-| Parameter | Function |
-|---|---|
-| `Translucency Strength` | Overall brightness multiplier. **If 0, calculation is skipped** |
-| `Measure Width` | How far to look in the light direction. Large = thick areas also glow, small = only very thin edges glow |
-| `Depth Range` | If there's this much (m) empty space behind, consider it completely open |
-| `Shell Floor` | See below |
-
-:::caution[If clothing behind hair brightens as if it's the background]
-Raise `Depth Range`. A nearby surface is being read as "open space".
-:::
-
-:::danger[Hollow clothing must have Shell Floor set]
-Skirts and cloaks have **wide screen width but very thin actual fabric**.
-
-- Hollow shells like skirts/cloaks → **0.8 or so**. Always treat as thin regardless of measurement
-- Solid areas like skin/hands → **0**. Trust measurement
-:::
-
-### 2. How Light Spreads
-
-| Parameter | Function |
-|---|---|
-| `Density` | Higher = light stays in very thin areas (dense material feel), lower = spreads widely |
-| `Exposure Softness` | Changes response curve only. **Does not move edge position** |
-| `Channel Spread` | Recreates how red scatters deeper than blue. Different per-channel falloff creates the unique blur of skin and hair that **cannot be made with tint alone**. 0 = all channels identical |
-
-### 3. At What Angle It Glows
-
-| Parameter | Function |
-|---|---|
-| `Backlight Falloff` | Higher = narrow and strong only at precise backlighting |
-| `Front Light Floor` | Remains bright in front light |
-| `Normal Bend` | Bends light direction toward surface normal, making light leak along curves even without precise backlighting |
-| `View Bend` | Bends light direction toward camera |
-| `Scene Light Influence` | 0 = only specified color, 1 = receive scene lighting color as-is |
-
-:::danger[Don't set `Front Light Floor` to 0]
-Translucency strengthens in backlighting but **does not disappear in front light**. Setting to 0 makes skin not look like skin.
-:::
-
-:::tip[If hair card planes flicker]
-Planes can't trust normals, so `Normal Bend` alone causes light to flicker on and off. **`View Bend` prevents that.**
-:::
-
-### 4. Two Layers Make Color
-
-Edge and center layers exist separately. **Setting one to 0 makes the remaining single layer identical to single-layer mode.**
-
-| | Edge Layer | Center Layer |
-|---|---|---|
-| Brightens | Outside silhouette | Inside silhouette |
-| Intensity | `Edge Intensity` | `Center Intensity` |
-| Falloff | `Edge Falloff` | `Center Falloff` |
-| Color | `Edge HSVG` → `Edge Tint` | `Center HSVG` → `Center Tint` |
-
-:::tip[Color correction derives from base color]
-Not absolute color but **created from base map color**. So blonde hair glows yellow, dark hair glows dim — **the entire character matches one setting.**
-
-The default tips the center layer red-warm with higher saturation, creating the feel of bright white edges and warm-glowing center (typical hair).
-
-Neutral value `(0,1,1,1)` skips correction.
-:::
-
-Each layer also has its own `Color Purity`. It is applied after HSVG color correction, tint, and thickness-based channel saturation have been composited: 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate only that layer.
-
----
-
-## Inner Outline {#내부-2d-경계}
-
-Draws **inside-surface** edge lines by screen depth difference. Can be used even on meshes where normal outlines break due to missing geometry.
-
-:::danger[Does not work if Surface Mode is Transparent]
-If translucency is needed, use `Transparent · Outline Depth Ready`.
-:::
-
-Adjustment parameters:
-
-- `Depth Bias` — Only depth differences larger than this count as edges. **Lower** creates noise on gentle curves, **higher** makes thin areas lose their lines.
-- `Softness` — 0 = hard line, 1 = entire line width fades completely from edge to inside end.
-- `Camera Distance / FOV Stabilization` — Line thickness stays consistent despite camera movement.
-
-:::caution[If Inner 2D Edge disappears completely]
-Check the `Apply to Inner Edge Outline` toggle. This toggle is in the Normal Outline group but **continues to affect Inner 2D Edge even if Normal Outline is off**. If enabled on meshes with black vertex color, Inner 2D Edge disappears entirely.
-:::
-
----
-
-## Transparent Surfaces and Depth
-
-Surface Mode splits two ways, differing in **whether depth is recorded**.
-
-- **Transparent · Outline Depth Ready** — **Inside** the depth texture range. 2D Shadow, 2D Rim Light, and Inner 2D Edge all work. **If translucency is needed, review this option first.**
-- **Transparent** — **Outside** that range. Depth-based modules stay off. Enabling them compares against what's behind the character.
-
-Opaque and cutout are unaffected and always have complete depth.
-
-## Next
-
-[Detail Maps](/guides/detail-maps)
+- Every item and its range: [Depth Effects Reference](/reference/depth-effects)
+- Choosing a face shadow mode: [Character Rendering](/guides/character#4단계-앞머리-그림자)
+- When you are worried about performance: [Troubleshooting](/troubleshooting#performance)

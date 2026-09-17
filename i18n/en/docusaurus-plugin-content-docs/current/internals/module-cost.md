@@ -4,47 +4,56 @@ title: Modules and Performance Cost
 sidebar_position: 2
 ---
 
-# Modules and Performance Cost
+# What the cost readout measures
 
-The material cost display estimates **relative cost after upload baking**. Expand its details to distinguish the predicted upload cost from the shader you are currently editing.
+> This page is an explanation. To actually make things lighter, see [Automatic Optimization On Build](/workflow/build-optimization).
+
+## In one line
+
+The cost readout in the inspector is an **estimate of the relative cost of the baked material after upload**.
+It is measured against a new MingToon material baked the same way, set at 1.0x.
+
+## What this number can and cannot do
+
+| What it can do | What it cannot do |
+|---|---|
+| Compare which material is heavier within the same avatar | Convert into how many times longer a frame takes |
+| Check whether the estimated cost dropped after turning a module off | Stand in for GPU milliseconds or SetPass counts |
+| Compare estimated texture memory between materials | Judge the whole avatar's cost from the highest value |
+
+The model is tuned to one specific Built-in benchmark environment.
+Screen coverage, overdraw, light count, GPU and render pipeline all change the real cost.
 
 ## Reading the cost panel {#부하-예상-패널-읽기}
 
-| Display | How to read it |
+The cost panel shows five lines.
+
+| Line | How to read it |
 |---|---|
-| Upload cost | 1.0x is a new MingToon material baked in the same way |
-| While editing | Estimated cost of the editable shader; it can differ from upload cost |
-| Selection average / peak | Average and highest material rating, not the total cost of an avatar |
-| Unconditional reads / depth / instructions / draws | Estimated contributors, not GPU profiler measurements |
-| Texture count / MB | Estimated texture memory, a separate axis from rendering speed |
+| Cost after upload | The estimate for the baked state. This is the value that actually ships |
+| Cost while authoring (editor) | The estimate for the current editable shader. It differs from the value above |
+| Selection average / peak | The average and the highest grade across the materials you selected |
+| Unconditional texture reads / depth / instructions / draws | A breakdown for finding the cause of the cost. Not profiler measurements |
+| Texture count / MB | Estimated texture memory. Separate from rendering speed |
 
-:::note[A multiple is not a frame-time ratio]
-The model is fitted to specific BRP benchmark profiles. Screen coverage, overlap, lights, GPU and render pipeline change actual cost. A 2x material estimate does not mean the whole avatar or game takes twice as long to render.
-:::
+![The cost estimate panel showing cost after upload and the expanded breakdown](/img/placeholder.png)
+<!-- CAPTURE: internals/module-cost-01-panel.png | 재질 인스펙터 하단의 부하 예상 패널을 펼친 상태, 다섯 줄이 모두 보이게 | 1000x520 -->
 
-## What the estimate considers
+The model calculates the authoring state and the estimated baked state separately.
+Instruction count, always-executed texture reads, register usage and pass count go into it.
 
-The current model separates authoring and predicted baked states and accounts for instructions, unconditional texture reads, register usage and passes. The old sum of fixed feature weights and score thresholds no longer describes this display.
+For layers it looks at the number actually used and the execution conditions, not the slot count.
+Ten slots does not make it count ten reads per pixel.
+Conversely, a strength of 0 does not make the code disappear. Values that can change at runtime are kept.
 
-Layer count and execution conditions matter together. Having the maximum number of slots does not mean every slot is sampled on every pixel. Likewise, a zero strength does not prove that code can be removed: animation or runtime controls may need it.
+## What that constrains
 
-Scene-wide work needed to obtain camera depth is not fully included in the material multiple. Compare the first enabled depth effect in the actual scene.
-
-## Investigating a heavy material
-
-1. Save a reference view with fixed camera, distance and lighting.
-2. Read the main contributors and disable unused layers or effects one at a time.
-3. Check overdraw when large transparent surfaces overlap. Change to Opaque or Cutout only if the intended look permits it.
-4. Compare additional-light reception in scenes with many lights; this also changes lighting.
-5. Compare depth effects and outlines while preserving the desired silhouette and shadows. Camera depth can be available in VRChat depending on the camera setup.
-6. Measure the actual build under the same conditions. A lower estimated rating alone does not confirm a speed improvement.
-
-## Dynamic HSVG
-
-Color adjustments driven by animation or runtime scripts must remain functional after baking. Check animation analysis and bake exclusions. Constant folding and texture rewriting apply only when their individual safety conditions are met.
+- The scene-wide cost of making camera depth available is not part of the material multiplier. Compare the change in a real scene the first time you turn a depth effect on.
+- Color correction driven by animation or a script has to keep working after the bake, so it does not fold into a constant. That much estimated cost stays.
+- A lower estimated grade alone does not confirm an improvement. Compare real builds at the same camera, distance and lighting.
 
 ## Related pages
 
-- [Automatic build optimization](/workflow/build-optimization)
-- [What baking removes](/internals/bake-internals)
-- [Shader structure and passes](/internals/shader-structure)
+- [Automatic Optimization On Build](/workflow/build-optimization)
+- [What Baking Removes](/internals/bake-internals)
+- [Shader Structure and Passes](/internals/shader-structure)

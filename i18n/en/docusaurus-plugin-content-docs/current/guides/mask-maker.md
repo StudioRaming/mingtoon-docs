@@ -1,96 +1,109 @@
 ---
 id: mask-maker
 title: Mask Maker Integration
-sidebar_position: 14
+sidebar_position: 15
 ---
 
 # Mask Maker Integration
 
-**After reading this guide,** you will understand which buttons Mask Maker unlocks inside MingToon, how to achieve the same goals when it is not installed, and where to get the product.
+> This page is for people who got here by pressing the `MM` button or a paint button.
+> We tell you how to do it without the tool first.
 
-## The Button You Just Pressed Requires a Separate Product
+## Turn it on in 30 seconds
 
-Mask Maker is an Editor tool sold separately. It is not bundled with the MingToon open beta package.
+If you already installed Mask Maker, follow these steps to make one.
 
-MingToon itself installs, compiles, and runs without Mask Maker. The side that **reads** masks is the MingToon shader; Mask Maker only handles the side that **creates** those masks.
+1. Pick exactly one converted material.
+2. Press the `MM` button to the right of the **Mask Image** slot.
+3. Paint the part you want it applied to in the Scene view.
+4. Save, and the mask texture goes into that slot.
 
-**Purchase:** <https://raming.booth.pm/items/8606444> (BOOTH · `[Unity] MaskMaker`)
+If the texture you just painted lands in the slot, it worked.
 
-:::note[MingToon does not reference add-ons as assemblies]
-MingToon finds Mask Maker, Face SDF Studio, and Ming Light Controller only through reflection, not through assembly references. That is why MingToon installs, compiles, and runs normally even when all three are absent.
+If the `MM` button does not show, see [the MM button on mask slots](#mm-버튼).
 
-Install one and the corresponding button comes alive on the spot. If it is not installed, the button still appears, and pressing it brings you to this document.
-:::
+## Doing it without Mask Maker
 
-## MingToon Features That Mask Maker Unlocks
+Masks and vertex colors can all be supplied through other paths.
 
-| Location | Button | What it does |
-|---|---|---|
-| Inspector · Mask texture slot | `MM` | Paints that slot's mask directly in the Scene view |
-| Inspector · `Normal Outline` | `Paint Outline Width in Scene View` | Paints the vertex color that controls line thickness |
-| Inspector · `Face/Hair Shading` | `Start Face Area Paint` | Paints the range treated as the face into vertex color |
-
-### The `MM` Button on Mask Slots {#mm-버튼}
-
-It is attached only next to mask-type texture slots. For example, slots such as `Mask Image`, `PBR Packed Mask`, `Face Area Mask`, and `SDF Apply Mask`. If `MM` is visible next to a slot, that slot is supported; if it is not visible, that slot is not a target.
-
-:::tip[Use it with only one material selected]
-`MM` edits one slot of one material in the Scene view. It cannot be pressed while multiple materials are selected together.
-:::
-
-### `Normal Outline` — Painting Outline Width
-
-Start from the `Normal Outline` tab. Painted values go into the **red (R) or alpha (A)** channel of vertex color, and `Pressure Source` in the same tab decides which channel is read.
-
-If `Pressure Source` is not a vertex channel yet, the Inspector first shows a guidance message and a `Switch to Vertex Color Alpha (VertexAlpha)` button.
-
-### `Face/Hair Shading` — Face Area Paint
-
-Start from the `Face/Hair Shading` tab. Painted values go into the **green (G)** channel of vertex color. This range information is required in order to treat the face area differently from the body. → [Character Expression — Face Shading](/guides/character#페이스-셰이딩)
-
-## How to Do It Without Mask Maker
-
-Both features have a separate texture mask path. Mask Maker is only a tool that lets you create that data inside Unity; it is not the only input path.
-
-| What you want to do | Without Mask Maker |
+| What you want | Without Mask Maker |
 |---|---|
-| Mask texture | Create it in an external tool and assign it directly to the matching Inspector slot |
-| Outline width control | Set `Pressure Source` to `WidthMask` and use a width mask texture |
-| Face area assignment | Use a `Face Area Mask` texture |
-| Vertex color already painted | It is read as-is. Values painted in an external DCC and imported are also valid |
+| A mask texture | Make it in an external tool and put it straight into the slot |
+| Outline width control | Set **Pressure Source** to `WidthMask` and use a **Width Mask** texture |
+| Marking the face area | Use a **Face Area Mask** texture |
+| Vertex colors already painted | They are read as-is. Values painted in an external DCC work too |
 
-### Vertex Color Channel Summary
+### Vertex color channels at a glance
 
 | Purpose | Channel |
 |---|---|
 | Outline width (pressure) | Red (R) or alpha (A) |
 | Face area | Green (G) |
 
-## Other Add-ons Locked Alongside It
+**Pressure Source** decides which channel is read.
 
-The full list of the three add-ons and the procedure for confirming installation are in [Separately Sold Add-ons](/guides/add-ons).
+## What Mask Maker unlocks
 
-### Face SDF Studio
+Mask Maker is an editor tool sold separately. It is not bundled with the MingToon open beta package.
 
-A separately sold tool that creates face shadow maps driven by light direction. Face Shading works without it, and an SDF texture you already have can be assigned directly to the slot. → [Face SDF and Face SDF Studio](/guides/face-sdf)
+| Location | Button | What it does |
+|---|---|---|
+| Mask texture slot | `MM` | Paints that slot's mask directly in the Scene view |
+| `Normal Outline` | **Paint Outline Width in Scene View** | Paints the vertex colors that control line thickness |
+| `Face/Hair Shading` | **Start Painting Face Area** | Paints the range treated as the face into vertex colors |
 
-### Ming Light Controller {#ming-light-controller}
+![The inspector with an MM button attached to the right of a mask texture slot](/img/placeholder.png)
+<!-- CAPTURE: guides/mask-maker-01-mm-button.png | 인스펙터의 마스크 텍스처 슬롯 한 개를 확대한 화면. 슬롯 오른쪽 MM 버튼이 보이는 상태 | 1200x700 -->
 
-MLC is a separate add-on that turns MingToon controls into VRChat expression menus. Check distribution instructions on the [official BOOTH product page](https://raming.booth.pm/items/8810346) and install it separately from MingToon. Mask Maker is not required to generate MLC menus.
+### The MM button on mask slots {#mm-버튼}
 
-Installing MLC unlocks the linked Master Adjust and Virtual Light editing controls and the Manager entry point for MLC settings. Configure MLC on the avatar root, choose menu items, and check the current Inspector budget and validation results. Smooth/Compact/Auto costs depend on enabled features and Saved/Synced settings, so do not rely on fixed numbers. Auto does not guarantee unknown external costs.
+`MM` only attaches to mask-type texture slots.
 
-Reset, Final Output, Hue/Saturation, Photo Looks, Virtual Light, Master Adjust, and Performance are a starting configuration; the final menu depends on your settings. Edit Mode stores configuration; inspect generated results during Play Mode/upload processing. Follow [Using MLC](/guides/ming-light-controller) for dependencies and steps.
+**Mask Image**, **PBR Packed Mask**, **Face Area Mask** and **SDF Applicability Mask** are the main ones.
 
-#### What Works Without MLC
+If you see `MM` next to a slot, it is supported. If you do not, that slot is not a target.
 
-All look features of the shader work as they are. Even when values for `Master Adjust` and `Virtual Light` remain on the material, only the editing UI is hidden in the Inspector; the shader behavior itself does not disappear.
+:::tip[Use it with only one material selected]
+`MM` edits one slot on one material. It will not press with several materials selected.
+:::
 
-The Depth Light build policy for VRChat and WARUDO is still owned by MingToon Manager, not by MLC. Removing MLC does not change MingToon's VRChat or WARUDO build behavior.
+### Painting outline width
 
-## Related Documents
+Start from the `Normal Outline` tab. The painted values go into vertex color red (R) or alpha (A).
 
-- [Separately Sold Add-ons](/guides/add-ons)
-- [Face SDF and Face SDF Studio](/guides/face-sdf)
+If **Pressure Source** is not yet a vertex channel, the inspector tells you first. It shows a **Switch to vertex color alpha (VertexAlpha)** button.
+
+→ [Outline](/guides/outline#씬-뷰에서-직접-칠하기)
+
+### Painting the face area
+
+Start from the `Face/Hair Shading` tab. The painted values go into vertex color green (G).
+
+You need this information to treat the face range differently from the body.
+→ [Face shading](/guides/character#페이스-셰이딩)
+
+:::caution[Vertex painting edits the mesh asset directly]
+Other renderers sharing the same mesh change with it.
+To paint one separately, duplicate the mesh first.
+:::
+
+## Purchase
+
+<https://raming.booth.pm/items/8606444> (BOOTH · `[Unity] MaskMaker`)
+
+## Other add-ons {#ming-light-controller}
+
+The boundaries of the three add-ons and how to confirm installation are collected in one place.
+→ [Paid Add-ons and Integration](/guides/add-ons)
+
+- Creating face SDF maps: [Face SDF and Face SDF Studio](/guides/face-sdf)
+- Generating in-game expression menus: [Using Ming Light Controller](/guides/ming-light-controller)
+
+Mask Maker is not required for Ming Light Controller's menu generation. The two are independent.
+
+## Related pages
+
+- [Paid Add-ons and Integration](/guides/add-ons)
 - [Outline](/guides/outline)
-- [Character Expression — Face Shading](/guides/character#페이스-셰이딩)
+- [Character Rendering](/guides/character#페이스-셰이딩)
+- [Shared Texture Slot UI](/guides/texture-modules#마스크-세부-설정)

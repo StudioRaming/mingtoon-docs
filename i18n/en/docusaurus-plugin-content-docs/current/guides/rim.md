@@ -6,183 +6,135 @@ sidebar_position: 5
 
 # Rim
 
-**After reading this guide,** you'll understand five methods to preserve silhouette and learn which to enable first.
+> This page is for anyone turning on **Enable Fresnel Rim** for the first time.
+> It brightens or darkens the silhouette edge to separate it from the background. It takes about 5 minutes.
 
-This guide covers the **Rim** group in the Inspector: `Rim Shade` · `Rim Light` · `Backlight` · `Shadow Interior Reflection` · `Front Light`. For a complete item list, see [Rim Reference](/reference/rim).
+## What is this
 
-## Choose What to Enable First
+There are five ways to lay a band on the silhouette edge.
+None of the five read screen depth, so they show up anywhere.
 
-| Section | Where It Appears | Use Case |
+| Inspector section | Where it appears | What it is for |
 |---|---|---|
-| **Rim Shade** | Inside silhouette, **darkened** | Volume. Shadow applied to edges in illustration |
-| **Rim Light** | Inside silhouette, **brightened** | Backlight feel, separating character from background |
-| **Backlight** | Backlit band created by key light behind surface | When preserving key light direction |
-| **Front Light** | Face toward camera | Front emphasis |
-| **Shadow Interior Reflection** | Inside shadow only | Keep shadow from becoming flat black |
+| **Rim Shade** | Inside the silhouette, darker | Sense of volume |
+| **Rim Light** | Inside the silhouette, brighter | Backlight feel, background separation |
+| **Backlight** | The backlight band when the key light is behind | Bringing out the key light direction |
+| **Front Light** | Faces turned toward the camera | Emphasizing the front |
+| **Shadow Interior Reflection** | Inside shadows only | Keeping shadows from dying |
 
-:::caution[Combining them gets excessive quickly]
-Enable one at a time and check as you adjust. Especially if you raise Rim Light and Backlight together, the silhouette will blow out to white.
+![A character with every rim off next to one with only Rim Light on](/img/placeholder.png)
+<!-- CAPTURE: guides/rim-01-off-vs-rim-light.png | 어두운 배경의 같은 캐릭터, 림 전부 끔(전) / 림 라이트만 켬(후) 2컷 | 1200x700 -->
+
+## When to use it
+
+- When the character sinks into the background in a dark world.
+- When you cannot control the lighting and want a floor under the silhouette.
+- When shadows die into a flat black block.
+
+## Try it in 30 seconds
+
+1. Select a converted body material.
+2. Check that **Enable Fresnel Rim** is on. The default is on.
+3. Raise **Fresnel Rim Intensity** to 3. The default is 1.
+4. Lower **Width** to 0.3. The default is 0.5.
+
+You succeeded when a thin band of light appears along the silhouette edge.
+If nothing changes, go to [Troubleshooting](/troubleshooting#shadow).
+
+## How to turn it on
+
+1. Turn on one at a time. Stacking them blows the silhouette out to white.
+2. Start by raising **Fresnel Rim Intensity**. At 0, changing color and width shows nothing.
+3. Set the point where the band starts with **Width**. The lower it is, the thinner it hugs the edge.
+4. Set the boundary with **Softness**. Lowering it makes the hard band of a cel look.
+5. If brightness jumps between worlds, lower **Scene Light Influence**.
+
+:::tip[Subtracting darkness is safer than adding brightness]
+**Rim Shade** is more stable in worlds where lighting is unpredictable.
+There is no risk of blowing out to white.
 :::
 
-All five of these **do not read camera depth**. You can use them to preserve silhouette in VRChat's standard view where depth is unavailable, but scene lighting, light direction, and host shader conditions still affect the result. The depth-reading `2D Rim Light` is covered in [Depth-Based Effects](/guides/depth-effects).
+### If you dislike the rim following the camera {#림이-카메라를-따라다니는-게-싫다면}
 
-### Color Purity by Rim Type {#종류별-색-순도}
+**View Alignment** decides whether the view or the light sets the rim position.
+At 1, the rim slides over the surface as you move the camera.
+At 0, it follows only the light direction, so it stays put as you turn the camera.
 
-Every rim that adds color has its own `Color Purity` control. Backlight, Front Light, Fresnel Rim, and Shadow Interior Reflection are independent, as are [2D Rim and the two Translucency layers](/guides/depth-effects). The range is 0–10 with a default of 1. 0 is grayscale, 1 is the existing composite color, and values above 1 oversaturate only that layer.
+It is easy to confuse with **Light-Side Emphasis**, but the two decide different things.
+Light-Side Emphasis decides which side the rim is left on.
+View Alignment decides whether the rim follows the camera.
 
-Purity is applied **after Base Color + the relevant rim color/tint + Master Tint** have been composited. For Translucency, it is applied after HSVG and thickness-based channel saturation are calculated. This lets you directly lower or raise the saturation inherited from the Base Color even when the tint is white. `Rim Shade`, which adds no color, and Glitter, which is a separate particle effect, have no purity control.
-
-### Edge Rim Master {#가장자리-림-마스터}
-
-`Master Adjustment` under Basic Settings contains a dedicated group for four overlapping silhouette layers.
-
-- `Edge Rim Multiplier` — multiplies only the edge layers of 2D Rim Light, Fresnel Rim, Backlight, and 2D Translucency.
-- `Edge Rim Color` and its fine adjustments — apply one shared color to the sum of those four layers.
-- `Edge Rim Maximum Multiplier` — HDR cap after adding all four layers. 0 means no cap.
-
-It does not affect Front Light, Shadow Interior Reflection, or the inner layer of Translucency.
-
-:::note[MLC authoring UI]
-The intensity and tint rows under `Master Adjust` appear only when the MLC authoring UI is available. `Performance Distance (m)` and `Performance Distance Scale` remain core MingToon controls and are always available.
+:::note[It behaves like 1 when there is no directional light]
+Without a light direction to work from, it falls back to view alignment.
+If the scene has no directional light, lowering this value makes no difference.
 :::
 
----
+### Rim on part of the surface only {#림-마스크}
 
-## Rim Light {#림-라이트}
+A mask is a black-and-white image where white marks the area the effect applies to.
+You must turn on **Enable Fresnel Rim Mask** for the mask texture to be read.
+On the **Rim Shade** side, **Enable Rim Shade Mask** plays the same role.
 
-A bright edge light that responds to viewing angle. Order of adjustments:
-
-1. `Intensity` — **If it's 0, changing color and width won't show anything on screen.** Start here.
-2. `Width` — Where the rim starts. 0 means it won't show, close to 1 means the entire surface brightens.
-3. `Fresnel Power` — Higher values concentrate it thinly toward the silhouette edge. Close to 1 is sharpest.
-4. `Softness` — Lower for solid cel-shaded bands, higher for gradients.
-
-Items to match your environment:
-
-| Item | 0 | 1 |
-|---|---|---|
-| `Light Direction Influence` | Rim appears across entire silhouette based on camera | Remains only where the light source is |
-| `Base Color Influence` | Uses the specified rim color as-is | Multiplies by base map color, creating different rim colors per material |
-| `Scene Light Influence` | Always same intensity regardless of scene brightness | Rim darkens as scene lighting darkens |
-
-:::tip[If you can't control lighting]
-Keep `Light Direction Influence` and `Scene Light Influence` low. This keeps the rim consistent no matter which world you enter. If there's no directional light in the scene, `Light Direction Influence` won't make a difference anyway.
+:::caution[Turn the toggle on before adding the mask]
+Both toggles are off by default.
+While off, the texture is not read and the settings below appear disabled.
 :::
 
-### When you do not want the rim following the camera {#림이-카메라를-따라다니는-게-싫다면}
-
-`Fresnel Rim View Strength` chooses **whether the view or the light decides where the rim sits**.
-
-| Value | Result |
-|---|---|
-| 1 (default) | It follows the silhouette the camera sees. Move the camera and the rim slides across the surface |
-| 0 | It follows the light direction only. **Turn the camera and the rim stays put** |
-
-Fresnel is a camera fact by nature, so the rim slides over the form when you turn the viewpoint even with the light standing still. Correct as a lens effect, wrong as light.
-
-It is easy to confuse with `Light Direction Influence` just above, but they settle different things: `Light Direction Influence` decides **which side keeps the rim**, and View Strength decides **whether the rim follows the camera**. They combine.
-
-Where `Distance Compensation` and `Projection / FOV Compensation` in the `Fresnel Rim Camera Stability` group hold the rim's **thickness**, this holds its **position**.
-
-:::note[With no directional light it behaves like 1]
-With no light direction to work from, it falls back to the view.
-:::
-
-<!-- SCREENSHOT: Rim Light intensity comparison -->
-
-### Apply rim to specific areas only {#림-마스크}
-
-Enable `Enable Fresnel Rim Mask` to assign a dedicated mask for this effect. Mask configuration matches [Texture Slot Common UI](/guides/texture-modules#마스크-세부-설정).
-
-:::caution[Enable the toggle before adding the mask]
-`Enable Fresnel Rim Mask` **defaults to off**. When off, even if you add a mask texture, it won't read it, and mask settings appear grayed out. This separation exists so materials without masks don't sample unnecessary texture—the same structure as `Use Mask` in [Shadow Interior Reflection](#그림자-내부-반사).
-:::
-
----
-
-## Rim Shade {#림-셰이드}
-
-Creates volume by adding a **dark band inside the silhouette**.
-
-- `Shadow Contribution Strength` — **If it's 0, calculation is skipped entirely,** so changing width, falloff, or softness won't have any effect.
-- `Rim Shadow Width` — Where the band starts. 0 means it won't appear.
-- `Rim Falloff` — Higher values make it cling thinly to the edge.
-- `Edge Softness` — Lower for ink-drawn line sharpness.
-
-:::tip[Try this before Rim Light]
-Darkening is more stable than brightening in unpredictable lighting environments. There's no risk of blowing out to white.
-:::
-
-`Enable Rim Shade Mask` lets you assign a dedicated mask for this effect alone. Like Rim Light, it **defaults to off**, so enable the toggle first before the mask takes effect. → [Apply rim to specific areas only](#림-마스크)
-
----
-
-## Backlight · Front Light · Glitter {#백라이트--프런트-라이트--글리터}
-
-Each is a lightweight module with only **toggle + color + intensity**, three items total.
-
-| Module | Function |
-|---|---|
-| **Backlight** | Independent backlit band created by key light behind the surface |
-| **Front Light** | Front emphasis light added to the face toward camera |
-| **Glitter** | Voronoi particle sparkle. Distance stabilization, view sensitivity, light angle, size and color randomization ([Detail Maps](/guides/detail-maps) group) |
-
-Backlight depends on the scene's key light direction, so it won't appear in worlds without directional light. If you need a backlit feel in such environments, lower the `Light Direction Influence` on Rim Light instead.
-
----
+The mask items are laid out the same as in [Common texture slot UI](/guides/texture-modules#마스크-세부-설정).
 
 ## Shadow Interior Reflection {#그림자-내부-반사}
 
-A Fresnel reflection band **visible only inside shadows** (Inspector label: `Shadow-Only Effect`). Prevents shadows from becoming flat black shapes. Most effective on dark clothing or high-contrast characters.
+A reflection band visible only inside shadows.
+It keeps shadows from dying into a flat black block.
+The effect is largest on dark clothing and high-contrast characters.
 
-### Reflection Appearance
+![Dark clothing with Shadow Interior Reflection off next to the same clothing with it on](/img/placeholder.png)
+<!-- CAPTURE: guides/rim-02-shadow-interior-reflection.png | 어두운 옷 클로즈업, 그림자 내부 반사 끔(전) / 켬(후) 2컷 | 1200x700 -->
 
-First, create the band itself. Same structure as Rim Light.
+Items that exist only in this module decide how far in counts as inside a shadow.
 
-| Item | Function |
-|---|---|
-| `Reflection Color` | Band color |
-| `Intensity` | **If it's 0, nothing shows.** Start here |
-| `Fresnel Power` | Higher concentrates it thinly toward silhouette edge |
-| `Width` | Where the band starts |
-| `Edge Softness` | Boundary blur |
-| `Normal Map Influence` | How much to follow the normal map |
+- Reflection appears from anywhere darker than **Shadow Reflection Threshold**.
+- **Visibility in Cast Shadow** is how much reflection is left inside a projected shadow.
+- **Visibility in Depth Shadow** is how much reflection is left inside a Depth Shadow.
 
-### Shadow Region
-
-**Defines what counts as "inside shadow."** Items unique to this module.
-
-| Item | Function |
-|---|---|
-| `Shadow Threshold` | Reflection appears below this brightness level |
-| `Shadow Region` | Transition width of that detection |
-| `Visible in Cast Shadow` | Amount of reflection retained inside projected shadows |
-| `Visible in 2D Shadow` | Amount of reflection retained inside 2D Shadow |
-
-:::tip[If reflection bleeds into bright areas]
-Lower `Shadow Threshold`. Conversely, if you want it only in deep shadows, lower it more.
+:::caution[The two values do not apply to WARUDO Built-in additional lights]
+The point and spot additional light path has no key light shadow decision.
+They apply normally to the key light and to the URP single pass.
 :::
 
-:::caution[WARUDO Built-in additional-light exception]
-The ForwardAdd pass for point and spot additional lights does not have the key light's cast-shadow or 2D Shadow classification. Therefore, the two `Visible in Shadow` values above do not apply to the **inner-reflection contribution made by additional lights** in WARUDO Built-in. They do apply to the key light and URP's single pass.
-:::
+## Values you will touch often
 
-### Environment Response
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Fresnel Rim Intensity** | The brightness multiplier of the Fresnel rim | Leave at the default (1) | At 0, changing color and width shows nothing |
+| **Width** | The point where the Fresnel rim starts | 0.3 (default 0.5) | Raising it brightens further into the surface, and 0 removes it |
+| **Softness** | The blur of the Fresnel rim boundary | Leave at the default (0.2) | Lowering it gives a hard band, and raising it gives a gradient |
+| **Scene Light Influence** | How closely it follows the scene brightness | 0.3 | At 0 it stays the same strength in any world |
+| **Color Purity** | The saturation of the composited rim color | Leave at the default (1) | 0 is achromatic, and above 1 that layer alone becomes oversaturated |
+| **Shadow Contribution Intensity** | The strength of the Rim Shade band | 1 | At 0, changing width and softness makes no difference |
+| **Shadow Interior Reflection Intensity** | The brightness of the reflection band inside shadows | 0.5 | At 0 it adds no color even if you set up the shape |
 
-Items that keep the band from looking out of place in uncontrolled lighting.
+## Common problems
 
-| Item | 0 | 1 |
-|---|---|---|
-| `Base Color Influence` | Uses specified reflection color as-is | Multiplies by base map color |
-| `Scene Light Influence` | Ignores scene brightness | Follows lighting |
-| `Light Direction Influence` | Ignores direction | Only where light source is |
-| `Ambient Color Influence` | Ignores ambient color | Reflects ambient color |
-| `Additional Light Influence` | Ignores point/spot lights | Reflects them |
+### The silhouette blows out to white
 
-### Dedicated Mask
+In most cases Rim Light and Backlight were raised together.
+Turn one off and check with the other one alone.
+The sum of the four layers is held down by **Edge Rim Maximum Multiplier** in **Master Adjust**.
 
-Enable `Use Mask` to assign a mask for this effect alone. Mask configuration follows [Texture Slot Common UI](/guides/texture-modules#마스크-세부-설정).
+### Backlight does not appear in some worlds
 
-## Next
+Backlight depends on the key light direction of the scene.
+It does not appear in a world with no directional light.
+In such places, lower **Light-Side Emphasis** on Rim Light instead.
 
-[Depth-Based Effects](/guides/depth-effects)
+### I added a mask and nothing changed
+
+The mask toggle is off.
+Check [Rim on part of the surface only](#림-마스크) above first.
+
+## More detail
+
+- Every item and its range: [Rim Reference](/reference/rim)
+- Depth Rim Light, which reads depth: [Depth Effects](/guides/depth-effects)
+- The shared multiplier of the four layers: [Light and Shadow](/guides/light-and-shadow)

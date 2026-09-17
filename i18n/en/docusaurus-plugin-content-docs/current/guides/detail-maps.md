@@ -6,335 +6,168 @@ sidebar_position: 7
 
 # Detail Maps
 
-**After reading this guide**, you can layer textures on top of the base and apply material texture with PBR, MatCap, and Emission.
+> This page is for people turning on **detail maps** for the first time.
+> You layer patterns, bumps and gloss on top of the base color. It takes about 5 minutes.
 
-This covers the **Detail Maps** group in the Inspector — `Texture Layers` · `Normal Layers` · `MatCap Layers` · `Occlusion` · `Emission` · `Glitter` · `PBR Surface`. For a complete reference, see [Detail Maps Reference](/reference/detail-maps).
+## What is this
 
-## Base Surface: Tint and Opacity {#베이스-표면-틴트와-불투명도}
+With only a base map, cloth and metal look the same.
 
-Base Map colour and surface alpha are separate controls.
+Detail maps add layers on top of it for patterns, bumps and gloss.
 
-- `Base Tint` combines with the Base Map, and `Tint Blend Mode` chooses Multiply, Normal, or another blend operation.
-- `Base Map Opacity` multiplies the Base Map alpha at the final surface step, including the tint. It ranges from 0–1 and changes overall surface opacity independently from tint blend strength. Base Map alpha is used by Cutout and Transparent surface modes.
+## When to use it
 
-## Color Adjust Mask {#색조보정-범위-마스크}
+- When you want to put a logo or pattern on an outfit
+- When you want only the metal trim to shine
 
-Turn on `Use Color Adjust Mask` to apply the Base HSVG adjustment only where the mask is white. Black keeps the authored colour, and gray blends the two results by that amount. When it is off, the adjustment covers the whole surface as before.
+## Turn it on in 30 seconds
 
-`Mask` has its own `Tiling/Offset`, independent from the Base Map. Choose R, G, B, A, or Luma under `Mask Channel`, and use `Invert Mask` to reverse the black/white direction. This also lets several masks share one packed texture without sharing the Base Map transform.
+1. Pick one converted material.
+2. Turn on **Enable Surface Stack**.
+3. Raise **Surface Stack Layer Count** to 1.
+4. Put an image into **Additional Texture** on layer 01.
 
-## Common Pitfall in All Layer Sections
+If the image you added shows on top of the base color, it worked.
 
-:::danger[Increase Layer Count First]
-Slots positioned after `Layer Count` **skip calculation entirely.** If you add a texture but see nothing, nine times out of ten the Layer Count is too low.
+If nothing changes, go to [conversion troubleshooting](/troubleshooting#conversion).
 
-The same result occurs when each layer's `Opacity` (or `Intensity` for MatCap) is set to 0.
+![A pattern placed in Additional Texture layer 01, layered over the outfit](/img/placeholder.png)
+<!-- CAPTURE: guides/detail-maps-01-surface-stack.png | 표면 스택 사용 켜짐 + 레이어 수 1 + 레이어 01에 문양 텍스처가 들어간 인스펙터와 결과 | 1200x700 -->
+
+## How to turn them on — all three modules follow the same order {#켜는-법--세-모듈이-모두-같은-순서}
+
+1. Turn on the module's enable switch.
+2. Raise the layer count to the number you need.
+3. Put a map into that numbered slot and set its strength.
+
+| Module | Enable switch | Layer count field | Maximum |
+|---|---|---|---|
+| Additional Texture | **Enable Surface Stack** | **Surface Stack Layer Count** | 10 |
+| Normal Maps | **Enable Normal Layers** | **Normal Layer Count** | 5 |
+| MatCap | **Enable MatCap Layers** | **MatCap Layer Count** | 5 |
+
+:::danger[You added a map but nothing shows]
+Slots past the layer count are skipped entirely.
+The result is the same when strength or opacity is 0.
 :::
 
-Texture Layers, Normal Layers, and MatCap Layers all work the same way.
+The layer count list only shows 0 to 2 at first.
 
-### Layer Display Count and Shader Limits {#레이어-슬롯-표시-수와-실제-상한}
+To use more, press the **Use More Layers (up to N)** button next to the list.
 
-The Inspector's `Layer Count` popup initially shows only 0–2 to keep the page compact. This is a popup display limit; it does not lower the shader's real limit.
+N differs per module. Surface stack is 10, normal is 5, matcap is 5.
 
-- Normal Layers support up to 5 slots.
-- MatCap Layers support up to 5 slots.
-- Surface Stack supports up to 10 slots.
-- Press `Use More Layers (up to N)` beside the popup to expose more choices.
-- A material already saved with three or more layers automatically shows its saved slots. A mixed selection also uses the full limit so it cannot hide a value on another selected material.
+## Values you will touch often
 
-Increasing the count accumulates texture, mask, and blend work.
+| Inspector label | What it changes | Suggested starting value | Raise it / lower it |
+|---|---|---|---|
+| **Opacity** | How much one additional texture is layered on | 1 | Lower it and the color below shows through; at 0 the slot is not evaluated |
+| **Normal Intensity** | How strong the bumps look | 1 | Raise it and the relief is exaggerated; at 0 it goes flat |
+| **Strength** | The gloss amount of one matcap | Leave at default (0.74) | Raise it and it turns shiny; at 0 the slot is not evaluated |
+| **Smoothness** | How tightly the reflection gathers | Leave at default (0.5) | Raise it and highlights shrink to points |
+| **Specular Intensity** | The strength of all PBR reflection | Leave at default (1) | At 0 the highlights and environment reflection both disappear |
+| **Toon Specular Intensity** | The brightness of the cel highlight | Leave at default (0.5) | Raise it and it burns out to white |
+| **Occlusion Intensity** | How much the occlusion map darkens | 1 | At 0 adding a map changes nothing |
 
----
+Every field and its range is in the [Detail Maps reference](/reference/detail-maps).
 
-## Texture Layers {#텍스처-레이어}
+## Two ways to make gloss
 
-Blends additional textures on top of the base. Used for tattoos, logos, partial coloring, and weathering effects.
+### PBR Surface {#pbr-표면}
 
-For each layer:
+Use this when you need physical reflection, like metal, enamel or wet lips.
 
-- `Blend Mode` — `Normal` fully covers, `Multiply` preserves the tone below while only blending the color.
-- `Opacity` — At 0, the layer calculation is skipped.
-- You can use a mask to limit the applied area.
+Turn on **Enable PBR Surface** and choose a **Workflow**.
 
----
+Metallic builds the reflection color from **Metallic**; Specular specifies the color directly.
 
-## Normal Layers {#노멀-레이어}
+Turn on **Use Packed Mask** to read per channel from a single texture.
 
-Stacks multiple normal maps. Layer 01 is the same slot as `Normal Map` in [Basics](/guides/basics#4-공통-맵).
+The default layout is R for metallic, G for occlusion, A for smoothness.
 
-- `Normal Map` — Slots positioned after Layer Count are not calculated.
-- `Normal Strength` — The intensity with which this layer blends into the final normal. At 0, the texture has no effect.
-
----
-
-## MatCap Layers {#맷캡-레이어}
-
-Projects a lighting and material image painted on a sphere based on the camera's viewpoint. As the camera rotates, the highlight follows.
-
-| Item | Function |
-|---|---|
-| `MatCap Map` | Sphere image |
-| `Blend Mode` | `Add` and `Screen` create bright highlights; `Multiply` creates dark material texture |
-| `Contrast` | 1 is original. Increasing sharpens the division between highlights and dark areas, strengthening the cel feel |
-| `Intensity` | At 0, the layer calculation is skipped |
-| `MatCap / Mesh UV Projection` | **At 0, camera-based; at 1, fixed to mesh UV** |
-| `MatCap Rotation` | Turns the sphere about its own centre. Use it to change the direction a highlight comes from instead of redrawing the map |
-| `MatCap Circle Radius` | **0 means no crop.** Raising it cuts away everything beyond that radius from the centre, trimming a spherical highlight into a round one. 1 is the sphere's rim |
-| `MatCap Circle Feather` | Softens the circle's edge inward. Does nothing while Radius is 0 |
-| `MatCap Normal Map Strength` | How far this layer follows the module's shared `MatCap Normal Map`. It disturbs only the normal used to project the MatCap, so **the surface shading stays put while the highlight distorts** |
-| `MatCap Emission Strength` | Adds this share of what the layer actually contributed a second time, as light-independent emission. The highlight survives darkness and can reach a bloom threshold |
-
-`MatCap Normal Map` sits once above the layer list, in the module area. All five slots share that one map, and each slot decides how far it follows it with `MatCap Normal Map Strength`.
-
-:::tip[Tattoos and Face Painting]
-Set `MatCap / Mesh UV Projection` to 1 so the pattern sticks to the surface and doesn't move when the camera rotates.
+:::caution[If you turn Use Packed Mask off]
+Every channel and invert setting below is ignored.
+Only the metallic and smoothness slider values are used.
 :::
 
-:::tip[Eye Highlights]
-Trim the highlight round with `MatCap Circle Radius`, aim the direction it comes from with `MatCap Rotation`, then raise `MatCap Emission Strength` so the eyes keep their glint in a dark world.
-:::
+### Toon Specular {#툰-스페큘러}
 
----
+This adds only a light-direction highlight without turning on all of PBR.
 
-## PBR Surface {#pbr-표면}
+It suits hair, eyes and the thin sheen on cloth.
 
-In toon style, PBR is not "use or don't use" but rather **how much and where to apply it**. It's typically used only for metal accessories, enamel shoes, and wet lips.
+Turn on **Enable Toon Specular** and choose a **Toon Specular Mode**.
 
-PBR Surface is controlled by the `Enable PBR Surface` master, which is off by default. When it is off, the metallic, smoothness, and direct-highlight controls in the PBR path are ignored while toon diffuse remains. `Reflection` is a separate module, so reflection-only materials can work without enabling PBR Surface.
+Isotropic makes a round highlight, like an eye or a metal button.
 
-Key PBR ranges and defaults:
+Anisotropic makes a long flowing band, like hair.
 
-| Control | Range / default |
-|---|---|
-| `Enable PBR Surface` | Off by default |
-| `Metallic` | 0–1 / 0 |
-| `Smoothness` | 0–1 / 0.5 |
-| `Specular Intensity` | 0–2 / 1 |
-| `Direct Highlight Intensity` | 0–4 / 1 |
-| `Environment Reflection Intensity` | 0–4 / 0 |
-| `Visible In Shadow` | 0–1 / 0 |
-| `Normal Map Influence` | 0–1 / 1 |
-| `Highlight Toon Amount` | 0–1 / 0 |
-| `Highlight Toon Threshold` | 0–1 / 0.5 |
+Shape it with **Toon Specular Threshold** and **Toon Specular Softness**.
 
-Adjustment order:
+#### A different highlight color per area {#하이라이트-색을-부위마다-다르게}
 
-1. **Workflow** — Choose `Metallic` (generates reflection color from metallic value) or `Specular` (specify reflection color directly). When Specular is selected, the metallic slider has no effect.
-2. **Specular Strength** — **At 0, both direct highlights and environment reflections disappear.** If smoothness doesn't change the look, check here first.
-3. **Smoothness** — 0.3–0.6 works well for toon style. Close to 1 makes highlights pinpoint-sized.
-4. **Visible In Shadow** — How much highlight to retain in shadowed areas. At 0, it disappears completely inside shadows. Lower values look cleaner in toon style.
-5. **Direct Highlight Strength** — At 0, highlight calculation is skipped entirely.
-6. **Environment Reflection Strength** — Has little effect if the scene has no Reflection Probe.
-7. **Normal Map Influence** — At 0, uses mesh normal only; at 1, directly reflects stacked normal maps.
+Change **Toon Specular Color Source** to `Mask Texture Color`.
 
-### Packed Mask {#패킹-마스크}
+The RGB colors you painted into the mask then become the highlight colors.
 
-Reads metallic, occlusion, and smoothness from a single texture by channel. Default layout is **R=Metallic, G=Occlusion, A=Smoothness**; if using a different texture, adjust channel settings.
+**Toon Specular Mask Color Amount** sets how much is mixed in.
 
-- If you're using a roughness map, enable `Use Roughness (Invert)`.
-- If `Reflection Occlusion` is 0, the PBR occlusion channel and invert settings won't affect the result.
-
-:::caution[When Packed Mask is Off]
-The channel and invert settings below **are completely ignored**, and only the metallic and smoothness slider values are used.
-:::
-
----
-
-## Reflection {#반사}
-
-`Enable Reflection` is an independent master from `Enable PBR Surface`. It enables direct-light, additional-light, and environment reflection together with the reflection colour map and cubemap. When it is off, this module skips its reflection work and texture samples.
-
-- `Main Light Specular` applies reflection colour and mask to the main light's direct highlight.
-- `Additional Light Specular` applies it to point, spot, and other additional-light highlights.
-- `Environment Reflection` applies reflection probes, the skybox, and the material cubemap.
-
-When PBR Surface is also enabled, the shared PBR lobe owns the direct, additional, and environment results, so these three switches do not alter that lobe. With PBR disabled, the switches divide where the independent Reflection module is applied.
-
-## Toon Specular {#툰-스페큘러}
-
-Adds light-direction highlights without enabling full PBR, suitable for cel highlights on hair, eyes, or cloth.
-
-1. Enable `Toon Specular`.
-2. Choose Isotropic or Anisotropic under `Shape Method`.
-3. Set size and brightness with `Intensity` and `Smoothness`.
-4. Refine the cel boundary with `Threshold` and `Softness`.
-5. For hair, adjust Anisotropic direction and Shift.
-6. Optionally limit the range with masks and gradients.
-
-| Method | Suitable for |
-|---|---|
-| **Isotropic** | Rounded highlights on eyes, metal buttons, or wet skin |
-| **Anisotropic** | Long flowing highlights on hair, silk, or brushed surfaces |
-
-:::tip[Can be used with PBR]
-Use PBR for environment reflections and material response, and Toon Specular for direct-light cel highlights. Raising both too high can blow out overlapping highlights.
-:::
-
-### Vary highlight color by area {#하이라이트-색을-부위마다-다르게}
-
-Hair highlights all in one color look identical from front to back. Use `Toon Specular Color Source` to split them per-area.
-
-| Value | Result |
-|---|---|
-| `Single Color` (default) | The specified highlight color is used across the entire mesh |
-| `Mask Texture Color` | **RGB color painted in the Toon Specular Mask becomes the highlight color** |
-
-Switch to `Mask Texture Color` and the mask becomes a **color distribution map**, not a binary range. Brightness still sets which areas show highlights; RGB sets the highlight color for that location.
-
-Blend between the two with `Toon Specular Mask Color Amount`. 0 uses the specified color as-is; 1 (default) uses mask color directly. `Single Color` ignores this value.
-
-:::note[No cost added]
-The mask already exists for range control. Using its color costs no extra texture fetch. Switching to `Mask Texture Color` on a default white mask produces no change in appearance.
-:::
-
----
+The mask is already being read, so this costs no extra texture read.
 
 ## Region Mask {#영역-마스크}
 
-Divides parts of one material into four RGBA regions and adjusts surface response independently.
+Split the areas inside one material into four RGBA regions and adjust each separately.
 
-1. Enable `Use Region Mask`.
-2. Assign an RGBA texture to `Region Mask`.
-3. Adjust metallic, smoothness, environment reflection, and Toon Specular intensity/smoothness offsets for each R/G/B/A region.
+1. Turn on **Enable Region Mask**.
+2. Put an RGBA texture into the region mask slot.
+3. Raise each region's adjustment a little at a time from 0.
 
-Each correction is stored independently for the four regions and defaults to 0.
-
-| Correction | Range / default |
-|---|---|
-| `Region Metallic Delta` | -1–1 / 0 |
-| `Region Smoothness Delta` | -1–1 / 0 |
-| `Region Reflection Delta` | -4–4 / 0 |
-| `Region Toon Specular Intensity Delta` | -8–8 / 0 |
-| `Region Toon Specular Smoothness Delta` | -1–1 / 0 |
-
-:::caution[Use with PBR or Toon Specular]
-Region Mask adjusts surface response. With both PBR and Toon Specular disabled there is nothing to adjust.
+:::caution[There has to be something to adjust]
+The region mask adjusts surface response.
+If PBR Surface and Toon Specular are both off, nothing happens.
 :::
 
-### Starter presets
+![Four RGBA channels of a region mask dividing an outfit into cloth, leather, metal and label](/img/placeholder.png)
+<!-- CAPTURE: guides/detail-maps-02-region-mask.png | 영역 마스크 사용 켜짐 + RGBA 마스크 텍스처와 네 영역 보정 슬라이더 | 1200x700 -->
 
-The current version includes `MetalHybrid` · `SkinSubtle` · `EyeGlossy` · `ClothSheen` · `HairAnisotropic` · `MetalCel` · `CharacterParts` starting points. Presets demonstrate feature combinations rather than finished looks, so retune them on the actual avatar under world lighting.
+## Glow and sparkle {#발광과-반짝임}
 
----
-## Emission {#이미션}
+Turn on **Enable Emission** and set the map, color and intensity.
 
-Map × Color × Intensity.
+If **Emission Color** is black, it will not glow even with a map.
 
-- If `Emission Color` is **black, the map won't glow even if present.** It's HDR, so you can exceed 1 to trigger bloom.
-- `Emission Intensity` — Without bloom post-processing in the scene, increasing the value won't blur; it just saturates to white.
-
-`Emission Intensity` is also available in Quick Settings.
-
-### Map Alpha Masks Intensity {#맵-알파를-세기-마스크로}
-
-`Map Alpha Masks Intensity` — **off by default**
-
-Uses the emission map's alpha channel as a per-pixel intensity mask. Where alpha is 1 the pixel glows at the full `Intensity` value, where it is 0 it does not glow at all, and values in between glow proportionally. It lets you vary brightness across one map without adding a separate mask texture.
-
-:::note[No extra texture read]
-The alpha arrives with the colour read, so turning this on costs no additional texture read.
-
-The mask is taken from the **original alpha**. Changing `Channel Source` or `Invert Source Colors` does not change it.
-:::
-
-Because it is off by default, existing materials look exactly as before. Emission Layer 2 below has the same control.
-
-### Time Animation {#시간-애니메이션}
-
-Expand `Time Animation` on either emission layer to animate its map flow and brightness independently.
-
-- `Scroll Speed` — moves only the emission map by this many tiles per second. X is horizontal, Y is vertical, and negative values move in the opposite direction. Set the texture Wrap Mode to `Repeat` for seamless flow.
-- `Blink` — `Smooth` pulses with a sine wave; `Flashing` switches immediately between on and off. `Speed` is repetitions per second.
-- `On Ratio` — used only by `Flashing`. Lower values produce a brief flash followed by a longer off interval.
-- `Minimum Brightness` — 0 turns the layer completely off at its darkest point. Raise it to keep the layer on while only its brightness changes.
-- `Phase Offset` — staggers the timing of multiple materials or the two emission layers.
-- `Emission in Darkness` — reduces emission in bright areas based on the already calculated main-light amount. Use `Brightness Threshold` and `Transition Width` to set where it disappears.
-
-Scrolling, blinking, and darkness-driven emission do not add another emission-texture read. Layers 1 and 2 can use independent speeds and phases.
-
-:::note[Editor preview]
-Time animation advances when the view repaints. If it appears frozen in Scene view, check the actual motion in Play mode, VRChat, or WARUDO.
-:::
-
-### Emission Layer 2 {#발광-레이어-2}
-
-`Enable Emission Layer 2` — **off by default**
-
-A second emission map, for when **different areas need different glow colours**. Blue eyes and a pink marking on one material: split the glow across two maps and give each its own colour.
-
-**The two layers are added.** The later slot does not overwrite the earlier one, so each area keeps the colour you authored.
-
-Layer 2 carries the same controls as layer 1 — map and colour adjustments, `Intensity`, `Visibility in Shadow`, `Map Alpha Masks Intensity`. An `Intensity` of 0 skips the layer entirely.
-
-`Enable Emission Layer 2` and its second-map detail rows are shown only in the Inspector's **Full mode**. Turning it on enables the authoring keyword `_MING_EMISSION_2`, so the compiled variant contains the fetch for the second map.
-
-:::caution[It reads one more texture]
-Unlike the alpha mask, layer 2 **reads a new texture.** Enable it only on materials that need it; materials that leave it off compile to the same cost as before.
-:::
-
-:::danger[It cannot be toggled at runtime]
-`Enable Emission Layer 2` is an **authoring-time decision.** You cannot animate it on for a material that was uploaded with it off — the variant compiled with it off contains no code to read the second map. The emission master switch, `Enable Emission`, *is* animatable.
-
-If the material has already been baked, **the bake cache has to be rebuilt** before layer 2 shows up in the result.
-:::
-
-:::note[Materials converted from lilToon]
-lilToon's second emission (`_UseEmission2nd`) is **not migrated automatically.** Its UV mode, blend mode and blend mask have no one-to-one equivalent, so rather than half-translating it the conversion log reports it as a loss. Turn on `Enable Emission Layer 2` and copy the second emission map, colour and strength across by hand.
-:::
-
----
-
-## Occlusion {#오클루전}
-
-A grayscale map that darkens areas where indirect light is hard to reach. **It does not affect direct light**, so it's less visible when the mesh receives strong lighting from the front.
-
-If `Occlusion Strength` is 0, adding the map produces no change.
-
----
-
-## Glitter {#글리터}
-
-Voronoi particle sparkle. Configure distance stabilization, viewpoint sensitivity, light angle, and size/color randomization.
-
-Start with the toggle, color, and intensity, then fine-tune the details.
-
-### Limit the Glitter Region with MatCap {#matcap으로-반짝임-영역-제한}
-
-Enable `Use Glitter MatCap` under `MatCap Limit` to restrict view-dependent glitter using the brightness of a dedicated MatCap. Glitter appears only in bright regions, making camera-following areas such as eye highlights or a metal reflection band. This is independent of the regular MatCap layers.
-
-- `Use Color Too` — multiplies the MatCap RGB into the glitter-particle color. When off, only brightness limits the region.
-- `Invert` — makes glitter appear in the dark areas of the MatCap instead.
-- `Strength` — amount of region limiting. At 0, only the region limit disappears; coloring from `Use Color Too` remains.
-
-When disabled, the dedicated MatCap texture is not read. Enabling it adds one texture read.
+For **Enable Glitter**, set **Glitter Color** first and then **Glitter Intensity**.
 
 ### Changing the particle shape {#입자-모양-바꾸기}
 
-Turn on `Enable Shape Map` and put a texture in `Shape Map`, and each particle's silhouette becomes that picture. Six ship in `Textures/Glitter/`: **Star, Bloom, Sparkle, Heart, Hex, and Flower**.
+Turn on **Enable Shape Map** and put a texture into **Shape Map**.
 
-- `Shape Channel` picks which channel carries the silhouette. The default is A; use A for a PNG with alpha, or R / Luma for a black-and-white image.
-- `Rotation Randomize` turns each particle to a different angle. The default is 1; lower it to 0 **only when a directional shape such as a heart should stand upright**.
+`Textures/Glitter/` contains 6 shapes such as stars and hearts.
 
-:::caution[Leave a margin when drawing your own]
-The square of the shape map is laid **inside** the round particle. Fill it to the edge and the corners get clipped. The background must be black (or alpha 0).
-:::
+**Shape Channel** defaults to A; use R or luminance for black-and-white images.
 
-### One mask carrying both the region and the colour {#마스크-한-장으로-영역과-색}
+To stand a directional shape upright, lower **Rotation Randomize** to 0.
 
-Turn on `Use Color Too` in the `Mask` group and the same mask texture is read as full RGBA: **alpha is where the sparkle appears and RGB tints the particles**. It costs no extra texture sample.
+## Master Adjust and performance distance {#마스터-조정과-성능-거리}
 
-While it is on, the `Channel` selector is fixed to alpha - once RGB leaves as colour, alpha is the only channel left to pick the region with.
+**Performance Distance (m)** and **Performance Distance Scale** are shader features.
 
-## Master Adjust and Performance Distance {#마스터-조정과-성능-거리}
+You can always edit them without the paid add-on.
 
-`Master Adjust` has two parts with different owners.
+The boundary is the two values multiplied, and beyond it only basic shading remains.
 
-- `Everything That Adds Light`, `Every Shadow`, `Final Output`, and the silhouette adjustment rows are authoring UI supplied by the separately sold **Ming Light Controller (MLC)** add-on. Without MLC, those rows are hidden in the Inspector, but shader rendering still uses values already stored on the material.
-- `Performance Distance (m)` and `Performance Distance Scale` are MingToon shader controls and remain editable without MLC. Their ranges and defaults are 1–50 / 5 m and 0–2 / 1; the actual performance boundary is their product.
+The rest of the Master Adjust rows come from Ming Light Controller.
 
-Heavy modules run more fully near the camera, stay on with a lower sample ceiling in the middle band, and switch off beyond the boundary so only base shading remains. MLC can drive `Performance Distance Scale` from its in-game menu when installed, but MLC is not required to edit the material value.
+## Common problems
 
-## Next
+| Symptom | Cause | Fix |
+|---|---|---|
+| Added a map but it does not show | The layer count is lower than that slot number | Raise the layer count |
+| No highlight at all | Specular Intensity is 0 | Set Specular Intensity back to 1 |
+| The glow does not show | Emission Color is black | Raise the color closer to white |
 
-[Character Expression](/guides/character)
+## More detail
+
+- [Detail Maps reference](/reference/detail-maps) — every field and range
+- [Shared Texture Slot UI](/guides/texture-modules) — mask, HSVG and UV controls
+- [Tiled Material Composer](/guides/tiled-materials) — region masks from one window

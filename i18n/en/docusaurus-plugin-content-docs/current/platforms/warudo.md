@@ -6,96 +6,128 @@ sidebar_position: 3
 
 # Warudo
 
-**After finishing this guide,** you can install Warudo mod-build optimization and camera-depth delivery in their correct, separate locations.
+> This page is for people using a MingToon character in WARUDO.
+> It covers installing the depth supply plugin and checking the mod build.
 
-:::caution[Support Status]
-Warudo is supported, but its on-device regression coverage is narrower than VRChat's. Open the final mod in Warudo and check the main output plus every Spout and NDI camera you use.
-:::
-
-## Reference Versions
+## Reference versions
 
 | Item | Value |
 |---|---|
 | Unity | **2021.3.45f2** |
-| Warudo Mod SDK | **0.14.3.10** |
-| Render Pipeline | Built-in (BRP) |
+| WARUDO Mod SDK | **0.14.3.10** |
+| Render pipeline | Built-in (BRP) |
 
-:::danger[Do Not Share a VRChat Project]
-VRChat uses Unity **2022.3.22f1**, while Warudo uses **2021.3.45f2**. Keep separate projects for each target.
+:::danger[It cannot share a project with VRChat]
+VRChat uses Unity 2022.3.22f1 and WARUDO uses 2021.3.45f2. Split the projects by target.
 :::
 
 ---
 
-## Camera Depth Setup — WARUDO Depth Bridge {#warudo-depth-bridge}
+## Installing camera depth — WARUDO Depth Bridge {#warudo-depth-bridge}
 
-Screen-depth effects such as 2D Rim Light, 2D Shadow, Inner 2D Boundary, and SSAO require a depth texture from the Warudo camera. The 0.1.10 package includes the source for an independent Warudo plugin that provides it.
+Depth rim light, depth shadow, the inner outline and SSAO need the WARUDO camera's depth texture.
+
+The package includes the source of a standalone plugin that supplies that depth.
+
+### This installs into WARUDO itself, not into the character
+
+:::caution[It is not a component you attach to a prefab]
+This file is a global plugin that runs in the WARUDO application's Playground.
+Do not put it in the character mod folder or add it to a prefab as a component.
+:::
 
 ### Installation
 
-1. In the Unity project, locate `Assets/StudioRaming/MingToon/Docs/Warudo/MingToonWarudoDepthBridge.cs.txt`.
-2. Copy it to `Warudo_Data/StreamingAssets/Playground` under the Warudo installation folder.
-3. Remove `.txt` from the filename so it becomes `MingToonWarudoDepthBridge.cs`.
-4. After Warudo reloads the Playground plugin, confirm `[MingToon Warudo Depth Bridge] installed` in the Console.
+1. In the Unity project, find `Assets/StudioRaming/MingToon/Docs/Warudo/MingToonWarudoDepthBridge.cs.txt`.
+2. Copy this file into `Warudo_Data/StreamingAssets/Playground` in the WARUDO install folder.
+3. Remove the trailing `.txt` from the file name so it becomes `MingToonWarudoDepthBridge.cs`.
+4. Restart WARUDO and confirm the `[MingToon Warudo Depth Bridge] installed` log in the Console.
 
-:::important[This Is Not a Character-Prefab Component]
-This file is a global plugin that runs from the Warudo application's Playground. Do not place it in the character mod folder or add a component to the prefab. Instructions for the old `MingToonWarudoRoot` approach are retired in the the current documentation.
-:::
+If `MingToon Warudo Depth Bridge` shows in the plugin list, it worked.
 
-### What It Provides
+![File Explorer with MingToonWarudoDepthBridge.cs inside Warudo_Data/StreamingAssets/Playground in the WARUDO install folder](/img/placeholder.png)
+<!-- CAPTURE: platforms/warudo-01-playground-folder.png | Warudo_Data/StreamingAssets/Playground 폴더에 MingToonWarudoDepthBridge.cs가 있는 탐색기 + 옆에 WARUDO 플러그인 목록 | 1200x700 -->
 
-Immediately before rendering, the plugin checks every active `Game` camera.
+### What it supplies
 
-- Requests `DepthTextureMode.Depth` on each camera.
-- Sends center-, left-, and right-eye world-to-view matrices to global shader values.
-- Handles active Spout, NDI, and transition cameras individually, not only the main screen.
-- Uses the camera that is actually rendering instead of caching a single `Camera.main` when cameras change.
+The plugin checks the active Game camera right before every render.
 
-The plugin does not depend on the MingToon runtime assembly. It ships as a standalone file so it still works when a Warudo project excludes scripts under an asmdef from the mod.
+- It requests a depth texture on each camera.
+- It passes the center, left-eye and right-eye view matrices as shader globals.
+- It handles not only the main screen but also active Spout, NDI and transition cameras, per camera.
+- Even when cameras change, it does not cache one and uses the camera actually rendering.
 
-### Diagnose by Symptom
+The plugin does not depend on the MingToon runtime assembly. That is why it ships as a standalone file.
 
-| Symptom | Check |
+### Checking by symptom
+
+| Symptom | What to check |
 |---|---|
-| Every depth effect is empty | Confirm the Playground path, the `.cs` extension, and the `installed` log |
-| Main screen works but Spout or NDI differs | Check the `depth enabled for camera=...` log for that output camera |
-| Normal Outline works but inner lines do not | Normal Outline needs no depth, so check whether the Bridge loaded first |
+| All depth effects are empty | The Playground path, the `.cs` extension, the `installed` log |
+| The main screen is fine but Spout and NDI differ | The `depth enabled for camera=` log for that output camera |
+| Only the normal outline shows and there are no inner lines | The normal outline does not need depth. Start from whether the Bridge loaded |
+
+→ [Troubleshooting — WARUDO](/troubleshooting#warudo)
 
 ---
 
-## Building a Warudo Mod
+## WARUDO mod build
 
-Running `Warudo > Build Mod` makes MingToon's UMod build hook apply automatic optimization. It uses UMod's processor/post-processor path, not Unity's regular `IPreprocessBuildWithReport`.
+Running `Warudo > Build Mod` makes MingToon's build hook apply automatic optimization.
+
+It uses UMod's processor path, not Unity's general build callbacks.
 
 ### Scope
 
-- When possible, finds the build root from the GameObject assets exported by UMod and optimizes **only that character**.
-- Adds generated shaders and textures to the UMod build asset list.
-- Restores authoring materials after the build finishes or fails.
-- If the export root cannot be determined, falls back to MingToon materials in loaded scenes and warns in the Console.
+- It finds the build root among the GameObjects UMod exports and optimizes only that character.
+- It adds the generated shaders and textures to the UMod build asset list.
+- It restores the authoring materials when the build finishes or fails.
+- If it cannot determine the export root, it falls back to the MingToon materials in the loaded scenes and leaves a warning.
 
-Confirm the `[MingToon] Auto optimize` summary and `[MingToon] Restored authored materials.` after the build. If an error or restoration failure appears, do not use that build; resolve the cause first.
+### Logs to check
 
-:::note[Manual Bake Is Not the Default Workflow]
-Warudo export also uses automatic build-time optimization. Unless you specifically need baked material assets, you do not need to run [Manual Bake](/workflow/bake-and-restore) first.
+| Log | Meaning |
+|---|---|
+| `[MingToon] Warudo mod build processor entered` | The hook ran |
+| `[MingToon] Applied auto optimize and registered N generated assets.` | The optimization was applied |
+| `[MingToon] Restored authored materials.` | It returned to the authoring state |
+| `[MingToon] Could not restore authored materials.` | Restore failed. Do not use this build |
+
+:::note[A manual Bake is not the standard procedure]
+WARUDO export also uses automatic optimization on build. Use a manual Bake only when you need the baked material assets themselves.
 :::
+
+→ [Manual Bake and Restore](/workflow/bake-and-restore)
+
+### Depth light
+
+A WARUDO build also carries the depth light when it uses depth effects.
+
+You can force it out with **Remove depth light on build** in the MingToon Manager.
+→ [VRChat depth light](/platforms/vrchat#vrchat-깊이-라이트)
 
 ---
 
-## Lighting Differences
+## Lighting differences
 
-- `VRC Light Volumes` is for VRChat worlds. Disable it in Warudo and use Unity Light Probes and scene lighting.
-- Built-in point and spot additional lights use the ForwardAdd pass. Adjust them with the material's `Receive Additional Lights`, `Additional Light Strength`, and toon-boundary settings.
-- In WARUDO Built-in, `Visible in Cast Shadow` and `Visible in 2D Shadow` do not filter the inner-reflection contribution made by point and spot additional lights.
-- When using several cameras, verify depth effects and transparent sorting separately in each output.
+- **VRC Light Volumes (Test)** is for VRChat worlds. Turn it off in WARUDO and use Unity Light Probes.
+- Built-in point and spot additional lights come in through the ForwardAdd pass.
+- If additional lights are strong, adjust with **Additional Light Receive** and **Additional Light Intensity**.
+- If you use several cameras, check depth effects and transparency sorting per output.
 
-## Export Checklist
+:::caution[ForwardAdd does not get the shadow filter]
+In WARUDO Built-in, the in-shadow reflection created by additional lights is not filtered.
+For the detailed conditions, see the [Rim reference](/reference/rim).
+:::
 
-- Used Unity 2021.3.45f2 and the Built-in shader.
-- Installed `MingToonWarudoDepthBridge.cs` in Warudo Playground.
-- The `Warudo > Build Mod` Console contains no optimization or restoration errors.
-- Checked 2D Rim Light, 2D Shadow, and Inner Boundary in the main view and actual broadcast cameras.
-- Adjusted `Preserve Base Color` and `Minimum Final Brightness` if scene lighting is difficult to control.
+## Export checklist
+
+1. Use Unity 2021.3.45f2 and the Built-in shaders.
+2. `MingToonWarudoDepthBridge.cs` is installed in Playground.
+3. The `Warudo > Build Mod` Console has no optimization or restore errors.
+4. Check depth effects on the main screen and on the actual output camera.
+5. If the scene lighting is hard to control, adjust **Preserve Base Map Color** and **Minimum Final Brightness**.
 
 ## Next
 
-[Automatic Build Optimization](/workflow/build-optimization) · [Depth-Based Effects](/guides/depth-effects) · [Light and Shadow](/guides/light-and-shadow) · [Troubleshooting](/troubleshooting)
+[Automatic Optimization On Build](/workflow/build-optimization) · [Depth Effects](/guides/depth-effects) · [Light and Shadow](/guides/light-and-shadow)

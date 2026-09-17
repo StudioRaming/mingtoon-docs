@@ -6,243 +6,245 @@ sidebar_position: 90
 
 # Troubleshooting
 
-Search by symptom. Most issues stem from **"if a parent value is 0 or off, all children are ignored"** structure.
+Look up your symptom as it is. Most of the time there is one cause. If a higher value is 0 or off, every value below it is ignored.
 
-## Nothing applies at all {#아무-값도-안-먹힌다}
+[Installation](#install) · [Conversion](#conversion) · [Shadows](#shadow) · [Depth effects](#depth) · [Outline](#outline) · [Face](#face) · [VRChat](#vrchat) · [WARUDO](#warudo) · [Performance](#performance) · [Bake and restore](#bake)
 
-Check from top to bottom.
+![The All Effects switch at the top of the inspector with a section master toggle below it](/img/placeholder.png)
+<!-- CAPTURE: troubleshooting/troubleshooting-01-master-chain.png | 인스펙터 상단 전체 효과 스위치 + 한 섹션의 마스터 토글 + 그 안의 강도 슬라이더가 한 화면에 보이는 상태 | 1200x700 -->
 
-1. **All Effects** — master switch at the top of the inspector. If off, the entire section below is inactive and shows `This section is inactive because All Effects is off.`
-2. **Section master toggle** — each section has its own toggle. If off, `Quick Look` shows `(Module Off)`.
-3. **Parent values** — see table below.
+## No value has any effect {#아무-값도-안-먹힌다}
 
-| Not showing | Check parent value first |
+Check in order from the top.
+
+1. Turn on **All Effects**. While it is off, every section is disabled.
+2. Turn on that section's master toggle. While it is off, `Quick Settings` appends `(Module Off)`.
+3. Raise that feature's higher value from the table below.
+
+| What is missing | The higher value to check first |
 |---|---|
-| Base tint | `Tint Opacity` |
-| 2D rim light / 2D shadow | `Master Width` → each module's `Intensity` |
-| PBR highlight · environment reflection | `Specular Strength` |
-| Texture/normal/matcap layer | `Layer Count` → each layer's `Opacity`/`Intensity` |
-| Rim light | `Intensity` → `Width` |
-| Rim shade | `Shadow Contribution Strength` → `Rim Shadow Width` |
-| Shadow boundary band | `Boundary Width` → `Boundary Strength` |
-| Shadow pattern | `Pattern Strength` |
-| Face normal correction | `Normal Press Amount` |
-| Face area mask | `Mask Strength` (0 = entire surface treated as face) |
-| PBR packed mask channel setup | `Use Packed Mask` |
-| Cast shadow brightness · blend | `Receive Strength` |
-| Alpha mask | Shows nothing if surface mode is opaque |
-| `1st Shadow Brightness`·`Cast Shadow Brightness` | Check `Shadow Color` section is on |
+| Base tint | **Tint Blend Strength** |
+| The whole surface is too transparent or too opaque | **Base Map Opacity** |
+| Depth Rim Light · Depth Shadow | **Master Width**, then each module's intensity |
+| PBR highlights and environment reflections | **Specular Intensity** |
+| Extra texture layers | **Surface Stack Layer Count** |
+| Normal map layers | **Normal Layer Count** |
+| MatCap layers | **MatCap Layer Count** |
+| The shadow boundary band | **Boundary Width**, then **Boundary Intensity** |
+| Shadow pattern | **Pattern Intensity** |
+| Face normal correction | **Proxy Normal Intensity** |
+| Face area mask | **Mask Intensity**. At 0 the whole material counts as face |
+| Channel settings of the PBR packed mask | **Use Packed Mask** |
+| Cast shadow brightness and blending | **Receive Intensity** |
+| Alpha mask | It is invisible even when on if the surface mode is **Opaque (2000)** |
 
-## Material appears pink (magenta)
+## Installation {#install}
 
-| Cause | Check | Action |
-|---|---|---|
-| Render pipeline mismatch | Using URP shader in BRP project or vice versa | Replace with shader from correct backend |
-| **Shader Model 4.5 not met** | `Tools > Studio Raming > MingToon > Validate Project` | Support is PC only (DX11+/Vulkan/Metal). Android·Quest·iOS·WebGL not supported |
-| URP version out of range | Is it URP 12.x? | Match to Unity 2021.3 + URP 12.x |
+### Materials look pink (magenta)
 
-:::danger[Other error messages do not appear in this case]
-SubShader is entirely rejected, so the log is silent. Pink is the only signal.
+| Cause | Action |
+|---|---|
+| Render pipeline mismatch | Swap to the matching backend shader |
+| Below shader model 4.5 | Run `StudioRaming > MingToon > Validate Project`. PC only is supported |
+| URP version out of range | Match Unity 2021.3 + URP 12.x |
+
+:::danger[In this case no error message appears at all]
+The whole SubShader drops out, so the log stays quiet. Pink is the only signal.
 :::
 
-## Validate Project points out a Unity version
+### Validate Project flags the Unity version
 
-| Code | When | Meaning |
+| Code | When it appears | Meaning |
 |---|---|---|
-| `MING-ENV-UNITY-VERSION` (error) | Editor is **neither 2021.3 nor 2022.3** | Unsupported stream. Switch to one from Unity Hub |
-| `MING-VRC-UNITY-VERSION` (warning) | VRC SDK present but editor is **not 2022.3 stream** | VRChat integration compiles only on 2022.3, so **this project has no avatar upload support.** Other targets unaffected |
+| `MING-ENV-UNITY-VERSION` (error) | The editor is neither 2021.3 nor 2022.3 | An unsupported stream |
+| `MING-VRC-UNITY-VERSION` (warning) | The VRC SDK is present but it is not 2022.3 | This project has no avatar upload support |
+| `MING-ENV-BUILD-TARGET` (error) | The build target cannot meet shader model 4.5 | Android, Quest, iOS, WebGL. Switch back to Windows |
 
-2022.3.22f1 is a validated support version so no warnings appear. → [Full Validator code](/reference/validator)
+2022.3.22f1 is a fully supported version, so nothing is flagged. → [Validate Project Codes](/reference/validator)
 
-## 2D rim light / 2D shadow / inner 2D edge not showing
+### I switched the render pipeline and every material broke
 
-| Cause | Action |
+The switch dialog converts the project's MingToon materials to the matching backend in bulk. If you miss the dialog, you can run it again from the warning in the material inspector.
+
+| Why the switch is blocked | Action |
 |---|---|
-| `All Effects` or `Depth Effects` is off | Inspector shows `Turn Depth Effects On` button |
-| `Master Width` is 0 | Raise it |
-| Each module's intensity is 0 | Raise it |
-| Surface mode is **transparent** | Change to `Transparent · Outline Depth Ready`. Inspector tells you `Needs the depth-recorded mode` |
-| **No camera depth** | [Depth Effects](/guides/depth-effects) platform-specific setup |
-| VRChat regular screen | Avatar cannot force it. Check separately in Photo Camera·mirror |
-| URP | Install Renderer Feature + enable Depth Texture |
-| Warudo | Depth-enabled camera or host depth bridge needed |
+| The material is contained in another asset | Extract it from the sub-asset |
+| The material is inside a read-only package | Copy it outside the package |
+| The material is read-only or not checked out | Clear read-only or check it out |
 
-If the inspector shows `The host Scene/Game camera does not have a depth texture prepared.`, reopen the Scene view, and if it persists, run `Validate Project`.
+Materials in closed scenes and AssetBundles cannot be inspected. Open them separately and convert.
 
-## Only inner 2D edge disappeared
+## Conversion {#conversion}
 
-| Cause | Action |
-|---|---|
-| `Inner Edge Outline Apply` is on and vertex color is black | Toggle off or change pressure source |
-| Surface mode is transparent | Change to depth-recorded mode |
-| No camera depth | See item above |
+### The look differs from the source after conversion
 
-Normal outline works without camera depth. **If normal outline is visible but only inner 2D edge is missing, it's a depth problem.**
+Read the `lossy` and `unsupported` items in the conversion log first. Then compare mask channels and inversion, and texture Tiling and Offset. Also check that AO, surface mode, and the face material decision match the source. → [Reading the Conversion Report](/internals/conversion-internals)
 
-## Cannot find outline
-
-`Inner 2D Edge` is **in Depth Effects group, not Outline**, because it reads screen depth.
-
-## Normal outline completely disappeared
-
-| Cause | Action |
-|---|---|
-| **On a mesh with black-imported vertex color, `Pressure Source` is `VertexRed`** | Change pressure source or check vertex color |
-| `Hull Pressure Contrast` is 0 | Pressure is completely ignored |
-| `Color Mask` is 0 | Set to 15 (full RGBA) |
-
-## Outline breaks at sharp edges
-
-`Normal Source` is `VertexColorTS` or `UV8TS` but the mesh has **sharp outline normals that were not smoothed**. Change to `MeshNormal`.
-
-## Cannot paint outline width in Scene view {#씬-뷰에서-아웃라인-두께를-칠할-수-없다}
-
-| Inspector says | Action |
-|---|---|
-| `Pressure Source must be Vertex Alpha or Vertex Red.` | Use `Switch to Vertex Alpha` button |
-| `No renderer using this material exists below the current selection.` | Select MingToon Manager (or an object below it) |
-| `Vertex painting is available when a single material is selected.` | Select only one |
-| `...Play mode end does not restore the painted data. Unity does not undo it after exiting Play.` | Exit Play mode and restart |
-| `There is no paintable mesh.` | Check if renderer has a mesh, and if that mesh includes the submesh this material draws |
-| `Renderer has no mesh.` | Assign mesh to Mesh Filter or Skinned Mesh Renderer's Mesh slot |
-| `Renderer has no Mesh Filter...` | Add Mesh Filter to the same object, or select object with Skinned Mesh Renderer |
-| `Cannot read vertices from mesh '{...}'...` | Reimport the model |
-| `Mesh '{...}' was generated at runtime...` | Save as mesh asset, then assign that asset to renderer |
-| `...still cannot read even after reimport...` | Check if model file is read-only |
-| `Could not write editable mesh copy to '{...}'...` | Check folder write permission and disk space |
-| `Could not create '{...}' folder for editable mesh copy...` | Check project folder write permission |
-| `Cannot open model importer for '{...}'...` | Verify model file is in project and import succeeded |
-
-### Painted outline direction broke
-
-`Pressure Source` is **Vertex Red** and `Normal Source` is **VertexColorTS**, overwriting the same vertex color. Inspector warns before painting.
-
-Action: Change `Pressure Source` to **Vertex Alpha**, or [move outline normal to UV8](/guides/mesh-bakes#아웃라인-스무스-노멀-uv8).
-
-### Outline of other objects changed too
-
-Multiple renderers are **sharing the same mesh asset**. Vertex painting modifies the mesh asset directly.
-
-Action: Duplicate the mesh and assign it only to that renderer, then paint again.
-
-## Changed render pipeline and all materials broke
-
-When pipeline changes, `MingToon Render Pipeline Mismatch` dialog appears and asks whether to batch-convert MingToon materials in the project to the matching backend. Scenes loaded in editor are also inspected.
-
-:::caution[Cannot inspect unloaded scenes and AssetBundles]
-You must open those separately and convert them.
-:::
-
-If you missed the dialog, a warning remains in the material inspector where you can run it again anytime.
-
-Conversion is **blocked** in these cases:
-
-| Reason | Action |
-|---|---|
-| `Material is embedded in another asset.` | Extract from subasset |
-| `Material is in a read-only package.` | Copy outside package |
-| `Material is read-only or not checked out.` | Clear read-only flag or check out from version control |
-
-## Conversion/bake failed
+### Conversion or baking fails
 
 | Message | Action |
 |---|---|
-| `Could not find a convertible material slot under this root.` | Check MingToon Manager is attached correctly, `Refresh Child Renderers` pressed |
-| `Cannot find original MingToon shader '{...}', cannot bake.` | Installation incomplete. Re-import package |
-| `Failed to import generated MingToon shader '{...}'.` | Check project folder write permission, retry |
-| `Generated MingToon shader '{...}' has a compile error.` | Verify MingToon include folder is at original path. This result is not cached, so fix the path and rebake to regenerate |
-| `Multiple MingToon Managers selected.` | Select one at a time |
+| No convertible material slots were found | Check where MingToon Manager sits, then **Refresh Child Renderers** |
+| The MingToon source shader was not found | The installation is incomplete. Reimport the package |
+| The generated shader could not be imported | Check write permission on the project folder and retry |
+| The generated shader has a compile error | Check that the MingToon include folder is in its original path |
+| Multiple MingToon Managers are selected | Select only one at a time |
 
-## Cast shadow is blotchy
+## Shadows {#shadow}
+
+### Only the overlapping areas are pure black
+
+Turn on **Enable Unified Shadow** in the `Shadow Color` section. Form, cast, and depth shadows collapse into one color. → [Light and Shadow](/guides/light-and-shadow#통합-그림자--겹칠-때-새까매지는-문제)
+
+It is normal for individual shadow colors to stop working after you turn it on. The values remain, so turning it off brings them back.
+
+### Cast shadows are blotchy
 
 | Location | Action |
 |---|---|
-| Cloth wrinkles·overall body | `Suppress Self Cast Shadow` on, `Self Shadow Caster Bias` 0.01~0.03 |
-| Face | Adjust the bangs/hair caster `Shadow Mode`, `Real Shadow Caster Offset`, Face SDF, and `Face 2D Shadow Assist`. The nonfunctional face-cast stabilization controls were removed in the current version |
-| Vertical direction | `Vertical Correction Strength`·`Vertical Threshold (Lower = Wider)` |
-| Boundary looks stepped | `Enable Projection Feather` + `Projection Feather Radius`·`Strength` |
-| Overall jitter | Light's shadow map resolution · bias/normal bias · cascade in that order |
+| Cloth folds and the body in general | Turn on **Suppress Self Cast Shadow** and set **Self Shadow Caster Bias** between 0.01 and 0.03 |
+| The boundary is stair-stepped | Turn on **Enable Projection Feather** and adjust **Projection Feather Radius** · **Projection Feather Intensity** |
+| Shimmering overall | Check the light's shadow map resolution, bias, and cascades in that order |
+| A character shape overlaps the body in backlight | Turn on **Suppress Backlit Silhouette** |
 
-:::note[Feather cannot recover missing information]
-Fuzzing low-resolution shadow map details that were never there won't bring them back.
+:::note[Feathering cannot bring back information that is not there]
+Detail that was never in a low-resolution shadow map does not return when you soften it.
 :::
 
-## Shadow is pitch black where it overlaps
-
-Turn on `Use Unified Shadow` in the `Shadow Color` section. Form·cast·2D shadow converge to the same color and tone. → [Light & Shadow](/guides/light-and-shadow#통합-그림자--겹칠-때-새까매지는-문제)
-
-## Turned on unified shadow and individual shadow colors no longer work
-
-This is normal. In unified mode, individual shadow color·blend·brightness do not reflect in results. Values are preserved, so turning it off restores them. To align individual values to unified values, use `Copy Unified Values To Individual Shadows`.
-
-## Backlit body silhouette overlaps character
-
-Turn on `Suppress Backlit Silhouette`.
-
-## Character clumps black in dark world
-
-| Property | Action |
-|---|---|
-| `Base Color Preservation` | Raise it |
-| `Minimum Final Brightness` | Raise it |
-| `Indirect Light Lift` | Raise it |
-| `Cast Indirect Lift` | Raise it |
-
-Blown out white in bright world? Lower `Maximum Final Brightness`.
-
-## Shadow pattern not printing at all
+### No shadow pattern is printed at all
 
 | Cause | Action |
 |---|---|
-| `Use Shape Tile` is on but tile slot is empty | Empty slots read as **white**, and white exceeds no threshold. Use inspector's built-in tile button |
-| `Pattern Strength` is 0 | Raise it |
-| Target doesn't match | Check `Pattern Target` |
+| **Use Shape Tile** is on but the tile slot is empty | An empty slot reads as white, and no density can cross white. Use a bundled tile |
+| **Pattern Intensity** is 0 | Raise it |
+| The target does not match | Check **Pattern Target** |
+| Dots do not react to tone and stay the same size | You loaded a binarized dot picture. A tile must be a [threshold map](/guides/shadow-pattern#타일은-그림이-아니라-임계값-맵입니다) |
 
-## Pattern dots don't react to tone and stay same size
+### The character crushes to black in a dark world
 
-You loaded an **already-binarized dot pattern** as tile. Tile must be a threshold map, not a picture. → [Shadow Pattern](/guides/shadow-pattern#타일은-그림이-아니라-임계값-맵입니다)
+Raise **Preserve Base Map Color**, **Minimum Final Brightness**, **Indirect Light Lift**, and **Cast Indirect Lift** in that order. If it blows out to white in a bright world, lower **Maximum Final Brightness**.
 
-## Hair pokes through cheek
+## Depth effects {#depth}
 
-Set surface mode to `Transparent · Outline Depth Ready` and turn on `Transparent Depth Prepass`.
+### Depth Rim Light or Depth Shadow is not visible
 
-## Look changed after conversion
+| Cause | Action |
+|---|---|
+| **All Effects** or **Depth Effects** is off | The inspector shows a button to turn it on |
+| **Master Width** is 0 | Raise it |
+| Each module's intensity is 0 | Raise it |
+| The surface mode is **Transparent (3000)** | Change it to **Semi-Transparent (2499)** |
+| **Camera Depth Contribution** is off | Turn it on |
+| The ordinary VRChat screen | An avatar cannot force it → [VRChat](/platforms/vrchat#깊이-효과가-어디까지-보장되나) |
+| URP | Install the Renderer Feature and enable Depth Texture |
+| WARUDO | Install the Depth Bridge → [Warudo](/platforms/warudo#warudo-depth-bridge) |
 
-Read `lossy` / `unsupported` items in conversion log first, then compare these with the original:
+If the inspector says the depth texture is not ready, follow that guidance. If raising **SSAO Radius** does not widen it, you have hit the limit. The range is 0.001 to 0.05 m.
 
-- Mask channel selection and inversion
-- Texture ST (Tiling / Offset)
-- AO
-- Surface mode
-- Face slot detection
+### Only the inner outline disappeared
 
-## Baked material restore button is grayed out
+**Enable Inner Depth Edge** is in the `Inner Outline` section. That section is inside the `Screen-space Effects` group.
 
-| Check |
-|---|
-| Bake manifest still present? |
-| Source editable material GUID still valid? |
-| Renderer hierarchy / material slots unchanged since bake? |
+| Cause | Action |
+|---|---|
+| **Apply to Inner Outline** is on and the vertex color is black | Turn the toggle off, or change **Pressure Source** |
+| The surface mode is **Transparent (3000)** | Change it to **Semi-Transparent (2499)** |
+| No camera depth | See the item above |
 
-## Uploaded but optimization doesn't seem to have applied
+The normal outline is drawn without depth. If only the normal outline is visible, the problem is depth.
 
-1. Is Unity version **2022.3.22f1**? On 2021.3, VRChat hook does not compile.
-2. Does Console have `[MingToon] VRChat build hook compiled and registered.`?
-3. Is `Tools > Studio Raming > MingToon > Optimize Shaders On Build` checked?
-4. Check `StudioRaming/MingToonOptimizeReport.txt` next to project folder.
+### Hair shows through the cheek
 
-→ [Automatic Optimization On Build](/workflow/build-optimization#제대로-걸렸는지-확인하기)
+Change the surface mode to **Semi-Transparent (2499)**. This mode blends alpha while still writing depth.
 
-## Inspector feels heavy while authoring {#작업-중-인스펙터가-무겁다}
+**Transparent Depth Prepass** is for **Transparent (3000)** only. Turning it on in Semi-Transparent (2499) changes nothing.
 
-This is normal. The editable shader compiles all features and maximum layer count upfront and maintains them, so toggling features doesn't cause recompilation waits or blue placeholder colors. Lightweighting applies only [at build time](/workflow/build-optimization).
+## Outline {#outline}
 
-## Still not resolved
+### The whole normal outline disappeared
 
-Post the following in the **bug-report channel** of the [official Discord server](https://discord.gg/Zsj6pkWKKs):
+| Cause | Action |
+|---|---|
+| The vertex color is black and **Pressure Source** is VertexRed | Change the pressure source or check the vertex color |
+| **Pressure Contrast** is 0 | Pressure is ignored completely. Raise it |
+| **Color Mask** is 0 | Return it to 15 |
+| **Outline Master** is off | Turn it on. The inner outline uses this gate too |
 
-1. Unity version and target platform (VRChat PC / Warudo / general Unity)
+### The outline breaks at sharp corners
+
+**Normal Source** is VertexColorTS or UV8TS on a mesh with no baked smoothed outline normals. Change it to MeshNormal. → [Outline Smooth Normals UV8](/guides/mesh-bakes#아웃라인-스무스-노멀-uv8)
+
+### I cannot paint outline thickness in the Scene view {#씬-뷰에서-아웃라인-두께를-칠할-수-없다}
+
+The inspector tells you the reason in a sentence. The action for each message is in [Painting directly in the Scene view](/guides/outline#씬-뷰에서-직접-칠하기).
+
+### I painted and the result got worse
+
+If **Pressure Source** is Vertex Red and **Normal Source** is VertexColorTS, they overwrite the same channel. Change the pressure source to Vertex Alpha, or move the outline normals to UV8.
+
+If other objects changed too, several renderers share the same mesh asset. Duplicate the mesh, assign it to that renderer only, and paint again.
+
+## Face {#face}
+
+### I painted the face mask and it does not work
+
+If **Mask Intensity** is 0, the mask is ignored and the whole material counts as face. Raise it above 0. The mask priority is texture, vertex paint, proxy, then whole material. → [Face shading](/guides/character#페이스-셰이딩)
+
+### There is no shadow on the face at all
+
+If **Depth Availability** is `Force Off`, Depth Shadow is never drawn. The automatic face correction removes projected shadows from the face. Turning on **Projected Shadow When Depth Off** on the Face material falls back to projected shadows when depth is absent.
+
+## VRChat {#vrchat}
+
+### I uploaded and optimization does not seem to have run
+
+1. Check that the Unity version is 2022.3.22f1. The VRChat hook does not compile on 2021.3.
+2. Check that the Console contains `[MingToon] VRChat build hook compiled and registered.`
+3. Check that **Optimize On Build / Upload (Applies To Everything)** is on in the `Optimize` tab of MingToon Manager.
+4. Open `StudioRaming/MingToonOptimizeReport.txt` next to the project folder.
+
+→ [Checking that it ran](/workflow/build-optimization#제대로-걸렸는지-확인하기)
+
+### I can see depth effects but others cannot
+
+That is the default. Depth effects are visible only to you and your friends. Turning on **Show depth effects to non-friends** in the `Get Started` tab of Manager shows them to everyone. In exchange, the load on the other person grows.
+
+Not appearing in mirrors is also intended. It stops a mirror from using someone else's silhouette as a shadow. → [How far depth effects are guaranteed](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
+
+## WARUDO {#warudo}
+
+### Every depth effect is empty in WARUDO
+
+The Depth Bridge is not installed. Check the Playground path, the `.cs` extension, and the `installed` log. → [WARUDO Depth Bridge](/platforms/warudo#warudo-depth-bridge)
+
+If only the main screen is correct and the Spout or NDI output differs, check that camera's `depth enabled for camera=` log. No log means the camera was not processed.
+
+## Performance {#performance}
+
+### The inspector is heavy while I work {#작업-중-인스펙터가-무겁다}
+
+That is normal. The authoring shader compiles and keeps every feature and the maximum layer count at once. Because of that, you do not wait for a compile each time you turn a feature on. Lightening is applied [only at build time](/workflow/build-optimization).
+
+### People say my avatar is too heavy
+
+Turning every depth effect off also drops the depth light from the build automatically. That is the lightest path. → [VRChat depth light](/platforms/vrchat#vrchat-깊이-라이트)
+
+## Bake and restore {#bake}
+
+### The restore button on a baked material is disabled
+
+Check that the bake Manifest is still there. The GUID of the original authoring material must also be alive. Also check that the Renderer hierarchy and material slots are unchanged since the bake. → [Manual Bake and Restore](/workflow/bake-and-restore)
+
+### A feature I turned on after baking does not work
+
+Features that were off at bake time and were not found as preservation targets are removed from the code. Mark values you will turn on later from a script with **Keep Editable At Bake**.
+
+## If this still does not solve it
+
+Post the following in the bug report channel of the [official Discord server](https://discord.gg/Zsj6pkWKKs).
+
+1. Unity version and target platform (VRChat PC / WARUDO / general Unity)
 2. Render pipeline (BRP / URP 12.x)
 3. MingToon version
-4. Full Console log
+4. The full Console log
 5. Steps to reproduce

@@ -1,107 +1,149 @@
 ---
 id: texture-modules
-title: Common Texture Slot UI
+title: Shared Texture Slot UI
 sidebar_position: 11
 ---
 
-# Common Texture Slot UI
+# Shared Texture Slot UI
 
-**Purpose:** Learn the repeated adjustment order used by MingToon base maps, masks, normals, MatCaps, and emission slots. Select a material, check the map and its **Tiling / Offset** first, then open **UV Router** and advanced details only when needed.
+> This page is a reference. There is no set reading order.
+> Every texture slot in MingToon uses the same layout. Learn it once here.
 
-Read a texture slot in this order:
+One slot is four blocks from top to bottom.
 
-- Map row: texture, tint when supported, and **Tiling / Offset**
-- Optional **UV Router**
-- Details: channel, invert, HSVG, and tint order
-- Optional mask map transforms, UV Router, channel, remap, feather, and gradient
+1. The map row — texture, color, tiling and offset
+2. **Texture Adjustments** — channels and color correction
+3. **UV & Motion** — which UV to read and how to move it
+4. The mask row and **Mask Details**
+
+![One expanded texture slot with its four blocks numbered in the inspector](/img/placeholder.png)
+<!-- CAPTURE: guides/texture-modules-01-slot-anatomy.png | 노멀 레이어 슬롯 하나를 전부 펼친 인스펙터 + 맵 행/텍스처 세부 설정/UV·움직임/마스크 네 덩어리에 1~4 번호 콜아웃 | 1200x700 -->
+
+## The map row
+
+| Inspector label | Type | What it does |
+|---|---|---|
+| **Color** | Color | The color multiplied into this map |
+| **Unassigned** | — | Shows the map is empty |
+| **Clear Texture** | — | Clears this slot's map |
+| **UV · Tiling · Offset** | — | Expands the UV transform for this map only |
+
+:::caution[The map's tiling and the mask's tiling are separate]
+The two do not change together automatically.
+You can repeat a surface map 30 times while placing the mask only once.
+:::
 
 ## Texture Adjustments
 
 ### Channel Source {#채널-소스}
 
-Choose which channel the map reads.
-
-| Value | Result |
-|---|---|
-| **Full RGBA** | Reads the whole color |
-| **R / G / B / A** | Reads one channel |
-
-Use a channel when several values are packed into one texture. Mask slots also offer **Luminance**, which turns RGB brightness into the mask value.
-
-### Invert Source Colors
-
-Invert the value that was read. Enable it when the effect should use black areas, or when reusing a mask painted white where you want to erase.
+| Inspector label | Type | Values | What it does |
+|---|---|---|---|
+| **Channel Source** | Enum | R / G / B / A | Reads only one when you packed several kinds of information into one image |
+| **Invert Source Colors** | Toggle | — | Flips the color that was read |
+| **Apply Tint After HSVG** | Toggle | — | Sets whether the color is multiplied before or after color correction |
+| **Use Grayscale** | Toggle | — | Skips saturation adjustment on this matcap |
 
 ### HSVG {#hsvg}
 
-| Item | Range | Neutral | Effect |
-|---|---:|---:|---|
-| **Hue** | -1 to 1 | 0 | Rotates hue |
-| **Saturation** | 0 to 2 | 1 | Reduces or increases color strength |
-| **Value** | 0 to 2 | 1 | Darkens or brightens |
-| **Gamma** | 0.1 to 3 | 1 | Changes midtone contrast |
+| Inspector label | Type | Default | What it does |
+|---|---|---:|---|
+| **Hue** | Float | 0 | Rotates the color around the color wheel |
+| **Saturation** | Float | 1 | 0 is grayscale; above 1 is oversaturated |
+| **Value** | Float | 1 | Overall brightness |
+| **Gamma** | Float | 1 | Adjusts the brightness of the midtones |
 
-Neutral values keep the authored color. For example, adjust only **Hue** on an eye texture to try a new color without rebaking the file. If the result seems wrong, restore HSVG to 0/1/1/1 and compare with the original.
+With all four at their defaults, the original color comes through unchanged.
 
-For slots with a tint, **Apply Tint After HSVG** chooses whether tint is multiplied before or after HSVG. The same tint can produce a different result when the order changes.
+If the result looks wrong, set them back to 0, 1, 1, 1 and compare with the original.
 
-## Tiling, Offset, and UV Router {#uv-router}
+## UV & Motion {#uv-router}
 
-**Tiling / Offset** directly below the map row belongs to that map. A mask has its own Tiling / Offset, so the two are independent. You can repeat a surface map 30 times while leaving a mask at one full UV pass.
+| Inspector label | Type | Values or default | What it does |
+|---|---|---|---|
+| **UV Channel** | Enum | UV0 (default) / UV1 / UV2 / UV3 | Which UV set of the mesh to read |
+| **Scroll Speed (X/Y)** | Float | 0, 0 | How many tiles it flows per second |
+| **Base Rotation (°)** | Float | 0 | Rotates around the UV center |
+| **Rotation Speed (°/s)** | Float | 0 | Degrees of rotation per second |
 
-Slots that expose **UV Router** can provide:
+Only choose `UV1` to `UV3` when the author told you extra UVs were included.
 
-- **UV Source:** UV0, UV1, UV2, or UV3
-- **Scroll:** X/Y movement
-- **Rotation / Rotation Speed:** shown in degrees in the UI
-- **Atlas:** grid minimum 1, frame count minimum 0, FPS, frame scale, and center blend
-- **Decal:** **Is Decal** must be enabled before left/right, copy, and mirror options are active. **Flip Copy** is disabled while **Should Copy** is off.
+Expand **Sprite Sheet / Atlas** to play back a grid texture.
 
-If this group is absent, the shader slot has no UV Router properties. Do not treat a missing advanced row on an ordinary UV0 slot as a missing texture.
+Set **Columns / Rows**, **Frame / Play Count** and **Playback Speed (FPS)**.
+
+If **Frame / Play Count** is 0, the atlas is not used.
+
+Expand **Decal & Mirroring** to place a logo at one spot.
+
+You have to turn on **Use as Decal** first before the other fields come alive.
+
+**Flip the Copied Side** only works once **Copy to Other Side** is on.
 
 ## Mask Details {#마스크-세부-설정}
 
-### Using mask remap {#리맵을-쓰는-법}
+| Inspector label | Type | Values or default | What it does |
+|---|---|---|---|
+| **Mask Map** | Texture | Empty | Leave it empty and it applies to the whole material |
+| **Mask Channel** | Enum | R / G / B / A / Luma | The channel to read from the mask |
+| **Invert** | Toggle | Off | Reverses the area it applies to |
+| **Feather / Softness** | Float | 0 | Blurs the mask boundary |
 
-A mask restricts where an effect applies. The mask row also owns its Tiling / Offset and optional UV Router. Its detail controls are:
+### How to use remapping {#리맵을-쓰는-법}
 
-| Item | Effect |
-|---|---|
-| **Mask Channel** | Select R/G/B/A or **Luminance** |
-| **Invert** | Flip black and white |
-| **Remap Start / End** | Re-map the gray input range |
-| **Boundary Blur** | Soften the transition |
-| **Gradient Mode** | Enables a gradient; Angle, Start, End, and Center(UV) appear only then |
-| **Alpha Scale / Offset / Blend Mode** | Compose the final value for supported alpha masks |
+Values below **Remap Start** become 0. Raise it and the applied area narrows.
 
-Raise **Start** first to narrow the affected range, then lower **End** to sharpen the transition. Equal values approach a hard cut. If Gradient Mode is off, hidden direction and center rows are expected. Alpha blend modes are **Multiply, Replace, Add, and Subtract**.
+Values above **Remap End** become 1. Lower it and the boundary gets abrupt.
 
-## Layer Slots {#레이어-수}
+Set the two to the same value and the boundary becomes completely hard.
 
-The texture stack supports up to 10 layers; normal and MatCap layers support up to 5 each. **Active Layers** set to 0 disables that module. When a map is invisible, first check that the count reaches that slot index. The first layer header opens by default, and **Up / Down** reorders layers.
+Turn on **Gradient Mode** to use a directional gradient without a texture.
 
-The inspector may initially expose only two layer choices. If the material already uses more than two, or you press **Show up to N layers**, the popup expands to the module's real maximum. This display limit does not change the shader hard maximum.
+While it is off, **Angle**, **Start**, **End** and **Center (UV)** are ignored.
+
+## Layer slots {#레이어-수}
+
+| Module | Shader maximum |
+|---|---:|
+| Additional Texture | 10 |
+| Normal Maps | 5 |
+| MatCap | 5 |
+
+The layer count list only shows 0 to 2 at first.
+
+To use more, press the **Use More Layers (up to N)** button.
+
+N differs per module. Surface stack is 10, normal is 5, matcap is 5.
+
+This display limit does not reduce the shader's actual maximum.
 
 :::caution[Layer order changes the result]
-Normal above Multiply and Multiply above Normal produce different composites. Recheck each map and its opacity or strength after reordering.
+Compositing stacks in order from the bottom up.
+After reordering, check each slot's strength again.
 :::
 
-## Copy / Paste values {#값-복사--붙여넣기}
+## Copy / paste values {#값-복사--붙여넣기}
 
-Right-click a property or layer header for value, layer, and tab copy menus. Paste writes compatible properties only and records one Undo unit. A MatCap layer cannot be pasted into a Normal layer, and a color cannot be pasted into a numeric slider; incompatible entries are skipped.
+Right-click a property or a layer header to get the copy menu.
 
-Check the applied/skipped count in the Console log. If a menu or row is missing, check whether search hid the row, whether the slot declares that property, and whether the selected layer type matches.
+You can copy one value, one layer, or one tab at a time.
 
-## When a value is not visible
+Paste applies only compatible fields and is recorded as a single Undo.
 
-1. Confirm the map object field is assigned.
-2. Check Active Layers and the slot's strength or opacity.
-3. Check map and mask Tiling / Offset against the intended UV.
-4. Check UV Router, Atlas, and Decal gates.
-5. Restore neutral HSVG and the channel actually painted in the mask, then compare.
+Mismatched fields are skipped, like pasting a matcap value onto a normal layer.
 
-## Related docs
+The counts applied and skipped appear in the Console log.
 
-- [Basics](/guides/basics) — Base Map and alpha
-- [Detail Maps](/guides/detail-maps) — Layers, PBR, MatCap
-- [Bulk Editing](/guides/bulk-editing) — Apply common values to several materials
+## Check this when nothing shows
+
+1. See whether the map slot is empty.
+2. See whether that module's layer count and strength are not 0.
+3. See whether the map and mask tiling match the UV you intended.
+4. See whether a parent switch such as **Use as Decal** is on.
+5. Set HSVG back to its defaults and compare.
+
+## Related pages
+
+- [Basic Settings guide](/guides/basics) — base map and surface mode
+- [Detail Maps](/guides/detail-maps) — layers, PBR and matcap
+- [Editing Multiple Materials](/guides/bulk-editing) — the same value across many
