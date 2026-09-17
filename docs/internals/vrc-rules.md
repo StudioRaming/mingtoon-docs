@@ -41,7 +41,8 @@ MingToon의 색, 그림자, 효과가 보존된다는 뜻이 아닙니다.
 
 :::note[투명 fallback 경고를 확정 결과로 읽지 마세요]
 `TransparentFallbackUsesUnlit`은 MingToon 분석기의 경고입니다.
-공식 문서에서 Toon과 Transparent/Fade를 조합하면 Transparent Unlit 경로를 씁니다.
+공식 문서 기준으로 Toon과 Transparent/Fade를 조합한 경우입니다.
+그 조합은 Transparent Unlit 경로를 씁니다.
 `toonstandardoutline`은 그 조합과 별개인 단독 태그입니다.
 실제 결과는 재질의 override tag와 Safety 상태에서 확인하세요.
 :::
@@ -81,7 +82,8 @@ VRCSpatialAudioSource  VRCStation
 :::caution[자동 삭제는 보장되지 않습니다]
 MingToon 런타임 컴포넌트는 VRChat에서 `IEditorOnly`로 표시됩니다.
 표시했다고 SDK가 반드시 지운다는 보장은 없습니다.
-그래서 SDK 처리가 끝난 build clone에서 MingToon 컴포넌트가 0개인지 직접 확인해야 합니다.
+그래서 SDK 처리가 끝난 build clone을 직접 확인해야 합니다.
+그 clone에 MingToon 컴포넌트가 0개인지 보세요.
 편집 중에는 아바타 루트의 밍툰 매니저를 그대로 두고 평소대로 업로드하세요.
 :::
 
@@ -125,7 +127,9 @@ Quest 버전을 만들 계획이라면 아웃라인이 사라지고 반투명을
 Photo Camera, 월드 설정, 다른 깊이 공급 조건을 각각 확인하세요.
 깊이가 있어도 큐, 카메라 깊이 참여, 품질, 거리 설정에 따라 결과가 달라집니다.
 
-매니저의 **빌드 시 깊이 라이트 싣기** 를 켜면 업로드 복제본에 보조 Directional Light를 넣습니다.
+매니저의 **빌드 시 깊이 라이트 제거하기** 는 꺼 두는 것이 기본입니다.
+꺼 두면 깊이 효과를 실제로 쓸 때만 업로드 복제본에 보조 Directional Light를 넣습니다.
+켜면 그 라이트를 강제로 빼므로 깊이 효과가 화면에서 사라질 수 있습니다.
 Avatar Safety, 월드, 광원 설정에 영향을 받으므로 모든 화면에서 깊이를 보장하지는 않습니다.
 [VRChat 깊이 라이트](/platforms/vrchat#vrchat-깊이-라이트)를 먼저 읽고 본인 화면, 미러, Photo Camera를 비교하세요.
 

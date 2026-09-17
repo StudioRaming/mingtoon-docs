@@ -44,7 +44,7 @@ sidebar_position: 9
 `PixelStable`은 화면 픽셀 기준이라 거리가 멀어져도 굵기가 같습니다.
 아바타에는 `PixelStable`이 안전합니다.
 
-:::danger[URP에서는 Renderer Feature가 있어야 합니다]
+:::caution[URP에서는 Renderer Feature가 있어야 합니다]
 URP 프로젝트는 활성 URP 에셋의 모든 렌더러에 기능이 필요합니다.
 없으면 값은 전부 편집되지만 선이 한 픽셀도 그려지지 않습니다.
 `StudioRaming > MingToon > URP > Install Outline Renderer Feature`

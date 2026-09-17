@@ -20,7 +20,7 @@ MingToon은 VRChat과 Warudo 아바타를 위한 캐릭터 툰 셰이더입니�
 
 1. [설치](/getting-started/installation) — Unity 버전을 맞추고 패키지를 넣습니다.
 2. [Manager로 처음 시작하기](/getting-started/first-material) — 아바타 한 대를 변환합니다.
-3. [기본 설정](/guides/basics) — 색과 밝기를 잡습니다.
+3. [기본 설정 가이드](/guides/basics) — 색과 밝기를 잡습니다.
 4. [조명과 그림자](/guides/light-and-shadow) — 그림자 경계를 다듬습니다.
 
 ## 무엇이 달라지나
@@ -51,7 +51,7 @@ VRC SDK 업로드나 WARUDO 모드 빌드를 실행하면 쓰는 기능만 남�
 
 | 인스펙터 그룹 | 문서 |
 |---|---|
-| 기본 색상과 투명도 | [기본 설정](/guides/basics) · [레퍼런스](/reference/basics) |
+| 기본 색상과 투명도 | [기본 설정 가이드](/guides/basics) · [기본 설정 레퍼런스](/reference/basics) |
 | 그림자 | [조명과 그림자](/guides/light-and-shadow) · [레퍼런스](/reference/light-and-shadow) |
 | 림과 보조광 | [림](/guides/rim) · [레퍼런스](/reference/rim) |
 | 화면 공간 효과 | [깊이 기반 효과](/guides/depth-effects) · [레퍼런스](/reference/depth-effects) |

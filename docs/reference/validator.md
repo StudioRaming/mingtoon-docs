@@ -6,7 +6,7 @@ sidebar_position: 8
 
 # 문제 해결: Validate Project 코드
 
-`Tools > Studio Raming > MingToon > Validate Project`를 실행하면 코드가 붙은 줄이 나옵니다.
+`StudioRaming > MingToon > Validate Project`를 실행하면 코드가 붙은 줄이 나옵니다.
 이 페이지에서 그 코드를 찾으세요. 검사는 보고만 하고 아무것도 고치지 않습니다.
 
 코드는 세 묶음입니다.
@@ -93,7 +93,7 @@ Quest/Android는 [VRChat 호환성 규칙](/internals/vrc-rules)을 보세요.
 **경고** — **컬러 마스크** 가 0이라 이 재질이 화면에 아무 색도 기록하지 않습니다.
 메시는 그려지고 뒤를 가리지만 보이지는 않습니다.
 
-1. `표면 렌더링 > 고급 컬러 버퍼`를 엽니다.
+1. **표면 렌더링** > **고급 컬러 버퍼** 를 엽니다.
 2. **컬러 마스크** 를 15로 되돌립니다.
 
 무시해도 되나: 가림막 전용 재질을 일부러 만든 게 아니라면 안 됩니다.
@@ -102,7 +102,7 @@ Quest/Android는 [VRChat 호환성 규칙](/internals/vrc-rules)을 보세요.
 
 **경고** — 불투명 큐인데 깊이를 기록하지 않습니다.
 
-1. `표면 렌더링 > 고급 컬러 버퍼`에서 **ZWrite** 를 켭니다.
+1. **표면 렌더링** > **고급 컬러 버퍼** 에서 **ZWrite** 를 켭니다.
 2. 또는 원래 의도한 투명 표면 모드를 고릅니다.
 
 무시해도 되나: 안 됩니다. 다른 불투명 메시와의 앞뒤가 무작위가 되고,
@@ -135,8 +135,8 @@ Quest/Android는 [VRChat 호환성 규칙](/internals/vrc-rules)을 보세요.
 1. `마스터 조정` 탭을 엽니다.
 2. **성능 거리 배율** 을 1로 올립니다.
 
-무시해도 되나: 별매 애드온 Ming Light Controller가 인게임에서 이 배율을 조절하는 구성이면 정상입니다.
-그 외에는 안 됩니다.
+무시해도 되나: 별매 애드온 Ming Light Controller를 쓰는 구성이면 정상입니다.
+MLC가 인게임에서 이 배율을 조절하기 때문입니다. 그 외에는 안 됩니다.
 
 ---
 
@@ -238,7 +238,8 @@ Console의 컴파일 오류와 그래픽 API를 함께 확인하세요.
 ### MING-SHADER-PERF-DISTANCE-RANGE {#ming-shader-perf-distance-range}
 
 **오류** — 성능 거리 항목의 범위 선언이 다릅니다.
-이러면 마스터 조정 탭의 슬라이더와 Ming Light Controller의 다이얼이 서로 다른 거리를 가리킵니다.
+이러면 마스터 조정 탭의 슬라이더와 Ming Light Controller의 다이얼이 어긋납니다.
+둘이 서로 다른 거리를 가리킵니다.
 
 ### MING-RUNTIME-PROVIDER-MISSING {#ming-runtime-provider-missing}
 

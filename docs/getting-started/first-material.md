@@ -112,4 +112,4 @@ Manager는 업로드 최적화가 어디까지를 이 아바타로 볼지 기억
 
 ## 다음에 읽을 문서
 
-[기본 설정](/guides/basics) · [인스펙터 사용법](/guides/inspector) · [MingToon Manager](/workflow/character-manager)
+[기본 설정 가이드](/guides/basics) · [인스펙터 사용법](/guides/inspector) · [MingToon Manager](/workflow/character-manager)

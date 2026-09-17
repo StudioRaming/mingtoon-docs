@@ -32,8 +32,9 @@ MingToon은 애니메이션을 **읽기만** 합니다. 클립도 컨트롤러�
 네 곳을 훑습니다. 애니메이션 클립의 재질 값 커브, Animator에 할당된 컨트롤러,
 컴포넌트 안에 들어 있는 컨트롤러 참조, 의상 토글처럼 재질 자체를 바꾸는 오브젝트 참조 커브입니다.
 
-:::danger[VRChat 아바타에서 특히 중요합니다]
-Avatar Descriptor의 Playable Layer에 있는 컨트롤러는 Animator에 할당돼 있지 않을 수 있습니다.
+:::caution[VRChat 아바타에서 특히 중요합니다]
+Avatar Descriptor의 Playable Layer에 있는 컨트롤러를 보세요.
+이 컨트롤러는 Animator에 할당돼 있지 않을 수 있습니다.
 그래도 업로드 뒤에는 그 재질 커브가 실제로 돕니다. 그래서 반드시 보존 대상에 들어갑니다.
 :::
 

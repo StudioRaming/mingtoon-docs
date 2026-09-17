@@ -17,7 +17,7 @@ import path from 'node:path';
 // everywhere and link nothing useful.
 const GLOSSARY = {
   '깊이 투과광': '/guides/depth-effects#깊이-투과광',
-  '껍데기 최소 두께': '/guides/depth-effects#1-얇음을-어떻게-잴지',
+  '껍데기 최소 두께': '/guides/depth-effects#깊이-투과광',
   '준비 상태 검사': '/workflow/character-manager#업로드-준비-점검',
   '밍툰 매니저': '/workflow/character-manager',
   'WARUDO Runtime Root': '/platforms/warudo#warudo-depth-bridge',
@@ -26,49 +26,49 @@ const GLOSSARY = {
   // 인스펙터
   '전체 효과': '/guides/inspector#전체-효과--가장-위의-마스터-스위치',
   '빠른 설정': '/guides/inspector#빠른-설정',
-  '일괄 설정': '/guides/bulk-editing#일괄-설정-패널',
+  '일괄 설정': '/guides/bulk-editing',
   '전체 설정': '/guides/inspector#보기-모드',
-  '혼합 값': '/guides/bulk-editing#여러-재질을-그냥-선택했을-때',
-  '워크플로 그룹': '/guides/inspector#전체-설정의-워크플로-그룹',
+  '혼합 값': '/guides/bulk-editing',
+  '워크플로 그룹': '/guides/inspector#이동-막대와-그룹',
 
   // 기본 설정
   '표면 모드': '/guides/basics#1-표면-모드부터-정합니다',
-  '알파 마스크': '/guides/basics#3-투명도를-텍스처로-따로-지정하기',
+  '알파 마스크': '/guides/basics#1-표면-모드부터-정합니다',
   '알파 컷오프': '/guides/basics#1-표면-모드부터-정합니다',
-  '투명 깊이 선기록': '/guides/basics#머리카락이-볼을-뚫고-보일-때',
+  '투명 깊이 선기록': '/guides/basics#1-표면-모드부터-정합니다',
   '틴트 불투명도': '/guides/basics#2-베이스-색',
   '베이스맵 HSVG': '/guides/basics#2-베이스-색',
-  '표시할 면': '/guides/basics#표시할-면',
+  '표시할 면': '/guides/basics#1-표면-모드부터-정합니다',
 
   // 조명과 그림자
   '형태 그림자': '/guides/light-and-shadow#1-형태-그림자-경계--가장-먼저',
   '그림자 투영': '/guides/light-and-shadow#4-그림자-투영-캐스트-섀도우',
-  '그림자 색상': '/guides/light-and-shadow#2-그림자-색상',
+  '그림자 색상': '/guides/light-and-shadow#통합-그림자--겹칠-때-새까매지는-문제',
   '통합 그림자': '/guides/light-and-shadow#통합-그림자--겹칠-때-새까매지는-문제',
   '캐스트 섀도우 수신': '/guides/light-and-shadow#4-그림자-투영-캐스트-섀도우',
   '1차 그림자 번짐': '/guides/light-and-shadow#1-형태-그림자-경계--가장-먼저',
-  '2차 그림자': '/guides/light-and-shadow#3-2차-그림자--3단-셀-음영',
+  '2차 그림자': '/guides/light-and-shadow#그림자-컬러맵',
   '얼굴 캐스트 안정화': '/guides/light-and-shadow#얼굴의-스치는-그림자',
-  '셀프 캐스트 섀도우 억제': '/guides/light-and-shadow#얼룩덜룩한-그림자',
-  '투영 경계 페더': '/guides/light-and-shadow#그림자-경계가-계단처럼-각질-때',
+  '셀프 캐스트 섀도우 억제': '/guides/light-and-shadow#4-그림자-투영-캐스트-섀도우',
+  '투영 경계 페더': '/guides/light-and-shadow#4-그림자-투영-캐스트-섀도우',
   '역광 실루엣 억제': '/guides/light-and-shadow#역광에서-몸에-캐릭터-모양-그림자가-겹칠-때',
   '최종 최소 밝기': '/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때',
   '베이스 색 유지': '/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때',
   '베이스 색상 보존': '/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때',
-  '그림자 경계': '/guides/light-and-shadow#6-경계-장식--마지막에',
-  '추가 광원': '/guides/light-and-shadow#추가-광원',
+  '그림자 경계': '/guides/light-and-shadow#1-형태-그림자-경계--가장-먼저',
+  '추가 광원': '/reference/light-and-shadow#라이팅',
 
   // 그림자 패턴
   '그림자 패턴': '/guides/shadow-pattern',
   스크린톤: '/guides/shadow-pattern',
   '패턴 모양 타일': '/guides/shadow-pattern#패턴-모양-타일',
-  '패턴 밀도': '/guides/shadow-pattern#런타임-값',
+  '패턴 밀도': '/guides/shadow-pattern#자주-만지는-값',
 
   // 림
-  '림 라이트': '/guides/rim#림-라이트',
-  '림 셰이드': '/guides/rim#림-셰이드',
-  백라이트: '/guides/rim#백라이트--프런트-라이트--글리터',
-  '프런트 라이트': '/guides/rim#백라이트--프런트-라이트--글리터',
+  '림 라이트': '/guides/rim',
+  '림 셰이드': '/guides/rim',
+  백라이트: '/guides/rim',
+  '프런트 라이트': '/guides/rim',
   '그림자 내부 반사': '/guides/rim#그림자-내부-반사',
 
   // 깊이 기반 효과
@@ -78,27 +78,34 @@ const GLOSSARY = {
   '2D 림라이트': '/guides/depth-effects#깊이-림-2d-림',
   '2D 그림자': '/guides/depth-effects#2d-그림자',
   '내부 2D 경계': '/guides/depth-effects#내부-2d-경계',
+  // The inspector draws these three through LocalUiText, which renders them as
+  // 전체 *. The catalog entry still says 마스터 *, so both spellings are kept
+  // here: the pages use the drawn string, and older text that says 마스터 폭
+  // still lands on the same anchor.
+  '전체 폭': '/guides/depth-effects#깊이--공통-값',
+  '전체 바이어스': '/guides/depth-effects#깊이--공통-값',
+  '전체 부드러움': '/guides/depth-effects#깊이--공통-값',
   '마스터 폭': '/guides/depth-effects#깊이--공통-값',
   '마스터 바이어스': '/guides/depth-effects#깊이--공통-값',
   '몸체 표면 가드': '/guides/depth-effects#눌어붙음과-감쇠',
   '카메라 깊이': '/guides/depth-effects#플랫폼별-깊이-확보',
-  'Depth Texture Provider': '/guides/depth-effects#일반-unity-brp',
+  'Depth Texture Provider': '/guides/depth-effects#플랫폼별-깊이-확보',
 
   // 디테일 맵
   '디테일 맵': '/guides/detail-maps',
-  '텍스처 레이어': '/guides/detail-maps#텍스처-레이어',
-  '노멀 레이어': '/guides/detail-maps#노멀-레이어',
-  '맷캡 레이어': '/guides/detail-maps#맷캡-레이어',
+  '텍스처 레이어': '/guides/detail-maps#켜는-법--세-모듈이-모두-같은-순서',
+  '노멀 레이어': '/guides/detail-maps#켜는-법--세-모듈이-모두-같은-순서',
+  '맷캡 레이어': '/guides/detail-maps#켜는-법--세-모듈이-모두-같은-순서',
   'PBR 표면': '/guides/detail-maps#pbr-표면',
-  '패킹 마스크': '/guides/detail-maps#패킹-마스크',
-  이미션: '/guides/detail-maps#이미션',
-  오클루전: '/guides/detail-maps#오클루전',
-  글리터: '/guides/detail-maps#글리터',
+  '패킹 마스크': '/guides/detail-maps#영역-마스크',
+  이미션: '/guides/detail-maps#발광과-반짝임',
+  오클루전: '/reference/detail-maps#오클루전',
+  글리터: '/guides/detail-maps#발광과-반짝임',
 
   // 캐릭터 표현
   '페이스 셰이딩': '/guides/character#페이스-셰이딩',
   '얼굴 영역 마스크': '/guides/character#방법-a--얼굴-영역-마스크-권장',
-  '프록시 구': '/guides/character#방법-b--프록시-구',
+  '프록시 구': '/guides/character#방법-a--얼굴-영역-마스크-권장',
   '노멀 누름 정도': '/guides/character#2단계-코-그림자-없애기',
   '얼굴 경계': '/guides/character#3단계-얼굴-전용-음영-경계',
   '캐릭터 높이 그라데이션': '/guides/character#캐릭터-높이-그라데이션',
@@ -129,12 +136,12 @@ const GLOSSARY = {
 
   // 일괄 편집
   '머티리얼 프리셋': '/guides/bulk-editing#머티리얼-프리셋',
-  '팩토리 프리셋': '/guides/bulk-editing#적용',
-  '사용자 프리셋': '/guides/bulk-editing#저장',
+  '팩토리 프리셋': '/guides/bulk-editing#머티리얼-프리셋',
+  '사용자 프리셋': '/guides/bulk-editing#머티리얼-프리셋',
 
   // 얼굴 SDF · 타일드
   '얼굴 SDF': '/guides/face-sdf',
-  '타이밍 강도': '/guides/face-sdf#레이어별-조정-항목',
+  '타이밍 강도': '/guides/face-sdf#자주-만지는-값',
   '타일드 머티리얼 컴포저': '/guides/tiled-materials',
 
   // 워크플로
@@ -144,7 +151,7 @@ const GLOSSARY = {
   '빌드 시 자동 최적화': '/workflow/build-optimization',
   'Optimize Shaders On Build': '/workflow/build-optimization',
   '수동 Bake': '/workflow/bake-and-restore',
-  '동적 패스 보존': '/workflow/bake-and-restore#절차',
+  '동적 패스 보존': '/workflow/bake-and-restore#bake-실행',
   LosslessOnly: '/workflow/bake-and-restore#losslessonly-기본값',
   ReviewedHighQuality: '/workflow/bake-and-restore#reviewedhighquality',
   'Keep Editable': '/workflow/bake-and-restore#keep-editable',
@@ -168,7 +175,7 @@ const GLOSSARY = {
   '레이어 티어': '/internals/shader-structure#레이어-티어-키워드',
   '머티리얼 부하 예상': '/internals/module-cost#부하-예상-패널-읽기',
   '애니메이션 의존성': '/internals/bake-internals#1단계--애니메이션-의존성-분석',
-  '구조 프로파일': '/internals/bake-internals#3단계--구조-프로파일과-상수-교집합',
+  '구조 프로파일': '/internals/bake-internals#텍스처-최적화',
   '변환 보고서': '/internals/conversion-internals',
   '판정 근거': '/internals/conversion-internals#판정-근거-표시',
 };
