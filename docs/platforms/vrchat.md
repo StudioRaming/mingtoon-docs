@@ -6,129 +6,142 @@ sidebar_position: 1
 
 # VRChat
 
-**이 문서를 읽으면** VRChat PC 아바타에 MingToon을 올리고, 자동 베이크·깊이 효과·Light Volumes 동작을 확인할 수 있습니다.
+> 이 페이지는 VRChat PC에 MingToon 아바타를 올리는 분을 위한 것입니다.
+> 업로드 순서와 깊이 효과가 어디까지 보이는지를 다룹니다.
 
-VRChat PC는 MingToon의 주 대상입니다.
+VRChat PC는 MingToon의 주 대상입니다. Unity **2022.3.22f1** 을 쓰세요.
 
-:::caution[BRP 본체 Open Beta]
-VRChat PC는 수동 검증 대상입니다. 업로드 전에 이 페이지의 체크리스트와 밍툰 매니저의 준비 상태 검사를 직접 통과시키세요. VRChat Quest는 MingToon 셰이더의 직접 실행 대상이 아닙니다. → [지원 환경](/platforms/compatibility#vrchat-quest)
+:::danger[깊이가 없는 화면이 기본입니다]
+뎁스 림라이트·뎁스 그림자·SSAO·이너 아웃라인은 카메라 깊이 텍스처를 읽습니다.
+VRChat에서 그 깊이는 월드와 호스트가 정합니다. 아바타는 강제할 수 없습니다.
 :::
 
-## Unity 버전
-
-:::danger[Unity 2022.3.22f1]
-현재 검증된 VRChat SDK 프로젝트 버전입니다. VRChat 빌드 훅은 지원하는 2022.3 스트림에서만 컴파일됩니다. Warudo용 Unity 2021.3.45f2 프로젝트와 같은 프로젝트를 공유하지 마세요.
-:::
+노멀 아웃라인·프레넬 림·형태 그림자·Face SDF를 폴백으로 함께 준비하세요.
 
 ## 업로드 체크리스트
 
 1. Console의 C#·셰이더 오류를 0개로 만듭니다.
-2. 밍툰 매니저에서 `하위 렌더러 다시 찾기`를 실행합니다.
-3. `준비 상태 검사`와 `VRChat 사전 점검`을 실행합니다. → [밍툰 매니저](/workflow/character-manager#내보내기--검증)
-4. Expressions 메뉴가 필요하면 직접 작성했거나 별도 툴이 추가한 구성을 최종 build clone에서 확인합니다.
-5. VRChat SDK Builder로 업로드합니다. 수동 Bake는 필수가 아닙니다.
+2. 밍툰 매니저에서 **하위 렌더러 다시 찾기** 를 실행합니다.
+3. **준비 상태 검사** 와 **VRChat 사전 점검** 을 실행하고 오류를 해결합니다.
+4. VRChat SDK Builder로 업로드합니다. 수동 Bake는 필요 없습니다.
+5. SDK 처리 뒤 build clone에서 `RuntimeComponentCount = 0`인지 확인합니다.
 6. 인게임에서 본인 화면·미러·Photo Camera를 각각 확인합니다.
+
+![밍툰 매니저의 검사 · 진단 탭에서 준비 상태 검사와 VRChat 사전 점검 버튼이 보이는 화면](/img/placeholder.png)
+<!-- CAPTURE: platforms/vrchat-01-preflight.png | 밍툰 매니저 「검사 · 진단」 탭에서 준비 상태 검사와 VRChat 사전 점검 버튼, 결과 목록이 보이는 상태 | 1200x700 -->
+
+→ [밍툰 매니저](/workflow/character-manager#내보내기--검증)
 
 ## MingToon 컴포넌트는 지우지 마세요
 
-:::danger[직접 제거하면 최적화 범위를 잃습니다]
-MingToon 런타임 컴포넌트는 VRC SDK에서 `IEditorOnly`로 표시되지만 자동 삭제는 보장되지 않습니다. 저작 씬의 밍툰 매니저를 손으로 지우면 캐시된 Renderer 범위가 사라져 일부 재질이 최적화되지 않을 수 있습니다.
-
-저작 씬은 유지하고, SDK 처리 뒤 실제 build clone에서 `RuntimeComponentCount = 0`인지 검증하세요. 이 진단값은 빌드 루트 아래의 저작용 MingToon 컴포넌트만 세며 SDK·런타임 컴포넌트 수는 세지 않습니다. 남아 있다면 업로드 전에 clone에서 명시적으로 제거해야 합니다.
+:::danger[자동 삭제는 보장되지 않습니다]
+VRC SDK는 MingToon 런타임 컴포넌트를 `IEditorOnly`로 봅니다. 그 표시가 삭제를 보장하지는 않습니다.
+저작 씬의 매니저를 손으로 지우면 최적화 범위가 사라집니다.
 :::
 
-Warudo는 스크립트를 유지하는 반대 규칙을 사용합니다. → [Warudo](/platforms/warudo)
+`RuntimeComponentCount`는 저작용 MingToon 컴포넌트만 셉니다. build clone에 남아 있으면 업로드 전에 clone에서 직접 제거하세요.
 
-## VRChat 업로드 준비 {#expressions-메뉴}
+WARUDO는 스크립트를 유지하는 반대 규칙을 씁니다. → [Warudo](/platforms/warudo)
 
-밍툰 매니저는 VRChat Expressions 메뉴·파라미터·FX를 자동 설치하지 않습니다. Manager를 Avatar Root에 유지하고, 변환·룩·최적화 상태와 업로드용 복사본을 점검하세요. 직접 작성했거나 다른 툴이 추가한 Expressions 구성은 VRChat SDK Builder에서 만들어진 최종 build clone으로 확인합니다.
+## Expressions 메뉴 {#expressions-메뉴}
 
-1. Avatar Root 아래 `MingToon Manager`에서 `하위 렌더러 다시 찾기`를 실행합니다.
-2. `준비 상태 검사`와 `VRChat 사전 점검`을 실행하고 오류를 해결합니다. → [밍툰 매니저](/workflow/character-manager#내보내기--검증)
-3. VRChat SDK Builder로 업로드합니다. 일반 업로드에서는 수동 Bake가 필요하지 않습니다.
-4. SDK 처리 뒤 실제 build clone에서 `RuntimeComponentCount = 0`인지 확인합니다. 이 값은 저작용 MingToon 컴포넌트 수이며 SDK·런타임 컴포넌트 전체 수가 아닙니다.
-5. 업로드 후 본인 화면·미러·Photo Camera에서 깊이 효과와 조명 결과를 각각 확인합니다.
+밍툰 매니저는 Expressions 메뉴·파라미터·FX를 자동 설치하지 않습니다. 직접 만든 구성은 SDK Builder의 최종 build clone에서 확인하세요.
 
-Expressions 구성이나 업로드가 실패하면 [문제 해결](/troubleshooting)의 Console·준비 상태 항목부터 확인하세요.
+인게임 메뉴가 필요하면 별매 애드온을 씁니다. → [Ming Light Controller](/guides/ming-light-controller)
 
 ### 품질 티어와 런타임 전환 {#품질-티어와-런타임-전환}
 
-`High`는 저작값을 유지하고, `Mid`는 2D 림·SSAO·투영 그림자 샘플 수를 제한합니다. `Low`는 샘플 수를 더 낮추고 깊이 효과 마스터와 투영 그림자 페더를 끕니다. 티어는 저작값을 덮어쓰지 않는 상한입니다. 품질 메뉴를 쓸 재질은 밍툰 매니저에서 옵트인해야 하며, 옵트인하지 않은 값은 베이크에서 상수로 접혀 가장 가볍습니다.
+품질 티어는 저작값을 덮어쓰지 않는 상한입니다. 기본값은 High입니다.
 
-- `FX 애니메이터로 깊이 효과 전환` — 깊이 효과 전체 마스터를 애니메이션합니다.
-- `FX 메뉴로 그림자 투영 전환` — Quality 메뉴의 `Shadow Projection`으로 투영 그림자만 끕니다. OFF에서는 페더·캐스트 합성·관련 투과광 계산을 건너뜁니다.
+| 티어 | 하는 일 |
+|---|---|
+| **High** | 저작값을 그대로 씁니다. 상한이 없습니다 |
+| **Mid** | 뎁스 림·SSAO·투영 페더의 샘플 수를 낮춥니다 |
+| **Low** | 깊이 효과 전체와 투영 페더를 끕니다 |
+
+메뉴로 쓸 재질은 **VRC 런타임 제어 사용** 을 켜야 합니다. 켜지 않은 재질은 베이크에서 High로 접혀 가장 가볍습니다.
+
+- **FX 애니메이터로 깊이 효과 전환** — 깊이 효과 마스터를 애니메이션합니다.
+- **FX 메뉴로 그림자 투영 전환** — 메뉴에서 투영 그림자만 끕니다.
+
 ## 업로드에서 자동으로 처리되는 것 {#빌드-시-자동으로-처리되는-것}
 
-업로드 훅은 원본 씬 에셋이 아니라 SDK가 만든 복사본만 변경합니다.
+업로드 훅은 원본 씬 에셋을 건드리지 않습니다. SDK가 만든 복사본만 바꿉니다.
 
-- 편집용 셰이더를 경량 셰이더로 최적화합니다.
-- Face 노멀 누름을 업로드 Mesh의 UV7에 굽고 종료 후 원본 Renderer·재질을 복원합니다.
-- Face SDF가 UV7을 소유하거나 텍스처 Face Area Mask가 필요한 Renderer는 동일한 결과를 위해 Live 경로를 유지합니다.
-- 프로젝트에서 설정한 슬롯 종류별 텍스처 해상도 상한을 업로드 복사본에 적용합니다.
-- `Depth Availability = Auto`를 그대로 보존합니다. Force On / Force Off도 작성자 지정값을 유지합니다. 일반 화면 깊이가 필요하면 Manager에서 `빌드 시 깊이 라이트 싣기`의 현재 옵션 상태를 확인한 뒤 사용합니다.
-- VRC Light Volumes 변형을 아바타 업로드에서 자동 활성화합니다.
-- MingToon 런타임 컴포넌트는 exporter 처리를 위해 `IEditorOnly`로 표시됩니다. 최종 build clone에는 0개인지 별도로 검증해야 합니다.
+- 편집용 셰이더를 경량 셰이더로 바꿉니다.
+- 얼굴 노멀을 업로드 Mesh의 UV7에 굽고, 끝나면 원본을 복원합니다.
+- 프로젝트에 설정한 슬롯별 텍스처 해상도 상한을 복사본에 적용합니다.
+- **깊이 가용성** 값은 그대로 둡니다. Auto는 Auto로 출하됩니다.
+- VRC Light Volumes 변형을 자동으로 켭니다.
 
-복원과 저장은 변경한 Renderer·재질별로 격리됩니다. 한 항목이 실패해도 나머지를 복원하며, 관련 없는 dirty 에셋을 전역 저장하지 않습니다. → [빌드 시 자동 최적화](/workflow/build-optimization)
+한 항목이 실패해도 나머지는 복원합니다. 관련 없는 에셋을 전역 저장하지 않습니다.
+
+→ [빌드 시 자동 최적화](/workflow/build-optimization)
 
 ## 깊이 효과가 어디까지 보장되나 {#깊이-효과가-어디까지-보장되나}
 
-2D 림라이트·2D 그림자·SSAO·2D 투과광·이너 아웃라인은 카메라 깊이 텍스처를 읽습니다. VRChat에서 Screen Camera depth는 월드 권한입니다.
-
 | 상황 | 깊이 |
 |---|---|
-| **Photo Camera 활성 중** | 지원 |
-| **월드가 Screen Camera depth를 켠 경우** | 지원 |
-| **일반 플레이어 화면 기본 상태** | 보장 안 됨 |
-| **미러** | 의도적으로 차단 |
+| Photo Camera 활성 중 | 지원 |
+| 월드가 Screen Camera depth를 켠 경우 | 지원 |
+| 일반 플레이어 화면 기본 상태 | 보장 안 됨 |
+| 미러 | 의도적으로 차단 |
 
-미러 카메라가 플레이어 카메라의 오래된 깊이를 읽어 남의 실루엣을 그림자로 쓰지 않도록 `Force On`이어도 깊이 모듈을 끕니다.
+미러 카메라는 플레이어 카메라의 오래된 깊이를 읽습니다. 남의 실루엣이 그림자로 나오지 않도록 미러에서는 깊이 모듈을 끕니다.
 
-월드 제작자는 [VRC Camera Settings 공식 문서](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)의 Screen Camera 설정으로 깊이를 요청할 수 있습니다. 아바타가 이 설정을 직접 바꿀 수는 없습니다.
+월드 제작자는 [VRC Camera Settings 문서](https://creators.vrchat.com/worlds/udon/vrc-graphics/vrc-camera-settings/)의 Screen Camera 설정으로 깊이를 켤 수 있습니다.
+
+### 누구에게 보일지 정하기
+
+기본값은 본인과 친구에게만 보이는 것입니다. 밍툰 매니저의 **비친구에게도 깊이 효과 보이기** 를 켜면 모든 사람에게 보입니다. 상대방의 렌더링 부하가 커집니다.
+
+인게임에서 깊이 효과를 끄면 이 설정과 상관없이 꺼집니다.
 
 ### VRChat 깊이 라이트 {#vrchat-깊이-라이트}
 
-`빌드 시 깊이 라이트 싣기`가 켜져 있으면 업로드 복사본에 그림자를 켠 Directional Light 하나를 추가해 일반 화면에서도 깊이 패스를 유도합니다. 업로드 전에 Manager에서 현재 옵션 상태를 확인하세요.
+깊이 효과를 쓰는 아바타는 업로드 복사본에 Directional Light 하나를 싣습니다. 그림자를 켠 이 라이트가 카메라의 깊이 패스를 유도합니다.
 
-이 라이트는 **Important(Render Mode = Important / ForcePixel)** 로 싣습니다. 2026-09-05에 도입한 Not Important 최적화는 Unity 에디터 프로브만 통과했으며, 이후 특정 VRChat 월드에서 깊이 그림자 문제가 보고되어 2026-09-06에 9월 4일 설정으로 복원했습니다. Important는 카메라 깊이 패스 외에 라이트별 그림자 맵과 픽셀 라이트 슬롯 비용을 발생시킬 수 있습니다. **설정 복원만으로 문제 해결이 확인된 것은 아니며, 영향을 받은 실제 VRChat 월드에서 재검증이 필요합니다.** 컬링 마스크 Everything과 나머지 라이트 설정, 빌드 클론에만 적용하는 정책은 유지합니다.
+| 항목 | 현재 값 |
+|---|---|
+| Render Mode | Not Important |
+| 컬링 레이어 | StereoLeft(15)와 MirrorReflection(18) |
+| 적용 범위 | 빌드 클론만. 씬·프리팹·재질은 그대로 |
 
-:::danger[비용과 제한]
-
-1. 아바타를 보는 다른 사용자의 카메라에 추가 깊이 패스 비용이 생깁니다.
-2. 미러에서는 동작하지 않습니다.
-3. Avatar Safety가 라이트를 끌 수 있습니다.
-4. 아바타 퍼포먼스 랭크와 픽셀 라이트 수에 영향을 줄 수 있습니다.
+:::danger[비용은 나를 보는 사람이 냅니다]
+깊이 패스는 카메라마다 한 번이지만, 그 패스가 월드의 모든 렌더러를 다시 그립니다.
+미러에서는 동작하지 않고, Avatar Safety가 라이트를 끌 수 있습니다.
 :::
 
-깊이 없는 일반 화면을 기본으로 잡고 노멀 아웃라인·림·형태 그림자·Face SDF 같은 폴백을 함께 준비하는 편이 안전합니다.
+밍툰 매니저의 **빌드 시 깊이 라이트 제거하기** 를 켜면 빌드에서 강제로 뺍니다. 깊이 마스터가 꺼져 있거나 깊이 효과가 전부 꺼져 있으면 이 토글과 상관없이 빠집니다.
 
 ### 얼굴 투영 그림자 폴백
 
-Face 재질의 `깊이 꺼짐 시 투영 그림자` 옵트인은 깊이 모듈이 내려간 화면에서도 얼굴 SDF/그림자 텍스처 경로를 유지합니다. 기본 꺼짐이며, 일반 화면 폴백이 꼭 필요한 Face 재질에만 켜세요.
+Face 재질의 **깊이 꺼짐 시 투영 그림자** 는 기본 꺼짐입니다. 켜면 깊이가 없는 화면에서도 얼굴에 투영 그림자가 남습니다.
 
 ## VRC Light Volumes {#vrc-light-volumes}
 
-Built-in VRChat 아바타는 Light Volumes가 제공하는 간접광, 스페큘러, 포인트 라이트 그림자, 노멀 바이어스와 강도를 사용할 수 있습니다.
+Built-in VRChat 아바타는 Light Volumes를 쓸 수 있습니다. 간접광·스페큘러·포인트 라이트 그림자가 들어옵니다.
 
-- 아바타 업로드에서는 필요한 변형이 자동 활성화됩니다.
-- Light Volumes가 없는 월드에서는 Unity 조명 프로브로 폴백합니다.
-- Unity Editor의 값은 테스트용입니다. 최종 결과는 월드의 볼륨 데이터가 결정합니다.
-- URP와 Warudo Built-in에서는 같은 VRC 볼륨 계약을 기대하지 마세요.
+- 아바타 업로드에서 필요한 변형이 자동으로 켜집니다.
+- Light Volumes가 없는 월드에서는 Unity 조명 프로브로 돌아갑니다.
+- 인스펙터의 **VRC 라이트 볼륨 (테스트용)** 은 에디터 확인용입니다.
+- 최종 결과는 월드의 볼륨 데이터가 정합니다.
 
 ## 다른 빌드 툴과 함께 쓸 때
 
-MingToon 훅은 Modular Avatar·VRCFury 같은 도구가 재질과 Animator를 처리한 뒤 최종 상태를 분석하도록 늦은 순서에 실행됩니다. 준비 상태 검사에서 충돌과 누락을 다시 확인하세요.
+MingToon 훅은 늦은 순서로 실행됩니다. Modular Avatar나 VRCFury가 재질과 Animator를 처리한 뒤의 최종 상태를 분석합니다. 준비 상태 검사에서 충돌과 누락을 다시 확인하세요.
 
 ## 조명을 통제할 수 없다는 전제
 
-월드마다 조명이 다릅니다. `베이스 색 유지`, 최종 최소·최대 밝기, 씬 조명 색상 영향과 림의 씬 조명 영향을 실제 월드 범위에 맞추세요. 추가광 상한은 현재 버전에서 베이스 색 배수가 아니라 절대 HDR 피크입니다. → [조명과 그림자](/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때)
-
-## VRChat + URP
-
-지원하지 않습니다. VRChat용 Built-in 제작본을 사용하세요.
+월드마다 조명이 다릅니다. **베이스 색 유지**, **최종 최소 밝기**, **최종 최대 밝기**, **씬 조명 색상 영향** 을 실제 월드 범위에 맞추세요.
+→ [조명과 그림자](/guides/light-and-shadow#라이팅--어두운-씬에서-검게-뭉칠-때)
 
 ## 알아 둘 것
 
-**하드웨어** — Shader Model 4.5가 필요합니다. 만족하지 못하면 재질이 마젠타로 보일 수 있습니다. → [지원 환경](/platforms/compatibility#하드웨어-요구-사항-필수)
+**하드웨어** — 셰이더 모델 4.5가 필요합니다. 못 맞추면 재질이 마젠타로 보입니다.
+→ [하드웨어 요구 사항](/platforms/compatibility#하드웨어-요구-사항-필수)
 
-**Quest** — MingToon 셰이더를 직접 실행하지 않습니다. 밍툰 매니저의 Quest 점검은 아웃라인·반투명·깊이 효과처럼 대체본에서 잃는 항목을 셉니다.
+**Quest** — MingToon 셰이더를 직접 실행하지 않습니다.
+→ [VRChat Quest](/platforms/compatibility#vrchat-quest)
+
+**URP** — VRChat은 URP를 쓰지 않습니다. Built-in 제작본을 쓰세요.
