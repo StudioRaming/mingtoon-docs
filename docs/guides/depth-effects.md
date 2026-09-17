@@ -36,9 +36,9 @@ sidebar_position: 6
 
 | 환경 | 해야 할 일 |
 |---|---|
-| VRChat | Photo Camera를 켜거나 월드가 Screen Camera depth를 켭니다. 매니저의 **빌드 시 깊이 라이트 싣기** 도 확인하세요 |
-| 일반 Unity (BRP) | 씬에 `Studio Raming/MingToon/Depth Texture Provider`를 둡니다 |
-| URP 12 | `Tools > Studio Raming > MingToon > URP > Install Depth Effects Renderer Feature`를 실행합니다 |
+| VRChat | Photo Camera를 켜거나 월드가 Screen Camera depth를 켭니다. 매니저의 **빌드 시 깊이 라이트 제거하기** 가 꺼져 있는지 확인하세요 |
+| 일반 Unity (BRP) | 씬의 밍툰 매니저가 에디터에서 자동으로 공급합니다. 추가할 컴포넌트는 없습니다 |
+| URP 12 | `StudioRaming > MingToon > URP > Install Depth Effects Renderer Feature`를 실행합니다 |
 | Warudo | Depth를 켠 Warudo 카메라가 필요합니다 |
 
 URP에서는 사용 중인 Renderer Data에서 Depth Texture도 켜야 합니다.
@@ -216,7 +216,8 @@ VRChat 일반 플레이어 화면은 아바타가 깊이를 강제할 수 없습
 
 ### 표면 모드를 투명으로 두니 다 꺼져요
 
-투명 큐는 깊이를 기록하지 않습니다. → [기본 설정](/guides/basics)
+투명 큐는 깊이를 기록하지 않습니다.
+[기본 설정](/guides/basics)에서 표면 모드를 불투명이나 컷아웃으로 바꾸세요.
 
 ### 미러 안에서 그림자가 몸을 안 따라와요
 

@@ -71,7 +71,6 @@ Skinned Mesh에서 Mesh 기준을 쓰면 패턴이 피부 위를 미끄러집니
 
 1. 밍툰 매니저를 선택합니다.
 2. 인스펙터가 표시하는 **레스트 포즈 앵커 굽기** 버튼을 누릅니다.
-3. 버튼이 없으면 `Tools > Studio Raming > MingToon > Advanced > Bake Rest Pose Anchor`를 실행합니다.
 
 베이커는 레스트 포즈를 담은 복제 Mesh를 만들고 앵커 사용을 켭니다.
 기존 채널과 충돌해 거부된 Renderer는 Console에 따로 표시됩니다.
