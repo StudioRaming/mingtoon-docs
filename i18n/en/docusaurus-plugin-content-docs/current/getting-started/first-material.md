@@ -23,7 +23,7 @@ sidebar_position: 2
 You are fine when MingToon Manager appears in the Inspector with three tabs.
 The tabs are **Get Started** · **Look & Bake** · **Optimize**.
 
-![The Inspector with MingToon Manager on the avatar root and three tabs visible](/img/placeholder.png)
+![The Inspector with MingToon Manager on the avatar root and three tabs visible](/img/getting-started/first-material-01-add-manager.png)
 <!-- CAPTURE: getting-started/first-material-01-add-manager.png | Hierarchy에서 아바타 루트를 고른 상태로 Inspector에 MingToon Manager와 시작하기·룩·베이크·최적화 탭이 보이는 화면 | 1200x700 -->
 
 :::caution[Do not delete it when you are done]
@@ -42,7 +42,7 @@ Find **1. Assign face & skin renderers** on the **Get Started** tab.
 You are fine when the slot list shows `Face` and `Skin`.
 Leave the hair and clothing slots as `Regular`.
 
-![The Get Started tab with Face and Skin roles shown in the slot list](/img/placeholder.png)
+![The Get Started tab with Face and Skin roles shown in the slot list](/img/getting-started/first-material-02-face-skin.png)
 <!-- CAPTURE: getting-started/first-material-02-face-skin.png | 시작하기 탭의 "1. 얼굴 · 스킨 대상 지정" 카드에서 슬롯 목록에 Face·Skin·Regular가 표시된 상태 | 1200x700 -->
 
 Leave both fields empty if you only convert hair and clothing.

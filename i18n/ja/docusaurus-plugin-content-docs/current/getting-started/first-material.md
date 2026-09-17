@@ -23,7 +23,7 @@ sidebar_position: 2
 Inspector に MingToon Manager が現れ、タブが 3 つ見えれば正常です。
 タブ名は**はじめに** · **外観・ベイク** · **最適化**です。
 
-![アバタールートに MingToon Manager が付き、タブが 3 つ見える Inspector](/img/placeholder.png)
+![アバタールートに MingToon Manager が付き、タブが 3 つ見える Inspector](/img/getting-started/first-material-01-add-manager.png)
 <!-- CAPTURE: getting-started/first-material-01-add-manager.png | Hierarchy에서 아바타 루트를 고른 상태로 Inspector에 MingToon Manager와 시작하기·룩·베이크·최적화 탭이 보이는 화면 | 1200x700 -->
 
 :::caution[作業が終わっても削除しないでください]
@@ -42,7 +42,7 @@ Manager は、アップロード最適化がどこまでをこのアバターと
 スロット一覧に `Face` と `Skin` が表示されれば正常です。
 髪と衣装のスロットは `Regular` のままにします。
 
-![スロット一覧に Face と Skin の役割が表示されたはじめにタブ](/img/placeholder.png)
+![スロット一覧に Face と Skin の役割が表示されたはじめにタブ](/img/getting-started/first-material-02-face-skin.png)
 <!-- CAPTURE: getting-started/first-material-02-face-skin.png | 시작하기 탭의 "1. 얼굴 · 스킨 대상 지정" 카드에서 슬롯 목록에 Face·Skin·Regular가 표시된 상태 | 1200x700 -->
 
 髪と衣装だけを変換する場合は、2 つの欄を空のままにしてください。

@@ -31,7 +31,7 @@ If to convert is 0, go to [Troubleshooting](/troubleshooting#conversion).
 ![The avatar root Inspector before Manager, with only Transform and Animator](/img/placeholder.png)
 <!-- CAPTURE: workflow/character-manager-01-before.png | 아바타 루트를 고른 Inspector에 Transform과 Animator만 있는 상태 | 1200x700 -->
 
-![The Inspector after Manager, showing three tabs and the slot count line](/img/placeholder.png)
+![The Inspector after Manager, showing three tabs and the slot count line](/img/workflow/character-manager-02-after.png)
 <!-- CAPTURE: workflow/character-manager-02-after.png | 같은 루트에 MingToon Manager가 붙어 시작하기·룩·베이크·최적화 탭과 그 아래 슬롯 수 줄이 보이는 상태 | 1200x700 -->
 
 ## How to turn it on

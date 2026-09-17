@@ -31,7 +31,7 @@ sidebar_position: 1
 ![Manager を付ける前、Transform と Animator だけがあるアバタールートの Inspector](/img/placeholder.png)
 <!-- CAPTURE: workflow/character-manager-01-before.png | 아바타 루트를 고른 Inspector에 Transform과 Animator만 있는 상태 | 1200x700 -->
 
-![Manager を付けたあと、タブ 3 つとスロット数の行が見える Inspector](/img/placeholder.png)
+![Manager を付けたあと、タブ 3 つとスロット数の行が見える Inspector](/img/workflow/character-manager-02-after.png)
 <!-- CAPTURE: workflow/character-manager-02-after.png | 같은 루트에 MingToon Manager가 붙어 시작하기·룩·베이크·최적화 탭과 그 아래 슬롯 수 줄이 보이는 상태 | 1200x700 -->
 
 ## 使い方

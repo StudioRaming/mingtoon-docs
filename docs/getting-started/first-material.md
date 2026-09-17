@@ -23,7 +23,7 @@ sidebar_position: 2
 Inspector에 MingToon Manager가 나타나고 탭 세 개가 보이면 정상입니다.
 탭 이름은 **시작하기** · **룩·베이크** · **최적화**입니다.
 
-![아바타 루트에 MingToon Manager가 붙고 탭 세 개가 보이는 Inspector](/img/placeholder.png)
+![아바타 루트에 MingToon Manager가 붙고 탭 세 개가 보이는 Inspector](/img/getting-started/first-material-01-add-manager.png)
 <!-- CAPTURE: getting-started/first-material-01-add-manager.png | Hierarchy에서 아바타 루트를 고른 상태로 Inspector에 MingToon Manager와 시작하기·룩·베이크·최적화 탭이 보이는 화면 | 1200x700 -->
 
 :::caution[작업이 끝나도 지우지 마세요]
@@ -42,7 +42,7 @@ Manager는 업로드 최적화가 어디까지를 이 아바타로 볼지 기억
 슬롯 목록에 `Face`와 `Skin`이 표시되면 정상입니다.
 머리카락과 의상 슬롯은 `Regular`로 둡니다.
 
-![슬롯 목록에 Face와 Skin 역할이 표시된 시작하기 탭](/img/placeholder.png)
+![슬롯 목록에 Face와 Skin 역할이 표시된 시작하기 탭](/img/getting-started/first-material-02-face-skin.png)
 <!-- CAPTURE: getting-started/first-material-02-face-skin.png | 시작하기 탭의 "1. 얼굴 · 스킨 대상 지정" 카드에서 슬롯 목록에 Face·Skin·Regular가 표시된 상태 | 1200x700 -->
 
 헤어와 의상만 변환한다면 두 칸을 비워 두세요.
