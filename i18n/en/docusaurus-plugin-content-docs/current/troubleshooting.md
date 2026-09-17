@@ -223,7 +223,7 @@ If only the main screen is correct and the Spout or NDI output differs, check th
 
 ### The inspector is heavy while I work {#작업-중-인스펙터가-무겁다}
 
-That is normal. The authoring shader compiles and keeps every feature and the maximum layer count at once. Because of that, you do not wait for a compile each time you turn a feature on. Lightening is applied [only at build time](/workflow/build-optimization).
+That is normal. The authoring shader compiles and keeps every feature and the maximum layer count at once. Because of that, you do not wait for a compile each time you turn a feature on. The trade-off is that inside the Unity editor the same material costs about twice the GPU time of the built result (measured). Do not judge avatar weight from editor frame rate or profiler numbers. Lightening is applied [only at build time](/workflow/build-optimization).
 
 ### People say my avatar is too heavy
 
