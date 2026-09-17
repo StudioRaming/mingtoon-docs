@@ -624,6 +624,42 @@ function isBoilerplate(s, lang) {
   return left.length === 0;
 }
 
+// The product's English strings are written in British spelling ("colour",
+// "metres", "centre"). The docs site is American, so generated English cells
+// are normalised on the way out. The lookbehind keeps compound identifiers out
+// of it - "MonoBehaviour" in a validator message must stay as it is spelled in
+// the tool. Case is preserved because every rule reuses the matched text.
+const ISE_STEMS =
+  'normal|optim|custom|initial|priorit|minim|maxim|emphas|synchron|visual|organ|' +
+  'quant|raster|modern|neutral|standard|serial|categor|special|final|equal|stabil|util';
+const EN_SPELLING = [
+  [/(?<![A-Za-z])([Cc])olour/g, (m, a) => `${a}olor`],
+  [/(?<![A-Za-z])([Bb])ehaviour/g, (m, a) => `${a}ehavior`],
+  [/(?<![A-Za-z])([Cc])entre/g, (m, a) => `${a}enter`],
+  [/(?<![A-Za-z])([Cc])entred/g, (m, a) => `${a}entered`],
+  [/(?<![A-Za-z])([Mm])etre/g, (m, a) => `${a}eter`],
+  [/(?<![A-Za-z])([Gg])rey/g, (m, a) => `${a}ray`],
+  [/(?<![A-Za-z])([Aa])rtefact/g, (m, a) => `${a}rtifact`],
+  [/(?<![A-Za-z])([Cc])atalogue/g, (m, a) => `${a}atalog`],
+  [/(?<![A-Za-z])([Dd])ialogue/g, (m, a) => `${a}ialog`],
+  [/(?<![A-Za-z])([Ll])icence/g, (m, a) => `${a}icense`],
+  [/(?<![A-Za-z])([Aa])nalys(e|es|ed|ing)/g, (m, a, b) => `${a}nalyz${b}`],
+  // -ise / -isation only on a known stem, so "precise" and "emphasis" are safe.
+  [new RegExp(`(?<![A-Za-z])((?:${ISE_STEMS}))is(e|es|ed|ing|ation|ations)`, 'gi'),
+    (m, a, b) => `${a}iz${b}`],
+];
+let spellingHits = 0;
+function americanize(s) {
+  let out = String(s == null ? '' : s);
+  for (const [re, fn] of EN_SPELLING) {
+    out = out.replace(re, (...args) => { spellingHits++; return fn(...args); });
+  }
+  return out;
+}
+// Locale text for a generated cell. English is normalised, the other two are
+// taken as the product writes them.
+const loc = (v, lang) => (lang === 'en' ? americanize(pick(v, lang)) : pick(v, lang));
+
 // Sentence enders: "...다." and "." need whitespace or end after them, "。" does
 // not, because Japanese does not space its sentences.
 const SENTENCE_RE = /[\s\S]*?(?:。|(?:다\.|\.)(?=\s|$))/g;
@@ -642,7 +678,7 @@ const MIN_KEEP = 20;
 const LEGACY_LIMIT = 40;
 
 function summarize(tooltip, lang, onHardCut, onLegacyCut, onOverLong) {
-  const raw = tooltip && pick(tooltip, lang);
+  const raw = tooltip && loc(tooltip, lang);
   if (!raw) return '-';
   const flat = String(raw).replace(/\s+/g, ' ').trim();
 
@@ -798,7 +834,7 @@ function run() {
       let rowTotal = 0;
       const perSection = [];
       for (const sec of sections) {
-        out.push(`## ${pick(sec.label, lang)} {#${anchor(sec.label.ko)}}`, '');
+        out.push(`## ${loc(sec.label, lang)} {#${anchor(sec.label.ko)}}`, '');
         if (sec.layered) {
           out.push(layeredNote[lang](pick(sec.layered.noun, lang), sec.layered.count), '');
         }
@@ -817,7 +853,7 @@ function run() {
             report.noSummary.push(`${page.file} ${sec.key} ${r.prop} (${r.label.ko})`);
           }
           out.push(
-            `| **${cell(pick(r.label, lang))}** | ${pick(t.kind, lang)} | ${cell(pick(t.range, lang))} | ${cell(pick(t.def, lang))} | ${cell(does)} |`,
+            `| **${cell(loc(r.label, lang))}** | ${pick(t.kind, lang)} | ${cell(pick(t.range, lang))} | ${cell(pick(t.def, lang))} | ${cell(does)} |`,
           );
         }
         out.push('');
@@ -846,6 +882,22 @@ function run() {
         if (/2D/.test(outsideRange)) leftover2D.push(`${lang} ${p.file}:${i + 1} ${line.trim().slice(0, 90)}`);
       });
     }
+  }
+
+  // ---- British spelling left in the generated English tables. The lead and
+  // the tail belong to the translator and are not touched, so only the rows
+  // and the section headings are looked at.
+  const britishLeft = [];
+  for (const p of PAGES) {
+    const abs = path.join(DOCS_DIR.en, p.file);
+    if (!fs.existsSync(abs)) continue;
+    fs.readFileSync(abs, 'utf8').split('\n').forEach((line, i) => {
+      if (!/^[|#]/.test(line)) return;
+      const m = line.match(
+        /(?<![A-Za-z])(colours?|behaviours?|centres?|metres?|greys?|artefacts?|catalogues?|dialogues?|licences?)(?![A-Za-z])/i,
+      );
+      if (m) britishLeft.push(`en ${p.file}:${i + 1} ${m[0]} — ${line.trim().slice(0, 90)}`);
+    });
   }
 
   // ---- console report
@@ -884,10 +936,18 @@ function run() {
   for (const x of report.ambiguous) console.log('  ' + x);
   console.log(`CHECK leftover "2D" outside the Range column: ${leftover2D.length}`);
   for (const x of leftover2D) console.log('  ' + x);
+  console.log(`CHECK British spelling in the generated EN tables: ${britishLeft.length}`);
+  for (const x of britishLeft) console.log('  ' + x);
+  console.log(`  (spelling replacements applied while reading EN strings: ${spellingHits})`);
   console.log(`\nKO cells with no tooltip (-): ${report.noSummary.length}`);
   for (const x of report.noSummary) console.log('  ' + x);
 
-  fs.writeFileSync(path.join(HERE, 'reference-gen-report.json'), JSON.stringify(report, null, 2), 'utf8');
+  // The console output above is the report. The JSON dump is for debugging and
+  // is written only when a path is asked for, so a normal run leaves no file
+  // behind in the repository.
+  if (process.env.MINGTOON_GEN_REPORT) {
+    fs.writeFileSync(process.env.MINGTOON_GEN_REPORT, JSON.stringify(report, null, 2), 'utf8');
+  }
 }
 
 run();
