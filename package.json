@@ -5,6 +5,8 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
+    "check:glossary-links": "node scripts/check-glossary-links.mjs --strict",
+    "prebuild": "npm run check:glossary-links",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
