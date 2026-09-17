@@ -77,7 +77,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Angle Width Floor** | Float | 0 ~ 1 | 0.35 | How far the shadow's width may shrink when the light lines up with the camera |
 | **Angle Length Floor** | Float | 0 ~ 1 | 0.35 | How far the length the depth gradient adds may shrink at the same angle |
 | **Softness** | Float | 0.001 ~ 0.05 | 0.05 | How far past the bias the depth gap must go before the shadow is fully dark, in… |
-| **Blur** | Float | 0 ~ 0.02 | 0 | Softens the edge of the finished shadow by this radius in metres, in every… |
+| **Blur** | Float | 0 ~ 0.02 | 0 | Softens the edge of the finished shadow by this radius in meters, in every… |
 | **Blur Taps** | Enum | Taps4 / Taps8 / Taps16 | Taps4 | How many depth samples build the spread |
 | **Vertical Offset (Down +)** | Float | -4 ~ 4 | 0 | Screen-vertical offset independent of light and camera rotation |
 
@@ -119,7 +119,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 |---|---|---|---|---|
 | **Enable Translucency** | Toggle | - | Off | Makes thin parts - hair tails, cloth hems - read as if they were holding the… |
 | **Measure Width** | Float | 0 ~ 10 | 6 | How far along the light this pixel looks to measure the distance the light… |
-| **Depth Range** | Float | 0.01 ~ 2 | 0.35 | A gap this deep in metres counts as fully open |
+| **Depth Range** | Float | 0.01 ~ 2 | 0.35 | A gap this deep in meters counts as fully open |
 | **Shell Floor** | Float | 0 ~ 1 | 0 | A hollow garment - a skirt, a cape, a veil - is wide on screen so it measures as… |
 | **Transmission Intensity** | Float | 0 ~ 4 | 1 | Overall brightness multiplier for the transmitted light |
 | **Edge Intensity** | Float | 0 ~ 20 | 1 | Strength of the layer that lights only the outer silhouette |

@@ -103,14 +103,14 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 | **Dielectric Reflectance** | Float | 0 ~ 1 | 0.04 | Range 0-1; default 0.04 |
 | **Use Reflection Color Map** | Toggle | - | Off | Multiplies Reflection Color by the texture's RGB and alpha |
 | **Reflection Color / Mask** | Texture | - | None | RGB tint and A mask corresponding to lilToon's Reflection Color Tex |
-| **Reflection Color** | Color | - | White | HDR post-lobe colour, matching lilToon's Reflection Color |
-| **Apply Surface Transparency** | Toggle | - | Off | Multiplies surface alpha into the reflection colour alpha |
-| **Reflection Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | How the reflection colour is composited onto the surface |
+| **Reflection Color** | Color | - | White | HDR post-lobe color, matching lilToon's Reflection Color |
+| **Apply Surface Transparency** | Toggle | - | Off | Multiplies surface alpha into the reflection color alpha |
+| **Reflection Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | How the reflection color is composited onto the surface |
 | **Use Cubemap** | Toggle | - | On | Whether the material's own cubemap feeds the reflection |
 | **Reflection Cubemap** | Texture | - | None | Material cubemap sampled when the reflection probe is empty or Override… |
 | **Cubemap Tint** | Color | - | Black | HDR tint applied to the material cubemap |
 | **Override Reflection Probe** | Toggle | - | Off | Uses the material cubemap even when a scene reflection probe exists |
-| **Cubemap Light Influence** | Float | 0 ~ 1 | 1 | Controls how much the resolved main-light colour and intensity affect the… |
+| **Cubemap Light Influence** | Float | 0 ~ 1 | 1 | Controls how much the resolved main-light color and intensity affect the… |
 | **Fresnel Power** | Float | 1 ~ 8 | 5 | Range 1-8; default 5 |
 
 ## Toon Specular {#툰-스페큘러}
@@ -145,7 +145,7 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 | **Emission Blend Mode** | Enum | Normal / Add / Screen / Multiply | Add | How the glow is composited onto the surface beneath it - the same four modes as… |
 | **Emission Blend Strength** | Float | 0 ~ 1 | 1 | How much of the blend above is applied |
 | **Glow Map · Intensity** | Float | 0 ~ 16 | 1 | Multiplier on the glow brightness |
-| **Base Color Influence** | Float | 0 ~ 1 | 0 | Mixes the base map's colour into the glow |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | Mixes the base map's color into the glow |
 | **Glow Map · Visibility in Shadow** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Glow Map · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel intensity mask |
 | **Emission Scroll Speed** | Float | Four values | 0, 0, 0, 0 | Scrolls the emission map over time |
@@ -153,7 +153,7 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 | **Emission Blend Mode (Layer 2)** | Enum | Normal / Add / Screen / Multiply | Add | How layer 2's glow is composited onto the surface beneath it |
 | **Emission Blend Strength (Layer 2)** | Float | 0 ~ 1 | 1 | How much of layer 2's blend is applied |
 | **Glow Map Layer 2 · Intensity** | Float | 0 ~ 16 | 1 | - |
-| **Base Color Influence (Layer 2)** | Float | 0 ~ 1 | 0 | Mixes the base map's colour into layer 2's glow |
+| **Base Color Influence (Layer 2)** | Float | 0 ~ 1 | 0 | Mixes the base map's color into layer 2's glow |
 | **Glow Map Layer 2 · Visibility in Shadow** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Glow Map Layer 2 · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel intensity mask |
 | **Emission Scroll Speed (Layer 2)** | Float | Four values | 0, 0, 0, 0 | Scrolls emission layer 2 over time |

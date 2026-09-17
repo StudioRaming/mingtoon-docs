@@ -26,9 +26,9 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Base Map Opacity** | Float | 0 ~ 1 | 1 | Multiplies the Base Map alpha at the final surface step |
 | **Use Color Adjust Mask** | Toggle | - | Off | Applies the Base HSVG adjustment only where the mask is white, and leaves the… |
 | **Base Color Adjustment Mask** | Texture | - | None | - |
-| **Gradation LUT** | Toggle | - | Off | Re-maps the Base Map's colours through per-channel R/G/B ramps |
+| **Gradation LUT** | Toggle | - | Off | Re-maps the Base Map's colors through per-channel R/G/B ramps |
 | **Gradation LUT** | Texture | - | None | A horizontal ramp texture |
-| **Gradation Strength** | Float | 0 ~ 1 | 0 | How far the ramp result is mixed over the source colour |
+| **Gradation Strength** | Float | 0 ~ 1 | 0 | How far the ramp result is mixed over the source color |
 
 ## Surface Rendering {#표면-렌더링}
 
