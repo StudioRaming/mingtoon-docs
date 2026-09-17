@@ -54,7 +54,7 @@ What you check is the result as it appears on a real avatar.
 
 The current open beta does not allow commercial use. The allowed scope and future structure are written in one place only.
 
-→ [License and Included Tools](/legal/beta-license)
+→ [License and Commercial Use](/legal/beta-license)
 
 ## Beta feedback
 

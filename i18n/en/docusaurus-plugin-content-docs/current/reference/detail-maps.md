@@ -51,13 +51,13 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 | **Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Screen | How the MatCap combines with the surface |
 | **Strength** | Float | 0 ~ 20 | 0.74 | How much this layer is applied |
 | **MatCap Emission Intensity** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
-| **Base Color Influence** | Float | 0 ~ 1 | 0 | 0 ignores base color; at 1, darker base colors weaken the… |
-| **Normal Map Influence** | Float | 0 ~ 1 | 1 | 0 uses the mesh normal; 1 applies the complete stacked… |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | 0 ignores base color; at 1, darker base colors weaken the effect |
+| **Normal Map Influence** | Float | 0 ~ 1 | 1 | 0 uses the mesh normal; 1 applies the complete stacked normal result |
 | **MatCap Normal Map Intensity** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
-| **Form / AO Shadow Visibility** | Float | 0 ~ 1 | 0.28 | At 0, hides the MatCap in form shadow and ambient occlusion;… |
-| **Cast / Depth Shadow Visibility** | Float | 0 ~ 1 | 0.28 | At 0, hides the MatCap in cast and depth shadows; at 1… |
-| **Light Brightness Link** | Float | 0 ~ 1 | 1 | 0 keeps current brightness; at 1, darker main light reduces… |
-| **MatCap / Mesh UV Projection** | Float | 0 ~ 1 | 0 | 0 projects the MatCap from the view, 1 pins it to the mesh… |
+| **Form / AO Shadow Visibility** | Float | 0 ~ 1 | 0.28 | At 0, hides the MatCap in form shadow and ambient occlusion; at 1, keeps it… |
+| **Cast / Depth Shadow Visibility** | Float | 0 ~ 1 | 0.28 | At 0, hides the MatCap in cast and depth shadows; at 1, keeps it fully visible… |
+| **Light Brightness Link** | Float | 0 ~ 1 | 1 | 0 keeps current brightness; at 1, darker main light reduces MatCap contribution |
+| **MatCap / Mesh UV Projection** | Float | 0 ~ 1 | 0 | 0 projects the MatCap from the view, 1 pins it to the mesh UV |
 | **MatCap Rotation** | Float | -180 ~ 180 | 0 | Range -180-180 degrees; default 0 |
 | **MatCap Circle Radius** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
 | **MatCap Circle Feather** | Float | 0 ~ 1 | 0.25 | Range 0-1; default 0.25 |
@@ -67,19 +67,19 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
 | **Enable PBR Surface** | Toggle | - | Off | Off by default |
-| **Workflow** | Enum | Specular / Metallic | Metallic | Metallic derives the reflection color from the metallic… |
+| **Workflow** | Enum | Specular / Metallic | Metallic | Metallic derives the reflection color from the metallic value; Specular lets you… |
 | **Metallic** | Float | 0 ~ 1 | 0 | 0 is dielectric, 1 is metal |
 | **Smoothness** | Float | 0 ~ 1 | 0.5 | Higher values give smaller, sharper reflections |
 | **Specular Intensity** | Float | 0 ~ 2 | 1 | Range 0-2; default 1 |
-| **Use Packed Mask** | Toggle | - | Off | Reads metallic, occlusion and smoothness from one packed… |
-| **PBR Packed Mask** | Texture | - | None | Default packing is R = metallic, G = occlusion, A =… |
+| **Use Packed Mask** | Toggle | - | Off | Reads metallic, occlusion and smoothness from one packed texture by channel |
+| **PBR Packed Mask** | Texture | - | None | Default packing is R = metallic, G = occlusion, A = smoothness |
 | **Metallic Channel** | Enum | R / G / B / A | R | Which channel of the packed mask holds metallic |
 | **Invert Metallic** | Toggle | - | Off | Flips the sampled metallic value |
 | **Occlusion Channel** | Enum | R / G / B / A | G | Which channel of the packed mask holds reflection occlusion |
 | **Invert Occlusion** | Toggle | - | Off | Flips the sampled reflection-occlusion value |
 | **Reflection Occlusion** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
 | **Smoothness Channel** | Enum | R / G / B / A | A | Which channel of the packed mask holds smoothness |
-| **Roughness / Invert** | Toggle | - | Off | Turn this on when the texture stores roughness instead of… |
+| **Roughness / Invert** | Toggle | - | Off | Turn this on when the texture stores roughness instead of smoothness; the… |
 | **Use Specular Color Map (RGB)** | Toggle | - | Off | Sources the specular color from a texture |
 | **Invert Specular Color Map** | Toggle | - | Off | Inverts the RGB of the specular color map |
 | **Direct Highlight Intensity** | Float | 0 ~ 4 | 1 | Range 0-4; default 1 |
@@ -92,25 +92,25 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
-| **Enable Reflection** | Toggle | - | Off | Enables main-light, additional-light, and environment… |
-| **Main Light Specular** | Toggle | - | On | Applies the reflection color and mask to the main light's… |
-| **Additional Light Specular** | Toggle | - | On | Applies reflection to direct highlights from point, spot… |
-| **Environment Reflection** | Toggle | - | On | Applies reflection probes, skybox reflection, and the… |
+| **Enable Reflection** | Toggle | - | Off | Enables main-light, additional-light, and environment reflection plus the… |
+| **Main Light Specular** | Toggle | - | On | Applies the reflection color and mask to the main light's direct highlight… |
+| **Additional Light Specular** | Toggle | - | On | Applies reflection to direct highlights from point, spot, and other additional… |
+| **Environment Reflection** | Toggle | - | On | Applies reflection probes, skybox reflection, and the material cubemap, matching… |
 | **Environment Reflection Intensity** | Float | 0 ~ 4 | 0 | Range 0-4; default 0 |
 | **Reflection Blur Bias** | Float | -1 ~ 1 | 0 | Range -1-1; default 0 |
 | **Reflection Desaturation** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
 | **Reflection Tint** | Color | - | White | HDR tint for environment reflection; default is (1, 1, 1) |
 | **Dielectric Reflectance** | Float | 0 ~ 1 | 0.04 | Range 0-1; default 0.04 |
 | **Use Reflection Color Map** | Toggle | - | Off | Multiplies Reflection Color by the texture's RGB and alpha |
-| **Reflection Color / Mask** | Texture | - | None | RGB tint and A mask corresponding to lilToon's Reflection… |
-| **Reflection Color** | Color | - | White | HDR post-lobe color, matching lilToon's Reflection Color |
-| **Apply Surface Transparency** | Toggle | - | Off | Multiplies surface alpha into the reflection color alpha |
-| **Reflection Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | How the reflection color is composited onto the surface |
+| **Reflection Color / Mask** | Texture | - | None | RGB tint and A mask corresponding to lilToon's Reflection Color Tex |
+| **Reflection Color** | Color | - | White | HDR post-lobe colour, matching lilToon's Reflection Color |
+| **Apply Surface Transparency** | Toggle | - | Off | Multiplies surface alpha into the reflection colour alpha |
+| **Reflection Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | How the reflection colour is composited onto the surface |
 | **Use Cubemap** | Toggle | - | On | Whether the material's own cubemap feeds the reflection |
-| **Reflection Cubemap** | Texture | - | None | Material cubemap sampled when the reflection probe is empty… |
+| **Reflection Cubemap** | Texture | - | None | Material cubemap sampled when the reflection probe is empty or Override… |
 | **Cubemap Tint** | Color | - | Black | HDR tint applied to the material cubemap |
-| **Override Reflection Probe** | Toggle | - | Off | Uses the material cubemap even when a scene reflection probe… |
-| **Cubemap Light Influence** | Float | 0 ~ 1 | 1 | Controls how much the resolved main-light color and… |
+| **Override Reflection Probe** | Toggle | - | Off | Uses the material cubemap even when a scene reflection probe exists |
+| **Cubemap Light Influence** | Float | 0 ~ 1 | 1 | Controls how much the resolved main-light colour and intensity affect the… |
 | **Fresnel Power** | Float | 1 ~ 8 | 5 | Range 1-8; default 5 |
 
 ## Toon Specular {#툰-스페큘러}
@@ -121,9 +121,9 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 | **Toon Specular Color** | Color | - | White | White by default |
 | **Toon Specular Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | Add by default |
 | **Blend Opacity** | Float | 0 ~ 1 | 1 | How strongly the toon specular highlight blends in |
-| **Intensity** | Float | 0 ~ 8 | 0.5 | Range 0-8; default 1 |
+| **Intensity** | Float | 0 ~ 8 | 0.5 | Range 0-8; default 0.5 |
 | **Highlight Color Source** | Enum | Single Color / Mask Texture Color | Single Color | Single Color uses only the color you set |
-| **Mask Color Amount** | Float | 0 ~ 1 | 1 | At 0 the highlight keeps the color you set; at 1 the mask… |
+| **Mask Color Amount** | Float | 0 ~ 1 | 1 | At 0 the highlight keeps the color you set; at 1 the mask color is applied in… |
 | **Enable Toon Specular Mask** | Toggle | - | On | On by default |
 | **Mode** | Enum | Isotropic / Anisotropic | Isotropic | Isotropic by default |
 | **Smoothness** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
@@ -142,20 +142,20 @@ Up to 5 matcap layers. Adding a layer repeats the fields below once per layer.
 | **Enable Emission** | Toggle | - | Off | Off by default |
 | **Emission Map** | Texture | - | None | Texture that marks the self-illuminated areas |
 | **Emission Color** | Color | - | White | The glow color |
-| **Emission Blend Mode** | Enum | Normal / Add / Screen / Multiply | Add | How the glow is composited onto the surface beneath it - the… |
+| **Emission Blend Mode** | Enum | Normal / Add / Screen / Multiply | Add | How the glow is composited onto the surface beneath it - the same four modes as… |
 | **Emission Blend Strength** | Float | 0 ~ 1 | 1 | How much of the blend above is applied |
 | **Glow Map · Intensity** | Float | 0 ~ 16 | 1 | Multiplier on the glow brightness |
-| **Base Color Influence** | Float | 0 ~ 1 | 0 | Mixes the base map's color into the glow |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | Mixes the base map's colour into the glow |
 | **Glow Map · Visibility in Shadow** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
-| **Glow Map · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel… |
+| **Glow Map · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel intensity mask |
 | **Emission Scroll Speed** | Float | Four values | 0, 0, 0, 0 | Scrolls the emission map over time |
-| **Enable Emission Layer 2** | Toggle | - | Off | Turn on a second emission map when different areas need… |
+| **Enable Emission Layer 2** | Toggle | - | Off | Turn on a second emission map when different areas need different glow colors |
 | **Emission Blend Mode (Layer 2)** | Enum | Normal / Add / Screen / Multiply | Add | How layer 2's glow is composited onto the surface beneath it |
 | **Emission Blend Strength (Layer 2)** | Float | 0 ~ 1 | 1 | How much of layer 2's blend is applied |
 | **Glow Map Layer 2 · Intensity** | Float | 0 ~ 16 | 1 | - |
-| **Base Color Influence (Layer 2)** | Float | 0 ~ 1 | 0 | Mixes the base map's color into layer 2's glow |
+| **Base Color Influence (Layer 2)** | Float | 0 ~ 1 | 0 | Mixes the base map's colour into layer 2's glow |
 | **Glow Map Layer 2 · Visibility in Shadow** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
-| **Glow Map Layer 2 · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel… |
+| **Glow Map Layer 2 · Map Alpha Masks Intensity** | Toggle | - | On | Uses the emission map's alpha channel as a per-pixel intensity mask |
 | **Emission Scroll Speed (Layer 2)** | Float | Four values | 0, 0, 0, 0 | Scrolls emission layer 2 over time |
 
 ## Occlusion {#오클루전}

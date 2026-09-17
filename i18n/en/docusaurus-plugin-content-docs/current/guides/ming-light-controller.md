@@ -137,7 +137,7 @@ MLC is distributed free only during the open beta and is sold from the Early Acc
 
 MingToon is currently the only supported shader. lilToon and Poiyomi support is planned, and MLC is not a tool that converts shaders.
 
-[Official BOOTH store page](https://raming.booth.pm/items/8810346) · [License and Included Tools](/legal/beta-license)
+[Official BOOTH store page](https://raming.booth.pm/items/8810346) · [License and Commercial Use](/legal/beta-license)
 
 ## Other tools {#mask-maker}
 

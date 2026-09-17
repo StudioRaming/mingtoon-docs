@@ -6,6 +6,7 @@
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "check:glossary-links": "node scripts/check-glossary-links.mjs --strict",
+    "gen:reference": "node scripts/gen-reference.mjs",
     "prebuild": "npm run check:glossary-links",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",

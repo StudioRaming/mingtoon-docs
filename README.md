@@ -29,14 +29,19 @@ npm run build             # 세 로케일 전부 빌드 + 링크 검사
 툴에서 라벨이 바뀌면 아래를 다시 실행해 세 언어를 한 번에 맞춥니다.
 
 ```bash
-MINGTOON_SRC="<Unity project>/Assets/StudioRaming/MingToon" \
-  node scripts/gen-reference.mjs
+MINGTOON_ROOT="<Unity project>/Assets/StudioRaming/MingToon" npm run gen:reference
 ```
+
+전제: MingToon 패키지 소스가 로컬에 있어야 합니다(`Editor/InspectorUx/MingInspectorText.cs`,
+`Editor/InspectorUx/MingToonShaderGUI.InspectorUx.cs`, `Shaders/MingToonBRP.shader`를 직접 읽습니다).
+`MINGTOON_ROOT`를 생략하면 스크립트 안의 기본 경로를 씁니다. 한 번 실행하면 ko · en · ja 21개 파일이
+함께 갱신되고, frontmatter와 머리말 문단은 디스크에 있던 것을 그대로 둔 채 표만 다시 씁니다.
 
 생성 대상은 `PAGES`에 정의된 슬러그뿐입니다. `reference/validator.md`는 생성기가 건드리지 않으므로 **`docs/reference` 폴더를 통째로 지우지 마세요.**
 
-출력 마지막 줄에 배치되지 않은 프로퍼티가 보고됩니다. 새 항목이 생겼는데 어느 페이지에도
-안 들어갔다면 `scripts/gen-reference.mjs`의 `PAGES` 규칙을 손보세요.
+출력에 로케일별 행 수, 제외한 프로퍼티 수, 그리고 0이어야 하는 검사 3종(단어 중간 잘림 · 한 표 안의
+중복 라벨 · 범위 열 밖에 남은 `2D`)이 찍힙니다. 새 항목이 어느 페이지에도 안 들어갔다면
+`scripts/gen-reference.mjs`의 `PAGES` 규칙을 손보세요.
 
 `scripts/parse-source.mjs`는 모듈 카탈로그까지 포함한 전체 모델을
 `scripts/.model/model.json`으로 덤프합니다. 구조를 확인할 때만 씁니다.

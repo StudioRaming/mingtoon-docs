@@ -24,9 +24,9 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Base Tint** | Color | - | White | A color laid over the Base Map |
 | **Tint Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Multiply | How Base Tint combines with the Base Map |
 | **Base Map Opacity** | Float | 0 ~ 1 | 1 | Multiplies the Base Map alpha at the final surface step |
-| **Use Color Adjust Mask** | Toggle | - | Off | Applies the Base HSVG adjustment only where the mask is… |
+| **Use Color Adjust Mask** | Toggle | - | Off | Applies the Base HSVG adjustment only where the mask is white, and leaves the… |
 | **Base Color Adjustment Mask** | Texture | - | None | - |
-| **Gradation LUT** | Toggle | - | Off | Re-maps the Base Map's colours through per-channel R/G/B… |
+| **Gradation LUT** | Toggle | - | Off | Re-maps the Base Map's colours through per-channel R/G/B ramps |
 | **Gradation LUT** | Texture | - | None | A horizontal ramp texture |
 | **Gradation Strength** | Float | 0 ~ 1 | 0 | How far the ramp result is mixed over the source colour |
 
@@ -34,7 +34,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
-| **Camera Depth Contribution** | Toggle | - | On | Controls whether this material is written to the… |
+| **Camera Depth Contribution** | Toggle | - | On | Controls whether this material is written to the camera-depth texture |
 | **Flip Backface Lighting Normal** | Toggle | - | On | - |
 | **Blend Operation** | Enum | Add / Subtract / ReverseSubtract / Min / Max | Add | - |
 | **Two-Pass Mode** | Toggle | - | Off | - |
@@ -45,26 +45,26 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
-| **Alpha & Cutout Effects** | Toggle | - | On | Enables or bypasses alpha mask, cutoff, soft cutout… |
-| **Cutout Threshold** | Float | 0 ~ 1 | 0 | When Enable Cutout is on, pixels with alpha below this… |
-| **Soft Cutout** | Toggle | - | Off | Smooths the stair-stepped edge of a cutout using the… |
+| **Alpha & Cutout Effects** | Toggle | - | On | Enables or bypasses alpha mask, cutoff, soft cutout, distance, Fresnel, and… |
+| **Cutout Threshold** | Float | 0 ~ 1 | 0 | When Enable Cutout is on, pixels with alpha below this threshold are discarded |
+| **Soft Cutout** | Toggle | - | Off | Smooths the stair-stepped edge of a cutout using the screen's own anti-aliasing |
 | **Edge Sharpness** | Float | 0.25 ~ 4 | 1 | How wide the softened band is |
-| **Enable Alpha Mask** | Toggle | - | Off | Combines a separate image with the Base Map alpha using the… |
+| **Enable Alpha Mask** | Toggle | - | Off | Combines a separate image with the Base Map alpha using the selected blend mode |
 | **Mask Image** | Texture | - | None | Grayscale image used as the alpha source |
 | **Alpha Blend Mode** | Enum | Multiply / Replace / Add / Subtract | Multiply | How the mask combines with the Base alpha |
-| **Mask Value Scale** | Float | - | 1 | Multiplies the mask after channel, invert, remap, feather… |
+| **Mask Value Scale** | Float | - | 1 | Multiplies the mask after channel, invert, remap, feather, and gradient… |
 | **Mask Value Offset** | Float | - | 0 | Added after Mask Value Scale |
-| **Camera Depth Cutoff** | Float | 0 ~ 1 | 0.5 | Where the transparent surface's silhouette in the camera… |
+| **Camera Depth Cutoff** | Float | 0 ~ 1 | 0.5 | Where the transparent surface's silhouette in the camera depth texture is cut |
 | **Enable Distance Fade** | Toggle | - | Off | Fades the surface out by how far it is from the camera |
 | **Near - Fully Gone At** | Float | 0 ~ 5 | 0 | Closer than this the surface is fully gone |
 | **Near - Fully Visible At** | Float | 0 ~ 5 | 0 | Farther than this the surface is fully there |
 | **Far - Starts Fading At** | Float | 0 ~ 200 | 200 | Past this distance the surface starts fading |
 | **Far - Fully Gone At** | Float | 0 ~ 200 | 200 | Farther than this the surface is fully gone |
-| **Enable Fresnel Alpha** | Toggle | - | Off | Varies transparency with how squarely the surface faces the… |
+| **Enable Fresnel Alpha** | Toggle | - | Off | Varies transparency with how squarely the surface faces the camera |
 | **Alpha Fades · Opacity Facing Camera** | Float | 0 ~ 1 | 1 | Opacity where the surface faces the camera head on |
 | **Opacity At Silhouette** | Float | 0 ~ 1 | 0 | Opacity at the silhouette edge |
 | **Edge Falloff** | Float | 0.1 ~ 10 | 3 | How fast the value travels from facing to edge |
-| **Enable Directional View Alpha** | Toggle | - | Off | Adjusts surface opacity from the camera direction in the… |
+| **Enable Directional View Alpha** | Toggle | - | Off | Adjusts surface opacity from the camera direction in the mesh-local axes or Face… |
 | **Opacity by View Direction · Front Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's front |
 | **Back Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's back |
 | **Left Opacity** | Float | 0 ~ 1 | 1 | Opacity when viewed from the selected frame's left |
@@ -90,20 +90,20 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
-| **General Pass · Reference** | Int | 0 ~ 255 | 0 | Reference value (0-255) the general pass compares against… |
+| **General Pass · Reference** | Int | 0 ~ 255 | 0 | Reference value (0-255) the general pass compares against and writes into the… |
 | **General Pass · Read Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when comparing the stencil |
 | **General Pass · Write Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when writing to the stencil |
 | **General Pass · Compare** | Enum | Disabled / Never / Less / Equal / LessEqual / Greater / NotEqual / GreaterEqual / Always | Always | Stencil comparison function |
 | **General Pass · Pass** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | Stencil operation when both stencil and depth tests pass |
 | **General Pass · Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | Stencil operation when the stencil test fails |
-| **General Pass · Z Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | Stencil operation when the stencil test passes but the depth… |
+| **General Pass · Z Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | Stencil operation when the stencil test passes but the depth test fails |
 | **Normal Outline Pass · Reference** | Int | 0 ~ 255 | 0 | Stencil value used by the outline pass |
 | **Normal Outline Pass · Read Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when reading the stencil buffer |
 | **Normal Outline Pass · Write Mask** | Int | 0 ~ 255 | 255 | Bit mask applied when writing the stencil buffer |
-| **Normal Outline Pass · Compare** | Enum | Disabled / Never / Less / Equal / LessEqual / Greater / NotEqual / GreaterEqual / Always | Always | How the stencil value is compared to decide which pixels… |
-| **Normal Outline Pass · Pass** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do to the stencil buffer when both the stencil and… |
+| **Normal Outline Pass · Compare** | Enum | Disabled / Never / Less / Equal / LessEqual / Greater / NotEqual / GreaterEqual / Always | Always | How the stencil value is compared to decide which pixels pass |
+| **Normal Outline Pass · Pass** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do to the stencil buffer when both the stencil and depth tests pass |
 | **Normal Outline Pass · Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do to the stencil buffer when the stencil test fails |
-| **Normal Outline Pass · Z Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do when the stencil test passes but the depth test… |
+| **Normal Outline Pass · Z Fail** | Enum | Keep / Zero / Replace / IncrementSaturate / DecrementSaturate / Invert / IncrementWrap / DecrementWrap | Keep | What to do when the stencil test passes but the depth test fails |
 | **Color Mask** | Int | 0 ~ 15 | 15 | Which color channels the outline pass writes |
 
 ## Related pages

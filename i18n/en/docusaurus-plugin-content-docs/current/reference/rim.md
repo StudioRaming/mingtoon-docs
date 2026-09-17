@@ -33,18 +33,18 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 |---|---|---|---|---|
 | **Enable Fresnel Rim** | Toggle | - | On | On by default |
 | **Fresnel Rim Color** | Color | - | 2.67, 2.67, 2.67, 1 | HDR rim-light color; default is (26.17, 26.17, 26.17) |
-| **Fresnel Rim Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Overlay | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for… |
+| **Fresnel Rim Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Overlay | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for the rim |
 | **Blend Opacity** | Float | 0 ~ 1 | 1 | How strongly the fresnel rim blends in |
-| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and Fresnel-rim tint are… |
-| **Intensity** | Float | 0 ~ 20 | 1 | Range 0-20; default 0.52 |
+| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and Fresnel-rim tint are composed |
+| **Intensity** | Float | 0 ~ 20 | 1 | Range 0-20; default 1 |
 | **Enable Fresnel Rim Mask** | Toggle | - | Off | - |
-| **Width** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0 |
-| **Softness** | Float | 0 ~ 1 | 0.2 | Range 0-1; default 0.64 |
-| **Light-Side Emphasis** | Float | 0 ~ 1 | 0.8 | 0 keeps rim brightness uniform around the form; 1 keeps only… |
+| **Width** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Softness** | Float | 0 ~ 1 | 0.2 | Range 0-1; default 0.2 |
+| **Light-Side Emphasis** | Float | 0 ~ 1 | 0.8 | 0 keeps rim brightness uniform around the form; 1 keeps only the side reached by… |
 | **View Alignment** | Float | 0 ~ 1 | 0.8 | Chooses the axis that places the rim area |
 | **Shadow Visibility** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
-| **Base Color Influence** | Float | 0 ~ 1 | 0.5 | 0 uses the rim color as authored; 1 multiplies it by the… |
-| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | 0 keeps the rim at a constant strength regardless of the… |
+| **Base Color Influence** | Float | 0 ~ 1 | 0.5 | 0 uses the rim color as authored; 1 multiplies it by the Base Map so each… |
+| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | 0 keeps the rim at a constant strength regardless of the scene; 1 lets it dim as… |
 | **Normal Map Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Distance Compensation** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Projection / FOV Compensation** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
@@ -55,20 +55,20 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 |---|---|---|---|---|
 | **Enable Front Light** | Toggle | - | On | On by default |
 | **Front Light Color** | Color | - | White | HDR front-light color; default is (1, 1, 1) |
-| **Front Light Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Overlay | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for… |
+| **Front Light Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Overlay | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for the front light |
 | **Blend Opacity** | Float | 0 ~ 1 | 0.1 | How strongly the front light blends into the final color |
-| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and front-light tint are… |
-| **Intensity** | Float | 0 ~ 10 | 0.3 | Range 0-10; default 0.2 |
-| **Area Size** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.25 |
-| **Softness** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.6 |
-| **Highlight Core Size** | Float | 0 ~ 1 | 1 | Range 0-1; default 0.4 |
-| **Highlight Core Intensity** | Float | 0 ~ 2 | 1 | Range 0-2; default 0.25 |
-| **Light Direction Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 0.5 |
-| **View Direction Influence** | Float | 0 ~ 1 | 0 | Range 0-1; default 0.5 |
+| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and front-light tint are composed |
+| **Intensity** | Float | 0 ~ 10 | 0.3 | Range 0-10; default 0.3 |
+| **Area Size** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Softness** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Highlight Core Size** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Highlight Core Intensity** | Float | 0 ~ 2 | 1 | Range 0-2; default 1 |
+| **Light Direction Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **View Direction Influence** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
 | **Normal Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
-| **Shadow Visibility** | Float | 0 ~ 1 | 1 | Range 0-1; default 0.3 |
-| **Base Color Influence** | Float | 0 ~ 1 | 0 | Range 0-1; default 0.5 |
-| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 1 |
+| **Shadow Visibility** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
 
 ## Backlight {#백라이트}
 
@@ -76,40 +76,41 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 |---|---|---|---|---|
 | **Enable Backlight** | Toggle | - | On | On by default |
 | **Backlight Color** | Color | - | 2, 2, 2, 1 | HDR backlight color; default is (2, 2, 2) |
-| **Backlight Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Overlay | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for… |
+| **Backlight Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Overlay | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for the backlight |
 | **Blend Opacity** | Float | 0 ~ 1 | 1 | How strongly the backlight blends into the final color |
-| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and backlight tint are… |
-| **Intensity** | Float | 0 ~ 10 | 2 | Range 0-10; default 0.29 |
-| **Width** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.34 |
-| **Softness** | Float | 0 ~ 1 | 0.3 | Range 0-1; default 0.5 |
-| **Directivity** | Float | 0 ~ 1 | 1 | Range 0-1; default 0.5 |
-| **View Intensity** | Float | 0 ~ 1 | 0 | Range 0-1; default 1 |
+| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and backlight tint are composed |
+| **Intensity** | Float | 0 ~ 10 | 2 | Range 0-10; default 2 |
+| **Width** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Softness** | Float | 0 ~ 1 | 0.3 | Range 0-1; default 0.3 |
+| **Directivity** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+| **View Intensity** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
 | **Normal Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Shadow Visibility** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
 | **Base Color Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
-| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 1 |
+| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
 
 ## Shadow Interior Reflection {#그림자-내부-반사}
 
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
 | **Enable Shadow Interior Reflection** | Toggle | - | On | On by default |
-| **Shadow Interior Reflection Color** | Color | - | 1.5, 1.5, 1.5, 1 | HDR color for the shadow-interior reflection; default is (3… |
-| **Shadow Reflection Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for… |
+| **Shadow Interior Reflection Color** | Color | - | 1.5, 1.5, 1.5, 1 | HDR color for the shadow-interior reflection; default is (3.81, 3.81, 3.81) |
+| **Shadow Reflection Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for the shadow… |
 | **Blend Opacity** | Float | 0 ~ 1 | 1 | How strongly the shadow interior reflection layer blends in |
-| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and shadow-reflection tint… |
+| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and shadow-reflection tint are composed |
 | **Intensity** | Float | 0 ~ 20 | 0.5 | Brightness multiplier |
-| **Width** | Float | 0 ~ 1 | 0.8 | Range 0-1; default 0.9 |
-| **Softness** | Float | 0 ~ 1 | 0.8 | Range 0-1; default 0.5 |
-| **Normal Map Influence** | Float | 0 ~ 1 | 1 | 0 uses the mesh normal; 1 uses the fully stacked normal maps… |
-| **Shadow Threshold** | Float | 0 ~ 1 | 0.8 | The reflection appears in shadow beyond this threshold;… |
-| **Shadow Softness** | Float | 0.001 ~ 1 | 1 | Transition width between the lit surface and the shadow-only… |
-| **Base Color Influence** | Float | 0 ~ 1 | 0.7 | 0 uses the reflection color alone; 1 fully multiplies it by… |
-| **Scene Light Influence** | Float | 0 ~ 1 | 1 | 0 keeps the reflection independent of scene brightness; 1… |
+| **Width** | Float | 0 ~ 1 | 0.8 | Range 0-1; default 0.8 |
+| **Softness** | Float | 0 ~ 1 | 0.8 | Range 0-1; default 0.8 |
+| **Normal Map Influence** | Float | 0 ~ 1 | 1 | 0 uses the mesh normal; 1 uses the fully stacked normal maps for the reflection… |
+| **Shadow Threshold** | Float | 0 ~ 1 | 0.8 | The reflection appears in shadow beyond this threshold; Shadow Softness smooths… |
+| **Shadow Softness** | Float | 0.001 ~ 1 | 1 | Transition width between the lit surface and the shadow-only reflection |
+| **Base Color Influence** | Float | 0 ~ 1 | 0.7 | 0 uses the reflection color alone; 1 fully multiplies it by the Base Map color |
+| **Scene Light Influence** | Float | 0 ~ 1 | 1 | 0 keeps the reflection independent of scene brightness; 1 dims it with scene… |
 | **Light-Side Emphasis** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Ambient Color Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Additional Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 1 |
-| **Visibility in Cast Shadow** | Float | 0 ~ 1 | 1 | 0 hides the interior reflection inside the cast shadow; 1… |
+| **Visibility in Cast Shadow** | Float | 0 ~ 1 | 1 | 0 hides the interior reflection inside the cast shadow; 1 keeps it fully visible… |
+| **Visibility in Depth Shadow** | Float | 0 ~ 1 | 0 | 0 hides the interior reflection inside the depth shadow (default); 1 keeps it… |
 | **Use Mask** | Toggle | - | Off | When off, the shader skips the mask texture fetch |
 
 ## Related pages

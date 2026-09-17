@@ -1,0 +1,648 @@
+{
+  "locales": {
+    "ko": [
+      {
+        "file": "reference/basics.md",
+        "rows": 70,
+        "lines": 94,
+        "sections": [
+          {
+            "key": "surface",
+            "rows": 9
+          },
+          {
+            "key": "surface_rendering",
+            "rows": 6
+          },
+          {
+            "key": "surface_alpha",
+            "rows": 40
+          },
+          {
+            "key": "stencil",
+            "rows": 15
+          }
+        ]
+      },
+      {
+        "file": "reference/light-and-shadow.md",
+        "rows": 142,
+        "lines": 176,
+        "sections": [
+          {
+            "key": "master_adjust",
+            "rows": 26
+          },
+          {
+            "key": "lighting",
+            "rows": 45
+          },
+          {
+            "key": "form_shadow",
+            "rows": 13
+          },
+          {
+            "key": "cast_shadow",
+            "rows": 14
+          },
+          {
+            "key": "shadow_color",
+            "rows": 28
+          },
+          {
+            "key": "shadow_pattern",
+            "rows": 16
+          }
+        ]
+      },
+      {
+        "file": "reference/rim.md",
+        "rows": 72,
+        "lines": 101,
+        "sections": [
+          {
+            "key": "rim_shade",
+            "rows": 6
+          },
+          {
+            "key": "fresnel_rim",
+            "rows": 17
+          },
+          {
+            "key": "front_light",
+            "rows": 16
+          },
+          {
+            "key": "backlight",
+            "rows": 14
+          },
+          {
+            "key": "shadow_reflection",
+            "rows": 19
+          }
+        ]
+      },
+      {
+        "file": "reference/depth-effects.md",
+        "rows": 106,
+        "lines": 140,
+        "sections": [
+          {
+            "key": "depth",
+            "rows": 8
+          },
+          {
+            "key": "rim",
+            "rows": 23
+          },
+          {
+            "key": "depth_shadow",
+            "rows": 19
+          },
+          {
+            "key": "ssao",
+            "rows": 12
+          },
+          {
+            "key": "inner_outline",
+            "rows": 10
+          },
+          {
+            "key": "translucency",
+            "rows": 34
+          }
+        ]
+      },
+      {
+        "file": "reference/detail-maps.md",
+        "rows": 133,
+        "lines": 188,
+        "sections": [
+          {
+            "key": "stack",
+            "rows": 4
+          },
+          {
+            "key": "normal_layers",
+            "rows": 2
+          },
+          {
+            "key": "matcap_layers",
+            "rows": 19
+          },
+          {
+            "key": "pbr",
+            "rows": 21
+          },
+          {
+            "key": "reflection",
+            "rows": 20
+          },
+          {
+            "key": "toon_specular",
+            "rows": 17
+          },
+          {
+            "key": "emission",
+            "rows": 18
+          },
+          {
+            "key": "occlusion",
+            "rows": 3
+          },
+          {
+            "key": "glitter",
+            "rows": 29
+          }
+        ]
+      },
+      {
+        "file": "reference/character.md",
+        "rows": 44,
+        "lines": 58,
+        "sections": [
+          {
+            "key": "face",
+            "rows": 41
+          },
+          {
+            "key": "character_height",
+            "rows": 3
+          }
+        ]
+      },
+      {
+        "file": "reference/outline.md",
+        "rows": 22,
+        "lines": 31,
+        "sections": [
+          {
+            "key": "normal_outline",
+            "rows": 22
+          }
+        ]
+      }
+    ],
+    "en": [
+      {
+        "file": "reference/basics.md",
+        "rows": 70,
+        "lines": 94,
+        "sections": [
+          {
+            "key": "surface",
+            "rows": 9
+          },
+          {
+            "key": "surface_rendering",
+            "rows": 6
+          },
+          {
+            "key": "surface_alpha",
+            "rows": 40
+          },
+          {
+            "key": "stencil",
+            "rows": 15
+          }
+        ]
+      },
+      {
+        "file": "reference/light-and-shadow.md",
+        "rows": 142,
+        "lines": 176,
+        "sections": [
+          {
+            "key": "master_adjust",
+            "rows": 26
+          },
+          {
+            "key": "lighting",
+            "rows": 45
+          },
+          {
+            "key": "form_shadow",
+            "rows": 13
+          },
+          {
+            "key": "cast_shadow",
+            "rows": 14
+          },
+          {
+            "key": "shadow_color",
+            "rows": 28
+          },
+          {
+            "key": "shadow_pattern",
+            "rows": 16
+          }
+        ]
+      },
+      {
+        "file": "reference/rim.md",
+        "rows": 72,
+        "lines": 101,
+        "sections": [
+          {
+            "key": "rim_shade",
+            "rows": 6
+          },
+          {
+            "key": "fresnel_rim",
+            "rows": 17
+          },
+          {
+            "key": "front_light",
+            "rows": 16
+          },
+          {
+            "key": "backlight",
+            "rows": 14
+          },
+          {
+            "key": "shadow_reflection",
+            "rows": 19
+          }
+        ]
+      },
+      {
+        "file": "reference/depth-effects.md",
+        "rows": 106,
+        "lines": 140,
+        "sections": [
+          {
+            "key": "depth",
+            "rows": 8
+          },
+          {
+            "key": "rim",
+            "rows": 23
+          },
+          {
+            "key": "depth_shadow",
+            "rows": 19
+          },
+          {
+            "key": "ssao",
+            "rows": 12
+          },
+          {
+            "key": "inner_outline",
+            "rows": 10
+          },
+          {
+            "key": "translucency",
+            "rows": 34
+          }
+        ]
+      },
+      {
+        "file": "reference/detail-maps.md",
+        "rows": 133,
+        "lines": 188,
+        "sections": [
+          {
+            "key": "stack",
+            "rows": 4
+          },
+          {
+            "key": "normal_layers",
+            "rows": 2
+          },
+          {
+            "key": "matcap_layers",
+            "rows": 19
+          },
+          {
+            "key": "pbr",
+            "rows": 21
+          },
+          {
+            "key": "reflection",
+            "rows": 20
+          },
+          {
+            "key": "toon_specular",
+            "rows": 17
+          },
+          {
+            "key": "emission",
+            "rows": 18
+          },
+          {
+            "key": "occlusion",
+            "rows": 3
+          },
+          {
+            "key": "glitter",
+            "rows": 29
+          }
+        ]
+      },
+      {
+        "file": "reference/character.md",
+        "rows": 44,
+        "lines": 58,
+        "sections": [
+          {
+            "key": "face",
+            "rows": 41
+          },
+          {
+            "key": "character_height",
+            "rows": 3
+          }
+        ]
+      },
+      {
+        "file": "reference/outline.md",
+        "rows": 22,
+        "lines": 31,
+        "sections": [
+          {
+            "key": "normal_outline",
+            "rows": 22
+          }
+        ]
+      }
+    ],
+    "ja": [
+      {
+        "file": "reference/basics.md",
+        "rows": 70,
+        "lines": 94,
+        "sections": [
+          {
+            "key": "surface",
+            "rows": 9
+          },
+          {
+            "key": "surface_rendering",
+            "rows": 6
+          },
+          {
+            "key": "surface_alpha",
+            "rows": 40
+          },
+          {
+            "key": "stencil",
+            "rows": 15
+          }
+        ]
+      },
+      {
+        "file": "reference/light-and-shadow.md",
+        "rows": 142,
+        "lines": 176,
+        "sections": [
+          {
+            "key": "master_adjust",
+            "rows": 26
+          },
+          {
+            "key": "lighting",
+            "rows": 45
+          },
+          {
+            "key": "form_shadow",
+            "rows": 13
+          },
+          {
+            "key": "cast_shadow",
+            "rows": 14
+          },
+          {
+            "key": "shadow_color",
+            "rows": 28
+          },
+          {
+            "key": "shadow_pattern",
+            "rows": 16
+          }
+        ]
+      },
+      {
+        "file": "reference/rim.md",
+        "rows": 72,
+        "lines": 101,
+        "sections": [
+          {
+            "key": "rim_shade",
+            "rows": 6
+          },
+          {
+            "key": "fresnel_rim",
+            "rows": 17
+          },
+          {
+            "key": "front_light",
+            "rows": 16
+          },
+          {
+            "key": "backlight",
+            "rows": 14
+          },
+          {
+            "key": "shadow_reflection",
+            "rows": 19
+          }
+        ]
+      },
+      {
+        "file": "reference/depth-effects.md",
+        "rows": 106,
+        "lines": 140,
+        "sections": [
+          {
+            "key": "depth",
+            "rows": 8
+          },
+          {
+            "key": "rim",
+            "rows": 23
+          },
+          {
+            "key": "depth_shadow",
+            "rows": 19
+          },
+          {
+            "key": "ssao",
+            "rows": 12
+          },
+          {
+            "key": "inner_outline",
+            "rows": 10
+          },
+          {
+            "key": "translucency",
+            "rows": 34
+          }
+        ]
+      },
+      {
+        "file": "reference/detail-maps.md",
+        "rows": 133,
+        "lines": 188,
+        "sections": [
+          {
+            "key": "stack",
+            "rows": 4
+          },
+          {
+            "key": "normal_layers",
+            "rows": 2
+          },
+          {
+            "key": "matcap_layers",
+            "rows": 19
+          },
+          {
+            "key": "pbr",
+            "rows": 21
+          },
+          {
+            "key": "reflection",
+            "rows": 20
+          },
+          {
+            "key": "toon_specular",
+            "rows": 17
+          },
+          {
+            "key": "emission",
+            "rows": 18
+          },
+          {
+            "key": "occlusion",
+            "rows": 3
+          },
+          {
+            "key": "glitter",
+            "rows": 29
+          }
+        ]
+      },
+      {
+        "file": "reference/character.md",
+        "rows": 44,
+        "lines": 58,
+        "sections": [
+          {
+            "key": "face",
+            "rows": 41
+          },
+          {
+            "key": "character_height",
+            "rows": 3
+          }
+        ]
+      },
+      {
+        "file": "reference/outline.md",
+        "rows": 22,
+        "lines": 31,
+        "sections": [
+          {
+            "key": "normal_outline",
+            "rows": 22
+          }
+        ]
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "prop": "_ZWrite",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_SrcBlend",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_DstBlend",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_OutlineHullSrcBlend",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_OutlineHullDstBlend",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_MingUnifiedShadowColor",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_MingUnifiedShadowTone",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_MingUnifiedShadowGamma",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_RimShadeColorHSVG",
+      "why": "shared texture-slot HSVG"
+    },
+    {
+      "prop": "_MingDepthEffectsRuntimeToggle",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_MingCastShadowRuntimeToggle",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_MingVrcQualityMenuEnabled",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_MingVrcQualityTier",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_NormalHSVG",
+      "why": "shared texture-slot HSVG"
+    },
+    {
+      "prop": "_FaceNormalFlattenAmount",
+      "why": "[HideInInspector]"
+    },
+    {
+      "prop": "_FaceShadowNormalMapInfluence",
+      "why": "[HideInInspector]"
+    }
+  ],
+  "unmapped": [],
+  "noSummary": [
+    "reference/basics.md surface _BaseAdjustMask (기본 색상 보정 마스크)",
+    "reference/basics.md surface_rendering _FlipBackfaceNormal (뒷면 라이팅 노멀 뒤집기)",
+    "reference/basics.md surface_rendering _BlendOp (합성 연산)",
+    "reference/basics.md surface_rendering _TwoSidedDualPass (투 패스 모드)",
+    "reference/basics.md surface_rendering _TransparentDepthPrepass (투명 깊이 선기록)",
+    "reference/basics.md surface_rendering _ZTest (깊이 비교)",
+    "reference/basics.md surface_alpha _RegionMask (리전 마스크 (RGBA = 4영역))",
+    "reference/rim.md rim_shade _RimShadeMaskEnabled (림 그림자 마스크 사용)",
+    "reference/rim.md fresnel_rim _FresnelRimMaskEnabled (림 라이트 마스크 사용)",
+    "reference/detail-maps.md emission _EmissionIntensity02 (발광 맵 레이어 2 · 강도)"
+  ],
+  "ambiguous": [],
+  "hardCuts": [],
+  "overLong": [
+    "ja reference/detail-maps.md pbr _PbrSpecularStrength (61): スペキュラー反射の強さで、0にすると直接ハイライトと環境反射の両方が消えるためスムースネスや反射強度を上げても変化しません"
+  ],
+  "missingShell": [],
+  "legacyCuts": {
+    "ko": 112,
+    "en": 364,
+    "ja": 85
+  },
+  "ellipsis": {
+    "ko": 21,
+    "en": 99,
+    "ja": 6
+  }
+}
