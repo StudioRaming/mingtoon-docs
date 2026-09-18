@@ -19,7 +19,7 @@ What conversion carries over:
 
 - Base color and textures, HSVG, normals, emission, occlusion, PBR, MatCap
 - 2nd and 3rd layers and their masks
-- Reflection settings, lilToon backlight, Edge Rim and face-only data
+- Reflection settings, lilToon backlight and face-only data
 - Render states such as stencil, render queue, visible faces, and surface mode
 
 If the source holds real data, the PBR, emission, outline, and alpha mask modules are turned on too.
@@ -62,7 +62,8 @@ If you already have MingToon materials, use **Apply to Current MingToon Material
 
 :::note[The order is convert → look → color]
 Convert the source first, apply the look preset, then apply the color preset last.
-Source reflection, backlight, Edge Rim and face data are preserved in the source reapply step.
+Source reflection, backlight and face data are preserved in the source reapply step.
+Edge Rim keeps the selected look preset's value instead of being overwritten by the source.
 **Keep Existing Values** applies no color preset and keeps the source colors.
 :::
 

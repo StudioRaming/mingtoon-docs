@@ -20,13 +20,13 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
-| **Everything That Adds Light · Intensity** | Float | 0 ~ 4 | 1 | Scales every light-adding layer at once - backlight, front light, fresnel rim… |
+| **Everything That Adds Light · Intensity** | Float | 0 ~ 4 | 1 | Scales every light-adding layer at once - Edge Rim, front light, Fresnel rim… |
 | **Everything That Adds Light · Base Color** | Color | - | White | Color multiplied into every light-adding layer |
 | **Everything That Adds Light · Palette Tint Amount** | Float | 0 ~ 1 | 1 | How much Shared Palette color reaches the highlight group |
 | **Everything That Adds Light · Color Pad X** | Float | -1 ~ 1 | 0 | Color-wheel coordinate laid over Base Color |
 | **Everything That Adds Light · Color Pad Y** | Float | -1 ~ 1 | 0 | Pairs with Color Pad X to pick a spot on the color wheel |
 | **Everything That Adds Light · Brightness** | Float | 0 ~ 1 | 1 | Brightness of the color-pad tint |
-| **Edge Rim Multiplier** | Float | 0 ~ 4 | 1 | Multiplies only the four layers that draw on the silhouette: Depth Rim Light… |
+| **Edge Rim Multiplier** | Float | 0 ~ 4 | 1 | Multiplies only Depth Rim Light, Fresnel Rim, Edge Rim and the edge layer of SSSSS… |
 | **Edge Rim Maximum Multiplier** | Float | 0 ~ 8 | 0 | Ceiling after those four have been added together |
 | **Edge Rim Minimum Multiplier** | Float | 0 ~ 1 | 0.5 | The floor on the light response of the rims that follow the light - Edge Rim, Fresnel Rim and Depth Rim Light |
 | **Every Shadow · Intensity** | Float | 0 ~ 4 | 1 | One more multiply on the shadowed area after form, AO, rim shade, cast and depth… |
@@ -65,7 +65,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Minimum Final Brightness** | Float | 0 ~ 4 | 0.2 | Floor that stops the character going darker than this in any scene |
 | **Maximum Final Brightness** | Float | 0 ~ 8 | 1 | Ceiling that stops the character burning brighter than this in bright scenes |
 | **Soften Near The Ceiling** | Float | 0 ~ 1 | 0.2 | Controls how smoothly the main and additional scene lights |
-| **Added Light Brightness Maximum** | Float | 0 ~ 8 | 3 | Always applies a final-output ceiling to every additive effect |
+| **Added Light Brightness Maximum** | Float | 0 ~ 8 | 3 | Applies a final-output ceiling to every additive effect, including Edge Rim |
 | **Additional Light Reception** | Float | 0 ~ 1 | 1 | Directly scales the RGB peak brightness of point, spot, and other additional… |
 | **Additional Light Intensity** | Float | 0 ~ 4 | 1 | Final multiplier applied directly to RGB peak brightness without hidden 0.2-0.5… |
 | **Additional Light Color Influence** | Float | 0 ~ 1 | 1 | Controls how much additional-light color affects the surface color |

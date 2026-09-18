@@ -66,7 +66,7 @@ How much faster a warm build feels depends on the scene and shader-cache environ
 - Renderers whose Face SDF uses UV7 keep the Live path for the same result.
 - It applies the per-slot-kind texture resolution limits to the upload copy.
 - It turns on the VRC Light Volumes variant automatically.
-- It preflights mask input receipts before upload. An unprepared input skips only that mask optimization.
+- It preflights mask input receipts before a manual bake or upload. An unprepared input skips only that mask optimization.
 - It marks MingToon runtime components as `IEditorOnly`. Deletion is not guaranteed.
 
 The face normal upload output uses a different path from the editing mesh bake. It does not overwrite the editing Mesh.

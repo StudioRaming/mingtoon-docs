@@ -161,6 +161,9 @@ If **Front Light Strength** is 0, the front light color has no effect.
 
 To print screentone on the line too, turn on **Outline Shadow Pattern**.
 
+In VRC Light Volume worlds the line brightness follows the volume level.
+BRP reads the volume once per vertex and passes only that scalar to the fragment, so it adds no per-pixel volume sample.
+
 ## More detail
 
 - [Outline reference](/reference/outline) — every field and range

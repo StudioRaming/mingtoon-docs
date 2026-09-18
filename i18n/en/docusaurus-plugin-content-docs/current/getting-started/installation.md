@@ -55,6 +55,7 @@ The BOOTH installer tells you about new versions when you open Unity.
 
 The BOOTH installer's update window has an **Include preview versions** checkbox.
 It is off by default; only projects that opt in check for test builds that ship before the next stable release.
+After installing a preview, clearing the checkbox offers the latest stable release even when its number is lower than the installed prerelease.
 If an update is interrupted and the receipt still names the previous release, the installed package rebuilds it from the verified inventory.
 The bootstrap DLL is not changed for this repair.
 
