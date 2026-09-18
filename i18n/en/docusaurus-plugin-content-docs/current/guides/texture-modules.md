@@ -117,6 +117,12 @@ N differs per module. Surface stack is 10, normal is 5, matcap is 5.
 
 This display limit does not reduce the shader's actual maximum.
 
+Each layer card has **+ Add layer**, enable, move up/down and delete in one place.
+Turning a layer off keeps the slot and skips its work; turning it back on restores the stored values.
+
+**Original texture import settings** at the top of the texture view groups the selected materials'
+**Max size**, **Quality** and format by texture type. It does not change an importer until you apply.
+
 :::caution[Layer order changes the result]
 Compositing stacks in order from the bottom up.
 After reordering, check each slot's strength again.

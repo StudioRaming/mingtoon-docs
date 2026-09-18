@@ -25,6 +25,8 @@ Check the current version under `Update settings` in MingToon Manager. Changes b
 | **URP** | Not included in this BRP open beta |
 | **Depth effects** | Visible only when the host provides camera depth |
 | **lilToon conversion** | An interoperability tool. It does not clone another shader's result |
+| **VRC Light Volumes 3** | Legacy v2 buffer compatibility only. Native v3 shadows, clustering and per-light shading are not supported |
+| **Light Volume cast shadows** | Still look different from 0.1.10 in v2 and v3 worlds |
 
 → [Supported Environments](/platforms/compatibility) · [How far depth effects are guaranteed](/platforms/vrchat#깊이-효과가-어디까지-보장되나)
 

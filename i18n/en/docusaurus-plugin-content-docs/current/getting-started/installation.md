@@ -53,6 +53,11 @@ To install with the BOOTH installer:
 If you installed with VCC, update in VCC as well.
 The BOOTH installer tells you about new versions when you open Unity.
 
+The BOOTH installer's update window has an **Include preview versions** checkbox.
+It is off by default; only projects that opt in check for test builds that ship before the next stable release.
+If an update is interrupted and the receipt still names the previous release, the installed package rebuilds it from the verified inventory.
+The bootstrap DLL is not changed for this repair.
+
 ## 3. Check that the shader arrived
 
 Select one material and open the shader list at the top of the Inspector.

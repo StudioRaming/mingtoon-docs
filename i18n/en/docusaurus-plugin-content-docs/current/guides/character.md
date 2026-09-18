@@ -14,6 +14,9 @@ sidebar_position: 8
 A face has real curvature at the nose and the eye sockets.
 Using the same shadow settings as the body almost always looks messy.
 
+In 0.1.11 the **Face / Hair Shading** tab runs Face Area → Face Shading → Shadow Mode → Reference and Proxy → Advanced.
+The face proxy and SDF also work on hair materials, and dead status folds were removed.
+
 ![A face with a nose shadow next to one cleaned up with face shading](/img/placeholder.png)
 <!-- CAPTURE: guides/character-01-face-shading-before-after.png | 같은 얼굴 정면, 페이스 셰이딩 끔(전) / 켬(후) 2컷 | 1200x700 -->
 

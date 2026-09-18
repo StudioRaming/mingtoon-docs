@@ -28,7 +28,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Everything That Adds Light · Brightness** | Float | 0 ~ 1 | 1 | Brightness of the color-pad tint |
 | **Edge Rim Multiplier** | Float | 0 ~ 4 | 1 | Multiplies only the four layers that draw on the silhouette: Depth Rim Light… |
 | **Edge Rim Maximum Multiplier** | Float | 0 ~ 8 | 0 | Ceiling after those four have been added together |
-| **Edge Rim Minimum Multiplier** | Float | 0 ~ 1 | 0 | The floor on the light response of the rims that follow the light - backlight… |
+| **Edge Rim Minimum Multiplier** | Float | 0 ~ 1 | 0.5 | The floor on the light response of the rims that follow the light - Edge Rim, Fresnel Rim and Depth Rim Light |
 | **Every Shadow · Intensity** | Float | 0 ~ 4 | 1 | One more multiply on the shadowed area after form, AO, rim shade, cast and depth… |
 | **Every Shadow · Base Color** | Color | - | White | Color multiplied over the whole shadowed area |
 | **Every Shadow · Palette Tint Amount** | Float | 0 ~ 1 | 1 | How much Shared Palette color reaches the shadowed area |
@@ -52,9 +52,9 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
 | **Lit Brightness** | Float | 0 ~ 2 | 1 | Overall brightness multiplier on the lit side |
-| **Environment Color Influence** | Float | 0 ~ 1 | 0.3 | Controls how strongly light-probe and ambient color washes over the surface |
+| **Environment Color Influence** | Float | 0 ~ 1 | 1 | Controls how strongly light-probe and ambient color washes over the surface |
 | **Indirect Light Lift** | Float | 0 ~ 2 | 1 | Controls the brightness lift supplied by light-probe and ambient indirect light |
-| **Preserve Base Map Color** | Float | 0 ~ 1 | 0.5 | Controls only how much the scene-light hue tints the completed base color |
+| **Preserve Base Map Color** | Float | 0 ~ 1 | 0.1 | Controls only how much the scene-light hue tints the completed base color |
 | **Scene Light Color Influence** | Float | 0 ~ 1 | 1 | How much the scene light's hue tints the character |
 | **Main Light Response** | Float | - | 0 | Remaps the main-light brightness ratio through the four-point curve below |
 | **Additional Light Final Attenuation Response** | Float | - | 0 | Remaps the final distance-and-shadow attenuation response of point, spot, and… |
@@ -78,9 +78,9 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Additional Light Energy Cap** | Float | 0 ~ 4 | 0.35 | Caps the energy that point, spot and other additional lights add to the final… |
 | **VRC Light Volumes (Test)** | Toggle | - | Off | An in-editor test toggle |
 | **Volume Intensity** | Float | 0 ~ 4 | 1 | Scales all of the indirect light read from the world's volumes |
-| **Darkening Response** | Float | 0 ~ 1 | 0.5 | Controls how much darkening is retained when the volume energy is below neutral… |
+| **Darkening Response** | Float | 0 ~ 1 | 0.8 | Controls how much darkening is retained when the volume energy is below neutral… |
 | **Brightening Response** | Float | 0 ~ 1 | 1 | Controls how much brightening is retained when the volume energy is above… |
-| **Normal Bias** | Float | 0 ~ 0.25 | 0 | Pushes the point where the volume is sampled along the surface normal |
+| **Normal Bias** | Float | 0 ~ 0.25 | 0.01 | Pushes the point where the volume is sampled along the surface normal |
 | **Point Light Shadows** | Float | 0 ~ 1 | 1 | Sets how much of the world's baked occlusion the volume point lights obey |
 | **Volume Specular** | Enum | Off / Dominant / Full | Off | Builds an environment highlight out of the volume's directional component |
 | **Volume Specular Intensity** | Float | 0 ~ 4 | 1 | How strong the volume specular is |
@@ -141,7 +141,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Shadow Color** | Toggle | - | On | Master switch for shadow coloring |
 | **Shadow Ambient Influence** | Float | 0 ~ 1 | 0.2 | Applies the scene ambient SH color once to every final shadow family |
 | **Enable Unified Shadow** | Toggle | - | On | Collapses form, cast and depth shadows onto one final color so overlaps do not… |
-| **Screen-Space Shadow Overlap Depth (0 = fully merged)** | Float | 0 ~ 1 | 1 | Extra depth applied only where Depth Shadow or SSAO overlaps another shadow |
+| **Screen-Space Shadow Overlap Depth (0 = fully merged)** | Float | 0 ~ 1 | 0.5 | Extra depth applied only where Depth Shadow or SSAO overlaps another shadow |
 | **Use Shadow Color Map** | Toggle | - | Off | Distributes the unified shadow color with a UV map, for cases like hair… |
 | **Color Map Amount** | Float | 0 ~ 1 | 1 | 0 uses the single unified shadow color; 1 multiplies the texture color in full |
 | **1st Shadow Color** | Color | - | White | Color of the 1st form shadow |

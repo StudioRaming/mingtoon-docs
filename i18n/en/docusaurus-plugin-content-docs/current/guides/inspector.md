@@ -82,6 +82,10 @@ If you found such a row through search, press **Turn This Module On** next to it
 They are the same values as in their original sections, so both move together.
 If the selected materials hold different values, `(Mixed State)` is shown.
 
+**Quick Preset Apply** and **Preset Capture & Management** at the top separate applying from saving.
+The last applied preset is remembered for the editor session.
+**Performance Cost** shows the upload-basis load in one line and opens into detailed readings.
+
 ## Values you will touch often
 
 | Inspector label | What it changes | Suggested starting value | Raise it / lower it |
@@ -93,6 +97,9 @@ If the selected materials hold different values, `(Mixed State)` is shown.
 | **Favorites Only** | Show only starred sections and rows | Off | On hides every section without a star |
 | **Collapse All** | Tidy up groups and sections at once | Only when needed | **Expand All** reverses it |
 | **Language** | The display language of item names | Korean | Switching to English or Japanese leaves values untouched |
+| **Quick Preset Apply** | Re-selects a recently applied preset | Only when needed | Selecting alone does not apply it; press Apply |
+| **Preset Capture & Management** | Groups saving, deleting and applying presets | Only when needed | Keeping save and apply separate avoids accidental overwrites |
+| **Performance Cost** | Upload-basis performance estimate | Reference value | Open it for shader, texture and layer details |
 
 **Changed Only** works in the Full view only.
 If nothing changed, `Nothing Changed` is shown.

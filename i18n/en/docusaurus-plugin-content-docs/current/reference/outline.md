@@ -22,6 +22,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 |---|---|---|---|---|
 | **Enable Normal Outline** | Toggle | - | On | Draws the line by expanding the mesh along its normals, in one additional pass |
 | **Outline Color** | Color | - | 0.75, 0.6, 0.6, 1 | Color of the Normal Outline |
+| **Light Volume Color Influence** | Float | 0 ~ 1 | 1 | Multiplies the world Light Volume color and level into the outline |
 | **Outline Color Blend** | Enum | Normal / Multiply | Multiply | How the outline tint is combined with its base color |
 | **Outline Tint Strength** | Float | 0 ~ 1 | 1 | Tint strength for the selected blend mode on the outline base color |
 | **Follow Base Map** | Toggle | - | Off | Uses the RGB from the base map and all texture layers composited together as the… |

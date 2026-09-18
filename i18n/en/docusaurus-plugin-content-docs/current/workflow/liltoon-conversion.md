@@ -19,6 +19,7 @@ What conversion carries over:
 
 - Base color and textures, HSVG, normals, emission, occlusion, PBR, MatCap
 - 2nd and 3rd layers and their masks
+- Reflection settings, lilToon backlight, Edge Rim and face-only data
 - Render states such as stencil, render queue, visible faces, and surface mode
 
 If the source holds real data, the PBR, emission, outline, and alpha mask modules are turned on too.
@@ -59,9 +60,10 @@ If you already have MingToon materials, use **Apply to Current MingToon Material
 ![A lilToon avatar before conversion next to the MingToon avatar after conversion](/img/placeholder.png)
 <!-- CAPTURE: workflow/liltoon-conversion-01-before-after.png | 같은 아바타 전신을 변환 전 lilToon과 변환 후 MingToon으로 나란히 렌더한 2분할 | 1200x700 -->
 
-:::note[The look is applied first]
-The look preset lays down every value, and the color preset puts color on top of it.
-Keep Existing Values does not skip the look; it restores the source colors afterwards.
+:::note[The order is convert → look → color]
+Convert the source first, apply the look preset, then apply the color preset last.
+Source reflection, backlight, Edge Rim and face data are preserved in the source reapply step.
+**Keep Existing Values** applies no color preset and keeps the source colors.
 :::
 
 If some materials fail, the rest are still processed.

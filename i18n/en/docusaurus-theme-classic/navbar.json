@@ -15,9 +15,9 @@
     "message": "Patch notes",
     "description": "Navbar item with label 패치노트"
   },
-  "item.label.v0.1.10": {
-    "message": "v0.1.10",
-    "description": "Navbar item with label v0.1.10"
+  "item.label.v0.1.11": {
+    "message": "v0.1.11",
+    "description": "Navbar item with label v0.1.11"
   },
   "item.label.Official website": {
     "message": "Official website",

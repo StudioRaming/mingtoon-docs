@@ -123,9 +123,12 @@ Turn on **Remove depth light on build** under `4. Build & upload automation` in 
 Built-in VRChat avatars can use Light Volumes. Indirect light, specular and point light shadows come in.
 
 - The required variant is turned on automatically during avatar upload.
+- It also reads the legacy v2 buffer published by VRC Light Volumes 3 worlds. This is basic indirect and point-data compatibility.
+- Native v3 shadows, clustering and per-light shading are not used yet.
 - In worlds without Light Volumes it falls back to Unity light probes.
 - **VRC Light Volumes (Test)** in the inspector is for checking in the editor.
 - The world's volume data determines the final result.
+- Known issue: VRC Light Volume cast-shadow appearance in v2 and v3 worlds still differs from 0.1.10.
 
 ## Using it with other build tools
 

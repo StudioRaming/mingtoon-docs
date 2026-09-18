@@ -44,7 +44,7 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **View Alignment** | Float | 0 ~ 1 | 0.8 | Chooses the axis that places the rim area |
 | **Shadow Visibility** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
 | **Base Color Influence** | Float | 0 ~ 1 | 0.5 | 0 uses the rim color as authored; 1 multiplies it by the Base Map so each… |
-| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | 0 keeps the rim at a constant strength regardless of the scene; 1 lets it dim as… |
+| **Scene Light Influence** | Float | 0 ~ 1 | 1 | 0 keeps the rim at a constant strength regardless of the scene; 1 lets it dim as… |
 | **Normal Map Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Distance Compensation** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Projection / FOV Compensation** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
@@ -68,26 +68,56 @@ Channel, remap, feather and mask UV are written once in the [Shared Texture Slot
 | **Normal Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Shadow Visibility** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
 | **Base Color Influence** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
-| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Scene Light Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
+
+## Edge Rim {#엣지-림}
+
+| Inspector label | Type | Range | Default | What it does |
+|---|---|---|---|---|
+| **Enable Edge Rim** | Toggle | - | On | Enables the rim that follows the contour |
+| **Edge Rim Color** | Color | - | 2, 2, 2, 1 | HDR Edge Rim color |
+| **Edge Rim Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | Chooses how the rim blends into the surface |
+| **Blend Opacity** | Float | 0 ~ 1 | 1 | How strongly the rim blends into the final color |
+| **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and Edge Rim tint are composed |
+| **Intensity** | Float | 0 ~ 10 | 2 | Brightness multiplier for the rim and its backlit boost |
+| **Edge Width (Pixels)** | Float | 0 ~ 32 | 0 | Minimum on-screen pixel width for the gradient |
+| **Width** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Softness** | Float | 0 ~ 1 | 0.3 | Range 0-1; default 0.3 |
+| **Area Invert** | Toggle | - | Off | Moves the selected area to the opposite side |
+| **Directivity** | Float | 0 ~ 1 | 0 | How tightly the rim follows the light |
+| **View Intensity** | Float | 0 ~ 1 | 0 | How much the view direction shapes the rim |
+| **Light Direction Influence** | Float | 0 ~ 1 | 0 | Removes the rim from the side the light does not reach |
+| **Normal Influence** | Float | 0 ~ 1 | 1 | 0 uses the mesh normal; 1 uses the stacked normal maps |
+| **Mask Strength** | Float | 0 ~ 1 | 1 | How much the Fresnel Rim mask affects this layer |
+| **Contour Tightness** | Float | 0 ~ 1 | 0 | Keeps the rim on curvature contours |
+| **Shadow Visibility** | Float | 0 ~ 1 | 0.5 | How much of the rim survives inside shadow |
+| **Base Color Influence** | Float | 0 ~ 1 | 0.5 | 0 uses the rim color; 1 fully multiplies it by the Base Map |
+| **Scene Light Influence** | Float | 0 ~ 1 | 1 | How much the rim follows scene brightness |
+| **Backlit Intensity Boost** | Float | 0 ~ 4 | 0 | Adds brightness while the light is behind the subject |
+| **Backlit Width Boost** | Float | 0 ~ 4 | 0 | Widens the rim outward while backlit |
 
 ## Backlight {#백라이트}
 
 | Inspector label | Type | Range | Default | What it does |
 |---|---|---|---|---|
-| **Enable Backlight** | Toggle | - | On | On by default |
-| **Backlight Color** | Color | - | 2, 2, 2, 1 | HDR backlight color; default is (2, 2, 2) |
-| **Backlight Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Overlay | Chooses Normal, Multiply, Add, Screen, Color, or Overlay for the backlight |
+| **Enable Backlight** | Toggle | - | Off | Enables lilToon-style wrapped backlight |
+| **Backlight Color** | Color | - | 0.85, 0.8, 0.7, 1 | HDR backlight color |
+| **Use Color Map** | Toggle | - | Off | Uses a texture for the backlight color |
+| **Color Map** | Texture | - | None | Backlight color map |
+| **Backlight Blend Mode** | Enum | Normal / Multiply / Add / Screen / Color / Overlay | Add | Chooses how the backlight blends into the surface |
 | **Blend Opacity** | Float | 0 ~ 1 | 1 | How strongly the backlight blends into the final color |
 | **Color Purity** | Float | 0 ~ 10 | 1 | Saturation after the base color and backlight tint are composed |
-| **Intensity** | Float | 0 ~ 10 | 2 | Range 0-10; default 2 |
-| **Width** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
-| **Softness** | Float | 0 ~ 1 | 0.3 | Range 0-1; default 0.3 |
-| **Directivity** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
-| **View Intensity** | Float | 0 ~ 1 | 0 | Range 0-1; default 0 |
+| **Intensity** | Float | 0 ~ 10 | 1 | Backlight brightness multiplier |
+| **Mask Strength** | Float | 0 ~ 1 | 1 | How much the Fresnel Rim mask affects the backlight |
+| **Width** | Float | 0 ~ 1 | 0.35 | Boundary where the backlight band starts |
+| **Softness** | Float | 0 ~ 1 | 0.05 | Blur of the backlight boundary |
+| **Backlight Directivity** | Float | 0 ~ 32 | 5 | Exponent for how tightly the band follows light behind the subject |
+| **View Wrap** | Float | 0 ~ 1 | 1 | How far the light wraps around the surface |
 | **Normal Influence** | Float | 0 ~ 1 | 1 | Range 0-1; default 1 |
-| **Shadow Visibility** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
-| **Base Color Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
-| **Scene Light Influence** | Float | 0 ~ 1 | 0.5 | Range 0-1; default 0.5 |
+| **Shadow Visibility** | Float | 0 ~ 1 | 0 | How much of the backlight survives inside shadow |
+| **Base Color Influence** | Float | 0 ~ 1 | 0 | 0 uses the backlight color; 1 multiplies it by the Base Map |
+| **Scene Light Influence** | Float | 0 ~ 1 | 1 | How much the backlight follows scene brightness |
+| **Backface Mask** | Float | 0 ~ 1 | 1 | On, the backlight is not drawn on back faces |
 
 ## Shadow Interior Reflection {#그림자-내부-반사}
 

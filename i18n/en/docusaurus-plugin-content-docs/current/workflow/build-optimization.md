@@ -55,6 +55,10 @@ You also choose a method per avatar. **Build / upload optimization method for th
 
 Generated shaders keep the same property contract as the editing shaders.
 
+Values that only change during a build are not folded into constants.
+A successful build remembers the generated profile and source cache and reuses them on the next build of the same avatar.
+How much faster a warm build feels depends on the scene and shader-cache environment.
+
 ### Extra processing on VRChat avatars {#vrchat-추가-처리}
 
 - It leaves the **Depth Availability** value alone. Auto ships as Auto.
@@ -62,6 +66,7 @@ Generated shaders keep the same property contract as the editing shaders.
 - Renderers whose Face SDF uses UV7 keep the Live path for the same result.
 - It applies the per-slot-kind texture resolution limits to the upload copy.
 - It turns on the VRC Light Volumes variant automatically.
+- It preflights mask input receipts before upload. An unprepared input skips only that mask optimization.
 - It marks MingToon runtime components as `IEditorOnly`. Deletion is not guaranteed.
 
 The face normal upload output uses a different path from the editing mesh bake. It does not overwrite the editing Mesh.

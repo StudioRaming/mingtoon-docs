@@ -82,7 +82,8 @@ If the shadow flows too softly, raise **PBR / Toon Blend** to 1 to cut it into t
 
 Avatar creators cannot control the lighting of a VRChat world.
 **Indirect Light Lift** in the **Lighting** section lifts dark faces.
-Setting **Scene Light Color Influence** to 0 makes colored lighting look like white lighting.
+The 0.1.11 defaults are **Environment Color Influence** 1, **Preserve Base Map Color** 0.1 and **Minimum Final Brightness** 0.2.
+If colored lighting is too strong, lower **Scene Light Color Influence** to bring it closer to white.
 
 ## Values you will touch often
 

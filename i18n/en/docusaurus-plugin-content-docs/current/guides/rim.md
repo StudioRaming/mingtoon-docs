@@ -11,16 +11,21 @@ sidebar_position: 5
 
 ## What is this
 
-There are five ways to lay a band on the silhouette edge.
-None of the five read screen depth, so they show up anywhere.
+There are six ways to lay a band on the silhouette edge.
+None of the six read screen depth, so they show up anywhere.
 
 | Inspector section | Where it appears | What it is for |
 |---|---|---|
 | **Rim Shade** | Inside the silhouette, darker | Sense of volume |
 | **Rim Light** | Inside the silhouette, brighter | Backlight feel, background separation |
-| **Backlight** | The backlight band when the key light is behind | Bringing out the key light direction |
+| **Edge Rim** | A band that follows the contour | Holding the silhouette |
+| **Backlight** | A band where light wraps around from behind | lilToon backlight |
 | **Front Light** | Faces turned toward the camera | Emphasizing the front |
 | **Shadow Interior Reflection** | Inside shadows only | Keeping shadows from dying |
+
+**Edge Rim** is the MingToon look that holds the contour.
+**Backlight** ports lilToon's light-wrapping backlight module.
+They use the same light, but they do different jobs on screen.
 
 ![A character with every rim off next to one with only Rim Light on](/img/placeholder.png)
 <!-- CAPTURE: guides/rim-01-off-vs-rim-light.png | 어두운 배경의 같은 캐릭터, 림 전부 끔(전) / 림 라이트만 켬(후) 2컷 | 1200x700 -->
@@ -118,9 +123,9 @@ They apply normally to the key light and to the URP single pass.
 
 ### The silhouette blows out to white
 
-In most cases Rim Light and Backlight were raised together.
+In most cases Rim Light, Edge Rim and Backlight were raised together.
 Turn one off and check with the other one alone.
-The sum of the four layers is held down by **Edge Rim Maximum Multiplier** in **Master Adjust**.
+The edge layers are held down by **Edge Rim Maximum Multiplier** in **Master Adjust**.
 
 ### Backlight does not appear in some worlds
 
