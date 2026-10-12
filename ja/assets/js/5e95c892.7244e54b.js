@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmingtoon_docs=self.webpackChunkmingtoon_docs||[]).push([["1668"],{4195(e,s,r){r.r(s),r.d(s,{default:()=>d});var n=r(142);r(766);var c=r(6581),o=r(9263),a=r(6428),t=r(2726),u=r(1938);function d(e){return(0,n.jsx)(o.e3,{className:(0,c.A)(a.G.wrapper.docsPages),children:(0,n.jsx)(u.A,{children:(0,t.v)(e.route.routes)})})}}}]);
